@@ -16,6 +16,6 @@ However, I'd like to prove it with by brute force. As mentioned [here](https://e
 
 The program found no case (without monochromatic cliques) for `R(3,3)=6`, and found 12 cases for `R(3,3)=5` (change [N](ramsey.py#L5) to 5), which matched our expectation.
 
-|<img src="diagrams/ramsey1.png">|  <img src="diagrams/ramsey2.png">   |
-|--------------------------------|-------------------------------------|
-|  2 cases (swap red and blue)   |10 cases (5 directions, red <-> blue)|
+|<img src="diagrams/ramsey1.png">|<img src="diagrams/ramsey2.png">     |
+|:------------------------------:|:-----------------------------------:|
+|2 cases (swap red and blue)     |10 cases (5 directions, red <-> blue)|
