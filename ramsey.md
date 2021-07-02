@@ -14,7 +14,7 @@ However, I'd like to prove it with by brute force. As mentioned [here](https://e
 2. Loop for `L=C(N,3)` cliques (vertices in cliques stored in [vertex_combinations](ramsey.py#L38));
 3. Loop for `K=L*(L-1)/2` edges to check if the clique is monochromatic.
 
-The program found no case (without monochromatic cliques) for `R(3,3)=6`, and found 12 cases for `R(3,3)=5` (change [N](ramsey.py#L5) to 5), which matched our expectation.
+The program found no case (without monochromatic cliques) for `R(3,3)=6`, and found 12 cases for `R(3,3)>5` (change [N](ramsey.py#L5) to 5), which matched our expectation:
 
 |<img src="diagrams/ramsey1.png">|<img src="diagrams/ramsey2.png">     |
 |:------------------------------:|:-----------------------------------:|
