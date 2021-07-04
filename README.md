@@ -12,6 +12,7 @@ Problems in *How to Solve It* by G. Polya
 - [ ] Construct a triangle with a given angle, its altitude and the perimeter
 - [x] [Intersection of a parabola and a straight line](polya/parabola.md)
 - [x] [The sum of the numbers is 100](polya/sum100.md)
+- [ ] In how many ways can you change one dollar?
 
 ## Elemantary proofs
 
