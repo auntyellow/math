@@ -20,14 +20,10 @@ Here let *q* = 2(*h* + *h* cos *A* + *p* sin *A*), then *r* = *p*<sup>2</sup> / 
 
 <img src="https://latex.codecogs.com/gif.latex?y,z=\frac{v\pm\sqrt{(v+2u)(v-2u)}}2">
 
-### Test Cases
+### Special Cases
 
-Case 1: Problem 15 in *How to Solve It*: *h* = 12 and *p* = 60, then *x* = 25, *y* = 20 and *z* = 15 (or *y* = 15 and *z* = 20).
+Problem 15 in *How to Solve It*: *h* = 12 and *p* = 60, then *x* = 25, *y* = 20 and *z* = 15 (or *y* = 15 and *z* = 20).
 
-Case 2: If
+If <img src="https://latex.codecogs.com/gif.latex?\frac{p}h=\frac{2(1+\sin\frac{A}2)}{\cos\frac{A}2}">, then we get an isosceles triangle <img src="https://latex.codecogs.com/gif.latex?y=z=\frac{h}{\cos\frac{A}2}">.
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{p}h=\frac{2(1+\sin\frac{A}2)}{\cos\frac{A}2}">
-
-then we get an isosceles triangle:
-
-<img src="https://latex.codecogs.com/gif.latex?y=z=\frac{h}{\cos\frac{A}2}">
+If <img src="https://latex.codecogs.com/gif.latex?\frac{p}h<\frac{2(1+\sin\frac{A}2)}{\cos\frac{A}2}">, then the triangle cannot be constructed.
