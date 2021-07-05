@@ -8,8 +8,8 @@ These problems may have smart solutions with difficult skills. However, I'd like
 
 Problems in *How to Solve It* by G. Polya
 
-- [ ] Inscribe a square in a given triangle
-- [ ] Construct a triangle with a given angle, its altitude and the perimeter
+- [x] [Inscribe a square in a given triangle](polya/square.md)
+- [ ] [Construct a triangle with a given angle, its altitude and the perimeter](polya/triangle.md)
 - [x] [Intersection of a parabola and a straight line](polya/parabola.md)
 - [x] [The sum of the numbers is 100](polya/sum100.md)
 - [x] [In how many ways can you change one dollar?](polya/problem20.md)

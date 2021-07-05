@@ -10,7 +10,7 @@ However, the solution is not given in this book. I'd like to give an analytic ge
 
 ### Analytic Geometry Solution
 
-<img src=parabola.png>
+<img src="parabola.png">
 
 We put *F* onto the origin of Cartesian coordinates, then get the equations for *P*(*x*,*y*):
 
