@@ -17,3 +17,7 @@ Problems in *How to Solve It* by G. Polya
 
 - [ ] [Rational numbers are either terminating or repeating decimals](https://math.stackexchange.com/questions/61937)
 - [ ] [Eular's Formula](https://en.wikipedia.org/wiki/Euler's_formula)
+
+## Unsolved problems
+
+- [ ] [Chemical Equilibrium Equation](equilibrium.md)

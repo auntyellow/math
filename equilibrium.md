@@ -45,9 +45,9 @@ Here I used the approximation of <img src="https://latex.codecogs.com/gif.latex?
 
 But how can I solve a more complicated system like:
 
-- H<sub>2</sub>O = H<sup>+</sup> + OH<sup>-</sup>
-- NH<sub>3</sub> + H<sub>2</sub>O = NH<sub>4</sub><sup>+</sup> + OH<sup>-</sup>
-- CO<sub>2</sub> + H<sub>2</sub>O = H<sup>+</sup> + HCO<sub>3</sub><sup>-</sup>
-- HCO<sub>3</sub><sup>-</sup> = H<sup>+</sup> + CO<sub>3</sub><sup>2-</sup>
+- H<sub>2</sub>O ↽⇀ H<sup>+</sup> + OH<sup>-</sup>
+- NH<sub>3</sub> + H<sub>2</sub>O ↽⇀ NH<sub>4</sub><sup>+</sup> + OH<sup>-</sup>
+- CO<sub>2</sub> + H<sub>2</sub>O ↽⇀ H<sup>+</sup> + HCO<sub>3</sub><sup>-</sup>
+- HCO<sub>3</sub><sup>-</sup> ↽⇀ H<sup>+</sup> + CO<sub>3</sub><sup>2-</sup>
 
 which includes 4 reactions and 7 substances?
