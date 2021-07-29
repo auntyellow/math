@@ -13,10 +13,10 @@ Problems in *How to Solve It* by G. Polya
 - [x] [The sum of the numbers is 100](polya/sum100.md)
 - [x] [In how many ways can you change one dollar?](polya/problem20.md)
 
-## Elemantary proofs
+## Elemantary proof/derivation
 
 - [ ] [Rational numbers are either terminating or repeating decimals](https://math.stackexchange.com/questions/61937)
-- [ ] [Eular's Formula](https://en.wikipedia.org/wiki/Euler's_formula)
+- [x] [Euler's Formula](euler.md)
 
 ## Unsolved problems
 
