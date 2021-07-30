@@ -12,7 +12,7 @@ Problems in *How to Solve It* by G. Polya
 - [x] [Intersection of a parabola and a straight line](polya/parabola.md)
 - [x] [The sum of the numbers is 100](polya/sum100.md)
 - [x] [In how many ways can you change one dollar?](polya/change_dollar.md)
-- [ ] [The "average width" of the cube](polya/cube.md)
+- [x] [The "average width" of the cube](polya/cube.md)
 
 ## Elemantary proof/derivation
 
