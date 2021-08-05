@@ -1,8 +1,6 @@
-Here we use the diagram from [Mathoman's website](http://www.mathoman.com/de/index.php/1529-verschiedene-sehnen-in-einem-kreis):
-
 <img src="diagrams/butterfly.png">
 
-The **butterfly theorem** can be stated as: Let M be the midpoint of a chord AB of a circle, through which two other chords PQ and RS are drawn; PS and QR intersect chord AB at C and D correspondingly. Then M is the midpoint of CD.
+The **butterfly theorem** can be stated as: Let *M* be the midpoint of a chord *AB* of a circle, through which two other chords *PQ* and *RS* are drawn; *PS* and *QR* intersect chord *AB* at *C* and *D* correspondingly. Then *M* is the midpoint of *CD*. <sup>[1]</sup>
 
 This theorem can be generalized in two forms:
 
@@ -11,7 +9,7 @@ This theorem can be generalized in two forms:
 
 ### Proof by Analytic Geometry
 
-Here we try to prove the combination of 2 generalized forms.
+Here we try to prove the combination of 2 generalized forms. <sup>[2]</sup>
 
 We put *M* onto the origin of Cartesian coordinates and *B* onto positive x-axis.
 
@@ -117,12 +115,24 @@ Finally, we get:
 
 ### Degenerate Conic Curve
 
-If the conic curve is degenerated to two lines, we still have <img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{MA}}+\frac{1}{\overrightarrow{MB}}=\frac{1}{\overrightarrow{MC}}+\frac{1}{\overrightarrow{MD}}">.
+The generalized butterfly theorem still holds if the conic curve is degenerated to two lines.
 
-...
+In the below special case, *CD* is a chord of two lines *CNM* and *DKL*, and *B* is a point on *CD*, through which two other lines *BKM* and *BNL* are drawn; *LM* and *NK* intersect chord *CD* at the same point *A* (lines *LM*, *NK* and *CD* are concurrent at point *A*).
+
+<img src="diagrams/harmonic.png">
+
+According to the generalized butterfly theorem:
+
+<img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{BC}}+\frac{1}{\overrightarrow{BD}}=\frac{2}{\overrightarrow{BA}}">
+
+In another word, (*A*, *B*) and (*C*, *D*) are [harmonic conjugates](https://en.wikipedia.org/wiki/Projective_harmonic_conjugate): <sup>[3]</sup>
+
+<img src="https://latex.codecogs.com/gif.latex?(A,B;C,D)=\frac{\overrightarrow{AC}\overrightarrow{BD}}{\overrightarrow{AD}\overrightarrow{BC}}=-1">
 
 ### Notes
 
-1. A similar proof (but not generalized forms) can be found [here](https://www.cut-the-knot.org/pythagoras/Butterfly.shtml) (Proof 18).
+1. Here we use the diagram from [Mathoman's website](http://www.mathoman.com/de/index.php/1529-verschiedene-sehnen-in-einem-kreis). The [diagram](https://en.wikipedia.org/wiki/File:Butterfly_theorem.svg) from [Wikipedia](https://en.wikipedia.org/wiki/Butterfly_theorem) is wrong because M is not the midpoint of PQ and XY.
 
-2. The [diagram](https://en.wikipedia.org/wiki/File:Butterfly_theorem.svg) from [Wikipedia](https://en.wikipedia.org/wiki/Butterfly_theorem) is wrong because M is not the midpoint of PQ and XY.
+2. A similar proof (but not generalized forms) can be found [here](https://www.cut-the-knot.org/pythagoras/Butterfly.shtml) (Proof 18).
+
+3. A simple proof of projective harmonic conjugate can be found [here](https://www.imomath.com/index.php?options=628) (Problem 1).
