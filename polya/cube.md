@@ -1,4 +1,4 @@
-Polya noted the solution for Problem 8 (Axes of a Cube) in *How to Solve It*:
+Pólya noted the solution for Problem 8 (Axes of a Cube) in *How to Solve It*:
 
 > ... the "average width" of the cube, which is, in fact, 3/2 = 1.5
 
@@ -51,4 +51,4 @@ Although the antiderivative of this function doesn't look analytic, we can get t
 
 <img src="https://latex.codecogs.com/gif.latex?r_\text{avg}=\frac{12}\pi\int_0^{\pi/4}(\ln\sqrt{\cos^2\phi+1}-\ln\cos\phi)d\phi\approx1.2214">
 
-This is close to the isovolumic-sphere definition but far different from Polya's note.
+This is close to the isovolumic-sphere definition but far different from Pólya's note.

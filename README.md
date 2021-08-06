@@ -6,7 +6,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Friends and Strangers](ramsey.md) (Ramsey Number `R(3,3)=6`)
 - [x] [Generalized Butterfly Theorem](butterfly.md)
 
-Problems in *How to Solve It* by G. Polya
+Problems in *How to Solve It* by G. Pólya
 
 - [x] [Inscribe a square in a given triangle](polya/square.md)
 - [x] [Construct a triangle with a given angle, its altitude and the perimeter](polya/triangle.md)
