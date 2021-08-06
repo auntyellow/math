@@ -57,7 +57,7 @@ We solve *x*<sub>C</sub> and *x*<sub>D</sub> as:
 
 Then we get:
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{MC}}+\frac{1}{\overrightarrow{MD}}=\frac{1}{x_\text{C}}+\frac{1}{x_\text{D}}=\frac{x_\text{C}+x_\text{D}}{x_\text{C}x_\text{D}}=\frac{qx_\text{P}x_\text{Q}(x_\text{R}+x_\text{S}-r(x_\text{P}+x_\text{Q})x_\text{R}x_\text{S})}{(q-r)x_\text{P}x_\text{Q}x_\text{R}x_\text{S}}">
+<img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{MC}}+\frac{1}{\overrightarrow{MD}}=\frac{1}{x_\text{C}}+\frac{1}{x_\text{D}}=\frac{x_\text{C}+x_\text{D}}{x_\text{C}x_\text{D}}=\frac{qx_\text{P}x_\text{Q}(x_\text{R}+x_\text{S})-r(x_\text{P}+x_\text{Q})x_\text{R}x_\text{S}}{(q-r)x_\text{P}x_\text{Q}x_\text{R}x_\text{S}}">
 
 #### Step 3a
 
