@@ -5,6 +5,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [24 Game Solver](https://github.com/auntyellow/24): gives you all dissimilar solutions
 - [x] [Friends and Strangers](ramsey.md) (Ramsey Number `R(3,3)=6`)
 - [x] [Generalized Butterfly Theorem](butterfly.md)
+- [ ] [Desargues's theorem](desargues.md)
 
 Problems in *How to Solve It* by G. Pólya
 
