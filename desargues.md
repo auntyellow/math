@@ -55,35 +55,35 @@ which are collinear, i.e. <sup>[3]</sup>
 ```python
 from sympy import *
 
-def collinear(x1, y1, x2, y2, x3, y3):
-    return Eq(x1 * y2 + x2 * y3 + x3 * y1, x2 * y1 + x3 * y2 + x1 * y3)
+def L(a, b):
+    global x, y
+    return Eq(y, a * x + b)
+
+def line(p1, p2):
+    global x, y
+    x1, y1, x2, y2, x3, y3 = x, y, p1[0], p1[1], p2[0], p2[1]
+    return Eq(simplify(x1 * y2 + x2 * y3 + x3 * y1 - x2 * y1 - x3 * y2 - x1 * y3), 0)
+
+def intersect(l1, l2):
+    global x, y
+    p = solve([l1, l2], (x, y))
+    return p[x], p[y]
 
 d, e, f, g, h, j, k, m, n, x, y = symbols('d, e, f, g, h, j, k, m, n, x, y')
-A1B1 = Eq(y, g * x + d)
-A2B2 = Eq(y, h * x + d)
-A1C1 = Eq(y, j * x + e)
-A2C2 = Eq(y, k * x + e)
-B1C1 = Eq(y, m * x + f)
-B2C2 = Eq(y, n * x + f)
-xy = x, y
-A1 = solve([A1B1, A1C1], xy)
-A2 = solve([A2B2, A2C2], xy)
-B1 = solve([A1B1, B1C1], xy)
-B2 = solve([A2B2, B2C2], xy)
-C1 = solve([A1C1, B1C1], xy)
-C2 = solve([A2C2, B2C2], xy)
+A1B1, A2B2, A1C1, A2C2, B1C1, B2C2 = L(g, d), L(h, d), L(j, e), L(k, e), L(m, f), L(n, f)
+A1, A2 = intersect(A1B1, A1C1), intersect(A2B2, A2C2)
+B1, B2 = intersect(A1B1, B1C1), intersect(A2B2, B2C2)
+C1, C2 = intersect(A1C1, B1C1), intersect(A2C2, B2C2)
 print("A1:", A1)
 print("A2:", A2)
 print("B1:", B1)
 print("B2:", B2)
 print("C1:", C1)
 print("C2:", C2)
-A1A2 = collinear(x, y, A1[x], A1[y], A2[x], A2[y])
-B1B2 = collinear(x, y, B1[x], B1[y], B2[x], B2[y])
-C1C2 = collinear(x, y, C1[x], C1[y], C2[x], C2[y])
-print(solve([A1A2, B1B2], xy))
-print(solve([A1A2, C1C2], xy))
-print(solve([B1B2, C1C2], xy))
+A1A2, B1B2, C1C2 = line(A1, A2), line(B1, B2), line(C1, C2)
+print(intersect(A1A2, B1B2))
+print(intersect(A1A2, C1C2))
+print(intersect(B1B2, C1C2))
 ```
 
 3\. This complicated result can be solved by SymPy:
@@ -91,22 +91,25 @@ print(solve([B1B2, C1C2], xy))
 ```python
 from sympy import *
 
-def collinear(x1, y1, x2, y2, x3, y3):
-    return Eq(x1 * y2 + x2 * y3 + x3 * y1, x2 * y1 + x3 * y2 + x1 * y3)
+def collinear(p1, p2, p3):
+    x1, y1, x2, y2, x3, y3 = p1[0], p1[1], p2[0], p2[1], p3[0], p3[1]
+    return Eq(simplify(x1 * y2 + x2 * y3 + x3 * y1 - x2 * y1 - x3 * y2 - x1 * y3), 0)
+
+def line(p1, p2):
+    global x, y
+    return collinear((x, y), p1, p2)
+
+def intersect(l1, l2):
+    global x, y
+    p = solve([l1, l2], (x, y))
+    return p[x], p[y]
 
 d, e, f, g, h, j, k, m, n, x, y = symbols('d, e, f, g, h, j, k, m, n, x, y')
-A1B1 = collinear(x, y, g, d * g, j, e * j)
-A1C1 = collinear(x, y, g, d * g, m, f * m)
-B1C1 = collinear(x, y, j, e * j, m, f * m)
-A2B2 = collinear(x, y, h, d * h, k, e * k)
-A2C2 = collinear(x, y, h, d * h, n, f * n)
-B2C2 = collinear(x, y, k, e * k, n, f * n)
-ab = solve([A1B1, A2B2], (x, y))
-ac = solve([A1C1, A2C2], (x, y))
-bc = solve([B1C1, B2C2], (x, y))
+A1, A2, B1, B2, C1, C2 = (g, d * g), (h, d * h), (j, e * j), (k, e * k), (m, f * m), (n, f * n)
+A1B1, A1C1, B1C1, A2B2, A2C2, B2C2 = line(A1, B1), line(A1, C1), line(B1, C1), line(A2, B2), line(A2, C2), line(B2, C2)
+ab, ac, bc = intersect(A1B1, A2B2), intersect(A1C1, A2C2), intersect(B1C1, B2C2)
 print("ab:", ab)
 print("ac:", ac)
 print("bc:", bc)
-eq = collinear(ab[x], ab[y], ac[x], ac[y], bc[x], bc[y])
-print(simplify(eq.lhs - eq.rhs))
+print(collinear(ab, ac, bc))
 ```
