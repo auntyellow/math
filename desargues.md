@@ -14,7 +14,7 @@ Then we get 6 vertices:
 
 Then we denote lines *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_1A_2:(x-x_\text{A1})(y_\text{A1}-y_\text{A2})=(x_\text{A1}-x_\text{A2})(y-y_\text{A1})\\B_1B_2:(x-x_\text{B1})(y_\text{B1}-y_\text{B2})=(x_\text{B1}-x_\text{B2})(y-y_\text{B1})\\C_1C_2:(x-x_\text{C1})(y_\text{C1}-y_\text{C2})=(x_\text{C1}-x_\text{C2})(y-y_\text{C1})\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_1A_2:xy_\text{A1}+x_\text{A1}y_\text{A2}+x_\text{A2}y=x_\text{A1}y+x_\text{A2}y_\text{A1}+xy_\text{A2}\\B_1B_2:xy_\text{B1}+x_\text{B1}y_\text{B2}+x_\text{B2}y=x_\text{B1}y+x_\text{B2}y_\text{B1}+xy_\text{B2}\\C_1C_2:xy_\text{C1}+x_\text{C1}y_\text{C2}+x_\text{C2}y=x_\text{C1}y+x_\text{C2}y_\text{C1}+xy_\text{C2}\end{cases}">
 
 Finally, we get *A*<sub>1</sub>*A*<sub>2</sub> ∩ *B*<sub>1</sub>*B*<sub>2</sub>:
 
@@ -36,7 +36,7 @@ and 6 vertices are:
 
 Then we denote 6 lines of 2 triangles as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_1B_1:(x-g)(dg-ej)=(g-j)(y-dg)\\A_1C_1:(x-g)(dg-fm)=(g-m)(y-dg)\\B_1C_1:(x-j)(ej-fm)=(j-m)(y-ej)\\A_2B_2:(x-h)(dh-ek)=(h-k)(y-dh)\\A_2C_2:(x-h)(dh-fn)=(h-n)(y-dh)\\B_2C_2:(x-k)(ek-fn)=(k-n)(y-ek)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_1B_1:x\cdot%20dg+g\cdot%20ej+j\cdot%20y=g\cdot%20y+j\cdot%20dg+x\cdot%20ej\\A_1C_1:x\cdot%20dg+g\cdot%20fm+m\cdot%20y=g\cdot%20y+m\cdot%20dg+x\cdot%20fm\\B_1C_1:x\cdot%20ej+j\cdot%20fm+m\cdot%20y=j\cdot%20y+m\cdot%20ej+x\cdot%20fm\\A_2B_2:x\cdot%20dh+h\cdot%20ek+k\cdot%20y=h\cdot%20y+k\cdot%20dh+x\cdot%20ek\\A_2C_2:x\cdot%20dh+h\cdot%20fn+n\cdot%20y=h\cdot%20y+n\cdot%20dh+x\cdot%20fn\\B_2C_2:x\cdot%20ek+k\cdot%20fn+n\cdot%20y=k\cdot%20y+n\cdot%20ek+x\cdot%20fn\end{cases}">
 
 Finally, we get *ab*, *ac* and *bc*:
 
@@ -75,9 +75,9 @@ print("B1:", B1)
 print("B2:", B2)
 print("C1:", C1)
 print("C2:", C2)
-A1A2 = Eq((x - A1[x]) * (A1[y] - A2[y]), (A1[x] - A2[x]) * (y - A1[y]))
-B1B2 = Eq((x - B1[x]) * (B1[y] - B2[y]), (B1[x] - B2[x]) * (y - B1[y]))
-C1C2 = Eq((x - C1[x]) * (C1[y] - C2[y]), (C1[x] - C2[x]) * (y - C1[y]))
+A1A2 = Eq(x * A1[y] + A1[x] * A2[y] + A2[x] * y, A1[x] * y + A2[x] * A1[y] + x * A2[y])
+B1B2 = Eq(x * B1[y] + B1[x] * B2[y] + B2[x] * y, B1[x] * y + B2[x] * B1[y] + x * B2[y])
+C1C2 = Eq(x * C1[y] + C1[x] * C2[y] + C2[x] * y, C1[x] * y + C2[x] * C1[y] + x * C2[y])
 print(solve([A1A2, B1B2], xy))
 print(solve([A1A2, C1C2], xy))
 print(solve([B1B2, C1C2], xy))
@@ -90,12 +90,12 @@ from sympy import *
 
 d, e, f, g, h, j, k, m, n, x, y = symbols('d, e, f, g, h, j, k, m, n, x, y')
 xy = x, y
-A1B1 = Eq((x - g) * (d * g - e * j), (g - j) * (y - d * g))
-A1C1 = Eq((x - g) * (d * g - f * m), (g - m) * (y - d * g))
-B1C1 = Eq((x - j) * (e * j - f * m), (j - m) * (y - e * j))
-A2B2 = Eq((x - h) * (d * h - e * k), (h - k) * (y - d * h))
-A2C2 = Eq((x - h) * (d * h - f * n), (h - n) * (y - d * h))
-B2C2 = Eq((x - k) * (e * k - f * n), (k - n) * (y - e * k))
+A1B1 = Eq(x * d * g + g * e * j + j * y, g * y + j * d * g + x * e * j)
+A1C1 = Eq(x * d * g + g * f * m + m * y, g * y + m * d * g + x * f * m)
+B1C1 = Eq(x * e * j + j * f * m + m * y, j * y + m * e * j + x * f * m)
+A2B2 = Eq(x * d * h + h * e * k + k * y, h * y + k * d * h + x * e * k)
+A2C2 = Eq(x * d * h + h * f * n + n * y, h * y + n * d * h + x * f * n)
+B2C2 = Eq(x * e * k + k * f * n + n * y, k * y + n * e * k + x * f * n)
 ab = solve([A1B1, A2B2], xy)
 ac = solve([A1C1, A2C2], xy)
 bc = solve([B1C1, B2C2], xy)

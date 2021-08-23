@@ -35,11 +35,7 @@ Then we get:
 
 The coordinates of *C* and *D* can be calculated by:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}(y_\text{C}-y_\text{P})/(x_\text{C}-x_\text{P})=(y_\text{C}-y_\text{S})/(x_\text{C}-x_\text{S})\\(y_\text{D}-y_\text{Q})/(x_\text{D}-x_\text{Q})=(y_\text{D}-y_\text{R})/(x_\text{D}-x_\text{R})\end{cases}">
-
-If *PS* or *QR* can be perpendicular to *AB*, the above equations should be written as:
-
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}({y_\text{C}-y_\text{P}})({x_\text{C}-x_\text{S}})=({y_\text{C}-y_\text{S}})({x_\text{C}-x_\text{P}})\\({y_\text{D}-y_\text{Q}})({x_\text{D}-x_\text{R}})=({y_\text{D}-y_\text{Q}})({x_\text{D}-x_\text{R}})\end{cases}\;\text{(Eq.%202a)}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{C}y_\text{P}+x_\text{P}y_\text{S}+x_\text{S}y_\text{C}=x_\text{P}y_\text{C}+x_\text{S}y_\text{P}+x_\text{C}y_\text{S}\\x_\text{D}y_\text{Q}+x_\text{Q}y_\text{R}+x_\text{R}y_\text{D}=x_\text{Q}y_\text{D}+x_\text{R}y_\text{Q}+x_\text{D}y_\text{R}\end{cases}">
 
 Let's assume that neither *PQ* nor *RS* is perpendicular to *AB*, then *PQ* and *RS* can be represented as *y* = *qx* and *y* = *rx*. (We also assume *PQ* and *RS* not coinciding so that *q* ≠ *r*.)
 
