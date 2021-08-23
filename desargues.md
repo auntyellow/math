@@ -55,14 +55,17 @@ which are collinear, i.e. <sup>[3]</sup>
 ```python
 from sympy import *
 
+def collinear(x1, y1, x2, y2, x3, y3):
+    return Eq(x1 * y2 + x2 * y3 + x3 * y1, x2 * y1 + x3 * y2 + x1 * y3)
+
 d, e, f, g, h, j, k, m, n, x, y = symbols('d, e, f, g, h, j, k, m, n, x, y')
-xy = x, y
 A1B1 = Eq(y, g * x + d)
 A2B2 = Eq(y, h * x + d)
 A1C1 = Eq(y, j * x + e)
 A2C2 = Eq(y, k * x + e)
 B1C1 = Eq(y, m * x + f)
 B2C2 = Eq(y, n * x + f)
+xy = x, y
 A1 = solve([A1B1, A1C1], xy)
 A2 = solve([A2B2, A2C2], xy)
 B1 = solve([A1B1, B1C1], xy)
@@ -75,9 +78,9 @@ print("B1:", B1)
 print("B2:", B2)
 print("C1:", C1)
 print("C2:", C2)
-A1A2 = Eq(x * A1[y] + A1[x] * A2[y] + A2[x] * y, A1[x] * y + A2[x] * A1[y] + x * A2[y])
-B1B2 = Eq(x * B1[y] + B1[x] * B2[y] + B2[x] * y, B1[x] * y + B2[x] * B1[y] + x * B2[y])
-C1C2 = Eq(x * C1[y] + C1[x] * C2[y] + C2[x] * y, C1[x] * y + C2[x] * C1[y] + x * C2[y])
+A1A2 = collinear(x, y, A1[x], A1[y], A2[x], A2[y])
+B1B2 = collinear(x, y, B1[x], B1[y], B2[x], B2[y])
+C1C2 = collinear(x, y, C1[x], C1[y], C2[x], C2[y])
 print(solve([A1A2, B1B2], xy))
 print(solve([A1A2, C1C2], xy))
 print(solve([B1B2, C1C2], xy))
@@ -88,19 +91,22 @@ print(solve([B1B2, C1C2], xy))
 ```python
 from sympy import *
 
+def collinear(x1, y1, x2, y2, x3, y3):
+    return Eq(x1 * y2 + x2 * y3 + x3 * y1, x2 * y1 + x3 * y2 + x1 * y3)
+
 d, e, f, g, h, j, k, m, n, x, y = symbols('d, e, f, g, h, j, k, m, n, x, y')
-xy = x, y
-A1B1 = Eq(x * d * g + g * e * j + j * y, g * y + j * d * g + x * e * j)
-A1C1 = Eq(x * d * g + g * f * m + m * y, g * y + m * d * g + x * f * m)
-B1C1 = Eq(x * e * j + j * f * m + m * y, j * y + m * e * j + x * f * m)
-A2B2 = Eq(x * d * h + h * e * k + k * y, h * y + k * d * h + x * e * k)
-A2C2 = Eq(x * d * h + h * f * n + n * y, h * y + n * d * h + x * f * n)
-B2C2 = Eq(x * e * k + k * f * n + n * y, k * y + n * e * k + x * f * n)
-ab = solve([A1B1, A2B2], xy)
-ac = solve([A1C1, A2C2], xy)
-bc = solve([B1C1, B2C2], xy)
+A1B1 = collinear(x, y, g, d * g, j, e * j)
+A1C1 = collinear(x, y, g, d * g, m, f * m)
+B1C1 = collinear(x, y, j, e * j, m, f * m)
+A2B2 = collinear(x, y, h, d * h, k, e * k)
+A2C2 = collinear(x, y, h, d * h, n, f * n)
+B2C2 = collinear(x, y, k, e * k, n, f * n)
+ab = solve([A1B1, A2B2], (x, y))
+ac = solve([A1C1, A2C2], (x, y))
+bc = solve([B1C1, B2C2], (x, y))
 print("ab:", ab)
 print("ac:", ac)
 print("bc:", bc)
-print(simplify(ab[x] * ac[y] + ac[x] * bc[y] + bc[x] * ab[y] - ac[x] * ab[y] - bc[x] * ac[y] - ab[x] * bc[y]))
+eq = collinear(ab[x], ab[y], ac[x], ac[y], bc[x], bc[y])
+print(simplify(eq.lhs - eq.rhs))
 ```
