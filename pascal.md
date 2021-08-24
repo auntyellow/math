@@ -36,7 +36,7 @@ Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0">
 
 #### Step 2
 
-Without further simplification, SymPy can hardly solve the intersections G and H. This may be because <img src="https://latex.codecogs.com/gif.latex?\sqrt{x}^2"> can't cancel another *x*. So we need to replace all square roots with:
+Without further simplification, SymPy can hardly solve the intersections G and H. (This may be due to too many calculations during cancellation of <img src="https://latex.codecogs.com/gif.latex?\sqrt{x}^2"> and *x*.<sup>[2]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2}\\Q=\sqrt{-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2}\\R=\sqrt{-4ack^2-4aek-4af+b^2k^2+2bdk+d^2}\end{cases}">
 
@@ -55,3 +55,4 @@ Then the 6 points are simplified as:
 ### Notes
 
 1. Here we use the diagram from [Cut the Knot](https://www.cut-the-knot.org/Generalization/OverlookedPascal.shtml).
+2. More explanations can be found [here](https://docs.sympy.org/latest/tutorial/simplification.html).
