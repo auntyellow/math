@@ -16,11 +16,11 @@ However, the proof of Pascal's theorem is more complicated.
 
 ### The Proof
 
-Let's put point *I* onto the origin of Cartesian coordinates, and rotate the hexagon to make *BE* parallel to x-axis, then denote the conic *ADBFCE* as:
+Let's put point *I* onto the origin, rotate the hexagon to make *BE* parallel to x-axis, denote the conic *ADBFCE* as:
 
 <img src="https://latex.codecogs.com/gif.latex?ax^2+bxy+cy^2+dx+ey+f=0">
 
-Then denote *AF*, *CD* and *BE* as:
+and denote *AF*, *CD* and *BE* as:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}AF:y=gx\\CD:y=hx\\BE:y=k\end{cases}">
 
