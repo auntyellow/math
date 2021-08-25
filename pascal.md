@@ -44,13 +44,23 @@ Then the 6 points are simplified as:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-P)/2(a+bg+cg^2)\\x_\text{B}=-(bk+d+R)/2a\\x_\text{C}=-(d+eh-Q)/2(a+bh+ch^2)\\x_\text{D}=-(d+eh+Q)/2(a+bh+ch^2)\\x_\text{E}=-(bk+d-R)/2a\\x_\text{F}=-(d+eg+P)/2(a+2bg+2cg^2)\end{cases}">
 
+[Here](projective/pascal2.py) we solve the G and H and get the expression <img src="https://latex.codecogs.com/gif.latex?x_\text{G}y_\text{H}-x_\text{H}y_\text{G}"> to check if G, H and I are collinear.
+
+The numerator of this expression can be denoted as *S*×*T*−*U*×*V*, with both *S* and *U* containing 69 terms, and both *T* and *V* containing 125 terms. We just need to prove the numerator equal to 0.
+
 #### Step 3
 
-- [ ] TODO
+[Here](projective/pascal3.py) we expand the numerator *S*×*T*−*U*×*V* to 432 terms (cancelled from 69×125×2 terms).
 
 #### Step 4
 
-- [ ] TODO
+There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>3</sup> in the above expanded numerator. So we can replace them with:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P^2=-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2\\Q^2=-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2\\R^2=-4ack^2-4aek-4af+b^2k^2+2bdk+d^2\end{cases}">
+
+This can be done by replacing `P**2`, `Q**2` and `R**3` with `P2`, `Q2` and `R2*R` in text editor.
+
+[Here](projective/pascal4.py) shows the final result equal to 0, which means G, H and I are collinear.
 
 ### Notes
 
