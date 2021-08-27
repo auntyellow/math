@@ -67,13 +67,13 @@ So we have:
 
 where <img src="https://latex.codecogs.com/gif.latex?Q=a+bq+cq^2">. (Here we don't consider *Q* = 0 because the line intersects the curve at two different points.)
 
-Similarly, we have:
+In the same way, we have:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{R}x_\text{S}=f/R\\x_\text{R}+x_\text{S}=-(d+er)/R\end{cases}">
 
 where <img src="https://latex.codecogs.com/gif.latex?R=a+br+cr^2">.
 
-Finally, we get:
+Finally, we get: <sup>[3]</sup>
 
 <img src="https://latex.codecogs.com/gif.latex?\dpi{150}\inline\frac{1}{\overrightarrow{MC}}+\frac{1}{\overrightarrow{MD}}=\frac{q(x_\text{P}x_\text{Q})(x_\text{R}+x_\text{S})-r(x_\text{P}+x_\text{Q})(x_\text{R}x_\text{S})}{(q-r)(x_\text{P}x_\text{Q})(x_\text{R}x_\text{S})}=-\frac{d}f=\frac{1}{\overrightarrow{MA}}+\frac{1}{\overrightarrow{MB}}">
 
@@ -121,14 +121,13 @@ According to the generalized butterfly theorem:
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{BC}}+\frac{1}{\overrightarrow{BD}}=\frac{2}{\overrightarrow{BA}}">
 
-In another word, (*A*, *B*) and (*C*, *D*) are [harmonic conjugates](https://en.wikipedia.org/wiki/Projective_harmonic_conjugate): <sup>[3]</sup>
+In another word, (*A*, *B*) and (*C*, *D*) are [harmonic conjugates](https://en.wikipedia.org/wiki/Projective_harmonic_conjugate): <sup>[4]</sup>
 
 <img src="https://latex.codecogs.com/gif.latex?(A,B;C,D)=\frac{\overrightarrow{AC}\overrightarrow{BD}}{\overrightarrow{AD}\overrightarrow{BC}}=-1">
 
 ### Notes
 
 1. Here we use the diagram from [Mathoman's website](http://www.mathoman.com/de/index.php/1529-verschiedene-sehnen-in-einem-kreis). The [diagram](https://en.wikipedia.org/wiki/File:Butterfly_theorem.svg) from [Wikipedia](https://en.wikipedia.org/wiki/Butterfly_theorem) is wrong because M is not the midpoint of PQ and XY.
-
 2. A similar proof (but not generalized forms) can be found [here](https://www.cut-the-knot.org/pythagoras/Butterfly.shtml) (Proof 18).
-
-3. A simple proof of projective harmonic conjugate can be found [here](https://www.imomath.com/index.php?options=628) (Problem 1).
+3. [Here](projective/butterfly.py) is a proof by SymPy without Vieta's formulas.
+4. A simple proof of projective harmonic conjugate can be found [here](https://www.imomath.com/index.php?options=628) (Problem 1).

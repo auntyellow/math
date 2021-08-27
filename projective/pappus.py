@@ -11,11 +11,12 @@ def collinear(p1, p2, p3):
 def line(p1, p2):
     return collinear((x, y), p1, p2)
 
+# AEC and DBF are collinear respectively, and G=AB∩DE, H=BC∩EF, I=AF∩CD. Prove GIH are collinear.
+# Put I onto the origin, and make BFD parallel to x-axis
 a, b, c, e, f, g, h, x, y = symbols('a, b, c, e, f, g, h, x, y')
 AC, DF, AF, CD = Eq(y, a * x + c), Eq(y, f), Eq(y, g * x), Eq(y, h * x)
+B, E = (b, f), (e, a * e + c)
 A, C, D, F = intersect(AC, AF), intersect(AC, CD), intersect(DF, CD), intersect(DF, AF)
-B = b, f
-E = e, a * e + c
 AB, BC, DE, EF = line(A, B), line(B, C), line(D, E), line(E, F)
-G, K = intersect(AB, DE), intersect(BC, EF)
-print(collinear((0, 0), G, K))
+G, I, H = intersect(AB, DE), (0, 0), intersect(BC, EF)
+print(collinear(G, I, H))
