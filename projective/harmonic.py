@@ -8,11 +8,9 @@ def intersect(L1, L2):
     p = solve([L1, L2], (x, y))
     return simplify(p[x]), simplify(p[y])
 
-def cross_ratio(a, b, c, d):
+def R(aa, bb, cc, dd, i):
+    a, b, c, d = aa[i], bb[i], cc[i], dd[i]
     return simplify((a - c) * (b - d) / (a - d) / (b - c))
-
-def R(A, B, C, D, i):
-    return cross_ratio(A[i], B[i], C[i], D[i])
 
 # Given diagram from https://en.wikipedia.org/wiki/Projective_harmonic_conjugate, prove (A,B;C,D)=-1
 # Put MN∩KL onto origin and rotate MN onto x-axis
