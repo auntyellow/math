@@ -15,7 +15,7 @@ def R(A, B, C, D, i):
     return cross_ratio(A[i], B[i], C[i], D[i])
 
 # Given diagram from https://en.wikipedia.org/wiki/Projective_harmonic_conjugate, prove (A,B;C,D)=-1
-# Rotate to make MN onto x-axis, and transform MN∩LK onto origin
+# Put MN∩KL onto origin and rotate MN onto x-axis
 h, k, l, m, n, x, y = symbols('h, k, l, m, n, x, y')
 K, L, M, N = (k, h * k), (l, h * l), (0, m), (0, n)
 LMA, LNB, NKA, MKB, LKD, MNC = line(L, M), line(L, N), line(N, K), line(M, K), line(L, K), line(M, N)
