@@ -1,18 +1,26 @@
 from sympy import *
 
-def line(p1, p2):
-    x1, y1, x2, y2, x3, y3 = x, y, p1[0], p1[1], p2[0], p2[1]
-    return Eq(simplify(x1 * y2 + x2 * y3 + x3 * y1 - x2 * y1 - x3 * y2 - x1 * y3), 0)
+def tangent(P):
+    m = P[1] - k * P[0]
+    k1, k2 = solve(Eq((b * m + 2 * c * k * m + d + e * k) ** 2, 4 * (a + b * k + c * k ** 2) * (c * m ** 2 + e * m + f)), k)
+    return Eq(y, k1 * x + P[1] - k1 * P[0]), Eq(y, k2 * x + P[1] - k2 * P[0])
 
-def intersect(L1, L2):
-    p = solve([L1, L2], (x, y))
-    return simplify(p[x]), simplify(p[y])
+a, b, c, d, e, f, g, h, j, k, x, y = symbols('a, b, c, d, e, f, g, h, j, k, x, y')
+A, C, E = (g, 0), (0, h), (0, j)
+(AB, AF), (CD, BC), (EF, DE) = tangent(A), tangent(C), tangent(E)
 
-# In diagram from https://en.wikipedia.org/wiki/Brianchon%27s_theorem, replace P1P2P3P4P5P6 with ABCDEF
-# Put A onto origin and rotate AE onto y-axis
-a, b, c, d, e, f, g, h, k = symbols('a, b, c, d, e, f, g, h, k')
-# Conic: ax^2+bxy+cy^2+dx+ey+1=0
-A, C, E = (0, 0), (g, h), (0, f)
-# AB,AF:y=k12x; BC,CD:y=m12x+h-m12g; DE,EF:y=n12x+f
-(k1, k2) = solve(Eq((d + e * k) ** 2, 4 * (a + b * k + c * k * k)), k)
-print(k1, k2)
+print('AF:', AF)
+print('AB:', AB)
+print('BC:', BC)
+print('CD:', CD)
+print('DE:', DE)
+print('EF:', EF)
+
+subs = {a: 1, b: 0, c: 1, d: 0, e: 0, f: -1, g: 1.25, h: 1.25, j: -1.25}
+
+print('AF:', N(AF, subs = subs))
+print('AB:', N(AB, subs = subs))
+print('BC:', N(BC, subs = subs))
+print('CD:', N(CD, subs = subs))
+print('DE:', N(DE, subs = subs))
+print('EF:', N(EF, subs = subs))

@@ -7,6 +7,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Generalized Butterfly Theorem](butterfly.md)
 - [x] [Desargues's Theorem](desargues.md)
 - [x] [Pascal's Theorem](pascal.md)
+- [ ] [Brianchon's Theorem](brianchon.md)
 
 Problems in *How to Solve It* by G. Pólya
 
