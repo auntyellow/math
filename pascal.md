@@ -9,6 +9,7 @@ Unlike the analytic geometry proof of [butterfly theorem](butterfly.md) where eq
 Here are some simple cases:
 
 - [harmonic conjugate](projective/harmonic.py)
+- [harmonic conjugate of pole and polar](projective/pole-polar.py)
 - [Desargues's theorem](desargues.md)
 - [Pappus's theorem](projective/pappus.py)
 - [butterfly theorem](projective/butterfly.py), an analytic geometry proof without Vieta's formulas
