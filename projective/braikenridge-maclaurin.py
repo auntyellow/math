@@ -8,9 +8,9 @@ def intersect(L1, L2):
     return simplify(P[x]), simplify(P[y])
 
 '''
-Braikenridge–Maclaurin theorem is the converse to Pascal's theorem.
+Braikenridge-Maclaurin theorem is the converse to Pascal's theorem.
 Diagram: https://www.cut-the-knot.org/Generalization/OverlookedPascal.shtml
-Put I onto origin and GH onto y-axis, and denote 6 lines:
+Put I onto origin and GH onto y-axis, and denote 6 lines as:
   AB: y=jx+g, DE: y=kx+g
   BC: y=mx+h, EF: y=nx+h
   AF: y=px,   CD: y=qx
