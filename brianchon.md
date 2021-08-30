@@ -32,11 +32,13 @@ Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0">
 
 [Here](projective/brianchon1.py) we get 6 edges of the hexagon:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}AF:y=(2aeg-bdg-2bf+de+2R)(x-g)/(4acg^2-b^2g^2-2beg+4cdg+4cf-e^2)\\AB:y=(2aeg-bdg-2bf+de-2R)(x-g)/(4acg^2-b^2g^2-2beg+4cdg+4cf-e^2)\\BC:y=(-beh-2bf+2cdh+de+2P)x/(4cf-e^2)+h\\CD:y=(-beh-2bf+2cdh+de-2P)x/(4cf-e^2)+h\\DE:y=(-bej-2bf+2cdj+de+2Q)x/(4cf-e^2)+j\\EF:y=(-bej-2bf+2cdj+de-2Q)x/(4cf-e^2)+j\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}AF:y=(2aeg-bdg-2bf+de+2RS)(x-g)/(4acg^2-b^2g^2-2beg+4cdg+4cf-e^2)\\AB:y=(2aeg-bdg-2bf+de-2RS)(x-g)/(4acg^2-b^2g^2-2beg+4cdg+4cf-e^2)\\BC:y=(-beh-2bf+2cdh+de+2PS)x/(4cf-e^2)+h\\CD:y=(-beh-2bf+2cdh+de-2PS)x/(4cf-e^2)+h\\DE:y=(-bej-2bf+2cdj+de+2QS)x/(4cf-e^2)+j\\EF:y=(-bej-2bf+2cdj+de-2QS)x/(4cf-e^2)+j\end{cases}">
 
 where:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{(ch^2+eh+f)(-4acf+ae^2+b^2f-bde+cd^2)}\\Q=\sqrt{(cj^2+ej+f)(-4acf+ae^2+b^2f-bde+cd^2)}\\R=\sqrt{(ag^2+dg+f)(-4acf+ae^2+b^2f-bde+cd^2)}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{ch^2+eh+f}\\Q=\sqrt{cj^2+ej+f}\\R=\sqrt{ag^2+dg+f}\\S=\sqrt{-4acf+ae^2+b^2f-bde+cd^2}\end{cases}">
+
+If *S* is imaginary, we can flip all coefficients of the conic to guarantee a real *S*. Under this circumstance, imaginary *P*, *Q* or *R* means the tangent line doesn't exist. For example, imaginary *R* means *A* may be inside an ellipse.
 
 ### Notes
 
