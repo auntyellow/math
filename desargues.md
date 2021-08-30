@@ -14,15 +14,13 @@ Then we get 6 vertices:
 
 Then we denote lines *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_1A_2:xy_\text{A1}+x_\text{A1}y_\text{A2}+x_\text{A2}y=x_\text{A1}y+x_\text{A2}y_\text{A1}+xy_\text{A2}\\B_1B_2:xy_\text{B1}+x_\text{B1}y_\text{B2}+x_\text{B2}y=x_\text{B1}y+x_\text{B2}y_\text{B1}+xy_\text{B2}\\C_1C_2:xy_\text{C1}+x_\text{C1}y_\text{C2}+x_\text{C2}y=x_\text{C1}y+x_\text{C2}y_\text{C1}+xy_\text{C2}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_1A_2:(y_\text{A1}-y_\text{A2})x+(x_\text{A2}-x_\text{A1})y+(x_\text{A1}y_\text{A2}-x_\text{A2}y_\text{A1})=0\\B_1B_2:(y_\text{B1}-y_\text{B2})x+(x_\text{B2}-x_\text{B1})y+(x_\text{B1}y_\text{B2}-x_\text{B2}y_\text{B1})=0\\C_1C_2:(y_\text{C1}-y_\text{C2})x+(x_\text{C2}-x_\text{C1})y+(x_\text{C1}y_\text{C2}-x_\text{C2}y_\text{C1})=0\end{cases}">
 
-Finally, we get *A*<sub>1</sub>*A*<sub>2</sub> ∩ *B*<sub>1</sub>*B*<sub>2</sub>:
+Finally, we calculate the determinant of 9 coefficients of these 3 lines and get:
 
-<img src="https://latex.codecogs.com/gif.latex?x=\frac{-eg+eh+em-en+fg-fh-fj+fk}{gk-gn-hj+hm+jn-km}">
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}y_\text{A1}-y_\text{A2}&x_\text{A2}-x_\text{A1}&x_\text{A1}y_\text{A2}-x_\text{A2}y_\text{A1}\\y_\text{B1}-y_\text{B2}&x_\text{B2}-x_\text{B1}&x_\text{B1}y_\text{B2}-x_\text{B2}y_\text{B1}\\y_\text{C1}-y_\text{C2}&x_\text{C2}-x_\text{C1}&x_\text{C1}y_\text{C2}-x_\text{C2}y_\text{C1}\end{matrix}\right]=0">
 
-<img src="https://latex.codecogs.com/gif.latex?y=\frac{-egn+ehm+fgk-fhj}{gk-gn-hj+hm+jn-km}">
-
-The results are the same for *A*<sub>1</sub>*A*<sub>2</sub> ∩ *C*<sub>1</sub>*C*<sub>2</sub> and *B*<sub>1</sub>*B*<sub>2</sub> ∩ *C*<sub>1</sub>*C*<sub>2</sub>, which means *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> are concurrent. <sup>[2]</sup>
+which means *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> are concurrent. <sup>[2]</sup>
 
 ### Concurrent → Collinear
 
@@ -49,5 +47,5 @@ which are collinear, i.e. <sup>[3]</sup>
 ### Notes
 
 1. Here we use the diagram from [Cut the Knot](https://www.cut-the-knot.org/Curriculum/Geometry/Desargues.shtml).
-2. These complicated results can be solved by SymPy [here](projective/desargues1.py).
+2. This complicated result can be solved by SymPy [here](projective/desargues1.py).
 3. This complicated result can be solved by SymPy [here](projective/desargues2.py).

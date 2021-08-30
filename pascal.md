@@ -12,6 +12,7 @@ Here are some simple cases:
 - [Desargues's theorem](desargues.md)
 - [Pappus's theorem](projective/pappus.py)
 - [butterfly theorem](projective/butterfly.py), an analytic geometry proof without Vieta's formulas
+- [Braikenridge–Maclaurin theorem](projective/braikenridge–maclaurin.py), with some tricks mentioned [here](https://math.stackexchange.com/a/4236022/919440)
 
 However, the proof of Pascal's theorem is more complicated.
 
