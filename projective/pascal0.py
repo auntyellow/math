@@ -11,7 +11,7 @@ def intersect(L1, L2):
     p = solve([L1, L2], (x, y))
     return simplify(p[x]), simplify(p[y])
 
-# A hexagon ABCDEF on a unit circle with polar angles t1..t6
+# A hexagon ABCDEF inscribed in a unit circle with polar angles t1..t6
 # Prove 3 intersections of opposite edges (AB∩DE, BC∩EF, CD∩FA) are collinear
 t1, t2, t3, t4, t5, t6, x, y = symbols('t1, t2, t3, t4, t5, t6, x, y')
 AB, BC, CD = line(t1, t2), line(t2, t3), line(t3, t4)

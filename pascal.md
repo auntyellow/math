@@ -9,7 +9,7 @@ Unlike the analytic geometry proof of [butterfly theorem](butterfly.md) where eq
 Here are some simple cases:
 
 - [harmonic conjugate](projective/harmonic.py)
-- [harmonic conjugate of pole and polar](projective/pole-polar.py)
+- [harmonic conjugate of pole-polar](projective/pole-polar1.py) and [converse](projective/pole-polar2.py)
 - [Desargues's theorem](desargues.md)
 - [Pappus's theorem](projective/pappus.py)
 - [Pascal's theorem](projective/pascal0.py) and [Brianchon's theorem](projective/brianchon0.py) for a circle

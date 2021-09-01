@@ -11,6 +11,8 @@ def line_coef(P1, P2):
     x1, y1, x2, y2 = P1[0], P1[1], P2[0], P2[1]
     return [simplify(y1 - y2), simplify(x2 - x1), simplify(x1 * y2 - x2 * y1)]
 
+# A hexagon ABCDEF circumscribed about a unit circle with tangent points' polar angles t1..t6
+# Prove 3 principal diagonals (AD, BE, CF) are concurrent
 t1, t2, t3, t4, t5, t6, x, y = symbols('t1, t2, t3, t4, t5, t6, x, y')
 AB, BC, CD, DE, EF, FA = line(t1), line(t2), line(t3), line(t4), line(t5), line(t6)
 A, B, C = intersect(FA, AB), intersect(AB, BC), intersect(BC, CD)
