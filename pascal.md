@@ -12,10 +12,11 @@ Here are some simple cases:
 - [harmonic conjugate of pole and polar](projective/pole-polar.py)
 - [Desargues's theorem](desargues.md)
 - [Pappus's theorem](projective/pappus.py)
+- [Pascal's theorem](projective/pascal0.py) and [Brianchon's theorem](projective/brianchon0.py) for a circle
 - [butterfly theorem](projective/butterfly.py), an analytic geometry proof without Vieta's formulas
 - [Braikenridge-Maclaurin theorem](projective/braikenridge-maclaurin.py), with some tricks mentioned [here](https://math.stackexchange.com/a/4236022/919440)
 
-However, the proof of Pascal's theorem is more complicated.
+However, it is more complicated to prove Pascal's theorem for a conic in a direct way, which means we don't reduce the conic to a circle by a projective transformation.
 
 ### The Proof
 
