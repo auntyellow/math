@@ -12,7 +12,7 @@ Here are some simple cases:
 - [harmonic conjugate of pole-polar](projective/pole-polar1.py) and [converse](projective/pole-polar2.py)
 - [Desargues's theorem](desargues.md)
 - [Pappus's theorem](projective/pappus1.py) and its [dual](projective/pappus2.py)
-- [Pascal's theorem](projective/pascal0.py) and [Brianchon's theorem](projective/brianchon0.py) (and its [quadrilateral](projective/brianchon4.py) form) for a circle
+- [Pascal's theorem](projective/pascal-circle.py) (and its [quadrilateral](projective/pascal-quadrilateral.py) form) and [Brianchon's theorem](projective/brianchon-circle.py) (and its [quadrilateral](projective/brianchon-quadrilateral.py) form) for a circle
 - [Brokard's theorem](projective/brokard.py)
 - [butterfly theorem](projective/butterfly.py), an analytic geometry proof without Vieta's formulas
 - [Braikenridge-Maclaurin theorem](projective/braikenridge-maclaurin.py), with some tricks mentioned [here](https://math.stackexchange.com/a/4236022/919440)
