@@ -10,7 +10,7 @@ Here are some simple cases:
 
 - [harmonic conjugate](projective/harmonic.py)
 - [harmonic conjugate of pole-polar](projective/pole-polar1.py) and [converse](projective/pole-polar2.py)
-- [Menelaus's theorem](projective/menelaus1.py) and its [converse](projective/menelaus2.py)
+- [Menelaus's theorem](projective/menelaus1.py) (and its [converse](projective/menelaus2.py)) and [Ceva's theorem](projective/ceva1.py) (and its [converse](projective/ceva2.py))
 - [Desargues's theorem](desargues.md)
 - [Pappus's theorem](projective/pappus1.py) and its [dual](projective/pappus2.py)
 - [Pascal's theorem](projective/pascal-circle.py) (and its [quadrilateral](projective/pascal-quadrilateral.py) form) and [Brianchon's theorem](projective/brianchon-circle.py) (and its [quadrilateral](projective/brianchon-quadrilateral.py) form) for a circle

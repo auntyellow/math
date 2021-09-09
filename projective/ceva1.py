@@ -11,12 +11,13 @@ def intersect(L1, L2):
 def X(p1, p2, p3):
     return p1[0] - p2[0], p2[0] - p3[0]
 
-# https://en.wikipedia.org/wiki/Menelaus%27s_theorem
-# DEF are collinear => (AF/FB)*(BD/DC)*(CE/EA)=-1
+# https://en.wikipedia.org/wiki/Ceva%27s_theorem
+# AD, BE, CF are concurrent => (AF/FB)*(BD/DC)*(CE/EA)=1
 # Put AB onto x-axis and C onto y-axis
 a, b, c, g, h, x, y = symbols('a, b, c, g, h, x, y')
-A, B, C = (a, 0), (b, 0), (0, c)
-DEF = Eq(y, g * x + h)
-D, E, F = intersect(DEF, line(B, C)), intersect(DEF, line(A, C)), intersect(DEF, line(A, B))
+A, B, C, O = (a, 0), (b, 0), (0, c), (g, h)
+D = intersect(line(O, A), line(B, C))
+E = intersect(line(O, B), line(C, A))
+F = intersect(line(O, C), line(A, B))
 (AF, FB), (BD, DC), (CE, EA) = X(A, F, B), X(B, D, C), X(C, E, A)
-print(simplify(AF * BD * CE + FB * DC * EA))
+print(simplify(AF * BD * CE - FB * DC * EA))
