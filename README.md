@@ -17,6 +17,12 @@ Problems in *How to Solve It* by G. Pólya
 - [x] [The "average width" of the cube](polya/cube.md)
 - [x] [In how many ways can you change one dollar?](polya/change_dollar.md)
 
+Other famous theorems and problems solved by SymPy or numerical method
+
+- [x] [Heron's Formula](pythagoras/heron.py)
+- [x] [Radical Center](pythagoras/radical-center.py)
+- [x] [Langley's Adventitious Angles](pythagoras/langley.py)
+
 ## Elemantary proof/derivation
 
 - [ ] [Rational numbers are either terminating or repeating decimals](https://math.stackexchange.com/questions/61937)
