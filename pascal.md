@@ -1,6 +1,6 @@
 <img src="diagrams/pascal.png">
 
-**Pascal's theorem** states that if six arbitrary points are chosen on a conic and joined by line segments in any order (here we choose *A→B→C→D→E→F*) to form a hexagon, then the three pairs of opposite sides (*AB DE*, *BC EF* and *CD AF*) of the hexagon meet at three points (*G*, *H* and *I*) which lie on a straight line. <sup>[1]</sup>
+**Pascal's theorem** states that if six arbitrary points are chosen on a conic and joined by line segments in any order (here we choose *A→B→C→D→E→F*) to form a hexagon, then the three pairs of opposite sides (*AB DE*, *BC EF* and *CD AF*) of the hexagon meet at three points (*G*, *H* and *I*) which lie on a straight line.
 
 ### About SymPy
 
@@ -42,7 +42,7 @@ Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0">
 
 #### Step 2
 
-Without further simplification, SymPy can hardly solve the intersections G and H. (This may be due to too many calculations during cancellation of <img src="https://latex.codecogs.com/gif.latex?\sqrt{x}^2"> and *x*.<sup>[2]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
+Without further simplification, SymPy can hardly solve the intersections G and H. (This may be due to too many calculations during cancellation of <img src="https://latex.codecogs.com/gif.latex?\sqrt{x}^2"> and *x*.<sup>[1]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2}\\Q=\sqrt{-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2}\\R=\sqrt{-4ack^2-4aek-4af+b^2k^2+2bdk+d^2}\end{cases}">
 
@@ -70,5 +70,4 @@ This can be done by replacing `P**2`, `Q**2` and `R**3` with `P2`, `Q2` and `R2*
 
 ### Notes
 
-1. Here we use the diagram from [Cut the Knot](https://www.cut-the-knot.org/Generalization/OverlookedPascal.shtml).
-2. More explanations can be found [here](https://docs.sympy.org/latest/tutorial/simplification.html).
+1. More explanations can be found [here](https://docs.sympy.org/latest/tutorial/simplification.html).
