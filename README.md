@@ -4,6 +4,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 
 - [x] [24 Game Solver](https://github.com/auntyellow/24): gives you all dissimilar solutions
 - [x] [Friends and Strangers](ramsey.md) (Ramsey Number `R(3,3)=6`)
+- [x] [Construction of the Symmedian](symmedian.md)
 - [x] [Generalized Butterfly Theorem](butterfly.md)
 - [x] [Desargues's Theorem](desargues.md)
 - [x] [Pascal's Theorem](pascal.md) and other theorems in projective geometry
