@@ -26,6 +26,8 @@ print('Nine-Point Circle')
 print('x9 =', nine_point[0])
 print('y9 =', nine_point[1])
 print('r92 =', nine_point[2])
+print('Nine-Point Circle passes through altitude foot:', simplify(nine_point[0]**2 + nine_point[1]**2 - nine_point[2]))
+print('Nine-Point Circle passes through midpoint of the vertex and orthocenter:', simplify(nine_point[0]**2 + (nine_point[1] - (c + a * b / c) / 2)**2 - nine_point[2]))
 
 # AB, AC, BC = a + b, sqrt(a * a + c * c), sqrt(b * b + c * c)
 AB = a + b
