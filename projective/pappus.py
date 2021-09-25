@@ -14,5 +14,5 @@ def main():
     print('J:', J)
     print(incidence(G, H, J))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

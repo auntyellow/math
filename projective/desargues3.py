@@ -29,5 +29,5 @@ def main():
     print('X3Y3:', X3Y3)
     print(incidence(X1Y1, X2Y2, X3Y3))
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
