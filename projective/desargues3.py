@@ -13,11 +13,21 @@ def main():
     print(incidence(cross(A2, A3), cross(B2, B3), cross(C2, C3)))
     A1B1, A2B2, A3B3 = cross(A1, B1), cross(A2, B2), cross(A3, B3)
     A1C1, A2C2, A3C3 = cross(A1, C1), cross(A2, C2), cross(A3, C3)
-    X1, X2, X3 = cross(A1B1, A1C1), cross(A2B2, A2C2), cross(A3B3, A3C3)
+    X1, X2, X3 = cross(A2B2, A3B3), cross(A1B1, A3B3), cross(A1B1, A2B2)
     print('X1:', X1)
     print('X2:', X2)
     print('X3:', X3)
-    print(incidence(X1, X2, X3))
+    Y1, Y2, Y3 = cross(A2C2, A3C3), cross(A1C1, A3C3), cross(A1C1, A2C2)
+    print('Y1:', Y1)
+    print('Y2:', Y2)
+    print('Y3:', Y3)
+    # This is not necessary because X1, Y1 and Z1 are incident according to Desargues's theorem
+    # Z1, Z2, Z3 = cross(B2C2, B3C3), cross(B1C1, B3C3), cross(B1C1, B2C2)
+    X1Y1, X2Y2, X3Y3 = cross(X1, Y1), cross(X2, Y2), cross(X3, Y3)
+    print('X1Y1:', X1Y1)
+    print('X2Y2:', X2Y2)
+    print('X3Y3:', X3Y3)
+    print(incidence(X1Y1, X2Y2, X3Y3))
 
 if __name__ == "__main__":
     main()
