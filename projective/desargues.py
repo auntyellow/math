@@ -2,10 +2,10 @@ from sympy import symbols
 from homogeneous import *
 
 def main():
-    a, b, c, d, e, f, g, h, j, k, m, n, p, q, r = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r')
+    a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u')
     O = (a, b, c)
     A1, B1, C1 = (d, e, f), (g, h, j), (k, m, n)
-    A2, B2, C2 = span(O, A1, p), span(O, B1, q), span(O, C1, r)
+    A2, B2, C2 = span(p, O, q, A1), span(r, O, s, B1), span(t, O, u, C1)
     print(incidence(O, A1, A2))
     print(incidence(O, B1, B2))
     print(incidence(O, C1, C2))

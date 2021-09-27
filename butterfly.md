@@ -67,7 +67,7 @@ So we have:
 
 where <img src="https://latex.codecogs.com/gif.latex?Q=a+bq+cq^2">. (Here we don't consider *Q* = 0 because the line intersects the curve at two different points.)
 
-In the same way, we have:
+Analogously, we have:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{R}x_\text{S}=f/R\\x_\text{R}+x_\text{S}=-(d+er)/R\end{cases}">
 
