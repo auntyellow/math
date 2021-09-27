@@ -1,7 +1,7 @@
 from sympy import *
 
 def center(P1, P2, P3):
-    # return x, y, r^2
+    # return x, y
     xx = [P1[0], P2[0], P3[0]]
     yy = [P1[1], P2[1], P3[1]]
     mat, vec = [], []

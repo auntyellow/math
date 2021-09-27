@@ -6,7 +6,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Friends and Strangers](ramsey.md) (Ramsey Number `R(3,3)=6`)
 - [x] [Construction of the Symmedian](symmedian.md)
 - [x] [Generalized Butterfly Theorem](butterfly.md)
-- [x] [Desargues's Theorem](desargues.md)
+- [x] [Desargues's Theorem](desargues.md): Cartesian and Homogeneous coordinates
 - [x] [Pascal's Theorem](pascal.md) and other theorems in projective geometry
 
 Problems in *How to Solve It* by G. Pólya
@@ -18,11 +18,10 @@ Problems in *How to Solve It* by G. Pólya
 - [x] [The "average width" of the cube](polya/cube.md)
 - [x] [In how many ways can you change one dollar?](polya/change_dollar.md)
 
-Other famous theorems and problems solved by SymPy or numerical method
+Other famous theorems solved by SymPy
 
-- [x] [Heron's Formula](pythagoras/heron.py)
 - [x] [Radical Center](pythagoras/radical-center.py)
-- [x] [Langley's Adventitious Angles](pythagoras/langley.py)
+- [x] [Euler Line](pythagoras/euler-line.py)
 
 ## Elemantary proof/derivation
 
