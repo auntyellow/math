@@ -6,7 +6,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Friends and Strangers](ramsey.md) (Ramsey Number `R(3,3)=6`)
 - [x] [Construction of the Symmedian](symmedian.md)
 - [x] [Generalized Butterfly Theorem](butterfly.md)
-- [x] [Desargues's Theorem](desargues.md): Cartesian and Homogeneous coordinates
+- [x] [Desargues's Theorem](desargues.md) and Pappus's Theorem: Cartesian and Homogeneous coordinates
 - [x] [Pascal's Theorem](pascal.md) and other theorems in projective geometry
 
 Problems in *How to Solve It* by G. Pólya

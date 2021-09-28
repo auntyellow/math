@@ -74,8 +74,8 @@ For example, to reduce number of variables, we should carefully put a regular po
 
 #### Tricks
 
-- Both <img src="https://latex.codecogs.com/gif.latex?(kx_1,kx_2,kx_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> denote the same point, so divide by their common factor as early as possible to simplify calculation.
-- Homogeneous coordinates can be denoted as 3D vectors. The line passing through two points, or the intersection point of two lines, can be denoted as [Cross Product](https://en.wikipedia.org/wiki/Cross_product). The collinearity and concurrency can be determined by [Triple Product](https://en.wikipedia.org/wiki/Triple_product).
+- Both <img src="https://latex.codecogs.com/gif.latex?(kx_1,kx_2,kx_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> represent the same point, so divide by their common factor as early as possible to simplify calculation.
+- Homogeneous coordinates can be denoted as 3D vectors. The line passing through two points, or the intersection point of two lines, can be determined by [Cross Product](https://en.wikipedia.org/wiki/Cross_product). The collinearity and concurrency can be determined by [Triple Product](https://en.wikipedia.org/wiki/Triple_product).
 
 #### Proof
 
@@ -101,10 +101,37 @@ Finally, we get:
 
 which means *ab*, *ac* and *bc* are collinear. <sup>[5]</sup>
 
+If **O**, **A**<sub>1</sub>, **B**<sub>1</sub>, **C**<sub>1</sub> represent 4 lines, then **A**<sub>2</sub>, **B**<sub>2</sub> and **C**<sub>2</sub> are 3 lines passing through intersections **OA**<sub>1</sub>, **OB**<sub>1</sub> and **OC**<sub>1</sub>, respectively. Then **A**<sub>1</sub> **B**<sub>1</sub> **C**<sub>1</sub> and **A**<sub>2</sub> **B**<sub>2</sub> **C**<sub>2</sub> are 6 edges of two perspective triangles. So the above proof process also means the 3 perspective lines **X**<sub>1</sub>, **X**<sub>2</sub> and **X**<sub>3</sub> are concurrent, which is the dual and converse theorem.
+
+#### Proof of Pappus's Theorem
+
+Analogously, we can use 3D vector form to prove Pappus's theorem: given two sets of collinear points *AEC* and *DBF*, then the intersection points *G*=*AB*∩*DE*, *H*=*BC*∩*EF* and *J*=*AF*∩*CD* are collinear.
+
+Given 4 arbitrary points **A**, **B**, **C** and **D**, then **E** and **F** can be denoted as:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{E}=p\mathbf{A}+q\mathbf{C}\\\mathbf{F}=r\mathbf{B}+s\mathbf{D}\end{cases}">
+
+Then we have:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{G}=(\mathbf{A}\times\mathbf{B})\times(\mathbf{D}\times\mathbf{E})=\dots=dq\mathbf{D}-cp\mathbf{A}-cq\mathbf{C}\\\mathbf{H}=(\mathbf{B}\times\mathbf{C})\times(\mathbf{E}\times\mathbf{F})=\dots=aps\mathbf{A}+aqs\mathbf{C}-dpr\mathbf{B}-dps\mathbf{D}\\\mathbf{J}=(\mathbf{C}\times\mathbf{D})\times(\mathbf{F}\times\mathbf{A})=\dots=br\mathbf{B}+bs\mathbf{D}-ar\mathbf{A}\end{cases}">
+
+where
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}a=(\mathbf{B}\times\mathbf{C})\cdot\mathbf{D}\\b=(\mathbf{A}\times\mathbf{C})\cdot\mathbf{D}\\c=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{D}\\d=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}\end{cases}">
+
+After some calculations, we get:
+
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">
+
+which means *G*, *H* and *J* are collinear. <sup>[6]</sup>
+
+If **A**, **C**, **E** represent 3 concurrent lines and **B**, **D**, **F** represent another 3 concurrent lines, then the 3 lines **G**, **H**, **J**, respectively passing through **A∩B** and **D∩E**, **B∩C** and **E∩F**, **A∩F** and **C∩D**, are concurrent, which is the [dual theorem](https://en.wikipedia.org/wiki/Pappus%27s_hexagon_theorem#Dual_theorem).
+
 ### Notes
 
 1. Here we use the diagram from [Cut the Knot](https://www.cut-the-knot.org/Curriculum/Geometry/Desargues.shtml).
 2. This complicated result can be solved by SymPy [here](projective/desargues1.py).
 3. This complicated result can be solved by SymPy [here](projective/desargues2.py).
 4. Here we should use some [vector formulas](diagrams/vector-formulas.png) (copied from the first page in John David Jackson's *Classical Electrodynamics*).
-5. [Here](projective/desargues.py) is a proof by pure homogeneous coordinates.
+5. [Here](projective/desargues.py) is a proof of Desargues's theorem by pure homogeneous coordinates.
+6. [Here](projective/pappus.py) is a proof of Pappus's theorem by pure homogeneous coordinates; [here](projective/pappus1.py) and [here](projective/pappus2.py) are proofs by Cartesian coordinates.
