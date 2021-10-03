@@ -2,7 +2,9 @@
 
 **Pascal's theorem** states that if six arbitrary points are chosen on a conic and joined by line segments in any order (here we choose *A→B→C→D→E→F*) to form a hexagon, then the three pairs of opposite sides (*AB DE*, *BC EF* and *CD AF*) of the hexagon meet at three points (*G*, *H* and *I*) which lie on a straight line.
 
-### About SymPy
+### Proof by Cartesian coordinates
+
+#### About SymPy
 
 Unlike the analytic geometry proof of [butterfly theorem](butterfly.md) where equations can be simplified by [Vieta's formulas](https://en.wikipedia.org/wiki/Vieta%27s_formulas), most theorems in projective geometry are too complicated to prove by analytic geometry by hand. Instead, we use [SymPy](https://en.wikipedia.org/wiki/SymPy) to do most calculations.
 
@@ -19,7 +21,7 @@ Here are some simple cases:
 
 However, it is more complicated to prove Pascal's theorem for a conic in a direct way, which means we don't reduce the conic to a circle by a projective transformation.
 
-### The Proof
+#### Proof
 
 Let's put point *I* onto the origin, rotate the hexagon to make *BE* parallel to x-axis, denote the conic *ADBFCE* as:
 
@@ -67,6 +69,28 @@ This can be done by replacing `P**2`, `Q**2` and `R**3` with `P2`, `Q2` and `R2*
 
 [Here](projective/pascal4.py) shows the final result equal to 0, which means G, H and I are collinear.
 
-### Notes
+### Proof by Homogeneous coordinates
+
+Because homogeneous coordinates have many advantages mentioned [here](desargues.md#proof-by-homogeneous-coordinates), we can use SymPy to prove it in a very simple process.
+
+A conic can be represented as an equation in homogeneous coordinates:
+
+<img src="https://latex.codecogs.com/gif.latex?ax^2+2bxy+cy^2+2dxz+2eyz+fz^2=0">
+
+If a point *P*(*x*,*y*,*z*) is on this conic, it should follow:
+
+<img src="https://latex.codecogs.com/gif.latex?z=\frac{-dx-ey\pm\sqrt{-afx^2-2bfxy-cfy^2+d^2x^2+2dexy+e^2y^2}}{f}">
+
+So we can rewrite the point as:
+
+<img src="https://latex.codecogs.com/gif.latex?P(fx,fy,-dx-ey\pm\sqrt{-afx^2-2bfxy-cfy^2+d^2x^2+2dexy+e^2y^2})">
+
+Either of the two roots can be used in the proof. For example, we can apply positive roots on points *ABCD*, and apply negative roots on points *EF*.
+
+The [proof process](projective/pascal-brianchon.py) is very similar to [Pappus's theorem](desargues.md#proof-of-pappuss-theorem).
+
+This process also proves [Brianchon's theorem](https://en.wikipedia.org/wiki/Brianchon%27s_theorem), because the conic equation can represent a [line conic](https://en.wikipedia.org/wiki/Conic_section#Line_conics) and *ABCDEF* can represent 6 straight lines.
+
+### Note
 
 1. More explanations can be found [here](https://docs.sympy.org/latest/tutorial/simplification.html).

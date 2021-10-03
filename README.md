@@ -7,7 +7,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Construction of the Symmedian](symmedian.md)
 - [x] [Generalized Butterfly Theorem](butterfly.md)
 - [x] [Desargues's Theorem](desargues.md) and Pappus's Theorem: Cartesian and Homogeneous coordinates
-- [x] [Pascal's Theorem](pascal.md) and other theorems in projective geometry
+- [x] [Pascal-Brianchon's Theorem](pascal.md) and other theorems in projective geometry
 
 Problems in *How to Solve It* by G. Pólya
 
