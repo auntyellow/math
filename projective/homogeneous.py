@@ -3,6 +3,8 @@ from sympy import Matrix, factor, gcd
 def reduce(x, y, z):
     x1, y1, z1 = factor(x), factor(y), factor(z)
     divisor = gcd(x1, y1, z1)
+    if divisor == 0:
+        return 0, 0, 1
     return x1 / divisor, y1 / divisor, z1 / divisor
 
 def span(m, P1, n, P2):

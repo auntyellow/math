@@ -21,7 +21,7 @@ Here are some simple cases:
 
 However, it is more complicated to prove Pascal's theorem for a conic in a direct way, which means we don't reduce the conic to a circle by a projective transformation.
 
-#### Proof
+#### Step 0
 
 Let's put point *I* onto the origin, rotate the hexagon to make *BE* parallel to x-axis, denote the conic *ADBFCE* as:
 
@@ -68,6 +68,10 @@ There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>3</sup> in the above
 This can be done by replacing `P**2`, `Q**2` and `R**3` with `P2`, `Q2` and `R2*R` in text editor.
 
 [Here](projective/pascal4.py) shows the final result equal to 0, which means G, H and I are collinear.
+
+#### Alternate approach
+
+[Here](projective/pascal.py) we change all Cartesian to homogeneous from Step 2 to avoid fraction calculations.
 
 ### Proof by Homogeneous coordinates
 
