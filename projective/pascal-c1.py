@@ -1,5 +1,4 @@
 from sympy import Eq, simplify, solve, symbols
-from cartesian import *
 
 def pair(conic, line):
     x, y = symbols('x, y')

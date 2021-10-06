@@ -10,13 +10,13 @@ Unlike the analytic geometry proof of [butterfly theorem](butterfly.md) where eq
 
 Here are some simple cases:
 
-- [harmonic conjugate](projective/harmonic.py)
-- [harmonic conjugate of pole-polar](projective/pole-polar1.py) and [converse](projective/pole-polar2.py)
+- [harmonic conjugate](projective/harmonic-c.py)
+- [harmonic conjugate of pole-polar](projective/pole-polar-c1.py) and [converse](projective/pole-polar-c2.py)
 - [Menelaus's theorem](projective/menelaus1.py) (and its [converse](projective/menelaus2.py)) and [Ceva's theorem](projective/ceva1.py) (and its [converse](projective/ceva2.py))
 - [Desargues's theorem](desargues.md) and Pappus's theorem
 - [Pascal's theorem](projective/pascal-circle.py) (and its [quadrilateral](projective/pascal-quadrilateral.py) form) and [Brianchon's theorem](projective/brianchon-circle.py) (and its [quadrilateral](projective/brianchon-quadrilateral.py) form) for a circle
 - [Brokard's theorem](projective/brokard.py)
-- [butterfly theorem](projective/butterfly.py), an analytic geometry proof without Vieta's formulas
+- [butterfly theorem](projective/butterfly-c.py), an analytic geometry proof without Vieta's formulas
 - [Braikenridge-Maclaurin theorem](projective/braikenridge-maclaurin.py), with some tricks mentioned [here](https://math.stackexchange.com/a/4236022/919440)
 
 However, it is more complicated to prove Pascal's theorem for a conic in a direct way, which means we don't reduce the conic to a circle by a projective transformation.
@@ -37,7 +37,7 @@ Two points can be solved by a conic and a straight line. However, SymPy won't te
 
 Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0"> and the line *AF* is <img src="https://latex.codecogs.com/gif.latex?y=x">, we should get *A* in quadrant I and *F* in quadrant III. So we should use `F, A = solve(...)` but not `A, F = solve(...)`.
 
-[Here](projective/pascal1.py) we get 6 points:
+[Here](projective/pascal-c1.py) we get 6 points:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-\sqrt{-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2})/2(a+bg+cg^2)\\x_\text{B}=-(bk+d+\sqrt{-4ack^2-4aek-4af+b^2k^2+2bdk+d^2})/2a\\x_\text{C}=-(d+eh-\sqrt{-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2})/2(a+bh+ch^2)\\x_\text{D}=-(d+eh+\sqrt{-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2})/2(a+bh+ch^2)\\x_\text{E}=-(bk+d-\sqrt{-4ack^2-4aek-4af+b^2k^2+2bdk+d^2})/2a\\x_\text{F}=-(d+eg+\sqrt{-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2})/2(a+2bg+2cg^2)\end{cases}">
 
@@ -51,27 +51,23 @@ Then the 6 points are simplified as:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-P)/2(a+bg+cg^2)\\x_\text{B}=-(bk+d+R)/2a\\x_\text{C}=-(d+eh-Q)/2(a+bh+ch^2)\\x_\text{D}=-(d+eh+Q)/2(a+bh+ch^2)\\x_\text{E}=-(bk+d-R)/2a\\x_\text{F}=-(d+eg+P)/2(a+2bg+2cg^2)\end{cases}">
 
-[Here](projective/pascal2.py) we solve the G and H and get the expression <img src="https://latex.codecogs.com/gif.latex?x_\text{G}y_\text{H}-x_\text{H}y_\text{G}"> to check if G, H and I are collinear.
+[Here](projective/pascal-c2.py) we solve the G and H and get the expression <img src="https://latex.codecogs.com/gif.latex?x_\text{G}y_\text{H}-x_\text{H}y_\text{G}"> to check if G, H and I are collinear.
 
-The numerator of this expression can be denoted as *S*×*T*−*U*×*V*, with both *S* and *U* containing 69 terms, and both *T* and *V* containing 125 terms. We just need to prove the numerator equal to 0.
+The numerator of this expression contains 422 terms, which should equal to 0.
 
 #### Step 3
 
-[Here](projective/pascal3.py) we expand the numerator *S*×*T*−*U*×*V* to 432 terms (cancelled from 69×125×2 terms).
-
-#### Step 4
-
-There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>3</sup> in the above expanded numerator. So we can replace them with:
+There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>2</sup> in the above expression. So we can replace them with:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}P^2=-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2\\Q^2=-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2\\R^2=-4ack^2-4aek-4af+b^2k^2+2bdk+d^2\end{cases}">
 
-This can be done by replacing `P**2`, `Q**2` and `R**3` with `P2`, `Q2` and `R2*R` in text editor.
+This can be done by replacing `P**2`, `Q**2` and `R**2` with `P2`, `Q2` and `R2` in text editor.
 
-[Here](projective/pascal4.py) shows the final result equal to 0, which means G, H and I are collinear.
+[Here](projective/pascal-c3.py) shows the final result equal to 0, which means G, H and I are collinear.
 
 #### Alternate approach
 
-[Here](projective/pascal.py) we change all Cartesian to homogeneous from Step 2 to avoid fraction calculations.
+[Here](projective/pascal-cf.py) we change all Cartesian to homogeneous from Step 2 to avoid fraction calculations.
 
 ### Proof by Homogeneous coordinates
 
@@ -91,7 +87,7 @@ So we can rewrite the point as:
 
 Either of the two roots can be used in the proof. For example, we can apply positive roots on points *ABCD*, and apply negative roots on points *EF*.
 
-The [proof process](projective/pascal-brianchon.py) is very similar to [Pappus's theorem](desargues.md#proof-of-pappuss-theorem).
+The [proof process](projective/pascal-brianchon-h.py) is very similar to [Pappus's theorem](desargues.md#proof-of-pappuss-theorem).
 
 This process also proves [Brianchon's theorem](https://en.wikipedia.org/wiki/Brianchon%27s_theorem), because the conic equation can represent a [line conic](https://en.wikipedia.org/wiki/Conic_section#Line_conics) and *ABCDEF* can represent 6 straight lines.
 

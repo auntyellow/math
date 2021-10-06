@@ -130,8 +130,8 @@ If **A**, **C**, **E** represent 3 concurrent lines and **B**, **D**, **F** repr
 ### Notes
 
 1. Here we use the diagram from [Cut the Knot](https://www.cut-the-knot.org/Curriculum/Geometry/Desargues.shtml).
-2. This complicated result can be solved by SymPy [here](projective/desargues1.py).
-3. This complicated result can be solved by SymPy [here](projective/desargues2.py).
+2. This complicated result can be solved by SymPy [here](projective/desargues-c1.py).
+3. This complicated result can be solved by SymPy [here](projective/desargues-c2.py).
 4. Here we should use some [vector formulas](diagrams/vector-formulas.png) (copied from the first page in John David Jackson's *Classical Electrodynamics*).
-5. [Here](projective/desargues.py) is a proof of Desargues's theorem by pure homogeneous coordinates.
-6. [Here](projective/pappus.py) is a proof of Pappus's theorem by pure homogeneous coordinates; [here](projective/pappus1.py) and [here](projective/pappus2.py) are proofs by Cartesian coordinates.
+5. [Here](projective/desargues-h.py) is a proof of Desargues's theorem by pure homogeneous coordinates.
+6. [Here](projective/pappus-h.py) is a proof of Pappus's theorem by pure homogeneous coordinates; [here](projective/pappus-c1.py) and [here](projective/pappus-c2.py) are proofs by Cartesian coordinates.
