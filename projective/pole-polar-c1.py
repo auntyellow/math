@@ -10,7 +10,7 @@ def main():
     circle = Eq(x**2 + y**2, 1)
     roots = solve([AB, circle], (x, y))
     C, D = roots[0], roots[1]
-    print(R(A[0], B[0], C[0], D[0]))
+    print(cross_ratio(A[0], B[0], C[0], D[0]))
 
 if __name__ == '__main__':
     main()

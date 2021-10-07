@@ -4,7 +4,7 @@ The **butterfly theorem** can be stated as: Let *M* be the midpoint of a chord *
 
 This theorem can be generalized in two forms:
 
-1. Generalize the circle to any conic curve;
+1. Generalize the circle to any conic section;
 2. Generalize the condition *MA* = *MB* and *MC* = *MD* to <img src="https://latex.codecogs.com/gif.latex?\frac{1}{MA}-\frac{1}{MB}=\frac{1}{MC}-\frac{1}{MD}"> or <img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{MA}}+\frac{1}{\overrightarrow{MB}}=\frac{1}{\overrightarrow{MC}}+\frac{1}{\overrightarrow{MD}}">.
 
 ### Proof by Analytic Geometry
@@ -15,11 +15,11 @@ We put *M* onto the origin of Cartesian coordinates and *B* onto positive x-axis
 
 #### Step 1
 
-The conic curve *APRBQS* can be represented as:
+The conic *APRBQS* can be represented as:
 
 <img src="https://latex.codecogs.com/gif.latex?ax^2+bxy+cy^2+dx+ey+f=0">
 
-(Let's assume *M* not on the curve so that *f* ≠ 0.)
+(Let's assume *M* not on the conic so that *f* ≠ 0.)
 
 The coordinates of *A* and *B* are:
 
@@ -65,7 +65,7 @@ So we have:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{P}x_\text{Q}=f/Q\\x_\text{P}+x_\text{Q}=-(d+eq)/Q\end{cases}\;\text{(Eq.%203a)}">
 
-where <img src="https://latex.codecogs.com/gif.latex?Q=a+bq+cq^2">. (Here we don't consider *Q* = 0 because the line intersects the curve at two different points.)
+where <img src="https://latex.codecogs.com/gif.latex?Q=a+bq+cq^2">. (Here we don't consider *Q* = 0 because the line intersects the conic at two different points.)
 
 Analogously, we have:
 
@@ -109,21 +109,21 @@ Finally, we get:
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{MC}}+\frac{1}{\overrightarrow{MD}}=\frac{(x_\text{P}+x_\text{Q})(y_\text{R}y_\text{S})-q(x_\text{P}x_\text{Q})(y_\text{R}+y_\text{S})}{(x_\text{P}x_\text{Q})(y_\text{R}y_\text{S})}=-\frac{d}f=\frac{1}{\overrightarrow{MA}}+\frac{1}{\overrightarrow{MB}}">
 
-### Degenerate Conic Curve
+### Degenerate Conic
 
-The generalized butterfly theorem still holds if the conic curve is degenerated to two lines.
+The generalized butterfly theorem still holds if the conic is degenerated to two lines.
 
-In the below special case, *CD* is a chord of two lines *CNM* and *DKL*, and *B* is a point on *CD*, through which two other lines *BKM* and *BNL* are drawn; *LM* and *NK* intersect chord *CD* at the same point *A* (lines *LM*, *NK* and *CD* are concurrent at point *A*).
+In the below special case, *AB* is a chord of two lines *ASQ* and *BPR*, and *M* is a point on *AB*, through which two other lines *MPQ* and *MSR* are drawn; *PS* and *QR* intersect chord *AB* at the same point *C* (lines *AB*, *PS* and *QR* are concurrent at point *C*).
 
 <img src="diagrams/harmonic.png">
 
 According to the generalized butterfly theorem:
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{BC}}+\frac{1}{\overrightarrow{BD}}=\frac{2}{\overrightarrow{BA}}">
+<img src="https://latex.codecogs.com/gif.latex?\frac{1}{\overrightarrow{MA}}+\frac{1}{\overrightarrow{MB}}=\frac{2}{\overrightarrow{MC}}">
 
-In another word, (*A*, *B*) and (*C*, *D*) are [harmonic conjugates](https://en.wikipedia.org/wiki/Projective_harmonic_conjugate): <sup>[4]</sup>
+In other words, (*M*, *C*) and (*A*, *B*) are [harmonic conjugates](https://en.wikipedia.org/wiki/Projective_harmonic_conjugate): <sup>[4]</sup>
 
-<img src="https://latex.codecogs.com/gif.latex?(A,B;C,D)=\frac{\overrightarrow{AC}\overrightarrow{BD}}{\overrightarrow{AD}\overrightarrow{BC}}=-1">
+<img src="https://latex.codecogs.com/gif.latex?(M,C;A,B)=\frac{\overrightarrow{MA}\overrightarrow{CB}}{\overrightarrow{MB}\overrightarrow{CA}}=-1">
 
 ### Notes
 

@@ -10,8 +10,8 @@ def main():
     A, B = intersect(LMA, NKA), intersect(LNB, MKB)
     ADBC = line(A, B)
     D, C = intersect(ADBC, LKD), intersect(ADBC, MNC)
-    print(R(A[0], B[0], C[0], D[0]))
-    print(R(A[1], B[1], C[1], D[1]))
+    print(cross_ratio(A[0], B[0], C[0], D[0]))
+    print(cross_ratio(A[1], B[1], C[1], D[1]))
 
 if __name__ == '__main__':
     main()
