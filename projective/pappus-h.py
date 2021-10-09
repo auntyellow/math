@@ -8,7 +8,7 @@ def main():
     print(incidence(A, C, E))
     print(incidence(B, D, F))
     AB, BC, CD, DE, EF, FA = cross(A, B), cross(B, C), cross(C, D), cross(D, E), cross(E, F), cross(F, A)
-    G, H, J = cross(AB, DE), cross(BC, EF), cross(CD, FA) 
+    G, H, J = cross(AB, DE), cross(BC, EF), cross(CD, FA)
     print('G:', G)
     print('H:', H)
     print('J:', J)

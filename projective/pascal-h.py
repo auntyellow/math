@@ -31,7 +31,7 @@ def main():
     print('DE:', DE)
     print('EF:', EF)
     print('FA:', FA)
-    G, H, J = cross(AB, DE), cross(BC, EF), cross(CD, FA) 
+    G, H, J = cross(AB, DE), cross(BC, EF), cross(CD, FA)
     print('G:', G)
     print('H:', H)
     print('J:', J)
