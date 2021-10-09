@@ -2,7 +2,7 @@ from sympy import Matrix, factor, fraction, gcd_list, lcm_list
 
 def reduce(x, y, z):
     x1, y1, z1 = factor(x), factor(y), factor(z)
-    divisor = gcd_list([x1, y1, z1])
+    divisor = factor(gcd_list([x1, y1, z1]))
     if divisor == 0:
         return 0, 0, 1
     return x1/divisor, y1/divisor, z1/divisor

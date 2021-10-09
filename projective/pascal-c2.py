@@ -2,7 +2,7 @@ from sympy import symbols
 from cartesian import *
 
 def main():
-    a, b, c, d, e, f, g, h, k, x, y = symbols('a, b, c, d, e, f, g, h, k, x, y')
+    a, b, c, d, e, f, g, h, k = symbols('a, b, c, d, e, f, g, h, k')
     #P = sqrt(-4*a*f - 4*b*f*g - 4*c*f*g**2 + d**2 + 2*d*e*g + e**2*g**2)
     #Q = sqrt(-4*a*f - 4*b*f*h - 4*c*f*h**2 + d**2 + 2*d*e*h + e**2*h**2)
     #R = sqrt(-4*a*c*k**2 - 4*a*e*k - 4*a*f + b**2*k**2 + 2*b*d*k + d**2)

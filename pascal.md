@@ -67,7 +67,7 @@ This can be done by replacing `P**2`, `Q**2` and `R**2` with `P2`, `Q2` and `R2`
 
 #### Alternate approach
 
-[Here](projective/pascal-ch.py) we change all Cartesian to homogeneous from Step 2 to avoid fraction calculations.
+[Here](projective/pascal-h.py) we change all Cartesian to homogeneous from Step 2 to avoid fraction calculations.
 
 ### Proof by Homogeneous coordinates
 
