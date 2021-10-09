@@ -7,9 +7,6 @@ def pair(conic, line):
     p = solve([conic, Eq(y, line)], (x, y))
     return (simplify(p[0][0]), simplify(p[0][1])), (simplify(p[1][0]), simplify(p[1][1]))
 
-def to_homogeneous(P, denominator):
-    return simplify(P[0]*denominator), simplify(P[1]*denominator), simplify(denominator)
-
 def main():
     a, b, c, d, e, f, g, h, k, x, y = symbols('a, b, c, d, e, f, g, h, k, x, y')
     conic = Eq(a*x**2 + b*x*y + c*y**2 + d*x + e*y + f, 0)
@@ -20,9 +17,8 @@ def main():
     print('x_D =', D[0])
     print('x_E =', E[0])
     print('x_F =', F[0])
-    F, A = to_homogeneous(F, 2*(a + b*g + c*g**2)), to_homogeneous(A, 2*(a + b*g + c*g**2))
-    D, C = to_homogeneous(D, 2*(a + b*h + c*h**2)), to_homogeneous(C, 2*(a + b*h + c*h**2))
-    B, E = to_homogeneous(B, 2*a), to_homogeneous(E, 2*a)
+    A, B, C = to_homogeneous(A), to_homogeneous(B), to_homogeneous(C)
+    D, E, F = to_homogeneous(D), to_homogeneous(E), to_homogeneous(F)
     print('A:', A)
     print('B:', B)
     print('C:', C)
