@@ -50,12 +50,12 @@ which are collinear, i.e. <sup>[3]</sup>
 
 **Homogeneous coordinates** are widely used in projective geometry. Because of the [Duality](https://en.wikipedia.org/wiki/Homogeneous_coordinates#Line_coordinates_and_duality), both point and straight line can be represented as homogeneous coordinates, and share the same form:
 
-- The straight line passing through two points <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x'_1,x'_2,x'_3)"> is <img src="https://latex.codecogs.com/gif.latex?[x_2x'_3-x_3x'_2,x_3x'_1-x_1x'_3,x_1x'_2-x_2x'_1]">
-- The intersection point of two straight lines <img src="https://latex.codecogs.com/gif.latex?[u_1,u_2,u_3]"> and <img src="https://latex.codecogs.com/gif.latex?[u'_1,u'_2,u'_3]"> is <img src="https://latex.codecogs.com/gif.latex?(u_2u'_3-u_3u'_2,u_3u'_1-u_1u'_3,u_1u'_2-u_2u'_1)">
+- The straight line passing through two points <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x'_1,x'_2,x'_3)"> is <img src="https://latex.codecogs.com/gif.latex?[x_2x'_3-x_3x'_2,x_3x'_1-x_1x'_3,x_1x'_2-x_2x'_1]">.
+- The intersection point of two straight lines <img src="https://latex.codecogs.com/gif.latex?[u_1,u_2,u_3]"> and <img src="https://latex.codecogs.com/gif.latex?[u'_1,u'_2,u'_3]"> is <img src="https://latex.codecogs.com/gif.latex?(u_2u'_3-u_3u'_2,u_3u'_1-u_1u'_3,u_1u'_2-u_2u'_1)">.
 - Three points <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)">, <img src="https://latex.codecogs.com/gif.latex?(x'_1,x'_2,x'_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x''_1,x''_2,x''_3)"> are collinear if and only if <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}x_1&x_2&x_3\\x'_1&x'_2&x'_3\\x''_1&x''_2&x''_3\end{matrix}\right]=0">
 - Three straight lines <img src="https://latex.codecogs.com/gif.latex?[u_1,u_2,u_3]">, <img src="https://latex.codecogs.com/gif.latex?[u'_1,u'_2,u'_3]"> and <img src="https://latex.codecogs.com/gif.latex?[u''_1,u''_2,u''_3]"> are concurrent if and only if <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}u_1&u_2&u_3\\u'_1&u'_2&u'_3\\u''_1&u''_2&u''_3\end{matrix}\right]=0">
-- The point collinear with other two points <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x'_1,x'_2,x'_3)"> matches <img src="https://latex.codecogs.com/gif.latex?(mx_1+nx'_1,mx_2+nx'_2,mx_3+nx'_3)">
-- The line concurrent with other two lines <img src="https://latex.codecogs.com/gif.latex?[u_1,u_2,u_3]"> and <img src="https://latex.codecogs.com/gif.latex?[u'_1,u'_2,u'_3]"> matches <img src="https://latex.codecogs.com/gif.latex?[pu_1+qx'_1,pu_2+qu'_2,pu_3+qu'_3]">
+- Three points *A*, *B* and *C* are collinear if and only if there exists non-zero *m* and *n* such that <img src="https://latex.codecogs.com/gif.latex?A=mB+nC">
+- Three straight lines *α*, *β* and *γ* are concurrent if and only if there exists non-zero *p* and *q* such that <img src="https://latex.codecogs.com/gif.latex?\alpha=p\beta+q\gamma">
 
 #### Advantages
 
@@ -83,25 +83,39 @@ Here we use 3D vector form and denote points *O*, *A*<sub>1</sub>, *B*<sub>1</su
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{A_2}=p\mathbf{O}+q\mathbf{A_1}\\\mathbf{B_2}=r\mathbf{O}+s\mathbf{B_1}\\\mathbf{C_2}=t\mathbf{O}+u\mathbf{C_1}\end{cases}">
 
-And we denote intersection *ab* as: <sup>[4]</sup>
+Then we have <img src="https://latex.codecogs.com/gif.latex?r\mathbf{A_2}-p\mathbf{B_2}=qr\mathbf{A_1}-ps\mathbf{B_1}">, so there exists a point:
 
-<img src="https://latex.codecogs.com/gif.latex?\inline{\mathbf{X_1}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})}">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}=r\mathbf{A_2}-p\mathbf{B_2}=qr\mathbf{A_1}-ps\mathbf{B_1}">
+
+which is collinear to *A*<sub>1</sub>*B*<sub>1</sub> and *A*<sub>2</sub>*B*<sub>2</sub>, i.e. <img src="https://latex.codecogs.com/gif.latex?G=A_1B_1\cap%20A_2B_2=ab">.
 
 Analogously, we have *ac*:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{X_2}=[(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}](pu\mathbf{C_1}-qt\mathbf{A_1})">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=t\mathbf{B_2}-r\mathbf{C_2}=st\mathbf{B_1}-ru\mathbf{C_1}">
 
 and *bc*:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{X_3}=[(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}](st\mathbf{B_1}-ru\mathbf{C_1})">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=p\mathbf{C_2}-t\mathbf{A_2}=pu\mathbf{C_1}-qt\mathbf{A_1}">
 
-Finally, we get:
+Finally, we get <img src="https://latex.codecogs.com/gif.latex?t\mathbf{G}+p\mathbf{H}+r\mathbf{J}=\mathbf{0}">, which means *ab*, *ac* and *bc* are collinear.
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{X_1}\cdot(\mathbf{X_2}\times\mathbf{X_3})=\mathbf{0}">
+If **O**, **A**<sub>1</sub>, **B**<sub>1</sub>, **C**<sub>1</sub> represent 4 lines, then **A**<sub>2</sub>, **B**<sub>2</sub>, **C**<sub>2</sub> are 3 lines respectively passing through intersections **OA**<sub>1</sub>, **OB**<sub>1</sub>, **OC**<sub>1</sub>. Then **A**<sub>1</sub> **B**<sub>1</sub> **C**<sub>1</sub> and **A**<sub>2</sub> **B**<sub>2</sub> **C**<sub>2</sub> are 6 edges of two perspective triangles. So the above proof process also means the 3 perspective lines **G**, **H** and **J** are concurrent, which is the dual and converse theorem.
 
-which means *ab*, *ac* and *bc* are collinear. <sup>[5]</sup>
+#### A more brute-force proof
 
-If **O**, **A**<sub>1</sub>, **B**<sub>1</sub>, **C**<sub>1</sub> represent 4 lines, then **A**<sub>2</sub>, **B**<sub>2</sub> and **C**<sub>2</sub> are 3 lines passing through intersections **OA**<sub>1</sub>, **OB**<sub>1</sub> and **OC**<sub>1</sub>, respectively. Then **A**<sub>1</sub> **B**<sub>1</sub> **C**<sub>1</sub> and **A**<sub>2</sub> **B**<sub>2</sub> **C**<sub>2</sub> are 6 edges of two perspective triangles. So the above proof process also means the 3 perspective lines **X**<sub>1</sub>, **X**<sub>2</sub> and **X**<sub>3</sub> are concurrent, which is the dual and converse theorem.
+Just after getting **A**<sub>2</sub> **B**<sub>2</sub> **C**<sub>2</sub> from above process, we denote intersection *ab* as: <sup>[4]</sup>
+
+<img src="https://latex.codecogs.com/gif.latex?\inline{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})}">
+
+Analogously, we have *ac*:
+
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=[(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}](pu\mathbf{C_1}-qt\mathbf{A_1})">
+
+and *bc*:
+
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=[(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}](st\mathbf{B_1}-ru\mathbf{C_1})">
+
+Finally, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">, which means *ab*, *ac* and *bc* are collinear. <sup>[5]</sup>
 
 #### Proof of Pappus's Theorem
 
@@ -119,11 +133,7 @@ where
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}a=(\mathbf{B}\times\mathbf{C})\cdot\mathbf{D}\\b=(\mathbf{A}\times\mathbf{C})\cdot\mathbf{D}\\c=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{D}\\d=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}\end{cases}">
 
-After some calculations, we get:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">
-
-which means *G*, *H* and *J* are collinear. <sup>[6]</sup>
+After some calculations, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">, which means *G*, *H* and *J* are collinear. <sup>[6]</sup>
 
 If **A**, **C**, **E** represent 3 concurrent lines and **B**, **D**, **F** represent another 3 concurrent lines, then the 3 lines **G**, **H**, **J**, respectively passing through **A∩B** and **D∩E**, **B∩C** and **E∩F**, **A∩F** and **C∩D**, are concurrent, which is the [dual theorem](https://en.wikipedia.org/wiki/Pappus%27s_hexagon_theorem#Dual_theorem).
 

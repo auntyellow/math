@@ -113,7 +113,7 @@ So we can rewrite the point as:
 
 Either of the two roots can be used in the proof. For example, we can apply positive roots on points *ABCD*, and apply negative roots on points *EF*.
 
-The [proof process](projective/pascal-brianchon-h.py) is very similar to [Pappus's theorem](desargues.md#proof-of-pappuss-theorem), which proves both **Pascal's theorem** and **Brianchon's theorem**, because the conic equation can represent a **point conic** (where *ABCDEF* are 6 points) or a **[line conic](https://en.wikipedia.org/wiki/Conic_section#Line_conics)** (where *ABCDEF* are 6 straight lines).
+The [proof process](projective/pascal-brianchon-h.py) is very similar to [Pappus's theorem](desargues.md#proof-of-pappuss-theorem), and proves both **Pascal's theorem** and **Brianchon's theorem**, because the conic equation can represent a **point conic** (where *ABCDEF* are 6 points) or a **[line conic](https://en.wikipedia.org/wiki/Conic_section#Line_conics)** (where *ABCDEF* are 6 straight lines).
 
 ### Note
 
