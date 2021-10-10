@@ -43,7 +43,7 @@ Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0">
 
 #### Step 2
 
-Without further simplification, SymPy can hardly solve the intersections G and H. (This may be due to too many calculations during cancellation of <img src="https://latex.codecogs.com/gif.latex?\sqrt{x}^2"> and *x*.<sup>[1]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
+Without further simplification, SymPy can hardly solve the intersections G and H. (This may be due to too many fraction calculations.<sup>[1]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2}\\Q=\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2}\\R=\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2}\end{cases}">
 
@@ -65,13 +65,39 @@ This can be done by replacing `P**2`, `Q**2` and `R**2` with `P2`, `Q2` and `R2`
 
 [Here](projective/pascal-c3.py) shows the final result equal to 0, which means G, H and I are collinear.
 
-#### Alternate approach
-
-[Here](projective/pascal-h.py) we change all Cartesian to homogeneous from Step 2 to avoid fraction calculations.
-
 ### Proof by Homogeneous coordinates
 
 Because homogeneous coordinates have many advantages mentioned [here](desargues.md#proof-by-homogeneous-coordinates), we can use SymPy to prove it in a very simple process.
+
+#### Pascal's theorem
+
+[Here](projective/pascal-h.py) we change all Cartesian to homogeneous from Step 2 to avoid fraction calculations.
+
+#### Brianchon's theorem
+
+<img src="diagrams/brianchon.png">
+
+**Brianchon's theorem** states that when a hexagon (marked as *ad-db-bf-fc-ce-ea*) is circumscribed around a conic section (where the 6 tangent points are *ADBFCE*), its principal diagonals (*ad-fc*, *db-ce* and *bf-ea*) meet in a single point.
+
+We still use the 6 points in Step 1 but this time we draw their 6 tangent lines to form a hexagon.
+
+We apply [derivative of implicit function](https://en.wikipedia.org/wiki/Implicit_function#Implicit_differentiation) on curve <img src="https://latex.codecogs.com/gif.latex?F(x,y)=0">, then the tangent line passing through point <img src="https://latex.codecogs.com/gif.latex?(x_0,y_0)"> is:
+
+<img src="https://latex.codecogs.com/gif.latex?F_x(x_0,y_0)(x-x_0)+F_y(y_0,y_0)(y-y_0)=0">
+
+When the conic is denoted as <img src="https://latex.codecogs.com/gif.latex?F(x,y)=ax^2+2bxy+cy^2+2dx+2ey+f=0">, we have <img src="https://latex.codecogs.com/gif.latex?F_x=2ax+2by+2d"> and <img src="https://latex.codecogs.com/gif.latex?F_y=2bx+2cy+2e">, so the tangent line is:
+
+<img src="https://latex.codecogs.com/gif.latex?(ax_0+by_0+d)x+(bx_0+cy_0+e)y+(dx_0+ey_0+f)=0">
+
+(Note that <img src="https://latex.codecogs.com/gif.latex?ax_0^2+2bx_0y_0+cy_0^2+2dx_0+2ey_0+f=0">.)
+
+In [this proof](projective/brianchon-h.py), each point is denoted as homogeneous coordinate <img src="https://latex.codecogs.com/gif.latex?(x_0,y_0,z_0)">, then the tangent line is:
+
+<img src="https://latex.codecogs.com/gif.latex?[ax_0+by_0+dz_0,bx_0+cy_0+ez_0,dx_0+ey_0+fz_0]">
+
+We start from these 6 tangent lines, then get the 6 vertices of the hexagon, then prove the concurrency of its principal diagonals.
+
+#### Conic equation in Homogeneous coordinates
 
 A conic can be represented as an equation in homogeneous coordinates:
 
@@ -87,9 +113,7 @@ So we can rewrite the point as:
 
 Either of the two roots can be used in the proof. For example, we can apply positive roots on points *ABCD*, and apply negative roots on points *EF*.
 
-The [proof process](projective/pascal-brianchon-h.py) is very similar to [Pappus's theorem](desargues.md#proof-of-pappuss-theorem).
-
-This process also proves [Brianchon's theorem](https://en.wikipedia.org/wiki/Brianchon%27s_theorem), because the conic equation can represent a [line conic](https://en.wikipedia.org/wiki/Conic_section#Line_conics) and *ABCDEF* can represent 6 straight lines.
+The [proof process](projective/pascal-brianchon-h.py) is very similar to [Pappus's theorem](desargues.md#proof-of-pappuss-theorem), which proves both **Pascal's theorem** and **Brianchon's theorem**, because the conic equation can represent a **point conic** (where *ABCDEF* are 6 points) or a **[line conic](https://en.wikipedia.org/wiki/Conic_section#Line_conics)** (where *ABCDEF* are 6 straight lines).
 
 ### Note
 
