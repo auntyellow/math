@@ -25,7 +25,7 @@ However, it is more complicated to prove Pascal's theorem for a conic in a direc
 
 Let's put point *I* onto the origin, rotate the hexagon to make *BE* parallel to x-axis, denote the conic *ADBFCE* as:
 
-<img src="https://latex.codecogs.com/gif.latex?ax^2+bxy+cy^2+dx+ey+f=0">
+<img src="https://latex.codecogs.com/gif.latex?ax^2+2bxy+cy^2+2dx+2ey+f=0">
 
 and denote *AF*, *CD* and *BE* as:
 
@@ -39,17 +39,17 @@ Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0">
 
 [Here](projective/pascal-c1.py) we get 6 points:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-\sqrt{-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2})/2(a+bg+cg^2)\\x_\text{B}=-(bk+d+\sqrt{-4ack^2-4aek-4af+b^2k^2+2bdk+d^2})/2a\\x_\text{C}=-(d+eh-\sqrt{-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2})/2(a+bh+ch^2)\\x_\text{D}=-(d+eh+\sqrt{-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2})/2(a+bh+ch^2)\\x_\text{E}=-(bk+d-\sqrt{-4ack^2-4aek-4af+b^2k^2+2bdk+d^2})/2a\\x_\text{F}=-(d+eg+\sqrt{-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2})/2(a+2bg+2cg^2)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2})/(a+2bg+cg^2)\\x_\text{B}=-(bk+d+\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2})/a\\x_\text{C}=-(d+eh-\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2})/(a+2bh+ch^2)\\x_\text{D}=-(d+eh+\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2})/(a+2bh+ch^2)\\x_\text{E}=-(bk+d-\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2})/a\\x_\text{F}=-(d+eg+\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2})/(a+2bg+cg^2)\end{cases}">
 
 #### Step 2
 
 Without further simplification, SymPy can hardly solve the intersections G and H. (This may be due to too many calculations during cancellation of <img src="https://latex.codecogs.com/gif.latex?\sqrt{x}^2"> and *x*.<sup>[1]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2}\\Q=\sqrt{-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2}\\R=\sqrt{-4ack^2-4aek-4af+b^2k^2+2bdk+d^2}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2}\\Q=\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2}\\R=\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2}\end{cases}">
 
 Then the 6 points are simplified as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-P)/2(a+bg+cg^2)\\x_\text{B}=-(bk+d+R)/2a\\x_\text{C}=-(d+eh-Q)/2(a+bh+ch^2)\\x_\text{D}=-(d+eh+Q)/2(a+bh+ch^2)\\x_\text{E}=-(bk+d-R)/2a\\x_\text{F}=-(d+eg+P)/2(a+2bg+2cg^2)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-P)/(a+2bg+cg^2)\\x_\text{B}=-(bk+d+R)/a\\x_\text{C}=-(d+eh-Q)/(a+2bh+ch^2)\\x_\text{D}=-(d+eh+Q)/(a+2bh+ch^2)\\x_\text{E}=-(bk+d-R)/a\\x_\text{F}=-(d+eg+P)/(a+2bg+cg^2)\end{cases}">
 
 [Here](projective/pascal-c2.py) we solve the G and H and get the expression <img src="https://latex.codecogs.com/gif.latex?x_\text{G}y_\text{H}-x_\text{H}y_\text{G}"> to check if G, H and I are collinear.
 
@@ -59,7 +59,7 @@ The numerator of this expression contains 422 terms, which should equal to 0.
 
 There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>2</sup> in the above expression. So we can replace them with:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P^2=-4af-4bfg-4cfg^2+d^2+2deg+e^2g^2\\Q^2=-4af-4bfh-4cfh^2+d^2+2deh+e^2h^2\\R^2=-4ack^2-4aek-4af+b^2k^2+2bdk+d^2\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P^2=-af-2bfg-cfg^2+d^2+2deg+e^2g^2\\Q^2=-af-2bfh-cfh^2+d^2+2deh+e^2h^2\\R^2=-ack^2-2aek-af+b^2k^2+2bdk+d^2\end{cases}">
 
 This can be done by replacing `P**2`, `Q**2` and `R**2` with `P2`, `Q2` and `R2` in text editor.
 

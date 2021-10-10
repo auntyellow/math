@@ -1,3 +1,4 @@
 /.project
 /.settings/
 __pycache__/
+.DS_Store

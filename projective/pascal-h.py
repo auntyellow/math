@@ -8,7 +8,7 @@ def pair(conic, line):
 
 def main():
     a, b, c, d, e, f, g, h, k, x, y = symbols('a, b, c, d, e, f, g, h, k, x, y')
-    conic = Eq(a*x**2 + b*x*y + c*y**2 + d*x + e*y + f, 0)
+    conic = Eq(a*x**2 + 2*b*x*y + c*y**2 + 2*d*x + 2*e*y + f, 0)
     (F, A), (D, C), (B, E) = pair(conic, g*x), pair(conic, h*x), pair(conic, k)
     print('x_A =', A[0])
     print('x_B =', B[0])
