@@ -14,8 +14,8 @@ Here are some simple cases:
 - [harmonic conjugate of pole-polar](projective/pole-polar-c1.py) and [converse](projective/pole-polar-c2.py)
 - [Menelaus's theorem](projective/menelaus-c1.py) (and its [converse](projective/menelaus-c2.py)) and [Ceva's theorem](projective/ceva-c1.py) (and its [converse](projective/ceva-c2.py))
 - [Desargues's theorem](projective/desargues-c1.py) (and its [dual](projective/desargues-c2.py)) and [Pappus's theorem](projective/pappus-c1.py) (and its [dual](projective/pappus-c2.py))
-- [Pascal's theorem](projective/pascal-circle.py) (and its [quadrilateral](projective/pascal-quadrilateral.py) form) and [Brianchon's theorem](projective/brianchon-circle.py) (and its [quadrilateral](projective/brianchon-quadrilateral.py) form) for a circle
-- [Brokard's theorem](projective/brokard.py)
+- [Pascal's theorem](projective/pascal-circle-c.py) (and its [quadrilateral](projective/pascal-quadrilateral-c.py) form) and [Brianchon's theorem](projective/brianchon-circle-c.py) (and its [quadrilateral](projective/brianchon-quadrilateral-c.py) form) for a circle
+- [Brokard's theorem](projective/brokard-c.py)
 - [butterfly theorem](projective/butterfly-c.py), an analytic geometry proof without Vieta's formulas
 - [Braikenridge-Maclaurin theorem](projective/braikenridge-maclaurin.py), with some tricks mentioned [here](https://math.stackexchange.com/a/4236022/919440)
 

@@ -15,8 +15,8 @@ def main():
     AB = Eq(y, 0)
     PS, QR = line(P, S), line(Q, R)
     C, D = intersect(AB, PS), intersect(AB, QR)
-    print(cancel(1 / A[0] + 1 / B[0]))
-    print(cancel(1 / C[0] + 1 / D[0]))
+    print(cancel(1/A[0] + 1/B[0]))
+    print(cancel(1/C[0] + 1/D[0]))
 
 if __name__ == '__main__':
     main()
