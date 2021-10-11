@@ -1,4 +1,4 @@
-from sympy import factor, symbols
+from sympy import cancel, symbols
 from cartesian import *
 
 def main():
@@ -19,7 +19,7 @@ def main():
     G, H = intersect(AB, DE), intersect(BC, EF)
     print('G:', G)
     print('H:', H)
-    print(factor(G[0]*H[1] - G[1]*H[0]))
+    print(fraction(cancel(G[0]*H[1] - G[1]*H[0]))[0])
 
 if __name__ == '__main__':
     main()

@@ -1,9 +1,9 @@
-from sympy import Eq, simplify, solve, symbols
+from sympy import Eq, cancel, solve, symbols
 
 def pair(conic, line):
     x, y = symbols('x, y')
     p = solve([conic, Eq(y, line)], (x, y))
-    return (simplify(p[0][0]), simplify(p[0][1])), (simplify(p[1][0]), simplify(p[1][1]))
+    return (cancel(p[0][0]), cancel(p[0][1])), (cancel(p[1][0]), cancel(p[1][1]))
 
 def main():
     a, b, c, d, e, f, g, h, k, x, y = symbols('a, b, c, d, e, f, g, h, k, x, y')

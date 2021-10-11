@@ -1,4 +1,4 @@
-from sympy import simplify, symbols
+from sympy import symbols
 from cartesian import *
 
 def main():

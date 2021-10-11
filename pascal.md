@@ -57,11 +57,11 @@ The numerator of this expression contains 422 terms, which should equal to 0.
 
 #### Step 3
 
-There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>2</sup> in the above expression. So we can replace them with:
+There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>3</sup> in the above expression. So we can replace them with:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}P^2=-af-2bfg-cfg^2+d^2+2deg+e^2g^2\\Q^2=-af-2bfh-cfh^2+d^2+2deh+e^2h^2\\R^2=-ack^2-2aek-af+b^2k^2+2bdk+d^2\end{cases}">
 
-This can be done by replacing `P**2`, `Q**2` and `R**2` with `P2`, `Q2` and `R2` in text editor.
+This can be done by replacing `P**2`, `Q**2` and `R**3` with `P2`, `Q2` and `R2*R` in text editor.
 
 [Here](projective/pascal-c3.py) shows the final result equal to 0, which means G, H and I are collinear.
 
