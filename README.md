@@ -8,7 +8,8 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [ ] [Radical Center](pythagoras/radical-center.py) and Monge's Theorem
 - [x] [Generalized Butterfly Theorem](butterfly.md)
 - [x] [Desargues's Theorem](desargues.md) and Pappus's Theorem: Cartesian and Homogeneous coordinates
-- [x] [Pascal-Brianchon's Theorem](pascal.md) and other theorems in projective geometry
+- [x] [Menelaus's Theorem](menelaus.md) and Ceva's Theorem by Homogeneous coordinates
+- [x] [Pascal's Theorem](pascal.md) and Brianchon's Theorem
 - [ ] [Euler Line](pythagoras/euler-line.py) and Feuerbach's Theorem
 
 Problems in *How to Solve It* by G. Pólya
