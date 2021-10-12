@@ -74,18 +74,20 @@ We use the diagram of Pascal's theorem and put I onto the origin again. But here
 
 Let's assume the conic doesn't go through origin I, then we need to prove the 6 points:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:\left(\frac{g}{-j+p},\frac{gp}{-j+p}\right)\\B:\left( \frac{-g+h}{j-m},\frac{-gm+hj}{j-m}\right)\\C:\left(\frac{h}{-m+q},\frac{hq}{-m+q}\right)\\D:\left(\frac{g}{-k+q},\frac{gq}{-k+q}\right)\\E:\left(\frac{-g+h}{k-n},\frac{-gn+hk}{k-n}\right)\\F:\left(\frac{h}{-n+p},\frac{hp}{-n+p}\right)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:\left(\frac{g}{p-j},\frac{gp}{p-j}\right)\\B:\left(\frac{h-g}{j-m},\frac{hj-gm}{j-m}\right)\\C:\left(\frac{h}{q-m},\frac{hq}{q-m}\right)\\D:\left(\frac{g}{q-k},\frac{gq}{q-k}\right)\\E:\left(\frac{h-g}{k-n},\frac{hk-gn}{k-n}\right)\\F:\left(\frac{h}{p-n},\frac{hp}{p-n}\right)\end{cases}">
 
 lie on the a conic.
 
 According to [this rule](https://en.wikipedia.org/wiki/Five_points_determine_a_conic#Construction), the rest thing is to prove:
 
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}\frac{g^2}{\left(-j+p\right)^2}&\frac{g^2p}{\left(-j+p\right)^2}&\frac{g^2p^2}{\left(-j+p\right)^2}&\frac{g}{-j+p}&\frac{gp}{-j+p}&1\\\frac{\left(-g+h\right)^2}{\left(j-m\right)^2}&\frac{\left(-g+h\right)\left(-gm+hj\right)}{\left(j-m\right)^2}&\frac{\left(-gm+hj\right)^2}{\left(j-m\right)^2}&\frac{-g+h}{j-m}&\frac{-gm+hj}{j-m}&1\\\frac{h^2}{\left(-m+q\right)^2}&\frac{h^2q}{\left(-m+q\right)^2}&\frac{h^2q^2}{\left(-m+q\right)^2}&\frac{h}{-m+q}&\frac{hq}{-m+q}&1\\\frac{g^2}{\left(-k+q\right)^2}&\frac{g^2q}{\left(-k+q\right)^2}&\frac{g^2q^2}{\left(-k+q\right)^2}&\frac{g}{-k+q}&\frac{gq}{-k+q}&1\\\frac{\left(-g+h\right)^2}{\left(k-n\right)^2}&\frac{\left(-g+h\right)\left(-gn+hk\right)}{\left(k-n\right)^2}&\frac{\left(-gn+hk\right)^2}{\left(k-n\right)^2}&\frac{-g+h}{k-n}&\frac{-gn+hk}{k-n}&1\\\frac{h^2}{\left(-n+p\right)^2}&\frac{h^2p}{\left(-n+p\right)^2}&\frac{h^2p^2}{\left(-n+p\right)^2}&\frac{h}{-n+p}&\frac{hp}{-n+p}&1\end{matrix}\right]=0">
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}\frac{g^2}{\left(p-j\right)^2}&\frac{g^2p}{\left(p-j\right)^2}&\frac{g^2p^2}{\left(p-j\right)^2}&\frac{g}{p-j}&\frac{gp}{p-j}&1\\\frac{\left(h-g\right)^2}{\left(j-m\right)^2}&\frac{\left(h-g\right)\left(hj-gm\right)}{\left(j-m\right)^2}&\frac{\left(hj-gm\right)^2}{\left(j-m\right)^2}&\frac{h-g}{j-m}&\frac{hj-gm}{j-m}&1\\\frac{h^2}{\left(q-m\right)^2}&\frac{h^2q}{\left(q-m\right)^2}&\frac{h^2q^2}{\left(q-m\right)^2}&\frac{h}{q-m}&\frac{hq}{q-m}&1\\\frac{g^2}{\left(q-k\right)^2}&\frac{g^2q}{\left(q-k\right)^2}&\frac{g^2q^2}{\left(q-k\right)^2}&\frac{g}{q-k}&\frac{gq}{q-k}&1\\\frac{\left(h-g\right)^2}{\left(k-n\right)^2}&\frac{\left(h-g\right)\left(hk-gn\right)}{\left(k-n\right)^2}&\frac{\left(hk-gn\right)^2}{\left(k-n\right)^2}&\frac{h-g}{k-n}&\frac{hk-gn}{k-n}&1\\\frac{h^2}{\left(p-n\right)^2}&\frac{h^2p}{\left(p-n\right)^2}&\frac{h^2p^2}{\left(p-n\right)^2}&\frac{h}{p-n}&\frac{hp}{p-n}&1\end{matrix}\right]=0">
 
-It doesn't look too complicated. However, we need to use 2 tricks to speed up calculation:
+It doesn't look too complicated. However, we have to use 2 tricks to speed up calculation:
 
 1. Multiply each row by LCD to avoid fraction calculation, see [here](https://math.stackexchange.com/a/4236022/919440);
 2. Expand determinant early to avoid simplification, then do substitution, see [here](https://stackoverflow.com/a/37056325/4260959).
+
+[Here](projective/braikenridge-maclaurin-c.py) is the proof process.
 
 ### Proof by Homogeneous coordinates
 
@@ -136,6 +138,24 @@ So we can rewrite the point as:
 Either of the two roots can be used in the proof. For example, we can apply positive roots on points *ABCD*, and apply negative roots on points *EF*.
 
 The [proof process](projective/pascal-brianchon-h.py) is very similar to [Pappus's theorem](desargues.md#proof-of-pappuss-theorem), and proves both **Pascal's theorem** and **Brianchon's theorem**, because the conic equation can represent a **point conic** (where *ABCDEF* are 6 points) or a **[line conic](https://en.wikipedia.org/wiki/Conic_section#Line_conics)** (where *ABCDEF* are 6 straight lines).
+
+#### Braikenridge-Maclaurin theorem
+
+We choose 3 arbitrary points *A*, *C* and *E* as 3 of 6 vertices on a hexagon, and set 3 collinear points *GHJ*. Put *E* onto x-axis and *GHJ* onto y-axis to reduce variables, then we have:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:(a,b,c)\\C:(d,e,f)\\E:(g,0,h)\\G:(0,j,k)\\H:(0,m,n)\\J:(0,p,q)\end{cases}">
+
+Then we can calculate another 3 of 6 vertices:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}B=AB\cap%20BC=AG\cap%20HC\\D=CD\cap%20DE=CJ\cap%20GE\\F=EF\cap%20FA=EH\cap%20JA\end{cases}">
+
+After some calcluations [here](projective/braikenridge-maclaurin-h.py), we get: 
+
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}x_\text{A}^2&x_\text{A}y_\text{A}&y_\text{A}^2&x_\text{A}z_\text{A}&y_\text{A}z_\text{A}&z_\text{A}^2\\x_\text{B}^2&x_\text{B}y_\text{B}&y_\text{B}^2&x_\text{B}z_\text{B}&y_\text{B}z_\text{B}&z_\text{B}^2\\x_\text{C}^2&x_\text{C}y_\text{C}&y_\text{C}^2&x_\text{C}z_\text{C}&y_\text{C}z_\text{C}&z_\text{C}^2\\x_\text{D}^2&x_\text{D}y_\text{D}&y_\text{D}^2&x_\text{D}z_\text{D}&y_\text{D}z_\text{D}&z_\text{D}^2\\x_\text{E}^2&x_\text{E}y_\text{E}&y_\text{E}^2&x_\text{E}z_\text{E}&y_\text{E}z_\text{E}&z_\text{E}^2\\x_\text{F}^2&x_\text{F}y_\text{F}&y_\text{F}^2&x_\text{F}z_\text{F}&y_\text{F}z_\text{F}&z_\text{F}^2\end{matrix}\right]=0">
+
+which implies all 6 vertices lying on a conic.
+
+This process also proves its dual theorem (which is also the converse of Brianchon's theorem).
 
 ### Note
 

@@ -18,9 +18,8 @@ def main():
     print('F:', F)
 
     points = [A, B, C, D, E, F]
-    coefficients = [x*x, x*y, y*y, x, y]
-    subs = {}
-    mat = []
+    coefficients = [x**2, x*y, y**2, x, y]
+    subs, mat = [], []
     for s in range(6):
         numerators, denominators, row = [], [], []
         for t in range(5):
@@ -32,11 +31,11 @@ def main():
         lcd = lcm_list(denominators)
         for t in range(6):
             rst = symbols('r' + str(s) + str(t))
+            subs.append((rst, numerators[t]*cancel(lcd/denominators[t])))
             row.append(rst)
-            subs[rst] = numerators[t]*cancel(lcd/denominators[t])
         mat.append(row)
-    print('M =', Matrix(mat).evalf(subs = subs))
-    print('det M =', expand(Matrix(mat).det().evalf(subs = subs)))
+    print('M =', Matrix(mat).subs(subs))
+    print('det M =', expand(Matrix(mat).det().subs(subs)))
 
 if __name__ == '__main__':
     main()

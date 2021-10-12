@@ -5,12 +5,12 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [24 Game Solver](https://github.com/auntyellow/24): gives you all dissimilar solutions
 - [x] [Friends and Strangers](ramsey.md) (Ramsey Number `R(3,3)=6`)
 - [x] [Construction of the Symmedian](symmedian.md)
-- [ ] [Radical Center](pythagoras/radical-center.py) and Monge's Theorem
-- [x] [Generalized Butterfly Theorem](butterfly.md)
-- [x] [Desargues's Theorem](desargues.md) and Pappus's Theorem: Cartesian and Homogeneous coordinates
-- [x] [Menelaus's Theorem](menelaus.md) and Ceva's Theorem by Homogeneous coordinates
-- [x] [Pascal's Theorem](pascal.md) and Brianchon's Theorem
-- [ ] [Euler Line](pythagoras/euler-line.py) and Feuerbach's Theorem
+- [ ] [Radical Center](pythagoras/radical-center.py) and Monge's theorem
+- [x] [Generalized Butterfly theorem](butterfly.md)
+- [x] [Desargues's theorem](desargues.md) and Pappus's theorem: Cartesian and Homogeneous coordinates
+- [x] [Menelaus's theorem](menelaus.md) and Ceva's theorem by Homogeneous coordinates
+- [x] [Pascal's theorem](pascal.md), Brianchon's theorem and Braikenridge-Maclaurin theorem
+- [ ] [Euler Line](pythagoras/euler-line.py) and Feuerbach's theorem
 
 Problems in *How to Solve It* by G. Pólya
 
