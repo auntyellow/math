@@ -17,7 +17,6 @@ Here are some simple cases:
 - [Pascal's theorem](projective/pascal-circle-c.py) (and its [quadrilateral](projective/pascal-quadrilateral-c.py) form) and [Brianchon's theorem](projective/brianchon-circle-c.py) (and its [quadrilateral](projective/brianchon-quadrilateral-c.py) form) for a circle
 - [Brokard's theorem](projective/brokard-c.py)
 - [butterfly theorem](projective/butterfly-c.py), an analytic geometry proof without Vieta's formulas
-- [Braikenridge-Maclaurin theorem](projective/braikenridge-maclaurin.py), with some tricks mentioned [here](https://math.stackexchange.com/a/4236022/919440)
 
 However, it is more complicated to prove Pascal's theorem for a conic in a direct way, which means we don't reduce the conic to a circle by a projective transformation.
 
@@ -64,6 +63,29 @@ There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>3</sup> in the above
 This can be done by replacing `P**2`, `Q**2` and `R**3` with `P2`, `Q2` and `R2*R` in text editor.
 
 [Here](projective/pascal-c3.py) shows the final result equal to 0, which means G, H and I are collinear.
+
+#### Braikenridge-Maclaurin theorem
+
+**Braikenridge-Maclaurin theorem** is the converse to Pascal's theorem.
+
+We use the diagram of Pascal's theorem and put I onto the origin again. But here we rotate the hexagon to make *GH* onto y-axis, and denote 6 lines as:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}AB:y=jx+g\\DE:y=kx+g\\BC:y=mx+h\\EF:y=nx+h\\AF:y=px\\CD:y=qx\end{cases}">
+
+Let's assume the conic doesn't go through origin I, then we need to prove the 6 points:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:\left(\frac{g}{-j+p},\frac{gp}{-j+p}\right)\\B:\left( \frac{-g+h}{j-m},\frac{-gm+hj}{j-m}\right)\\C:\left(\frac{h}{-m+q},\frac{hq}{-m+q}\right)\\D:\left(\frac{g}{-k+q},\frac{gq}{-k+q}\right)\\E:\left(\frac{-g+h}{k-n},\frac{-gn+hk}{k-n}\right)\\F:\left(\frac{h}{-n+p},\frac{hp}{-n+p}\right)\end{cases}">
+
+lie on the a conic.
+
+According to [this rule](https://en.wikipedia.org/wiki/Five_points_determine_a_conic#Construction), the rest thing is to prove:
+
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}\frac{g^2}{\left(-j+p\right)^2}&\frac{g^2p}{\left(-j+p\right)^2}&\frac{g^2p^2}{\left(-j+p\right)^2}&\frac{g}{-j+p}&\frac{gp}{-j+p}&1\\\frac{\left(-g+h\right)^2}{\left(j-m\right)^2}&\frac{\left(-g+h\right)\left(-gm+hj\right)}{\left(j-m\right)^2}&\frac{\left(-gm+hj\right)^2}{\left(j-m\right)^2}&\frac{-g+h}{j-m}&\frac{-gm+hj}{j-m}&1\\\frac{h^2}{\left(-m+q\right)^2}&\frac{h^2q}{\left(-m+q\right)^2}&\frac{h^2q^2}{\left(-m+q\right)^2}&\frac{h}{-m+q}&\frac{hq}{-m+q}&1\\\frac{g^2}{\left(-k+q\right)^2}&\frac{g^2q}{\left(-k+q\right)^2}&\frac{g^2q^2}{\left(-k+q\right)^2}&\frac{g}{-k+q}&\frac{gq}{-k+q}&1\\\frac{\left(-g+h\right)^2}{\left(k-n\right)^2}&\frac{\left(-g+h\right)\left(-gn+hk\right)}{\left(k-n\right)^2}&\frac{\left(-gn+hk\right)^2}{\left(k-n\right)^2}&\frac{-g+h}{k-n}&\frac{-gn+hk}{k-n}&1\\\frac{h^2}{\left(-n+p\right)^2}&\frac{h^2p}{\left(-n+p\right)^2}&\frac{h^2p^2}{\left(-n+p\right)^2}&\frac{h}{-n+p}&\frac{hp}{-n+p}&1\end{matrix}\right]=0">
+
+It doesn't look too complicated. However, we need to use 2 tricks to speed up calculation:
+
+1. Multiply each row by LCD to avoid fraction calculation, see [here](https://math.stackexchange.com/a/4236022/919440);
+2. Expand determinant early to avoid simplification, then do substitution, see [here](https://stackoverflow.com/a/37056325/4260959).
 
 ### Proof by Homogeneous coordinates
 
