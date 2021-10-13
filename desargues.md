@@ -105,7 +105,7 @@ If **O**, **A**<sub>1</sub>, **B**<sub>1</sub>, **C**<sub>1</sub> represent 4 li
 
 Just after getting **A**<sub>2</sub> **B**<sub>2</sub> **C**<sub>2</sub> from above process, we denote intersection *ab* as: <sup>[4]</sup>
 
-<img src="https://latex.codecogs.com/gif.latex?\inline{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})}">
+<img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})}">
 
 Analogously, we have *ac*:
 

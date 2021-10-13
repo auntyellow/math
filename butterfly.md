@@ -75,7 +75,7 @@ where <img src="https://latex.codecogs.com/gif.latex?R=a+br+cr^2">.
 
 Finally, we get: <sup>[3]</sup>
 
-<img src="https://latex.codecogs.com/gif.latex?\dpi{150}\inline\frac{1}{\overrightarrow{MC}}+\frac{1}{\overrightarrow{MD}}=\frac{q(x_\text{P}x_\text{Q})(x_\text{R}+x_\text{S})-r(x_\text{P}+x_\text{Q})(x_\text{R}x_\text{S})}{(q-r)(x_\text{P}x_\text{Q})(x_\text{R}x_\text{S})}=-\frac{d}f=\frac{1}{\overrightarrow{MA}}+\frac{1}{\overrightarrow{MB}}">
+<img src="https://latex.codecogs.com/gif.latex?{\frac{1}{\overrightarrow{MC}}+\frac{1}{\overrightarrow{MD}}=\frac{q(x_\text{P}x_\text{Q})(x_\text{R}+x_\text{S})-r(x_\text{P}+x_\text{Q})(x_\text{R}x_\text{S})}{(q-r)(x_\text{P}x_\text{Q})(x_\text{R}x_\text{S})}=-\frac{d}f=\frac{1}{\overrightarrow{MA}}+\frac{1}{\overrightarrow{MB}}}">
 
 #### Step 2b
 
