@@ -32,7 +32,7 @@ def main():
     K_C = (b*BK/AB - b, a*BK/AB)
     incircle = circle(K, K_B, K_C)
     I = center(incircle)
-    print('I =', I)
+    print('I:', I)
 
     # Step 2: Solve N
     KM = line(K, M)
@@ -43,17 +43,17 @@ def main():
     # Vieta's Formula: x_N + x_K = -b/a
     x_N = -incircle_coeffs[1]/incircle_coeffs[0] - K[0]
     N = (cancel(x_N), cancel(y_KM.subs(x, x_N)))
-    print('N =', N)
+    print('N:', N)
 
     # Step 3: Solve BCN and center S
     x_N, y_N = symbols('x_N, y_N')
     S = center(circle((x_N, y_N), B, C))
     S = (cancel(S[0].subs(x_N, N[0]).subs(y_N, N[1])), cancel(S[1].subs(x_N, N[0]).subs(y_N, N[1])))
-    print('S =', S)
+    print('S:', S)
 
-    # Step 4: Prove INS collinear
+    # Step 4: Prove INS are collinear
     collinear = incidence(to_homogeneous(I), to_homogeneous(N), to_homogeneous(S))
-    print(expand(collinear.subs(AB, sqrt(a**2 + b**2)).subs(AC, sqrt(a**2 + c**2))))
+    print('Are INS collinear?', expand(collinear.subs(AB, sqrt(a**2 + b**2)).subs(AC, sqrt(a**2 + c**2))) == 0)
 
 if __name__ == '__main__':
     main()

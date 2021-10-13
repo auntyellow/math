@@ -30,9 +30,9 @@ Here let's choose a cube with edge length 2, centered at the origin, then calcul
 
 Then this part of the cube is a tetrahedron with 4 planes:
 
-- OAB: *y* = 0, or *φ* = 0
-- OAC: *x* = *y*, or *φ* = *π*/4
-- OBC: *x* = *z*, or cos*φ* sin*θ* = cos*θ*
+- OAB: *y* = 0, or φ = 0
+- OAC: *x* = *y*, or φ = *π*/4
+- OBC: *x* = *z*, or cosφ sin*θ* = cos*θ*
 - ABC: *z* = 1, or *r* cos*θ* = 1
 
 So we have:
@@ -45,7 +45,7 @@ Because of the symmetry, we can just integrate the average radius of the tetrahe
 
 Let's calculate the integral:
 
-<img src="https://latex.codecogs.com/gif.latex?\int_0^{\text{arccot}\cos\phi}\frac{\sin\theta}{\cos\theta}d\theta=-\ln\cos\theta\bigg\rvert_0^{\text{arccot}\cos\phi}=\ln\sqrt{\cos^2\phi+1}-\ln\cos\phi"> (0 ≤ *φ* ≤ *π*/4)
+<img src="https://latex.codecogs.com/gif.latex?\int_0^{\text{arccot}\cos\phi}\frac{\sin\theta}{\cos\theta}d\theta=-\ln\cos\theta\bigg\rvert_0^{\text{arccot}\cos\phi}=\ln\sqrt{\cos^2\phi+1}-\ln\cos\phi"> (0 ≤ φ ≤ *π*/4)
 
 Although the antiderivative of this function doesn't look analytic, we can get the numeric solution:
 

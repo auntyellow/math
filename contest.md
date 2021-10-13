@@ -8,11 +8,7 @@ Let *K* be the point *K* in the interior of the unit circle. The circle is divid
 
 Areas can be calculated by integration. Cartesian coordinates may work but we need to divide this figures into too many pieces and calculate them one by one. Here we'd like to use polar coordinates.
 
-Put *K* onto origin and rotate the diameter through *K* onto polar axis (x-axis), then the circle denoted in Cartesian coordinates:
-
-<img src="https://latex.codecogs.com/gif.latex?(x-a)^2+y^2=r^2">
-
-can be written in polar coordinates (just replace with <img src="https://latex.codecogs.com/gif.latex?x=\rho%20\cos\theta"> and <img src="https://latex.codecogs.com/gif.latex?y=\rho%20\sin\theta">):
+Put *K* onto origin and rotate the diameter through *K* (by an angle <img src="https://latex.codecogs.com/gif.latex?0\le%20\theta_0<\pi/4">) onto polar axis (x-axis), then the circle denoted in Cartesian coordinates <img src="https://latex.codecogs.com/gif.latex?(x-a)^2+y^2=r^2"> can be written in polar coordinates (just replace with <img src="https://latex.codecogs.com/gif.latex?x=\rho%20\cos\theta"> and <img src="https://latex.codecogs.com/gif.latex?y=\rho%20\sin\theta">):
 
 <img src="https://latex.codecogs.com/gif.latex?\rho(\theta)=a\cos%20\theta\pm\sqrt{r^2-a^2\sin^2\theta}">
 
@@ -34,6 +30,23 @@ Finally, we get:
 
 <img src="https://latex.codecogs.com/gif.latex?(A_0+A_4)+(A_2+A_6)=(A_1+A_5)+(A_3+A_7)=\frac{\pi%20r^2}2"> □
 
+### Tangency of an incircle and a circumcircle
+
+Most contest geometry problems are too complicated to solve by coordinate approach by hand. However, some of them can be solved with help of computer softwares or programs. Here are some simple examples:
+
+- [IMO 2003 Shortlist G4](pythagoras/imo-2003-shortlist-g4.py)
+- [Duke 2012 Putnam preparation, Homework 6: Geometry, Problem 6](pythagoras/duke-putnam-2012-homework-6-6.py)
+- [Duke 2012 Putnam preparation, Homework 6: Geometry, Problem 7](pythagoras/duke-putnam-2012-homework-6-7.py)
+
+Although computational approaches are not allowed in math contest, there are a lot of fun in solutions. [Here](https://math.stackexchange.com/a/4257734/919440) is a complicated example solved by [Barycentric coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system). Next, we'd like to use Cartesian coordinates to solve the problem.
+
+The incircle Ω of the acute-angled triangle *ABC* is tangent to *BC* at *K*. Let *AD* be an altitude of triangle *ABC* and let *M* be the midpoint of *AD*. If *N* is the other common point of Ω and *KM*, prove that Ω and the circumcircle of triangle *BCN* are tangent at *N*. <sup>[2]</sup>
+
+<img src="diagrams/imo-2002-shortlist-g7.png">
+
+[Here](pythagoras/imo-2002-shortlist-g7.py) is the proof process.
+
 ### Note
 
 1. [Duke 2012 Putnam preparation, Homework 6: Geometry](https://imomath.com/index.php?options=586), Problem 8
+2. [IMO 2002 Shortlist](https://anhngq.files.wordpress.com/2010/07/imo-2002-shortlist.pdf), G4
