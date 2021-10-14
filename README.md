@@ -11,7 +11,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Menelaus's theorem](menelaus.md) and Ceva's theorem by Homogeneous coordinates
 - [x] [Pascal's theorem](pascal.md), Brianchon's theorem and Braikenridge-Maclaurin theorem
 - [ ] [Euler Line](pythagoras/euler-line.py) and Feuerbach's theorem
-- [ ] [Contest geometry problems](contest.md)
+- [x] [Contest geometry problems](contest.md)
 
 Problems in *How to Solve It* by G. Pólya
 
