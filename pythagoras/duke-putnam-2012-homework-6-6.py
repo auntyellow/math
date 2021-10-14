@@ -20,8 +20,8 @@ def main():
     H = (solve(GH, x)[0].subs(y, 0), 0)
     print('H:', H)
     BE2, BG2, EG2, BH2, EH2 = dist2(B, E), dist2(B, G), dist2(E, G), dist2(B, H), dist2(E, H)
-    cos2BGE = (BG2 + EG2 - BE2)**2/2/BG2/EG2
-    cos2BHE = (BH2 + EH2 - BE2)**2/2/BH2/EH2
+    cos2BGE = (BG2 + EG2 - BE2)**2/4/BG2/EG2
+    cos2BHE = (BH2 + EH2 - BE2)**2/4/BH2/EH2
     print('cos²∠BGE - cos²∠BHE =', simplify(cos2BGE - cos2BHE))
 
 if __name__ == '__main__':

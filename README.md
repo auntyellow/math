@@ -4,12 +4,12 @@ These problems may have smart solutions with difficult skills. However, I'd like
 
 - [x] [24 Game Solver](https://github.com/auntyellow/24): gives you all dissimilar solutions
 - [x] [Friends and Strangers](ramsey.md) (Ramsey Number `R(3,3)=6`)
-- [x] [Construction of the Symmedian](symmedian.md)
 - [ ] [Radical Center](pythagoras/radical-center.py) and Monge's theorem
 - [x] [Generalized Butterfly theorem](butterfly.md)
 - [x] [Desargues's theorem](desargues.md) and Pappus's theorem: Cartesian and Homogeneous coordinates
 - [x] [Menelaus's theorem](menelaus.md) and Ceva's theorem by Homogeneous coordinates
 - [x] [Pascal's theorem](pascal.md), Brianchon's theorem and Braikenridge-Maclaurin theorem
+- [ ] [Symmedian and Isogonal Conjugate](symmedian.md)
 - [ ] [Euler Line](pythagoras/euler-line.py) and Feuerbach's theorem
 - [x] [Contest geometry problems](contest.md)
 

@@ -1,3 +1,5 @@
+### Construction of the Symmedian
+
 <img src="diagrams/symmedian.png">
 
 Construct a point *D* by intersecting the tangents from B and C to the circumcircle of triangle *ABC*, then AD is the **symmedian** of the triangle ABC, which implies ∠*BAM* = ∠*CAD*, where *AM* is the median.
@@ -22,6 +24,16 @@ After some calculations, we get:
 
 <img src="https://latex.codecogs.com/gif.latex?x_\text{A}y_\text{M}+x_\text{M}y_\text{E'}+x_\text{E'}y_\text{A}=x_\text{M}y_\text{A}+x_\text{E'}y_\text{M}+x_\text{A}y_\text{E'}">
 
-which implies *AME'* are collinear, so ∠*BAM* = ∠*CAD*.
+which implies *AME'* are collinear, so ∠*BAM* = ∠*CAD*. □
 
 Other proofs can be found [here](https://en.wikipedia.org/wiki/Symmedian#Construction_of_the_symmedian).
+
+### Construction of the Isogonal Conjugate
+
+<img src="diagrams/isogonal.png">
+
+*P* is an arbitrary point in triangle *ABC*. Construct the pedal trangle *DEF* and its circumcenter *M*. Reflect *P* about *M* at point *Q*, then *Q* is the **Isogonal Conjugate** of *P*.
+
+- [ ] Proof
+
+Other proofs can be found [here](https://blog.evanchen.cc/2014/11/30/three-properties-of-isogonal-conjugates/) (section 3) and [here](http://www.cut-the-knot.org/Curriculum/Geometry/OrthologicPedal.shtml).
