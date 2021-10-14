@@ -1,4 +1,4 @@
-from sympy import Eq, cancel, solve, symbols
+from sympy import Eq, solve, symbols
 from homogeneous import *
 
 def pair(conic, line):
@@ -35,7 +35,7 @@ def main():
     print('G:', G)
     print('H:', H)
     print('J:', J)
-    print(incidence(G, H, J))
+    print('Are GHI collinear?', incidence(G, H, J) == 0)
 
 if __name__ == '__main__':
     main()

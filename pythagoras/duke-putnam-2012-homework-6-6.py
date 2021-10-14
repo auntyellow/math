@@ -1,4 +1,4 @@
-from sympy import Eq, simplify, symbols
+from sympy import simplify
 from cartesian import *
 
 def dist2(p1, p2):

@@ -1,4 +1,3 @@
-from sympy import Eq, symbols
 from cartesian import *
 
 def main():
@@ -10,7 +9,7 @@ def main():
     A, C, D, F = intersect(AC, AF), intersect(AC, CD), intersect(DF, CD), intersect(DF, AF)
     AB, BC, DE, EF = line(A, B), line(B, C), line(D, E), line(E, F)
     G, H, J = intersect(AB, DE), intersect(BC, EF), (0, 0)
-    print(collinear(G, H, J))
+    print('Are GHJ collinear?', collinear(G, H, J))
 
 if __name__ == '__main__':
     main()

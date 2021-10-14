@@ -1,4 +1,3 @@
-from sympy import Eq, cancel, symbols
 from cartesian import *
 
 def pair(p1, p2, p3):
@@ -14,7 +13,7 @@ def main():
     E = intersect(line(O, B), line(C, A))
     F = intersect(line(O, C), line(A, B))
     (AF, FB), (BD, DC), (CE, EA) = pair(A, F, B), pair(B, D, C), pair(C, E, A)
-    print(cancel(AF*BD*CE - FB*DC*EA))
+    print('AF*BD*CE - FB*DC*EA =', cancel(AF*BD*CE - FB*DC*EA))
 
 if __name__ == '__main__':
     main()

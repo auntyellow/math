@@ -1,4 +1,4 @@
-from sympy import Eq, cancel, expand, lcm_list, symbols
+from sympy import expand, lcm_list
 from cartesian import *
 
 def L(a, b):

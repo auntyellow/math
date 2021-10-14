@@ -1,4 +1,4 @@
-from sympy import Eq, simplify, solve, sqrt, symbols
+from sympy import simplify, sqrt
 from cartesian import *
 
 def main():
@@ -10,7 +10,6 @@ def main():
     P = (a*(a + b)/AC - a, a*c/AC)
     r = solve(Eq((P[0] - O[0])**2 + (P[1] - O[1])**2, r**2), r)[0]
     print('r =', r)
-    r = a*((a + b)**2 + c**2 - 2*AC*a - 2*AC*b + a**2 + 2*a*b + b**2 + c**2)/(2*AC*c)
     BC, BP = line(B, C), line(B, P)
     OH = Eq(y, r - b*x/c)
     T = intersect(BP, OH)

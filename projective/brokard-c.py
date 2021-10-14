@@ -1,4 +1,4 @@
-from sympy import cos, sin, simplify, symbols
+from sympy import cos, sin
 from cartesian_s import *
 
 def line_t(t1, t2):
@@ -17,9 +17,9 @@ def main():
     print('E:', E)
     print('F:', F)
     print('G:', G)
-    print(perpendicular(E, F, G))
-    print(perpendicular(F, G, E))
-    print(perpendicular(G, E, F))
+    print('Is EF perpendicular to OG?', perpendicular(E, F, G) == 0)
+    print('Is FG perpendicular to OE?', perpendicular(F, G, E) == 0)
+    print('Is GE perpendicular to OF?', perpendicular(G, E, F) == 0)
 
 if __name__ == '__main__':
     main()

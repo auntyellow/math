@@ -1,4 +1,4 @@
-from sympy import Eq, expand, poly, solve, sqrt, symbols
+from sympy import expand, poly, sqrt
 from cartesian import *
 from homogeneous import *
 

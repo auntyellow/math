@@ -1,4 +1,4 @@
-from sympy import cos, sin, symbols
+from sympy import cos, sin
 from cartesian_s import *
 
 def tangent(t):
@@ -18,7 +18,7 @@ def main():
     print('D:', D)
     print('E:', E)
     print('F:', F)
-    print(concurrency(A, D, B, E, C, F))
+    print('Are AD, BE and CF concurrent?', concurrency(A, D, B, E, C, F) == 0)
 
 if __name__ == '__main__':
     main()

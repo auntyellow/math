@@ -1,4 +1,4 @@
-from sympy import Matrix, expand, symbols
+from sympy import expand, symbols
 from homogeneous import *
 
 def point_on_conic(conic_z_roots, x0, y0, root = 0):

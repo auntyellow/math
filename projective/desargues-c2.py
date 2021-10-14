@@ -1,4 +1,3 @@
-from sympy import Eq, symbols
 from cartesian import *
 
 def main():
@@ -9,7 +8,7 @@ def main():
     print('ab:', ab)
     print('ac:', ac)
     print('bc:', bc)
-    print(collinear(ab, ac, bc))
+    print('Are ab, ac and bc collinear?', collinear(ab, ac, bc))
 
 if __name__ == '__main__':
     main()

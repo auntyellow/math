@@ -1,4 +1,3 @@
-from sympy import Eq, symbols
 from cartesian import *
 
 def L(a, b):
@@ -17,7 +16,7 @@ def main():
     print('B2:', B2)
     print('C1:', C1)
     print('C2:', C2)
-    print(concurrency(A1, A2, B1, B2, C1, C2))
+    print('Are A1A2, B1B2 and C1C2 concurrent?', concurrency(A1, A2, B1, B2, C1, C2) == 0)
 
 if __name__ == '__main__':
     main()

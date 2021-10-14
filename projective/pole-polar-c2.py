@@ -1,4 +1,3 @@
-from sympy import Eq, solve, symbols
 from cartesian import *
 
 def main():
@@ -10,7 +9,8 @@ def main():
     circle = Eq(x**2 + y**2, 1)
     roots = solve([AB, circle], (x, y))
     C, D = roots[0], roots[1]
-    print(solve(Eq(cross_ratio(A[0], B[0], C[0], D[0]), -1), a1))
+    A = (0, solve(Eq(cross_ratio(A[0], B[0], C[0], D[0]), -1), a1)[0])
+    print('A:', A)
 
 if __name__ == '__main__':
     main()

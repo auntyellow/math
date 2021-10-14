@@ -1,4 +1,4 @@
-from sympy import Eq, cancel, expand, solve, symbols
+from sympy import Eq, expand, solve, symbols
 from homogeneous import *
 
 def pair(conic, line):
@@ -47,7 +47,7 @@ def main():
     print('gg:', gg)
     print('hh:', hh)
     print('jj:', jj)
-    print(incidence(gg, hh, jj))
+    print('Are gg, hh and jj concurrent?', incidence(gg, hh, jj) == 0)
 
 if __name__ == '__main__':
     main()

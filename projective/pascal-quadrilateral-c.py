@@ -1,4 +1,4 @@
-from sympy import cos, sin, symbols
+from sympy import cos, sin
 from cartesian_s import *
 
 def line_t(t1, t2):
@@ -16,22 +16,22 @@ def main():
     AB, BC, CD, DA = line_t(t1, t2), line_t(t2, t3), line_t(t3, t4), line_t(t4, t1)
     a, b, c, d = tangent(t1), tangent(t2), tangent(t3), tangent(t4)
     E, F, G, H = intersect(a, c), intersect(b, d), intersect(AB, CD), intersect(DA, BC)
-    print(collinear(E, F, G))
-    print(collinear(E, F, H))
+    print('Are EFG collinear?', collinear(E, F, G))
+    print('Are EFH collinear?', collinear(E, F, H))
     # AB∩CD (G), a∩BC (P) and b∩DA (Q) are also collinear
     P, Q = intersect(a, BC), intersect(b, DA)
-    print(collinear(G, P, Q))
+    print('Are GPQ collinear?', collinear(G, P, Q))
 
     # More interesting results:
     # BC∩DA (H), AC∩BD (J), a∩b (K) and c∩d (L) are also collinear
     AC, BD = line_t(t1, t3), line_t(t2, t4)
     J, K, L = intersect(AC, BD), intersect(a, b), intersect(c, d)
-    print(collinear(H, K, L))
-    print(collinear(J, K, L))
+    print('Are HKL collinear?', collinear(H, K, L))
+    print('Are JKL collinear?', collinear(J, K, L))
     # AB∩CD (G), AC∩BD (J), b∩c (M) and d∩a (N) are also collinear
     M, N = intersect(b, c), intersect(d, a)
-    print(collinear(G, M, N))
-    print(collinear(J, M, N))
+    print('Are GMN collinear?', collinear(G, M, N))
+    print('Are JMN collinear?', collinear(J, M, N))
     # Because E = a∩c = KN∩LM and F = b∩d = KM∩LN, we have (E, F; G, H) = -1
     # See https://en.wikipedia.org/wiki/Projective_harmonic_conjugate
 

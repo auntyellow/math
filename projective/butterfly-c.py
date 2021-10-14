@@ -1,4 +1,3 @@
-from sympy import Eq, cancel, solve, symbols
 from cartesian import *
 
 def pair(conic, line):
@@ -15,8 +14,8 @@ def main():
     AB = Eq(y, 0)
     PS, QR = line(P, S), line(Q, R)
     C, D = intersect(AB, PS), intersect(AB, QR)
-    print(cancel(1/A[0] + 1/B[0]))
-    print(cancel(1/C[0] + 1/D[0]))
+    print('1/MA + 1/MB =', cancel(1/A[0] + 1/B[0]))
+    print('1/MC + 1/MD =', cancel(1/C[0] + 1/D[0]))
 
 if __name__ == '__main__':
     main()

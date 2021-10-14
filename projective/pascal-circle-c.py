@@ -1,4 +1,4 @@
-from sympy import cos, sin, symbols
+from sympy import cos, sin
 from cartesian_s import *
 
 def line_t(t1, t2):
@@ -14,7 +14,7 @@ def main():
     print('G:', G)
     print('H:', H)
     print('K:', K)
-    print(collinear(G, H, K))
+    print('Are GHK collinear?', collinear(G, H, K))
 
 if __name__ == '__main__':
     main()
