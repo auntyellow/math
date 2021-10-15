@@ -34,6 +34,6 @@ Other proofs can be found [here](https://en.wikipedia.org/wiki/Symmedian#Constru
 
 *P* is an arbitrary point in triangle *ABC*. Construct the pedal trangle *DEF* and its circumcenter *M*. Reflect *P* about *M* at point *Q*, then *Q* is the **Isogonal Conjugate** of *P*.
 
-- [ ] Proof
+[Here](pythagoras/isogonal.py) proves <img src="https://latex.codecogs.com/gif.latex?\cos^2\angle{PAB}=\cos^2\angle{QAC}"> but not <img src="https://latex.codecogs.com/gif.latex?\cos\angle{PAB}=\cos\angle{QAC}">, because *P* may be a point outside the triangle, where we may have <img src="https://latex.codecogs.com/gif.latex?\angle{PAB}+\angle{QAC}=\pi"> instead of <img src="https://latex.codecogs.com/gif.latex?\angle{PAB}=\angle{QAC}">.
 
 Other proofs can be found [here](https://blog.evanchen.cc/2014/11/30/three-properties-of-isogonal-conjugates/) (section 3) and [here](http://www.cut-the-knot.org/Curriculum/Geometry/OrthologicPedal.shtml).
