@@ -63,7 +63,7 @@ Note that *x*<sub>P</sub> and *x*<sub>Q</sub> are two roots of equations:
 
 So we have:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{P}x_\text{Q}=f/Q\\x_\text{P}+x_\text{Q}=-(d+eq)/Q\end{cases}\;\text{(Eq.%203a)}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{P}x_\text{Q}=f/Q\\x_\text{P}+x_\text{Q}=-(d+eq)/Q\end{cases}\;\text{(Eq.\,3a)}">
 
 where <img src="https://latex.codecogs.com/gif.latex?Q=a+bq+cq^2">. (Here we don't consider *Q* = 0 because the line intersects the conic at two different points.)
 

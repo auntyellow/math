@@ -16,7 +16,7 @@ Here we use Vieta's formula because we already know a root *x*<sub>A</sub>:
 
 <img src="https://latex.codecogs.com/gif.latex?x_\text{E}=\frac{2(r^2-a^2)b}{2ab+b^2+r^2}-x_\text{A}=\frac{ab^2+ar^2+2br^2}{2ab+b^2+r^2}">
 
-Reflect *E* about x-axis to *E'* to make ∠*BAE'* = ∠*CAE*, then we have <img src="https://latex.codecogs.com/gif.latex?x_\text{E'}=x_\text{E}"> and
+Reflect *E* about x-axis at *E'* to make ∠*BAE'* = ∠*CAE*, then we have <img src="https://latex.codecogs.com/gif.latex?x_\text{E'}=x_\text{E}"> and
 
 <img src="https://latex.codecogs.com/gif.latex?y_\text{E'}=\frac{\sqrt{r^2-a^2}(b^2-r^2)}{2ab+b^2+r^2}">
 

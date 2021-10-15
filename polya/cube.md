@@ -8,7 +8,7 @@ I guessed two definitions of the "average width":
 
 According to the volume of cube and sphere:
 
-<img src="https://latex.codecogs.com/gif.latex?a^3=V=\frac{4\pi%20r^3}{3}">
+<img src="https://latex.codecogs.com/gif.latex?a^3=V=\frac{4{\pi}r^3}{3}">
 
 the solution is:
 
@@ -22,7 +22,7 @@ Here we use spherical coordinates:
 
 Then the average radius can be defined as:
 
-<img src="https://latex.codecogs.com/gif.latex?r_\text{avg}=\frac{1}{4\pi}\int_\Omega%20rd\Omega=\frac{1}{4\pi}\int_\phi\int_\theta%20r\sin\theta%20d\theta%20d\phi">
+<img src="https://latex.codecogs.com/gif.latex?r_\text{avg}=\frac{1}{4\pi}\int_{\Omega}rd\Omega=\frac{1}{4\pi}\int_\phi\int_{\theta}r\sin{\theta}d{\theta}d\phi">
 
 Here let's choose a cube with edge length 2, centered at the origin, then calculate the average radius (half of width) of one of the symmetric 48 parts of the cube:
 
@@ -41,7 +41,7 @@ So we have:
 
 Because of the symmetry, we can just integrate the average radius of the tetrahedron:
 
-<img src="https://latex.codecogs.com/gif.latex?r_\text{avg}=\frac{48}{\4\pi}\int_{\phi_\text{OAB}}^{\phi_\text{OAC}}\int_{\theta_\text{OA}}^{\theta_\text{OBC}}r_\text{ABC}\sin\theta%20d\theta%20d\phi=\frac{12}\pi\int_0^{\pi/4}\int_0^{\text{arccot}\cos\phi}\frac{\sin\theta}{\cos\theta}d\theta%20d\phi">
+<img src="https://latex.codecogs.com/gif.latex?r_\text{avg}=\frac{48}{\4\pi}\int_{\phi_\text{OAB}}^{\phi_\text{OAC}}\int_{\theta_\text{OA}}^{\theta_\text{OBC}}r_\text{ABC}\sin{\theta}d{\theta}d\phi=\frac{12}\pi\int_0^{\pi/4}\int_0^{\text{arccot}\cos\phi}\frac{\sin\theta}{\cos\theta}d{\theta}d\phi">
 
 Let's calculate the integral:
 
