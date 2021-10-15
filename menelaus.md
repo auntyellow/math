@@ -36,7 +36,7 @@ Let *O* be a point on *AD*, then *AD*, *BE* and *CF* are concurrent if and only 
 
 When written as homogeneous coordinates, <img src="https://latex.codecogs.com/gif.latex?O=pA+qD=pA+gqB+hqC">, then *AD*, *BE* and *CF* are concurrent if and only if:
 
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}0&1&0\\p&gq&hq\\k&0&j\end{matrix}\right]=0\;\&\;\det\left[\begin{matrix}0&0&1\\p&gq&hq\\m&n&0\end{matrix}\right]=0">
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}0&1&0\\p&gq&hq\\k&0&j\end{matrix}\right]=0\quad\&\enspace\det\left[\begin{matrix}0&0&1\\p&gq&hq\\m&n&0\end{matrix}\right]=0">
 
 We get <img src="https://latex.codecogs.com/gif.latex?hkn/gjm=1"> by eliminating *p* and *q*. Conversely, <img src="https://latex.codecogs.com/gif.latex?hkn/gjm=1"> means there exists *p* and *q* matching the above two equations. Therefore, Ceva's theorem is proved. <sup>[3]</sup>
 

@@ -33,13 +33,63 @@ They are obviously concurrent because their determinant of coefficients is zero:
 
 <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}d-g&e-h&f-j\\g-a&h-b&j-c\\a-d&b-e&c-f\end{matrix}\right]=0">
 
-### Tangent lines to two circles
+### Intersection of tangent lines to two circles
 
-Let's put centers of two circles onto y-axis, then any two circles can be denoted as:
+Here we are only interested in the intersection of two external tangent lines and the intersection of two internal ones, which means the intersection of an external one and an internal one is not considered.
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x^2+(y-a)^2=b^2\\x^2+(y-c)^2=d^2\end{cases}">
+Let's put two centers *A* and *B* onto y-axis, and denote these two circles as:
 
-A pair of tangent lines can be denoted as <img src="https://latex.codecogs.com/gif.latex?y=h\pm{kx}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x^2+(y-a)^2=R^2\\x^2+(y-b)^2=r^2\end{cases}\;(a>b,\,R\ge{r}>0)">
+
+Because of the symmetry about y-axis, a pair of either external or internal tangent lines can be denoted as:
+
+<img src="https://latex.codecogs.com/gif.latex?y=h\pm{kx}">
+
+The intersection is (0, *h*), so we are only interested in *h* but not *k*.
+
+When eliminating *y* with the first circle, we have:
+
+<img src="https://latex.codecogs.com/gif.latex?x^2+(h\pm{kx}-a)^2=b^2">
+
+which can be written as:
+
+<img src="https://latex.codecogs.com/gif.latex?(k^2+1)x^2\pm{2}k(h-a)x+(h-a)^2-R^2=0">
+
+Because a tangent line has only one common point with each circle, the discriminant should be zero, i.e.
+
+<img src="https://latex.codecogs.com/gif.latex?\Delta=k^2(h-a)^2-(k^2+1)((h-a)^2-R^2)=0">
+
+which can be written as:
+
+<img src="https://latex.codecogs.com/gif.latex?(k^2+1)R^2=(h-a)^2">
+
+Analogously, when tangent to the second circle, we have:
+
+<img src="https://latex.codecogs.com/gif.latex?(k^2+1)r^2=(h-b)^2">
+
+We get below equation by eliminating <img src="https://latex.codecogs.com/gif.latex?k^2+1">:
+
+<img src="https://latex.codecogs.com/gif.latex?\frac{R}{r}=\pm\frac{h-a}{h-b}">
+
+The first solution is:
+
+<img src="https://latex.codecogs.com/gif.latex?h=\frac{Rb-ra}{R-r}=b-\frac{r(a-b)}{R-r}">
+
+which is less than *b*, and should be infinity if *R* = *r* (two tangent lines parallel to y-axis). So it should be the intersection of two external tangent lines.
+
+Denote the intersection as *H*, then we have:
+
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{HA}}{\overrightarrow{HB}}=\frac{a-h}{b-h}=\frac{R}r\quad\text{(Eq.\,1)}">
+
+The second solution is:
+
+<img src="https://latex.codecogs.com/gif.latex?h'=\frac{ra+Rb}{r+R}">
+
+which is between *a* and *b*. So it should be the intersection of two internal tangent lines.
+
+Denote the intersection as *H'*, then we have:
+
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{H'A}}{\overrightarrow{BH'}}=\frac{a-h'}{h'-b}=\frac{R}r\quad\text{(Eq.\,2)}">
 
 ### Monge's theorem
 
