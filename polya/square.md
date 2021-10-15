@@ -4,9 +4,11 @@ The problem is in section 18 (part I) in *How to Solve It*:
 
 <img src="square.png">
 
-The triangle can be determined by a side *a* and its two angles *β* and *γ*. The sides of inscribed square are *x*. Then we have: *x* / cot *β* + *x* + *x* / cot *γ* = *a*.
+The triangle can be determined by a side *a* and its two angles *β* and *γ*. The sides of inscribed square are *x*. Then we have:
 
-We can rewrite the equation to:
+<img src="https://latex.codecogs.com/gif.latex?x\tan\beta+x+x\tan\gamma=a">
+
+which can be written to:
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{x}{a}=\frac{a}{a\cot\beta+a+a\cot\gamma}">
 

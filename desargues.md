@@ -36,7 +36,7 @@ and 6 vertices are:
 
 Then we denote 6 lines of 2 triangles as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_1B_1:g\cdot%20ej+j\cdot%20y=g\cdot%20y+x\cdot%20ej\\A_1C_1:g\cdot%20fm+m\cdot%20y=g\cdot%20y+x\cdot%20fm\\B_1C_1:x\cdot%20ej+j\cdot%20fm+m\cdot%20y=j\cdot%20y+m\cdot%20ej+x\cdot%20fm\\A_2B_2:h\cdot%20ek+k\cdot%20y=h\cdot%20y+x\cdot%20ek\\A_2C_2:h\cdot%20fn+n\cdot%20y=h\cdot%20y+x\cdot%20fn\\B_2C_2:x\cdot%20ek+k\cdot%20fn+n\cdot%20y=k\cdot%20y+n\cdot%20ek+x\cdot%20fn\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_1B_1:g{\cdot}ej+j{\cdot}y=g{\cdot}y+x{\cdot}ej\\A_1C_1:g{\cdot}fm+m{\cdot}y=g{\cdot}y+x{\cdot}fm\\B_1C_1:x{\cdot}ej+j{\cdot}fm+m{\cdot}y=j{\cdot}y+m{\cdot}ej+x{\cdot}fm\\A_2B_2:h{\cdot}ek+k{\cdot}y=h{\cdot}y+x{\cdot}ek\\A_2C_2:h{\cdot}fn+n{\cdot}y=h{\cdot}y+x{\cdot}fn\\B_2C_2:x{\cdot}ek+k{\cdot}fn+n{\cdot}y=k{\cdot}y+n{\cdot}ek+x{\cdot}fn\end{cases}">
 
 Finally, we get *ab*, *ac* and *bc*:
 
@@ -87,7 +87,7 @@ Then we have <img src="https://latex.codecogs.com/gif.latex?r\mathbf{A_2}-p\math
 
 <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}=r\mathbf{A_2}-p\mathbf{B_2}=qr\mathbf{A_1}-ps\mathbf{B_1}">
 
-which is collinear to *A*<sub>1</sub>*B*<sub>1</sub> and *A*<sub>2</sub>*B*<sub>2</sub>, i.e. <img src="https://latex.codecogs.com/gif.latex?G=A_1B_1\cap%20A_2B_2=ab">.
+which is collinear to *A*<sub>1</sub>*B*<sub>1</sub> and *A*<sub>2</sub>*B*<sub>2</sub>, i.e. <img src="https://latex.codecogs.com/gif.latex?G=A_1B_1{\cap}A_2B_2=ab">.
 
 Analogously, we have *ac*:
 

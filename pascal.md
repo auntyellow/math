@@ -147,7 +147,7 @@ We choose 3 arbitrary points *A*, *C* and *E* as 3 of 6 vertices on a hexagon, a
 
 Then we can calculate another 3 of 6 vertices:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}B=AB\cap%20BC=AG\cap%20HC\\D=CD\cap%20DE=CJ\cap%20GE\\F=EF\cap%20FA=EH\cap%20JA\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}B=AB{\cap}BC=AG{\cap}HC\\D=CD{\cap}DE=CJ{\cap}GE\\F=EF{\cap}FA=EH{\cap}JA\end{cases}">
 
 After some calcluations [here](projective/braikenridge-maclaurin-h.py), we get: 
 

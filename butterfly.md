@@ -35,11 +35,11 @@ Then we get:
 
 The coordinates of *C* and *D* can be calculated by:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{C}y_\text{P}+x_\text{P}y_\text{S}+x_\text{S}y_\text{C}=x_\text{P}y_\text{C}+x_\text{S}y_\text{P}+x_\text{C}y_\text{S}\\x_\text{D}y_\text{Q}+x_\text{Q}y_\text{R}+x_\text{R}y_\text{D}=x_\text{Q}y_\text{D}+x_\text{R}y_\text{Q}+x_\text{D}y_\text{R}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{C}y_\text{P}+x_\text{P}y_\text{S}+x_\text{S}y_\text{C}=x_\text{P}y_\text{C}+x_\text{S}y_\text{P}+x_\text{C}y_\text{S}\\x_\text{D}y_\text{Q}+x_\text{Q}y_\text{R}+x_\text{R}y_\text{D}=x_\text{Q}y_\text{D}+x_\text{R}y_\text{Q}+x_\text{D}y_\text{R}\end{cases}\;\text{(Eq.\,2a)}">
 
 Let's assume that neither *PQ* nor *RS* is perpendicular to *AB*, then *PQ* and *RS* can be represented as *y* = *qx* and *y* = *rx*. (We also assume *PQ* and *RS* not coinciding so that *q* ≠ *r*.)
 
-(The case either *PQ* or *RS* perpendicular to *AB* will be proven in Step 2b.)
+(The case either *PQ* or *RS* perpendicular to *AB* will be proved in Step 2b.)
 
 Then all y-coordinates can be replaced with 0 or x-coordinates:
 
@@ -79,7 +79,7 @@ Finally, we get: <sup>[3]</sup>
 
 #### Step 2b
 
-If *RS* is perpendicular to *AB*, we can still use Eq. 2a but keep *y*<sub>R</sub> and *y*<sub>R</sub> not replaced:
+If *RS* is perpendicular to *AB*, we can still use Eq. 2a but keep *y*<sub>R</sub> and *y*<sub>S</sub> not replaced:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}y_\text{C}=0\\y_\text{D}=0\\y_\text{P}=qx_\text{P}\\y_\text{Q}=qx_\text{Q}\\x_\text{R}=0\\x_\text{S}=0\end{cases}">
 
