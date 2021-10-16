@@ -4,7 +4,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 
 - [x] [24 Game Solver](https://github.com/auntyellow/24): gives you all dissimilar solutions
 - [x] [Friends and Strangers](ramsey.md) (Ramsey Number `R(3,3)=6`)
-- [ ] Radical Center and [Monge's theorem](monge.md)
+- [x] Radical Center and [Monge's theorem](monge.md)
 - [x] [Generalized Butterfly theorem](butterfly.md)
 - [x] [Desargues's theorem](desargues.md) and Pappus's theorem: Cartesian and Homogeneous coordinates
 - [x] [Menelaus's theorem](menelaus.md) and Ceva's theorem by Homogeneous coordinates

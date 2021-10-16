@@ -29,7 +29,7 @@ Here we use [SymPy](https://en.wikipedia.org/wiki/SymPy) to verify our result:
 ```python
 from sympy import *
 
-h, p, A = symbols("h, p, A")
+h, p, A = symbols('h, p, A')
 u = sqrt(h*p**2/2/(h + h*cos(A) + p*sin(A)))
 v = (p - u**2*sin(A)/h)/2
 y = v + sqrt(v**2 - u**2)
@@ -54,7 +54,7 @@ However, the verification of <img src="https://latex.codecogs.com/gif.latex?x^2=
 ```python
 from sympy import *
 
-h, p, A = symbols("h, p, A", positive=True)
+h, p, A = symbols('h, p, A', positive=True)
 xyz = (-p**2*sin(A)/2 + (4*p + 2*sqrt(p**4*sin(A)**2/(h*cos(A) + h + p*sin(A))**2))*(h*cos(A) + h + p*sin(A))/4)/(h*cos(A) + h + p*sin(A))
 xyz = refine(xyz, Q.positive(sin(A)))
 xyz = refine(xyz, Q.positive(h + h*cos(A) + p*sin(A)))

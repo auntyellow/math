@@ -1,7 +1,7 @@
 Radical center and Monge's theorem can be easily proved by Euclidean geometry. However, here we use coordinate approach to cover these cases:
 
 - The intersections of two circles may be imaginary points, but there exists a straight line passing through them.
-- The tangent lines to two circles may be imaginary lines, but there intersection point is real.
+- The tangent lines to two circles may be imaginary lines, but their intersection point is real.
 
 ### Radical line
 
@@ -14,6 +14,12 @@ Whatever the two roots are real or imaginary, we can always get a straight line 
 <img src="https://latex.codecogs.com/gif.latex?(a-d)x+(b-e)y+(c-f)=0">
 
 such that the two roots are on this line.
+
+For example, one circle is inside another:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x^2+y^2=9\\x^2+(y+1)^2=1\end{cases}">
+
+The two intersections are imaginary: <img src="https://latex.codecogs.com/gif.latex?(\pm{3}\sqrt{5}i/2,-9/2)">, but the straight line passing through them are real: <img src="https://latex.codecogs.com/gif.latex?y=-9/2">.
 
 ### Radical center
 
@@ -35,7 +41,7 @@ They are obviously concurrent because their determinant of coefficients is zero:
 
 ### Intersection of tangent lines to two circles
 
-Here we are only interested in the intersection of two external tangent lines and the intersection of two internal ones, which means the intersection of an external one and an internal one is not considered.
+Here we are only interested in the intersection of two external tangent lines (later we call it *external intersection*) and the intersection of two internal ones (later we call it *internal intersection*), which means the intersection of an external one and an internal one is not considered.
 
 Let's put two centers *A* and *B* onto y-axis, and denote these two circles as:
 
@@ -75,9 +81,7 @@ The first solution is:
 
 <img src="https://latex.codecogs.com/gif.latex?h=\frac{Rb-ra}{R-r}=b-\frac{r(a-b)}{R-r}">
 
-which is less than *b*, and should be infinity if *R* = *r* (two tangent lines parallel to y-axis). So it should be the intersection of two external tangent lines.
-
-Denote the intersection as *H*, then we have:
+which is less than *b*, and should be infinity if *R* = *r* (two tangent lines parallel to y-axis). So it should be the external intersection. Denote it as *H*, then we have:
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{HA}}{\overrightarrow{HB}}=\frac{a-h}{b-h}=\frac{R}r\quad\text{(Eq.\,1)}">
 
@@ -85,17 +89,35 @@ The second solution is:
 
 <img src="https://latex.codecogs.com/gif.latex?h'=\frac{ra+Rb}{r+R}">
 
-which is between *a* and *b*. So it should be the intersection of two internal tangent lines.
-
-Denote the intersection as *H'*, then we have:
+which is between *a* and *b*. So it should be the internal intersection. Denote it as *H'*, then we have:
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{H'A}}{\overrightarrow{BH'}}=\frac{a-h'}{h'-b}=\frac{R}r\quad\text{(Eq.\,2)}">
+
+For example, one circle is inside another:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x^2+y^2=9\\x^2+(y+1)^2=1\end{cases}">
+
+The two external tangent lines are <img src="https://latex.codecogs.com/gif.latex?y=\pm\sqrt{3}ix/2-3/2"> (tangent points are <img src="https://latex.codecogs.com/gif.latex?(\pm{3}\sqrt{3}i,-6)"> and <img src="https://latex.codecogs.com/gif.latex?(\pm\sqrt{3}i,-3)">), and their intersection is <img src="https://latex.codecogs.com/gif.latex?(0,-3/2)">.
+
+The two internal tangent lines are <img src="https://latex.codecogs.com/gif.latex?y=\pm\sqrt{15}ix/4-3/4"> (tangent points are <img src="https://latex.codecogs.com/gif.latex?(\pm{3}\sqrt{15}i,-12)"> and <img src="https://latex.codecogs.com/gif.latex?(\pm\sqrt{15}i,3)">), and their intersection is <img src="https://latex.codecogs.com/gif.latex?(0,-3/4)">.
 
 ### Monge's theorem
 
 <img src="diagrams/monge.png">
 
 **Monge's theorem** states that for any three circles in a plane, the intersection points of each of the three pairs of external tangent lines are collinear. This still holds even if one circle is completely inside another.
+
+Let's apply Eq. 1 onto three external intersections *D*, *E* and *F*:
+
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{DA}}{\overrightarrow{DB}}\cdot\frac{\overrightarrow{EC}}{\overrightarrow{EA}}\cdot\frac{\overrightarrow{FB}}{\overrightarrow{FC}}=\frac{r_A}{r_B}\cdot\frac{r_C}{r_A}\cdot\frac{r_B}{r_C}=1">
+
+According to Menelaus's theorem, *D*, *E* and *F* are collinear.
+
+The three internal intersections *D'*, *E'* and *F'* have a similar property. Let's apply Eq. 2 onto them:
+
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{D'A}}{\overrightarrow{BD'}}\cdot\frac{\overrightarrow{E'C}}{\overrightarrow{AE'}}\cdot\frac{\overrightarrow{F'B}}{\overrightarrow{CF'}}=\frac{r_A}{r_B}\cdot\frac{r_C}{r_A}\cdot\frac{r_B}{r_C}=1">
+
+According to Ceva's theorem, *CD'*, *BE'* and *AF'* are concurrent.
 
 ### Notes
 
