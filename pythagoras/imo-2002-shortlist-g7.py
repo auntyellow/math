@@ -40,7 +40,7 @@ def main():
     y_KM = solve(KM, y)[0]
     incircle_poly = poly(incircle.subs(y, y_KM), x)
     incircle_coeffs = incircle_poly.all_coeffs()
-    # Vieta's Formula: x_N + x_K = -b/a
+    # Vieta's formula: x_N + x_K = -b/a
     x_N = -incircle_coeffs[1]/incircle_coeffs[0] - K[0]
     N = (cancel(x_N), cancel(y_KM.subs(x, x_N)))
     print('N:', N)

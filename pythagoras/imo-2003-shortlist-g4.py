@@ -1,4 +1,4 @@
-from sympy import Eq, poly, simplify, solve, symbols
+from sympy import Eq, simplify, solve, symbols
 
 def circle(G):
     x, y = symbols('x, y')
@@ -6,13 +6,12 @@ def circle(G):
 
 def intersect(Ga, Gb):
     x, y = symbols('x, y')
-    # root[0] is (0, 0) so we choose root[1]
+    # Must root[0] be (0, 0)? 
     # return solve([Ga, Gb], (x, y))[1]
-    # We cannot guarantee (0, 0) is root[0] so another root should be given by Vieta's formula
     yi = solve(Eq(Ga.lhs - Gb.lhs, Ga.rhs - Gb.rhs), y)[0]
     eqGa = Ga.subs(y, yi)
-    coeffs = poly(eqGa.lhs - eqGa.rhs, x).all_coeffs()
-    xi = -coeffs[1]/coeffs[0]
+    # Divide a zero root to reduce order
+    xi = solve(Eq(eqGa.lhs/x, eqGa.rhs/x), x)[0]
     return xi, yi.subs(x, xi)
 
 def dist2(P1, P2):
