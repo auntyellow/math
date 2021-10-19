@@ -77,7 +77,7 @@ def main():
     O, A, B, C = (0, 0, 0), (a, 0, 0), (b, c, 0), (d, e, f)
     sphere_l = sphere(O, A, B, C)
     print('Sphere Equation:', sphere_l, '= 0')
-    # If we choose plane $y=kx$ throw point O, we'll get G with too many terms:
+    # If we choose plane $y=kx$ through point O, we'll get G with too many terms:
     # G[0] has 12319 terms
     # G[1] has 9959 terms
     # G[2] has 6337 terms
