@@ -10,7 +10,7 @@ def sphere(P1, P2, P3, P4):
     sphere_eqs.append(sphere_eq.subs(x, P3[0]).subs(y, P3[1]).subs(z, P3[2]))
     sphere_eqs.append(sphere_eq.subs(x, P4[0]).subs(y, P4[1]).subs(z, P4[2]))
     s = solve(sphere_eqs, (g, h, j, k))
-    return x**2 + y**2 + z**2 + s[g]*x + s[h]*y + s[j]*z + s[k]
+    return fraction(cancel(x**2 + y**2 + z**2 + s[g]*x + s[h]*y + s[j]*z + s[k]))[0]
 
 def coplanar(P1, P2, P3, P4):
     mat = []

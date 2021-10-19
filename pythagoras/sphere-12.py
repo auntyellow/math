@@ -9,7 +9,7 @@ def sphere(P1, P2, P3):
     sphere_eqs.append(sphere_eq.subs(x, P2[0]).subs(y, P2[1]).subs(z, P2[2]))
     sphere_eqs.append(sphere_eq.subs(x, P3[0]).subs(y, P3[1]).subs(z, P3[2]))
     s = solve(sphere_eqs, (g, h, k))
-    return x**2 + y**2 + z**2 + s[g]*x + s[h]*y + s[k]
+    return fraction(cancel(x**2 + y**2 + z**2 + s[g]*x + s[h]*y + s[k]))[0]
 
 def coplanar(P1, P2, P3, P4):
     mat = []
@@ -59,6 +59,29 @@ def on_sphere(sphere_h, P):
     x, y, z, w = symbols('x, y, z, w')
     return expand(sphere_h.subs(x, P[0]).subs(y, P[1]).subs(z, P[2]).subs(w, P[3])) == 0
 
+def tangent_plane(sphere_poly, P):
+    # Tangent plane to point (x0, y0, z0, w0) and quadratic curve plane
+    # /x\T/a b d g\/x\        /a b d g\/x0\
+    # |y| |b c e h||y| = 0 is |b c e h||y0|
+    # |z| |d e f j||z|        |d e f j||z0|
+    # \w/ \g h j k/\w/        \g h j k/\w0/
+    # For a sphere with equator on xy: 
+    # a = c = f
+    # b = d = e = j = 0
+    x, y, z, w = symbols('x, y, z, w')
+    coeff_a = sphere_poly.coeff_monomial(x**2)
+    coeff_g = sphere_poly.coeff_monomial(x*w)/2
+    coeff_h = sphere_poly.coeff_monomial(y*w)/2
+    coeff_k = sphere_poly.coeff_monomial(w**2)
+    x0 = coeff_a*P[0] + coeff_g*P[3]
+    y0 = coeff_a*P[1] + coeff_h*P[3]
+    z0 = coeff_a*P[2]
+    w0 = coeff_g*P[0] + coeff_h*P[1] + coeff_k*P[3]
+    return reduced(x0, y0, z0, w0)
+
+def dist2(P1, P2):
+    return cancel((P1[0]/P1[3] - P2[0]/P2[3])**2 + (P1[1]/P1[3] - P2[1]/P2[3])**2 + (P1[2]/P1[3] - P2[2]/P2[3])**2)
+
 def main():
     # https://www.imomath.com/index.php?options=323 (Problem 12)
     a, b, c, d, e, f, x, y, z, w = symbols('a, b, c, d, e, f, x, y, z, w')
@@ -66,9 +89,10 @@ def main():
     sphere_l = sphere(A, B, C)
     print('Sphere Equation:', sphere_l, '= 0')
     A1, B1, C1 = intersect(A, S, sphere_l), intersect(B, S, sphere_l), intersect(C, S, sphere_l)
-    sphere_h = poly(sphere_l, (x, y, z)).homogenize(w).expr
+    sphere_poly = poly(sphere_l, (x, y, z)).homogenize(w)
+    sphere_h = sphere_poly.expr
     print('Sphere Equation in Homogeneous:', sphere_h, '= 0')
-    A, B, C = to_homogeneous(A), to_homogeneous(B), to_homogeneous(C)
+    S, A, B, C = to_homogeneous(S), to_homogeneous(A), to_homogeneous(B), to_homogeneous(C)
     A1, B1, C1 = to_homogeneous(A1), to_homogeneous(B1), to_homogeneous(C1)
     print('A1:', A1)
     print('B1:', B1)
@@ -79,6 +103,19 @@ def main():
     print('Is A1 on Sphere?', on_sphere(sphere_h, A1))
     print('Is B1 on Sphere?', on_sphere(sphere_h, B1))
     print('Is C1 on Sphere?', on_sphere(sphere_h, C1))
+    plane_A1 = tangent_plane(sphere_poly, A1)
+    plane_B1 = tangent_plane(sphere_poly, B1)
+    plane_C1 = tangent_plane(sphere_poly, C1)
+    print('Tangent plane to A1:', plane_A1)
+    print('Tangent plane to B1:', plane_B1)
+    print('Tangent plane to C1:', plane_C1)
+    O = cross(plane_A1, plane_B1, plane_C1)
+    print('O:', O)
+    OS2 = dist2(O, S)
+    print('OS**2 =', OS2)
+    print('OS**2 - OA1**2 =', OS2 - dist2(O, A1))
+    print('OS**2 - OB1**2 =', OS2 - dist2(O, B1))
+    print('OS**2 - OC1**2 =', OS2 - dist2(O, C1))
 
 if __name__ == '__main__':
     main()
