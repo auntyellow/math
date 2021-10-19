@@ -1,10 +1,10 @@
 <img src="diagrams/desargues.png">
 
-**Desargues's theorem** states: Two triangles (*A*<sub>1</sub>*B*<sub>1</sub>*C*<sub>1</sub> and *A*<sub>2</sub>*B*<sub>2</sub>*C*<sub>2</sub>) are in perspective axially (i.e. points *bc*, *ab* and *ac* are collinear) if and only if they are in perspective centrally (i.e. lines *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> are concurrent). <sup>[1]</sup>
+**Desargues's theorem** states that two triangles (*A*<sub>1</sub>*B*<sub>1</sub>*C*<sub>1</sub> and *A*<sub>2</sub>*B*<sub>2</sub>*C*<sub>2</sub>) are in perspective axially (i.e. points *bc*, *ab* and *ac* are collinear) if and only if they are in perspective centrally (i.e. lines *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> are concurrent). <sup>[1]</sup>
 
-### Proof by Cartesian coordinates
+## Proof by Cartesian coordinates
 
-#### Collinear → Concurrent
+### Collinear → Concurrent
 
 Let's put point *ab* onto the origin, put *ac* and *bc* onto y-axis, and denote 6 lines of 2 triangles as:
 
@@ -22,9 +22,9 @@ Finally, we calculate the determinant of 9 coefficients of these 3 lines and get
 
 <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}y_\text{A1}-y_\text{A2}&x_\text{A2}-x_\text{A1}&x_\text{A1}y_\text{A2}-x_\text{A2}y_\text{A1}\\y_\text{B1}-y_\text{B2}&x_\text{B2}-x_\text{B1}&x_\text{B1}y_\text{B2}-x_\text{B2}y_\text{B1}\\y_\text{C1}-y_\text{C2}&x_\text{C2}-x_\text{C1}&x_\text{C1}y_\text{C2}-x_\text{C2}y_\text{C1}\end{matrix}\right]=0">
 
-which means *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> are concurrent. <sup>[2]</sup>
+which means *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> are concurrent. □ <sup>[2]</sup>
 
-#### Concurrent → Collinear
+### Concurrent → Collinear
 
 Let's put concurrent point *O* onto the origin, put *A*<sub>1</sub>*A*<sub>2</sub> onto x-axis, and denote lines *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> as:
 
@@ -42,11 +42,11 @@ Finally, we get *ab*, *ac* and *bc*:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{ab}=(-ghj+ghk+gjk-hjk)/(gk-hj)\\y_\text{ab}=(egjk-ehjk)/(gk-hj)\\x_\text{ac}=(-ghm+ghn+gmn-hmn)/(gn-hm)\\y_\text{ac}=(fgmn-fhmn)/(gn-hm)\\x_\text{bc}=(-jkm+jkn+jmn-kmn)/(jn-km)\\y_\text{bc}=(-ejkm+ejkn+fjmn-fkmn)/(jn-km)\end{cases}">
 
-which are collinear, i.e. <sup>[3]</sup>
+which are collinear, i.e.
 
-<img src="https://latex.codecogs.com/gif.latex?x_\text{ab}y_\text{ac}+x_\text{ac}y_\text{bc}+x_\text{bc}y_\text{ab}=x_\text{ac}y_\text{ab}+x_\text{bc}y_\text{ac}+x_\text{ab}y_\text{bc}">
+<img src="https://latex.codecogs.com/gif.latex?x_\text{ab}y_\text{ac}+x_\text{ac}y_\text{bc}+x_\text{bc}y_\text{ab}=x_\text{ac}y_\text{ab}+x_\text{bc}y_\text{ac}+x_\text{ab}y_\text{bc}"> □ <sup>[3]</sup>
 
-### Proof by Homogeneous coordinates
+## Proof by Homogeneous coordinates
 
 **Homogeneous coordinates** are widely used in projective geometry. Because of the [Duality](https://en.wikipedia.org/wiki/Homogeneous_coordinates#Line_coordinates_and_duality), both point and straight line can be represented as homogeneous coordinates, and share the same form:
 
@@ -57,12 +57,12 @@ which are collinear, i.e. <sup>[3]</sup>
 - Three points *A*, *B* and *C* are collinear if and only if there exists non-zero *m* and *n* such that <img src="https://latex.codecogs.com/gif.latex?A=mB+nC">
 - Three straight lines *α*, *β* and *γ* are concurrent if and only if there exists non-zero *p* and *q* such that <img src="https://latex.codecogs.com/gif.latex?\alpha=p\beta+q\gamma">
 
-#### Advantages
+**Advantages:**
 
 - A theorem and its dual theorem share the same proof process, so no necessary to prove twice.
 - There are only additions, subtractions and multiplications during proof process, so all expressions are polynomials, which are simpler than rational functions.
 
-#### Disadvantages
+**Disadvantages:**
 
 - Each point needs 3 variables, more than Cartesian coordinates.
 - Should use origin and axes carefully, because the origin and axes are dual as lines and points at infinity.
@@ -72,38 +72,106 @@ For example, to reduce number of variables, we should carefully put a regular po
 - put onto y-axis as *P*(0,*b*,1), which may not cover the parallel case in "3 lines are parallel or concurrent at point *P*";  
 - put onto y-axis as *P*(0,*b*,*c*), which may work well.
 
-#### Tricks
+**Tricks:**
 
 - Both <img src="https://latex.codecogs.com/gif.latex?(kx_1,kx_2,kx_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> represent the same point, so divide by their common factor as early as possible to simplify calculation.
 - Homogeneous coordinates can be denoted as 3D vectors. The line passing through two points, or the intersection point of two lines, can be determined by [Cross Product](https://en.wikipedia.org/wiki/Cross_product). The collinearity and concurrency can be determined by [Triple Product](https://en.wikipedia.org/wiki/Triple_product).
 
-#### Proof
+### Proof
 
-Here we use 3D vector form and denote points *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> as **O**, **A**<sub>1</sub>, **B**<sub>1</sub>, **C**<sub>1</sub>, then we have:
+Because *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> are concurrent at *O*, we have:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{A_2}=p\mathbf{O}+q\mathbf{A_1}\\\mathbf{B_2}=r\mathbf{O}+s\mathbf{B_1}\\\mathbf{C_2}=t\mathbf{O}+u\mathbf{C_1}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_2=pO+qA_1\\B_2=rO+sB_1\\C_2=tO+uC_1\end{cases}">
 
-Then we have <img src="https://latex.codecogs.com/gif.latex?r\mathbf{A_2}-p\mathbf{B_2}=qr\mathbf{A_1}-ps\mathbf{B_1}">, so there exists a point:
+Then we have <img src="https://latex.codecogs.com/gif.latex?rA_2-pB_2=qrA_1-psB_1">, so there exists a point:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}=r\mathbf{A_2}-p\mathbf{B_2}=qr\mathbf{A_1}-ps\mathbf{B_1}">
+<img src="https://latex.codecogs.com/gif.latex?G=rA_2-pB_2=qrA_1-psB_1">
 
 which is collinear to *A*<sub>1</sub>*B*<sub>1</sub> and *A*<sub>2</sub>*B*<sub>2</sub>, i.e. <img src="https://latex.codecogs.com/gif.latex?G=A_1B_1{\cap}A_2B_2=ab">.
 
 Analogously, we have *ac*:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=t\mathbf{B_2}-r\mathbf{C_2}=st\mathbf{B_1}-ru\mathbf{C_1}">
+<img src="https://latex.codecogs.com/gif.latex?H=tB_2-rC_2=stB_1-ruC_1">
 
 and *bc*:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=p\mathbf{C_2}-t\mathbf{A_2}=pu\mathbf{C_1}-qt\mathbf{A_1}">
+<img src="https://latex.codecogs.com/gif.latex?J=pC_2-tA_2=puC_1-qtA_1">
 
-Finally, we get <img src="https://latex.codecogs.com/gif.latex?t\mathbf{G}+p\mathbf{H}+r\mathbf{J}=\mathbf{0}">, which means *ab*, *ac* and *bc* are collinear.
+Finally, we get <img src="https://latex.codecogs.com/gif.latex?tG+pH+rJ=0">, which means *ab*, *ac* and *bc* are collinear. □ <sup>[4]</sup>
 
-If **O**, **A**<sub>1</sub>, **B**<sub>1</sub>, **C**<sub>1</sub> represent 4 lines, then **A**<sub>2</sub>, **B**<sub>2</sub>, **C**<sub>2</sub> are 3 lines respectively passing through intersections **OA**<sub>1</sub>, **OB**<sub>1</sub>, **OC**<sub>1</sub>. Then **A**<sub>1</sub> **B**<sub>1</sub> **C**<sub>1</sub> and **A**<sub>2</sub> **B**<sub>2</sub> **C**<sub>2</sub> are 6 edges of two perspective triangles. So the above proof process also means the 3 perspective lines **G**, **H** and **J** are concurrent, which is the dual and converse theorem.
+If *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> represent 4 lines, then *A*<sub>2</sub>, *B*<sub>2</sub>, *C*<sub>2</sub> are 3 lines respectively passing through intersections *OA*<sub>1</sub>, *OB*<sub>1</sub>, *OC*<sub>1</sub>. Then *A*<sub>1</sub> *B*<sub>1</sub> *C*<sub>1</sub> and *A*<sub>2</sub> *B*<sub>2</sub> *C*<sub>2</sub> are 6 edges of two perspective triangles. So the above proof process also means the 3 perspective lines *G*, *H* and *J* are concurrent, which is the dual and converse theorem.
 
-#### A more brute-force proof
+### Proof of Pappus's Theorem
 
-Just after getting **A**<sub>2</sub> **B**<sub>2</sub> **C**<sub>2</sub> from above process, we denote intersection *ab* as: <sup>[4]</sup>
+<img src="diagrams/pappus.png">
+
+**Pappus's theorem** states that given two sets of collinear points *AEC* and *DBF*, then the intersection points *G*=*AB*∩*DE*, *H*=*BC*∩*EF* and *J*=*AF*∩*CD* are collinear.
+
+Given 4 arbitrary points *A*, *B*, *C* and *D*, from which no three points are collinear, we can denote *D* as:
+
+<img src="https://latex.codecogs.com/gif.latex?D=A+pB+qC">
+
+*E* is collinear with *A* and *C*:
+
+<img src="https://latex.codecogs.com/gif.latex?E=A+rC">
+
+*F* is collinear with *B* and *D*:
+
+<img src="https://latex.codecogs.com/gif.latex?F=sB+D=A+(p+s)B+qC">
+
+Now let's calculate *G*, *H* and *J*.
+
+*G* is collinear with *A* and *B*:
+
+<img src="https://latex.codecogs.com/gif.latex?G=A+xB">
+
+Take (*A*, *B*, *C*) as basis, then the coefficients' determinant of *D*, *E* and *G* should be zero because they are collinear:
+
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&p&q\\1&0&r\\1&x&0\end{matrix}\right]=0">
+
+Solve <img src="https://latex.codecogs.com/gif.latex?x=pr/(r-q)">:
+
+<img src="https://latex.codecogs.com/gif.latex?G=A+\frac{pr}{r-q}B">
+
+Next, *H* is collinear with *B* and *C*:
+
+<img src="https://latex.codecogs.com/gif.latex?H=B+yC">
+
+And *H* is also collinear with *E* and *F*:
+
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&0&r\\1&p+s&q\\0&1&y\end{matrix}\right]=0">
+
+Solve <img src="https://latex.codecogs.com/gif.latex?y=(q-r)/(p+s)">:
+
+<img src="https://latex.codecogs.com/gif.latex?H=B+\frac{q-r}{p+s}C">
+
+Next, *J* is not collinear with *A*, *B* and *C*, so we denote *J* (just like *D*) as:
+
+<img src="https://latex.codecogs.com/gif.latex?J=A+zB+wC">
+
+However, *J* is collinear with *A* and *F*, and also collinear with *C* and *D*:
+
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&0&0\\1&p+s&q\\1&z&w\end{matrix}\right]=0\quad\&\enspace\det\left[\begin{matrix}0&0&1\\1&p&q\\1&z&w\end{matrix}\right]=0">
+
+Solve <img src="https://latex.codecogs.com/gif.latex?z=p"> and <img src="https://latex.codecogs.com/gif.latex?w=pq/(p+s)">:
+
+<img src="https://latex.codecogs.com/gif.latex?J=A-pB+\frac{pq}{p+s}C">
+
+Now let's calculate the coefficients' determinant of *G*, *H* and *J*:
+
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&\frac{pr}{r-q}&0\\0&1&\frac{q-r}{p+s}\\1&p&\frac{pq}{p+s}\end{matrix}\right]=0">
+
+which means *G*, *H* and *J* are collinear. □ <sup>[5]</sup>
+
+If *A*, *C*, *E* represent 3 concurrent lines and *B*, *D*, *F* represent another 3 concurrent lines, then the 3 lines *G*, *H*, *J*, respectively passing through *A*∩*B* and *D*∩*E*, *B*∩*C* and *E*∩*F*, *A*∩*F* and *C*∩*D*, are concurrent, which is the [dual theorem](https://en.wikipedia.org/wiki/Pappus%27s_hexagon_theorem#Dual_theorem).
+
+### 3D vector proof of Desargues's theorem
+
+Denote points *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> as **O**, **A**<sub>1</sub>, **B**<sub>1</sub>, **C**<sub>1</sub>, then we have:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{A_2}=p\mathbf{O}+q\mathbf{A_1}\\\mathbf{B_2}=r\mathbf{O}+s\mathbf{B_1}\\\mathbf{C_2}=t\mathbf{O}+u\mathbf{C_1}\end{cases}">
+
+And we denote intersection *ab* as: <sup>[6]</sup>
 
 <img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})}">
 
@@ -115,11 +183,9 @@ and *bc*:
 
 <img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=[(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}](st\mathbf{B_1}-ru\mathbf{C_1})">
 
-Finally, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">, which means *ab*, *ac* and *bc* are collinear. <sup>[5]</sup>
+Finally, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">, which means *ab*, *ac* and *bc* are collinear. □
 
-#### Proof of Pappus's Theorem
-
-Analogously, we can use 3D vector form to prove Pappus's theorem: given two sets of collinear points *AEC* and *DBF*, then the intersection points *G*=*AB*∩*DE*, *H*=*BC*∩*EF* and *J*=*AF*∩*CD* are collinear.
+### 3D vector proof of Pappus's Theorem
 
 Given 4 arbitrary points **A**, **B**, **C** and **D**, then **E** and **F** can be denoted as:
 
@@ -133,15 +199,13 @@ where
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}a=(\mathbf{B}\times\mathbf{C})\cdot\mathbf{D}\\b=(\mathbf{A}\times\mathbf{C})\cdot\mathbf{D}\\c=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{D}\\d=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}\end{cases}">
 
-After some calculations, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">, which means *G*, *H* and *J* are collinear. <sup>[6]</sup>
-
-If **A**, **C**, **E** represent 3 concurrent lines and **B**, **D**, **F** represent another 3 concurrent lines, then the 3 lines **G**, **H**, **J**, respectively passing through **A∩B** and **D∩E**, **B∩C** and **E∩F**, **A∩F** and **C∩D**, are concurrent, which is the [dual theorem](https://en.wikipedia.org/wiki/Pappus%27s_hexagon_theorem#Dual_theorem).
+After some calculations, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">, which means *G*, *H* and *J* are collinear. □
 
 ### Notes
 
 1. Here we use the diagram from [Cut the Knot](https://www.cut-the-knot.org/Curriculum/Geometry/Desargues.shtml).
 2. This complicated result can be solved by SymPy [here](projective/desargues-c1.py).
 3. This complicated result can be solved by SymPy [here](projective/desargues-c2.py).
-4. Here we should use some [vector formulas](diagrams/vector-formulas.png) (copied from the first page in John David Jackson's *Classical Electrodynamics*).
-5. [Here](projective/desargues-h.py) is a proof of Desargues's theorem by pure homogeneous coordinates.
-6. [Here](projective/pappus-h.py) is a proof of Pappus's theorem by pure homogeneous coordinates; [here](projective/pappus-c1.py) and [here](projective/pappus-c2.py) are proofs by Cartesian coordinates.
+4. [Here](projective/desargues-h.py) is a proof of Desargues's theorem by homogeneous coordinates without linear algebra.
+5. [Here](projective/pappus-h.py) is a proof of Pappus's theorem by homogeneous coordinates without linear algebra; [here](projective/pappus-c1.py) and [here](projective/pappus-c2.py) are proofs by Cartesian coordinates.
+6. Here we should use some [vector formulas](diagrams/vector-formulas.png) (copied from the first page in John David Jackson's *Classical Electrodynamics*).
