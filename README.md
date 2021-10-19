@@ -12,6 +12,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Symmedian and Isogonal Conjugate](symmedian.md)
 - [ ] [Euler Line](pythagoras/euler-line.py) and Feuerbach's theorem
 - [x] [Contest geometry problems](contest.md)
+- [ ] [Solid geometry problems](sphere.md)
 
 Problems in *How to Solve It* by G. Pólya
 
