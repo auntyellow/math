@@ -36,9 +36,9 @@ Just like the previous problem, we define arbitrary points *O*(0,0,0), *A*(*a*,0
 
 <img src="https://latex.codecogs.com/gif.latex?x^2+y^2+z^2+gx+hy+jz+k=0\quad\text{(Eq.\,2)}">
 
-Now we should set points *D*, *E* and *F* on this sphere to make *OBCD*, *OCAE* and *OABF* three quadrilateral (i.e. *D*, *E* and *F* are on plane *OBC*, *OCA* and *OAB* respectively).
+Now we should set points *D*, *E* and *F* on this sphere to make *OBCD*, *OCAE* and *OABF* as three quadrilaterals (i.e. *D*, *E* and *F* are on plane *OBC*, *OCA* and *OAB* respectively).
 
-Take *F* as example, it is on sphere (Eq. 2) and plane *OAB* (<img src="https://latex.codecogs.com/gif.latex?z=0">), so we need to add another arbitrary parameter to fix this point.
+Take *F* as example, it is on the sphere (Eq. 2) and plane *OAB* (<img src="https://latex.codecogs.com/gif.latex?z=0">), so we need to add another arbitrary parameter to fix this point.
 
 Let's try <img src="https://latex.codecogs.com/gif.latex?y=mx"> which passes through *O*, then eliminate *y* and *z* in Eq. 2 and get a quadratic equation about *x*. Just like the previous problem, because *x*<sub>0</sub> = 0 is the point *O*, we can reduce the order and get another root *x*<sub>1</sub> for point *F*.
 
@@ -46,7 +46,7 @@ Analogously, we can get *E* from plane *OCA* and <img src="https://latex.codecog
 
 Now the sphere Eq. 2 and points *A*, *B*, *C*, *D*, *E* and *F* are all rational expressions about *a*, *b*, *c*, *d*, *e*, *f*, *m*, *n* and *p*. Convert them to homogeneous coordinates, calculate planes *CDE*, *BFD* and *AEF*, then calculate the intersection *G* of these three planes.
 
-However, the homogeneous coordinates of *G* contain too many terms (*x*<sub>G</sub> has more than 12 thousands terms so *x*<sub>G</sub><sup>2</sup> should have more than 70 millions terms), which may not be feasible to check if *G* is on the sphere.
+However, the homogeneous coordinates of *G* contain too many terms (*x*<sub>G</sub> has more than 12 thousand terms so *x*<sub>G</sub><sup>2</sup> should have more than 70 million terms), which may not be feasible to check if *G* is on the sphere.
 
 So we should pick *D*, *E* and *F* in a different way to make *G* simple. Take plane *BFD* as example, the coordinates of the plane will be simpler if coordinates of *B* and *F* have less differences. So we should choose a simple plane passing through *B* instead of *O* during picking *F*.
 
