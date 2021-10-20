@@ -50,12 +50,15 @@ which are collinear, i.e.
 
 **Homogeneous coordinates** are widely used in projective geometry. Because of the [Duality](https://en.wikipedia.org/wiki/Homogeneous_coordinates#Line_coordinates_and_duality), both point and straight line can be represented as homogeneous coordinates, and share the same form:
 
+- A point <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> lies on a straight line <img src="https://latex.codecogs.com/gif.latex?[u_1,u_2,u_3]"> (i.e. a straight line passes through a point) if and only if <img src="https://latex.codecogs.com/gif.latex?x_1u_1+x_2u_2+x_3u_3=0">.
 - The straight line passing through two points <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x'_1,x'_2,x'_3)"> is <img src="https://latex.codecogs.com/gif.latex?[x_2x'_3-x_3x'_2,x_3x'_1-x_1x'_3,x_1x'_2-x_2x'_1]">.
 - The intersection point of two straight lines <img src="https://latex.codecogs.com/gif.latex?[u_1,u_2,u_3]"> and <img src="https://latex.codecogs.com/gif.latex?[u'_1,u'_2,u'_3]"> is <img src="https://latex.codecogs.com/gif.latex?(u_2u'_3-u_3u'_2,u_3u'_1-u_1u'_3,u_1u'_2-u_2u'_1)">.
-- Three points <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)">, <img src="https://latex.codecogs.com/gif.latex?(x'_1,x'_2,x'_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x''_1,x''_2,x''_3)"> are collinear if and only if <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}x_1&x_2&x_3\\x'_1&x'_2&x'_3\\x''_1&x''_2&x''_3\end{matrix}\right]=0">
-- Three straight lines <img src="https://latex.codecogs.com/gif.latex?[u_1,u_2,u_3]">, <img src="https://latex.codecogs.com/gif.latex?[u'_1,u'_2,u'_3]"> and <img src="https://latex.codecogs.com/gif.latex?[u''_1,u''_2,u''_3]"> are concurrent if and only if <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}u_1&u_2&u_3\\u'_1&u'_2&u'_3\\u''_1&u''_2&u''_3\end{matrix}\right]=0">
-- Three points *A*, *B* and *C* are collinear if and only if there exists non-zero *m* and *n* such that <img src="https://latex.codecogs.com/gif.latex?A=mB+nC">
-- Three straight lines *α*, *β* and *γ* are concurrent if and only if there exists non-zero *p* and *q* such that <img src="https://latex.codecogs.com/gif.latex?\alpha=p\beta+q\gamma">
+
+From linear algebra point of view:
+
+- Two points (straight lines) *A* and *B* are the same point (straight line) if and only if they are they are linear-dependent.
+- Three points (straight lines) *A*, *B* and *C* are collinear (concurrent) if and only if they are linear-dependent (in other words, there exists non-zero *m* and *n* such that <img src="https://latex.codecogs.com/gif.latex?A=mB+nC">, this also means their 3 x 3 determinant is zero).
+- Four points (straight lines) whether collinear (concurrent) or not, are always linear-dependent.
 
 **Advantages:**
 
@@ -68,6 +71,7 @@ which are collinear, i.e.
 - Should use origin and axes carefully, because the origin and axes are dual as lines and points at infinity.
 
 For example, to reduce number of variables, we should carefully put a regular point *P*(*a*,*b*,*c*) onto special places:
+
 - put onto origin as *P*(0,0,1), which may not work for the dual process because line [0,0,1] denotes a line at infinity;
 - put onto y-axis as *P*(0,*b*,1), which may not cover the parallel case in "3 lines are parallel or concurrent at point *P*";  
 - put onto y-axis as *P*(0,*b*,*c*), which may work well.
@@ -131,7 +135,9 @@ Take (*A*, *B*, *C*) as basis, then the coefficients' determinant of *D*, *E* an
 
 Solve <img src="https://latex.codecogs.com/gif.latex?x=pr/(r-q)">:
 
-<img src="https://latex.codecogs.com/gif.latex?G=A+\frac{pr}{r-q}B">
+<img src="https://latex.codecogs.com/gif.latex?G=A+\frac{pr}{r-q}B\quad\text{(Eq.\,1)}">
+
+(Note that we cannot denote G again as <img src="https://latex.codecogs.com/gif.latex?G=D+x'E">. However, <img src="https://latex.codecogs.com/gif.latex?G=x'D+x''E"> or <img src="https://latex.codecogs.com/gif.latex?G'=D+x'E=x''G"> are okay and they can get the same result as Eq. 1.)
 
 Next, *H* is collinear with *B* and *C*:
 
@@ -143,21 +149,21 @@ And *H* is also collinear with *E* and *F*:
 
 Solve <img src="https://latex.codecogs.com/gif.latex?y=(q-r)/(p+s)">:
 
-<img src="https://latex.codecogs.com/gif.latex?H=B+\frac{q-r}{p+s}C">
+<img src="https://latex.codecogs.com/gif.latex?H=B+\frac{q-r}{p+s}C\quad\text{(Eq.\,2)}">
 
-Next, *J* is not collinear with *A*, *B* and *C*, so we denote *J* (just like *D*) as:
+Next, *J* is collinear with *C* and *D*:
 
-<img src="https://latex.codecogs.com/gif.latex?J=A+zB+wC">
+<img src="https://latex.codecogs.com/gif.latex?J=zC+D=A+pB+(z+q)C">
 
-However, *J* is collinear with *A* and *F*, and also collinear with *C* and *D*:
+And *J* is also collinear with *A* and *F*:
 
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&0&0\\1&p+s&q\\1&z&w\end{matrix}\right]=0\quad\&\enspace\det\left[\begin{matrix}0&0&1\\1&p&q\\1&z&w\end{matrix}\right]=0">
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&0&0\\1&p+s&q\\1&p&z+q\end{matrix}\right]=0">
 
-Solve <img src="https://latex.codecogs.com/gif.latex?z=p"> and <img src="https://latex.codecogs.com/gif.latex?w=pq/(p+s)">:
+Solve <img src="https://latex.codecogs.com/gif.latex?z=-qs/(p+s)">:
 
-<img src="https://latex.codecogs.com/gif.latex?J=A-pB+\frac{pq}{p+s}C">
+<img src="https://latex.codecogs.com/gif.latex?J=A+pB+\frac{pq}{p+s}C\quad\text{(Eq.\,3)}">
 
-Now let's calculate the coefficients' determinant of *G*, *H* and *J*:
+Now let's calculate the coefficients' determinant of *G*, *H* and *J* from Eq. 1, 2 and 3:
 
 <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&\frac{pr}{r-q}&0\\0&1&\frac{q-r}{p+s}\\1&p&\frac{pq}{p+s}\end{matrix}\right]=0">
 
