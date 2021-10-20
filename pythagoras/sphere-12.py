@@ -24,7 +24,7 @@ def plane(P1, P2, P3):
     return coplanar((x, y, z), P1, P2, P3)
 
 def intersect(P, S, sphere_l):
-    # return the intersect of PS and sphere_l(x, y, z) = 0:
+    # return the intersection of PS and sphere_l(x, y, z) = 0:
     x, y, z, t = symbols('x, y, z, t')
     xt, yt, zt = P[0] + (S[0] - P[0])*t, P[1] + (S[1] - P[1])*t, P[2] + (S[2] - P[2])*t
     t0 = solve(Eq(sphere_l.subs(x, xt).subs(y, yt).subs(z, zt)/t, 0), t)[0]
