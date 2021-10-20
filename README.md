@@ -11,8 +11,8 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Pascal's theorem](pascal.md), Brianchon's theorem and Braikenridge-Maclaurin theorem
 - [x] [Symmedian and Isogonal Conjugate](symmedian.md)
 - [ ] [Euler Line](pythagoras/euler-line.py) and Feuerbach's theorem
-- [x] [Contest geometry problems](contest.md)
-- [ ] [Solid geometry problems](sphere.md)
+- [x] [Contest problems](contest.md)
+- [x] [Solid geometry](sphere.md)
 
 Problems in *How to Solve It* by G. Pólya
 
