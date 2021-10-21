@@ -71,7 +71,7 @@ Finally, the incircle with center *I* and the circumcircle with center *S* are t
 
 [Here](pythagoras/imo-2002-shortlist-g7.py) is the proof process. We keep *AB* and *AC* not substituted until the last step to avoid square root calculations. At last, we use homogeneous coordinates to avoid fraction calculations, then substitute *AB* and *AC* to get the final result.
 
-### Note
+### Notes
 
 1. [Duke 2012 Putnam preparation, Homework 6: Geometry](https://imomath.com/index.php?options=586), Problem 8
 2. [IMO 2002 Shortlist](https://anhngq.files.wordpress.com/2010/07/imo-2002-shortlist.pdf), G4

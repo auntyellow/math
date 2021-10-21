@@ -56,7 +56,7 @@ Analogously, we can get *E* by <img src="https://latex.codecogs.com/gif.latex?x=
 
 [Here](pythagoras/sphere-11.py) is the computational proof.
 
-### Note
+### Notes
 
 1. https://imomath.com/index.php?options=323, Problem 12
 2. https://imomath.com/index.php?options=323, Problem 11

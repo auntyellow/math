@@ -119,6 +119,6 @@ The three internal intersections *D'*, *E'* and *F'* have a similar property. Le
 
 According to Ceva's theorem, *CD'*, *BE'* and *AF'* are concurrent.
 
-### Notes
+### Note
 
 1. We use the diagram from [here](https://mathworld.wolfram.com/RadicalCenter.html).
