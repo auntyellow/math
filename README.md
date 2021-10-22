@@ -10,7 +10,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Pascal's theorem](pascal.md), Brianchon's theorem and Braikenridge-Maclaurin theorem
 - [x] Radical Center and [Monge's theorem](monge.md)
 - [x] [Symmedian and Isogonal Conjugate](symmedian.md)
-- [ ] [Euler Line](pythagoras/euler-line.py) and Feuerbach's theorem
+- [ ] Euler Line and [Feuerbach's theorem](feuerbach.md)
 - [x] [Contest problems](contest.md)
 - [x] [Solid geometry](sphere.md)
 

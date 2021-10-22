@@ -42,7 +42,7 @@ We get <img src="https://latex.codecogs.com/gif.latex?hkn/gjm=1"> by eliminating
 
 ### Duality
 
-It is not obvious that Menelaus's theorem and Ceva's theorem are dual. But please look at this theorem:
+It is not obvious that Menelaus's theorem and Ceva's theorem are dual. Let's start from this theorem:
 
 A straight line intersects a triangle *ABC*'s three edges *BC*, *CA* and *AB* at point *D*<sub>0</sub>, *E*<sub>0</sub> and *F*<sub>0</sub> respectively. Take another three points *D*, *E* and *F* on *BC*, *CA* and *AB* respectively, then *D*, *E* and *F* are collinear if and only if:
 
@@ -64,9 +64,11 @@ Three line *d*<sub>0</sub>, *e*<sub>0</sub> and *f*<sub>0</sub> passing through 
 
 <img src="https://latex.codecogs.com/gif.latex?(b,c;d,d_0)\cdot(c,a;e,e_0)\cdot(a,b;f,f_0)=1">
 
-When *d*<sub>0</sub>, *e*<sub>0</sub> and *f*<sub>0</sub> meet at the incenter, which means <img src="https://latex.codecogs.com/gif.latex?\widehat{bd_0}=-\widehat{cd_0}">, <img src="https://latex.codecogs.com/gif.latex?\widehat{ce_0}=-\widehat{ae_0}"> and <img src="https://latex.codecogs.com/gif.latex?\widehat{af_0}=-\widehat{bf_0}">, we get another form of Ceva's theorem:
+When *d*<sub>0</sub>, *e*<sub>0</sub> and *f*<sub>0</sub> meet at the incenter, which means <img src="https://latex.codecogs.com/gif.latex?\widehat{bd_0}=-\widehat{cd_0}">, <img src="https://latex.codecogs.com/gif.latex?\widehat{ce_0}=-\widehat{ae_0}"> and <img src="https://latex.codecogs.com/gif.latex?\widehat{af_0}=-\widehat{bf_0}">, we get another form of Ceva's theorem: <sup>[5]</sup>
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{\sin\widehat{bd}}{\sin\widehat{cd}}\cdot\frac{\sin\widehat{ce}}{\sin\widehat{ae}}\cdot\frac{\sin\widehat{af}}{\sin\widehat{bf}}=-1"> <sup>[5]</sup>
+<img src="https://latex.codecogs.com/gif.latex?\frac{\sin\widehat{bd}}{\sin\widehat{cd}}\cdot\frac{\sin\widehat{ce}}{\sin\widehat{ae}}\cdot\frac{\sin\widehat{af}}{\sin\widehat{bf}}=-1">
+
+[Here](https://www.heldermann-verlag.de/jgg/jgg11/j11h1beni.pdf) is a similar explanation of the duality. [Here](https://staff.imsa.edu/~fogel/ModGeo/PDF/24%20Menelaus%20Ceva.pdf) is an explanation by barycentric coordinates.
 
 ### Notes
 
