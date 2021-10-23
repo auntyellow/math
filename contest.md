@@ -44,7 +44,7 @@ Although computational approaches are not allowed in math contest, there are a l
 
 <img src="diagrams/imo-2002-shortlist-g7.png">
 
-We put *D* onto origin, *BC* onto x-axis and *AD* onto y-axis, then set coordinates as *A*(0,*a*), *B*(-*b*,0), *C*(0,*c*) and *M*(0,*a*/2), where *a*, *b* and *c* are positive numbers.
+We put *D* onto origin, *BC* onto x-axis and *AD* onto y-axis, then set coordinates as *A*(0,*a*), *B*(-*b*,0), *C*(*c*,0) and *M*(0,*a*/2), where *a*, *b* and *c* are positive numbers.
 
 We begin with point *K* which follows <img src="https://latex.codecogs.com/gif.latex?BK=(AB+BC-AC)/2">
 .
