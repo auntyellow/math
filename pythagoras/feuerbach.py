@@ -26,11 +26,11 @@ def kiss(c1_eq, c2_eq):
     c1_radical = fraction(cancel(c1_eq.subs(y, radical_y)))[0]
     # print('C1-Radical: ', c1_radical)
     c1_coeffs = poly(c1_radical, x).all_coeffs()
-    determinant = fraction(cancel(c1_coeffs[1]**2 - 4*c1_coeffs[0]*c1_coeffs[2]))[0]
-    # print('Determinant: ', determinant)
-    determinant = expand(determinant.subs(AC, sqrt(a**2 + c**2)).subs(BC, sqrt(b**2 + c**2)))
-    # print('Determinant: ', determinant)
-    return determinant == 0
+    discriminant = fraction(cancel(c1_coeffs[1]**2 - 4*c1_coeffs[0]*c1_coeffs[2]))[0]
+    # print('Discriminant: ', discriminant)
+    discriminant = expand(discriminant.subs(AC, sqrt(a**2 + c**2)).subs(BC, sqrt(b**2 + c**2)))
+    # print('Discriminant: ', discriminant)
+    return discriminant == 0
 
 def main():
     # https://en.wikipedia.org/wiki/Nine-point_circle
