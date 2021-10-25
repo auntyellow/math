@@ -6,24 +6,16 @@ def dist2(p1, p2):
 
 def main():
     a, b, r = symbols('a, b, r', positive = True)
-    A, B = (0, a), (0, -b)
-    k, x, y = symbols('k, x, y')
-    incircle = x**2 + y**2 - 2*r*x
-    incircle_poly = poly(incircle.subs(y, k*x + a), x)
-    print('Equation of Incircle and AC:', incircle_poly.expr, '= 0')
-    incircle_coeffs = incircle_poly.all_coeffs()
-    discriminant = incircle_coeffs[1]**2 - 4*incircle_coeffs[0]*incircle_coeffs[2]
-    print('Discriminant of Incircle and AC:', discriminant)
-    k = solve(Eq(discriminant, 0), k)[0]
-    print('k =', k)
-    AC = Eq(y, k*x + a)
-    BC = Eq(y, k.subs(a, -b)*x - b)
     # Test case: A is a right angle and AB = AC
-    # a0 = r
-    # b0 = (sqrt(2)+1)*r
-    # A, B = (0, a0), (0, -b0)
-    # AC = AC.subs(a, a0).subs(b, b0)
-    # BC = BC.subs(a, a0).subs(b, b0)
+    # a = r
+    # b = (sqrt(2) + 1)*r
+    A, B = (-a, 0), (b, 0)
+    x, y = symbols('x, y')
+    incircle = x**2 + y**2 - 2*r*y
+    y0 = solve(incircle.subs(x, -r*y/a)/y, y)[0]
+    AC = line(A, (-r*y0/a, y0))
+    y0 = solve(incircle.subs(x, r*y/b)/y, y)[0]
+    BC = line(B, (r*y0/b, y0))
     print('AC:', AC)
     print('BC:', BC)
     C = intersect(AC, BC)
@@ -31,9 +23,9 @@ def main():
     print()
     G = ((A[0] + B[0] + C[0])/3, (A[1] + B[1] + C[1])/3)
     print('Centroid:', G)
-    H = (factor((A[1] - C[1])*(C[1] - B[1])/C[0]), factor(C[1]))
-    print('Othocenter:', H)
-    I = (r, 0)
+    H = (factor(C[0]), factor((A[0] - C[0])*(C[0] - B[0])/C[1]))
+    print('Orthocenter:', H)
+    I = (0, r)
     print('Incenter:', I)
     x1, y1, x2, y2, x3, y3 = G[0], G[1], H[0], H[1], I[0], I[1]
     print('They are collinear if and only if', factor(x1*y2 + x2*y3 + x3*y1 - x2*y1 - x3*y2 - x1*y3), '= 0')

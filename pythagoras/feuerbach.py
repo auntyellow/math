@@ -43,7 +43,7 @@ def main():
     nine_point = circle((b/2, c/2), (-a/2, c/2), ((b - a)/2, 0))
     print('Nine-Point Circle Equation:', nine_point, '= 0')
     print('Is altitude foot on Nine-Point Circle?', on_circle(nine_point, (0, 0)))
-    print('Is midpoint of of vertex and orthocenter on Nine-Point Circle?', on_circle(nine_point, (0, (c + a*b/c)/2)))
+    print('Is midpoint of vertex and orthocenter on Nine-Point Circle?', on_circle(nine_point, (0, (c + a*b/c)/2)))
 
     # AB, AC, BC = a + b, sqrt(a**2 + c**2), sqrt(b**2 + c**2)
     AB = a + b
