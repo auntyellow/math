@@ -1,10 +1,10 @@
-from sympy import factor, poly
+from sympy import factor
 from cartesian import *
 
 def main():
     # https://imomath.com/index.php?options=323 (Problem 14)
     b, c, r = symbols('b, c, r', positive = True)
-    B, C, I, M = (-b, 0), (c, 0), (0, r), ((b - c)*r**2/(b*c - r**2), b*c*r/(b*c - r**2))
+    B, C, I = (-b, 0), (c, 0), (0, r)
     print('I:', I)
     d, e, f, x, y = symbols('d, e, f, x, y')
     incircle = x**2 + y**2 - 2*y*r
