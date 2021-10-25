@@ -1,10 +1,6 @@
 from sympy import factor, poly, solve, sqrt
 from cartesian import *
 
-def collinear_eq(P1, P2, P3):
-    x1, y1, x2, y2, x3, y3 = P1[0], P1[1], P2[0], P2[1], P3[0], P3[1]
-    return factor(x1*y2 + x2*y3 + x3*y1 - x2*y1 - x3*y2 - x1*y3)
-
 def dist2(p1, p2):
     return (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2
 
@@ -39,8 +35,8 @@ def main():
     print('Othocenter:', H)
     I = (r, 0)
     print('Incenter:', I)
-    # print('Are they collinear?', collinear(G, H, I))
-    print('They are collinear if and only if', collinear_eq(G, H, I), '= 0')
+    x1, y1, x2, y2, x3, y3 = G[0], G[1], H[0], H[1], I[0], I[1]
+    print('They are collinear if and only if', factor(x1*y2 + x2*y3 + x3*y1 - x2*y1 - x3*y2 - x1*y3), '= 0')
     AB2 = cancel(dist2(A, B))
     AC2 = cancel(dist2(A, C))
     BC2 = cancel(dist2(B, C))

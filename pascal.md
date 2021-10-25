@@ -20,7 +20,7 @@ Here are some simple cases:
 
 However, it is more complicated to prove Pascal's theorem for a conic in a direct way, which means we don't reduce the conic to a circle by a projective transformation.
 
-#### Step 0
+#### Pascal's theorem
 
 Let's put point *I* onto the origin, rotate the hexagon to make *BE* parallel to x-axis, denote the conic *ADBFCE* as:
 
@@ -30,39 +30,25 @@ and denote *AF*, *CD* and *BE* as:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}AF:y=gx\\CD:y=hx\\BE:y=k\end{cases}">
 
-#### Step 1
+We get two roots by solving the combination of a conic and a straight line. However, SymPy won't tell us whether the first root denotes the point in the left or right side. So we need to guess then verify by numerical evaluation.
 
-Two points can be solved by a conic and a straight line. However, SymPy won't tell us whether the first root denotes the point in the left or right side. So we need to guess then verify by numerical evaluation.
+Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0"> and the line *AF* is <img src="https://latex.codecogs.com/gif.latex?y=x">, we should get *A* in quadrant I and *F* in quadrant III. So we should use `F, A = solve(...)` but not `A, F = solve(...)`. Then we get 6 points:
 
-Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0"> and the line *AF* is <img src="https://latex.codecogs.com/gif.latex?y=x">, we should get *A* in quadrant I and *F* in quadrant III. So we should use `F, A = solve(...)` but not `A, F = solve(...)`.
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2})/(a+2bg+cg^2)\\x_\text{B}=-(bk+d+\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2})/a\\x_\text{C}=-(d+eh-\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2})/(a+2bh+ch^2)\\x_\text{D}=-(d+eh+\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2})/(a+2bh+ch^2)\\x_\text{E}=-(bk+d-\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2})/a\\x_\text{F}=-(d+eg+\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2})/(a+2bg+cg^2)\end{cases}\;\text{(Eq.\,1)">
 
-[Here](projective/pascal-c1.py) we get 6 points:
+Without further simplification, SymPy can hardly solve the intersections *G* and *H*. (This may be due to too many fraction calculations.<sup>[1]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2})/(a+2bg+cg^2)\\x_\text{B}=-(bk+d+\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2})/a\\x_\text{C}=-(d+eh-\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2})/(a+2bh+ch^2)\\x_\text{D}=-(d+eh+\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2})/(a+2bh+ch^2)\\x_\text{E}=-(bk+d-\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2})/a\\x_\text{F}=-(d+eg+\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2})/(a+2bg+cg^2)\end{cases}">
-
-#### Step 2
-
-Without further simplification, SymPy can hardly solve the intersections G and H. (This may be due to too many fraction calculations.<sup>[1]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
-
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2}\\Q=\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2}\\R=\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P=\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2}\\Q=\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2}\\R=\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2}\end{cases}\;\text{(Eq.\,2)}">
 
 Then the 6 points are simplified as:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-P)/(a+2bg+cg^2)\\x_\text{B}=-(bk+d+R)/a\\x_\text{C}=-(d+eh-Q)/(a+2bh+ch^2)\\x_\text{D}=-(d+eh+Q)/(a+2bh+ch^2)\\x_\text{E}=-(bk+d-R)/a\\x_\text{F}=-(d+eg+P)/(a+2bg+cg^2)\end{cases}">
 
-[Here](projective/pascal-c2.py) we solve the G and H and get the expression <img src="https://latex.codecogs.com/gif.latex?x_\text{G}y_\text{H}-x_\text{H}y_\text{G}"> to check if G, H and I are collinear.
+Then we get *AB*, *DE*, *BC* and *EF*, and their intersections *G* and *H*, and the expression <img src="https://latex.codecogs.com/gif.latex?x_\text{G}y_\text{H}-x_\text{H}y_\text{G}"> to check if *G*, *H* and *I* are collinear.
 
-The numerator of this expression contains 422 terms, which should equal to 0.
+The numerator of this expression contains 422 terms, where so many *P*, *Q* and *R* appear. We replace them back with Eq. 2, then get the final result 0, which means *G*, *H* and *I* are collinear.
 
-#### Step 3
-
-There are many *P*<sup>2</sup>, *Q*<sup>2</sup> and *R*<sup>3</sup> in the above expression. So we can replace them with:
-
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}P^2=-af-2bfg-cfg^2+d^2+2deg+e^2g^2\\Q^2=-af-2bfh-cfh^2+d^2+2deh+e^2h^2\\R^2=-ack^2-2aek-af+b^2k^2+2bdk+d^2\end{cases}">
-
-This can be done by replacing `P**2`, `Q**2` and `R**3` with `P2`, `Q2` and `R2*R` in text editor.
-
-[Here](projective/pascal-c3.py) shows the final result equal to 0, which means G, H and I are collinear.
+[Here](projective/pascal-c.py) is the proof process.
 
 #### Braikenridge-Maclaurin theorem
 
@@ -95,7 +81,7 @@ Because homogeneous coordinates have many advantages mentioned [here](desargues.
 
 #### Pascal's theorem
 
-[Here](projective/pascal-h.py) we change all Cartesian to homogeneous from Step 2 to avoid fraction calculations.
+[Here](projective/pascal-h.py) we change all Cartesian to homogeneous from Eq. 1 to avoid fraction calculations.
 
 #### Brianchon's theorem
 
@@ -103,7 +89,7 @@ Because homogeneous coordinates have many advantages mentioned [here](desargues.
 
 **Brianchon's theorem** states that when a hexagon (marked as *ad-db-bf-fc-ce-ea*) is circumscribed around a conic section (where the 6 tangent points are *ADBFCE*), its principal diagonals (*ad-fc*, *db-ce* and *bf-ea*) meet in a single point.
 
-We still use the 6 points in Step 1 but this time we draw their 6 tangent lines to form a hexagon.
+We still use the 6 points in Eq. 1 but this time we draw their 6 tangent lines to form a hexagon.
 
 We apply [derivative of implicit function](https://en.wikipedia.org/wiki/Implicit_function#Implicit_differentiation) on curve <img src="https://latex.codecogs.com/gif.latex?F(x,y)=0">, then the tangent line passing through point <img src="https://latex.codecogs.com/gif.latex?(x_0,y_0)"> is:
 

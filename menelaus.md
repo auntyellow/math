@@ -44,7 +44,7 @@ We get <img src="https://latex.codecogs.com/gif.latex?hkn/gjm=1"> by eliminating
 
 It is not obvious that Menelaus's theorem and Ceva's theorem are dual. Let's start from this theorem:
 
-A straight line intersects a triangle *ABC*'s three edges *BC*, *CA* and *AB* at point *D*<sub>0</sub>, *E*<sub>0</sub> and *F*<sub>0</sub> respectively. Take another three points *D*, *E* and *F* on *BC*, *CA* and *AB* respectively, then *D*, *E* and *F* are collinear if and only if:
+**Theorem 1** A straight line intersects a triangle *ABC*'s three edges *BC*, *CA* and *AB* at point *D*<sub>0</sub>, *E*<sub>0</sub> and *F*<sub>0</sub> respectively. Take another three points *D*, *E* and *F* on *BC*, *CA* and *AB* respectively, then *D*, *E* and *F* are collinear if and only if:
 
 <img src="https://latex.codecogs.com/gif.latex?(B,C;D,D_0)\cdot(C,A;E,E_0)\cdot(A,B;F,F_0)=1">
 
@@ -54,13 +54,13 @@ When we write *D*<sub>0</sub>, *E*<sub>0</sub>, *F*<sub>0</sub>, *D*, *E* and *F
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}D_0=B+kC\\E_0=C+mA\\F_0=A+nB\\D=B+pC\\E=C+qA\\F=A+rB\end{cases}">
 
-it's easy to prove that *D*<sub>0</sub>, *E*<sub>0</sub> and *F*<sub>0</sub> are collinear if and only if <img src="https://latex.codecogs.com/gif.latex?kmn=-1">, and *D*, *E* and *F* are collinear if and only if <img src="https://latex.codecogs.com/gif.latex?pqr=-1">. Then we get the product of three cross-ratios and complete the proof. <sup>[4]</sup>
+it's easy to prove that *D*<sub>0</sub>, *E*<sub>0</sub> and *F*<sub>0</sub> are collinear if and only if <img src="https://latex.codecogs.com/gif.latex?kmn=-1">, and *D*, *E* and *F* are collinear if and only if <img src="https://latex.codecogs.com/gif.latex?pqr=-1">. Then we get the product of three cross-ratios and finish the proof. <sup>[4]</sup>
 
 When *D*<sub>0</sub>, *E*<sub>0</sub> and *F*<sub>0</sub> are at infinity, we get Menelaus's theorem.
 
 The dual theorem states as:
 
-Three line *d*<sub>0</sub>, *e*<sub>0</sub> and *f*<sub>0</sub> passing through a triangle *abc*'s 3 vertices *A*=*b*∩*c*, *B*=*c*∩*a* and *C*=*a*∩*b* respectively and meet at a point. Take another three lines *d*, *e* and *f* passing through *A*, *B* and *C* respectively, then *d*, *e* and *f* meet at another point if and only if:
+**Theorem 1'** Three line *d*<sub>0</sub>, *e*<sub>0</sub> and *f*<sub>0</sub> passing through a triangle *abc*'s 3 vertices *A*=*b*∩*c*, *B*=*c*∩*a* and *C*=*a*∩*b* respectively and meet at a point. Take another three lines *d*, *e* and *f* passing through *A*, *B* and *C* respectively, then *d*, *e* and *f* meet at another point if and only if:
 
 <img src="https://latex.codecogs.com/gif.latex?(b,c;d,d_0)\cdot(c,a;e,e_0)\cdot(a,b;f,f_0)=1">
 
