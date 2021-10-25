@@ -8,7 +8,11 @@ Put *AB* onto x-axis and *C* onto y-axis and set coordinates as *A*(-*a*, 0), *B
 
 So it's easy to prove that *HNGO* are collinear and *HN* = *NO* and *HG* = 2*GO*.
 
-The incenter, however, doesn't lie on the Euler line, unless the triangle is isosceles. The proof (incenter lies on Euler line → isosceles) is not as easy as above because we should prove *AB* = *AC* or *AB* = *BC* or *AC* = *BC*, and exclude other possibilities.
+The incenter, however, doesn't lie on the Euler line, unless the triangle is isosceles. We have:
+
+**Theorem 1** A triangle is isosceles if its incenter lies on its Euler line.
+
+The proof (incenter lies on Euler line → isosceles) is not as easy as above because we should prove *AB* = *AC* or *AB* = *BC* or *AC* = *BC*, and exclude other possibilities.
 
 Let's pick the centroid *G*, the orthocenter *H* (they are simpler than *N* and *O*) and the incenter *I*. The task is to proof that the determinant of collinearity has a form like:
 

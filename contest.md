@@ -71,6 +71,12 @@ Finally, the incircle with center *I* and the circumcircle with center *S* are t
 
 [Here](pythagoras/imo-2002-shortlist-g7.py) is the proof process. We keep *AB* and *AC* not substituted until the last step to avoid square root calculations. At last, we use homogeneous coordinates to avoid fraction calculations, then substitute *AB* and *AC* to get the final result.
 
+If we use the coordinates mentioned [here](euler-line.md) (the proof in Theorem 1), it is possible to finish the proof by hand. Given an incircle <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-2ry=0"> and two vertices *B*(-*b*,0) and *C*(*c*,0) on x-axis, then *A* is <img src="https://latex.codecogs.com/gif.latex?(\frac{(b-c)r^2}{bc-r^2},\frac{2bcr}{bc-r^2})">, *M* is <img src="https://latex.codecogs.com/gif.latex?(\frac{(b-c)r^2}{bc-r^2},\frac{bcr}{bc-r^2})">, and *KM* is <img src="https://latex.codecogs.com/gif.latex?y=\frac{bcx}{(b-c)r}">. Then we get *I*, *N* and *S*:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}I:(0,r)\\N:(\frac{2bc(b-c)r^2}{b^2c^2+b^2r^2-2bcr^2+c^2r^2},\frac{2b^2c^2r}{b^2c^2+b^2r^2-2bcr^2+c^2r^2})\\S:(\frac{c-b}2,\frac{b^2r^2+2bcr^2+c^2r^2-b^2c^2}{4bcr})\end{cases}">
+
+which are collinear.
+
 ### Notes
 
 1. [Duke 2012 Putnam preparation, Homework 6: Geometry](https://imomath.com/index.php?options=586), Problem 8
