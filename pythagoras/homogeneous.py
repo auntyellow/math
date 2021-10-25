@@ -2,8 +2,6 @@ from sympy import Matrix, cancel, fraction, gcd_list, lcm_list
 
 def reduced(x, y, z):
     gcd = gcd_list([x, y, z])
-    if gcd == 0:
-        return 0, 0, 1
     return cancel(x/gcd), cancel(y/gcd), cancel(z/gcd)
 
 def span(m, P1, n, P2):
