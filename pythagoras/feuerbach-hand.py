@@ -1,4 +1,4 @@
-from sympy import expand, poly, sqrt
+from sympy import factor, poly
 from cartesian import *
 
 def circle(P1, P2, P3):
@@ -10,7 +10,7 @@ def circle(P1, P2, P3):
     circle_eqs.append(circle_eq.subs(x, P2[0]).subs(y, P2[1]))
     circle_eqs.append(circle_eq.subs(x, P3[0]).subs(y, P3[1]))
     s = solve(circle_eqs, (d, e, f))
-    return x**2 + y**2 + s[d]*x + s[e]*y + s[f]
+    return x**2 + y**2 + factor(s[d])*x + factor(s[e])*y + factor(s[f])
 
 def on_circle(circle_eq, P):
     x, y = symbols('x, y')

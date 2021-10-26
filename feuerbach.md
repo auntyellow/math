@@ -29,6 +29,18 @@ Because all of |*NI*|, *r*<sub>N</sub>, *r*<sub>I</sub> and *r*<sub>E</sub> cont
 
 Neither of the two approaches can tell us whether two circles are internally or externally tangent. However, the incircle is obviously inside and internally tangent to the nine-point circle, because the incircle is inside the triangle and the nine-point circle intersects all three edges; each excircle is abviously externally tangent to the nine-point circle, because each excircle is outside of the triangle.
 
+If we use the coordinates mentioned [here](euler-line.md) (the proof in Theorem 1), it is possible to finish the proof by hand. Given an incircle:
+
+<img src="https://latex.codecogs.com/gif.latex?x^2+y^2-2ry=0\quad\text{(Eq.\,1)}">
+
+and two vertices *A*(-*a*,0) and *B*(*b*,0) on x-axis, then *C* is <img src="https://latex.codecogs.com/gif.latex?(\frac{(a-b)r^2}{ab-r^2},\frac{2abr}{ab-r^2})">. And the nine-point equation is:
+
+<img src="https://latex.codecogs.com/gif.latex?{x^2+y^2-\frac{(a-b)(3r^2-ab)x}{2(ab-r^2)}-\frac{(ab-ar+br+r^2)(ab+ar-br+r^2)y}{4(ab-r^2)r}-\frac{(a-b)^2r^2}{2(ab-r^2)}=0\quad\text{(Eq.\,2)}">
+
+The equation set of two circles (Eq. 1 and Eq. 2) has only one root (because of its zero discriminant), which proves the tangency of two circles.
+
+An interesting thing is that Eq. 1 can also be an excircle of trangle *ABC* if we set <img src="https://latex.codecogs.com/gif.latex?ab<r^2">. So the the tangency of nine-point circle and excircle is also proved.
+
 Other proofs can be found [here](https://imomath.com/index.php?options=323) (Problem 7) and [here](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachProof.shtml).
 
 ### Note
