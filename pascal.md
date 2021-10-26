@@ -131,7 +131,7 @@ We choose 3 arbitrary points *A*, *C* and *E* as 3 of 6 vertices on a hexagon, a
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:(a,b,c)\\C:(d,e,f)\\E:(g,0,h)\\G:(0,j,k)\\H:(0,m,n)\\J:(0,p,q)\end{cases}">
 
-Then we can calculate another 3 of 6 vertices:
+Then we can calculate the other 3 of 6 vertices:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}B=AB{\cap}BC=AG{\cap}HC\\D=CD{\cap}DE=CJ{\cap}GE\\F=EF{\cap}FA=EH{\cap}JA\end{cases}">
 

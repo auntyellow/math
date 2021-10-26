@@ -15,7 +15,7 @@ Whatever the two roots are real or imaginary, we can always get a straight line 
 
 such that the two roots are on this line.
 
-For example, one circle is inside another:
+For example, one circle is inside the other:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x^2+y^2=9\\x^2+(y+1)^2=1\end{cases}">
 
@@ -93,7 +93,7 @@ which is between *a* and *b*. So it should be the internal intersection. Denote 
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{H'A}}{\overrightarrow{BH'}}=\frac{a-h'}{h'-b}=\frac{R}r\quad\text{(Eq.\,2)}">
 
-For example, one circle is inside another:
+For example, one circle is inside the other:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x^2+y^2=9\\x^2+(y+1)^2=1\end{cases}">
 
@@ -105,7 +105,7 @@ The two internal tangent lines are <img src="https://latex.codecogs.com/gif.late
 
 <img src="diagrams/monge.png">
 
-**Monge's theorem** states that for any three circles in a plane, the intersection points of each of the three pairs of external tangent lines are collinear. This still holds even if one circle is completely inside another.
+**Monge's theorem** states that for any three circles in a plane, the intersection points of each of the three pairs of external tangent lines are collinear. This still holds even if one circle is completely inside the other.
 
 Let's apply Eq. 1 onto three external intersections *D*, *E* and *F*:
 

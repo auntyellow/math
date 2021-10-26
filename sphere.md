@@ -16,7 +16,7 @@ Next, given an arbitrary point *S*(*d*,*e*,*f*), we have straight line *SA*:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x=x_\text{A}+(x_\text{S}-x_\text{A})t\\y=y_\text{A}+(y_\text{S}-y_\text{A})t\\z=z_\text{A}+(z_\text{S}-z_\text{A})t\end{cases}">
 
-Apply on Eq. 1 then we get a quadratic equation about *t*. Because *t*<sub>0</sub> = 0 is the point *A*, we can reduce the order and get another root *t*<sub>1</sub> for point *A*<sub>1</sub>. Analogously, we can calculate points *B*<sub>1</sub> and *C*<sub>1</sub>.
+Apply on Eq. 1 then we get a quadratic equation about *t*. Because *t*<sub>0</sub> = 0 is the point *A*, we can reduce the order and get the other root *t*<sub>1</sub> for point *A*<sub>1</sub>. Analogously, we can calculate points *B*<sub>1</sub> and *C*<sub>1</sub>.
 
 Now the sphere Eq. 1 and three points *A*<sub>1</sub>, *B*<sub>1</sub> and *C*<sub>1</sub> are all rational expressions about *a*, *b*, *c*, *d*, *e* and *f*. We can convert them to homogeneous coordinates (then all expressions are polynomial) to speed up calculation.
 
@@ -40,7 +40,7 @@ Now we should set points *D*, *E* and *F* on this sphere to make *OBCD*, *OCAE* 
 
 Take *F* as example, it is on the sphere (Eq. 2) and plane *OAB* (<img src="https://latex.codecogs.com/gif.latex?z=0">), so we need to add another arbitrary parameter to fix this point.
 
-Let's try <img src="https://latex.codecogs.com/gif.latex?y=mx"> which passes through *O*, then eliminate *y* and *z* in Eq. 2 and get a quadratic equation about *x*. Just like the previous problem, because *x*<sub>0</sub> = 0 is the point *O*, we can reduce the order and get another root *x*<sub>1</sub> for point *F*.
+Let's try <img src="https://latex.codecogs.com/gif.latex?y=mx"> which passes through *O*, then eliminate *y* and *z* in Eq. 2 and get a quadratic equation about *x*. Just like the previous problem, because *x*<sub>0</sub> = 0 is the point *O*, we can reduce the order and get the other root *x*<sub>1</sub> for point *F*.
 
 Analogously, we can get *E* from plane *OCA* and <img src="https://latex.codecogs.com/gif.latex?x=nz"> (<img src="https://latex.codecogs.com/gif.latex?y=nx"> or <img src="https://latex.codecogs.com/gif.latex?z=ny"> may not work for the special case *C*(0,0,*f*)), and get *D* from plane *OBC* and <img src="https://latex.codecogs.com/gif.latex?z=py">.
 

@@ -67,9 +67,13 @@ Next, point *N*, one of the two intersections of incircle Ω and line *KM*, can 
 
 Next, circumcenter *S* of triangle *BCN*.
 
-Finally, the incircle with center *I* and the circumcircle with center *S* are tangent at point *N* if and only if *INS* are collinear.
+Finally, we can prove any of the following statements:
 
-[Here](pythagoras/imo-2002-shortlist-g7.py) is the proof process. We keep *AB* and *AC* not substituted until the last step to avoid square root calculations. At last, we use homogeneous coordinates to avoid fraction calculations, then substitute *AB* and *AC* to get the final result.
+1. The equation set of the incircle and the circumcircle has only one root (i.e. discriminant is zero);
+2. *INS* are collinear;
+3. *NK* bisects ∠*BNC* (i.e. <img src="https://latex.codecogs.com/gif.latex?|NB|\cdot|KC|=|NC|\cdot|KB|">), which implies that *P* (the other intersection of *NK* and the circumcircle) bisects arc *BC*, and *PS* || *KI*, and *INS* are collinear.
+
+[Here](pythagoras/imo-2002-shortlist-g7.py) is the process to prove statement 2. We keep *AB* and *AC* not substituted until the last step to avoid square root calculations. At last, we use homogeneous coordinates to avoid fraction calculations, then substitute *AB* and *AC* to get the final result.
 
 If we use the coordinates mentioned [here](euler-line.md) (the proof in Theorem 1), it is possible to finish the proof by hand. Given an incircle <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-2ry=0"> and two vertices *B*(-*b*,0) and *C*(*c*,0) on x-axis, then *A* is <img src="https://latex.codecogs.com/gif.latex?(\frac{(b-c)r^2}{bc-r^2},\frac{2bcr}{bc-r^2})">, *M* is <img src="https://latex.codecogs.com/gif.latex?(\frac{(b-c)r^2}{bc-r^2},\frac{bcr}{bc-r^2})">, and *KM* is <img src="https://latex.codecogs.com/gif.latex?y=\frac{bcx}{(b-c)r}">. Then we get *I*, *N* and *S*:
 
