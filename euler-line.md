@@ -1,6 +1,6 @@
 <img src="diagrams/euler-line.png">
 
-**Euler line** is a line passing through orthocenter *H* (blue), nine-point center *N* (red), centroid *G* (orange) and circumcenter *O* (green), while *HN* = *NO* and *HG* = 2*GO*. <sup>[1]</sup>
+**Euler line** is a line passing through <span style="color:blue">orthocenter *H*</span>, <span style="color:red">nine-point center *N*</span>, <span style="color:orange">centroid *G*</span> and <span style="color:green">circumcenter *O*</span>, while *HN* = *NO* and *HG* = 2*GO*. <sup>[1]</sup>
 
 Put *AB* onto x-axis and *C* onto y-axis and set coordinates as *A*(-*a*, 0), *B*(*b*,0), *C*(0,*c*), where *a*, *b* and *c* are positive numbers, then we get all vertices and centers:
 

@@ -35,7 +35,7 @@ def kiss(c1_eq, c2_eq):
 
 def main():
     # https://blancosilva.github.io/post/2013/07/15/some-results-related-to-the-feuerbach-point.html (Theorem 1)
-    # The circle through the feet of the internal bisectors of triangle passes through the Feuerbach point of the triangle.
+    # The circle through the feet of the internal bisectors of a triangle passes through the Feuerbach point.
     a, b, r = symbols('a, b, r', positive = True)
     A, B, C, I = (-a, 0), (b, 0), ((a - b)*r**2/(a*b - r**2), 2*a*b*r/(a*b - r**2)), (0, r)
     nine_point = circle(((A[0] + C[0])/2, (A[1] + C[1])/2), ((B[0] + C[0])/2, (B[1] + C[1])/2), ((b - a)/2, 0))

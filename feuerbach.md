@@ -2,6 +2,8 @@
 
 **Feuerbach's theorem** states that the nine-point circle is tangent to the three excircles of the triangle as well as its incircle.
 
+### Start from Triangle
+
 Put *AB* onto x-axis and *C* onto y-axis again:
 
 - The nine-point circle passes through three midpoints *M*<sub>A</sub>, *M*<sub>B</sub>, and *M*<sub>C</sub>;
@@ -29,6 +31,8 @@ Because all of |*NI*|, *r*<sub>N</sub>, *r*<sub>I</sub> and *r*<sub>E</sub> cont
 
 Neither of the two approaches can tell us whether two circles are internally or externally tangent. However, the incircle is obviously inside and internally tangent to the nine-point circle, because the incircle is inside the triangle and the nine-point circle intersects all three edges; each excircle is abviously externally tangent to the nine-point circle, because each excircle is outside of the triangle.
 
+### Start from Incircle
+
 If we use the coordinates mentioned [here](euler-line.md) (the proof in Theorem 1), it is possible to finish the proof by hand. Given an incircle:
 
 <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-2ry=0\quad\text{(Eq.\,1)}">
@@ -43,6 +47,14 @@ An interesting thing is that Eq. 1 can also be an excircle of trangle *ABC* if w
 
 Other proofs can be found [here](https://imomath.com/index.php?options=323) (Problem 7) and [here](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachProof.shtml).
 
-### Note
+### Two theorems related to the Feuerbach Point
 
-1. We use the diagram from [here](https://en.wikipedia.org/wiki/Euler_line).
+**Theorem 1** The circle through [the feet of the internal bisectors](https://mathworld.wolfram.com/IncentralTriangle.html) <span style="color:red">*I*<sub>A</sub>*I*<sub>B</sub>*I*<sub>C</sub></span> of a triangle *ABC* passes through the Feuerbach point.
+
+[Here](pythagoras/feuerbach-1.py) is a computational proof *starting from incircle*.
+
+**Theorem 2** The Feuerbach point of a triangle *ABC* is the [anti-Steiner point](https://artofproblemsolving.com/community/c1646h1025320s3_antisteiner_point) of the Euler line of the [intouch triangle](https://mathworld.wolfram.com/ContactTriangle.html) <span style="color:red">*C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub></span> with respect to the same intouch triangle <span style="color:red">*C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub></span>.
+
+- [ ] Proof here ...
+
+Other proofs of the two theorems can be found [here](https://blancosilva.github.io/post/2013/07/15/some-results-related-to-the-feuerbach-point.html) (computational) and [here](https://forumgeom.fau.edu/FG2012volume12/FG201205.pdf) (synthetic).
