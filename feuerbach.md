@@ -4,7 +4,7 @@
 
 ### Start from Triangle
 
-Put *AB* onto x-axis and *C* onto y-axis again:
+Put *AB* onto x-axis and *C* onto y-axis:
 
 - The nine-point circle passes through three midpoints *M*<sub>A</sub>, *M*<sub>B</sub>, and *M*<sub>C</sub>;
 - The incircle passes through *D*, *E* and *F*, where *AE* = *AF*, *BD* = *BF* and *CD* = *CE*;
@@ -33,7 +33,7 @@ Neither of the two approaches can tell us whether two circles are internally or 
 
 ### Start from Incircle
 
-If we use the coordinates mentioned [here](euler-line.md) (the proof in Theorem 1), it is possible to finish the proof by hand. Given an incircle:
+If we use the coordinates mentioned [here](euler-line.md) (proof of Theorem 1), it is possible to finish the proof by hand. Given an incircle:
 
 <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-2ry=0\quad\text{(Eq.\,1)}">
 
@@ -49,11 +49,11 @@ Other proofs can be found [here](https://imomath.com/index.php?options=323) (Pro
 
 ### Two theorems related to the Feuerbach Point
 
-**Theorem 1** The circle through [the feet of the internal bisectors](https://mathworld.wolfram.com/IncentralTriangle.html) <span style="color:red">*I*<sub>A</sub>*I*<sub>B</sub>*I*<sub>C</sub></span> of a triangle *ABC* passes through the Feuerbach point.
+**Theorem 1** The circle through the [feet of the internal bisectors](https://mathworld.wolfram.com/IncentralTriangle.html) *I*<sub>A</sub>*I*<sub>B</sub>*I*<sub>C</sub> of a triangle *ABC* passes through the Feuerbach point.
 
 [Here](pythagoras/feuerbach-1.py) is a computational proof *starting from incircle*.
 
-**Theorem 2** The Feuerbach point of a triangle *ABC* is the [anti-Steiner point](https://artofproblemsolving.com/community/c1646h1025320s3_antisteiner_point) of the Euler line of the [intouch triangle](https://mathworld.wolfram.com/ContactTriangle.html) <span style="color:red">*C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub></span> with respect to the same intouch triangle <span style="color:red">*C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub></span>.
+**Theorem 2** The Feuerbach point of a triangle *ABC* is the [anti-Steiner point](https://artofproblemsolving.com/community/c1646h1025320s3_antisteiner_point) of the Euler line of the [intouch triangle](https://mathworld.wolfram.com/ContactTriangle.html) *C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub> with respect to the same intouch triangle *C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub>.
 
 - [ ] Proof here ...
 
