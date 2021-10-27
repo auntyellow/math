@@ -11,7 +11,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] Radical Center and [Monge's theorem](monge.md)
 - [x] [Symmedian and Isogonal Conjugate](symmedian.md)
 - [x] [Euler Line and Incenter](euler-line.md)
-- [ ] [Feuerbach point](feuerbach.md)
+- [x] [Feuerbach point](feuerbach.md)
 - [x] [Contest problems](contest.md)
 - [x] [Solid geometry](sphere.md)
 

@@ -47,9 +47,9 @@ def main():
     print('F:', F)
     BC, AC, AB, AI, BI, CI = line(B, C), line(A, C), line(A, B), line(A, I), line(B, I), line(C, I)
     A1, B1, C1 = intersect(BC, AI), intersect(AC, BI), intersect(AB, CI)
-    print('A1', A1)
-    print('B1', B1)
-    print('C1', C1)
+    print('A1:', A1)
+    print('B1:', B1)
+    print('C1:', C1)
     bisector_feet = circle(A1, B1, C1)
     print('Bisector-Feet Circle Equation:', bisector_feet, '= 0')
     bisector_feet = poly(fraction(cancel(bisector_feet))[0], (x, y)).homogenize(z).expr

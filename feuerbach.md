@@ -55,6 +55,6 @@ Other proofs can be found [here](https://imomath.com/index.php?options=323) (Pro
 
 **Theorem 2** The Feuerbach point of a triangle *ABC* is the [anti-Steiner point](https://artofproblemsolving.com/community/c1646h1025320s3_antisteiner_point) of the Euler line of the [intouch triangle](https://mathworld.wolfram.com/ContactTriangle.html) *C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub> with respect to the same intouch triangle *C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub>.
 
-- [ ] Proof here ...
+[Here](pythagoras/feuerbach-2.py) is a computational proof *starting from incircle*.
 
 Other proofs of the two theorems can be found [here](https://blancosilva.github.io/post/2013/07/15/some-results-related-to-the-feuerbach-point.html) (computational) and [here](https://forumgeom.fau.edu/FG2012volume12/FG201205.pdf) (synthetic).
