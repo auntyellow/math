@@ -6,9 +6,9 @@ This is a [Straightedge and Compass Construction](https://en.wikipedia.org/wiki/
 
 > Construct a point *P* on the given straight line *c* at equal distances from the given point *F* and the given straight line *d*.
 
-However, the solution is not given in this book. I'd like to give an analytic geometry solution, which can be converted to straightedge and compass construction.
+However, the solution is not given in this book. I'd like to give a coordinate solution, which can be converted to straightedge and compass construction.
 
-### Analytic Geometry Solution
+### Coordinate Solution
 
 <img src="parabola.png">
 
@@ -28,6 +28,6 @@ There is only a tangent point if *q* = 0, and no intersection or tangent points 
 
 If *c* is a vertical line, then the equation for *P*(*x*,*y*) (*x* is the distance from *F* to *c*) is <img src="https://latex.codecogs.com/gif.latex?y+p=\sqrt{x^2+y^2}">. The solution is <img src="https://latex.codecogs.com/gif.latex?y=(x^2-p^2)/2p">.
 
-### Euclidean Geometry Solutions
+### Synthetic Solutions
 
-Euclidean geometry solutions can be found [here](https://math.stackexchange.com/questions/793125).
+Synthetic solutions can be found [here](https://math.stackexchange.com/questions/793125).

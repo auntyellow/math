@@ -1,4 +1,4 @@
-Radical center and Monge's theorem can be easily proved by Euclidean geometry. However, here we use coordinate approach to cover these cases:
+Radical center and Monge's theorem have easy synthetic proofs. However, here we use coordinate approach to cover these cases:
 
 - The intersections of two circles may be imaginary points, but there exists a straight line passing through them.
 - The tangent lines to two circles may be imaginary lines, but their intersection point is real.
