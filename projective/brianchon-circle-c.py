@@ -1,15 +1,20 @@
-from sympy import cos, sin
-from cartesian_s import *
+from random import randint
+from sympy import expand, sqrt
+from cartesian import *
 
-def tangent(t):
+def tangent(x0, y0):
     x, y = symbols('x, y')
-    return Eq(x*cos(t) + y*sin(t), 1)
+    return Eq(x0*x + y0*y, 1)
+
+def sub_y(x, y):
+    return y, (1 - randint(0, 1)*2)*sqrt(1 - x**2)
 
 def main():
-    # A hexagon ABCDEF circumscribed about a unit circle with tangent points' polar angles t1..t6
+    # A hexagon ABCDEF circumscribed about a unit circle with tangent points (a, b), ..., (m, n)
     # Prove 3 principal diagonals (AD, BE, CF) are concurrent
-    t1, t2, t3, t4, t5, t6 = symbols('t1, t2, t3, t4, t5, t6')
-    AB, BC, CD, DE, EF, FA = tangent(t1), tangent(t2), tangent(t3), tangent(t4), tangent(t5), tangent(t6)
+    a, b, c, d, e, f, g, h, j, k, m, n = symbols('a, b, c, d, e, f, g, h, j, k, m, n')
+    AB, BC, CD = tangent(a, b), tangent(c, d), tangent(e, f)
+    DE, EF, FA = tangent(g, h), tangent(j, k), tangent(m, n)
     A, B, C = intersect(FA, AB), intersect(AB, BC), intersect(BC, CD)
     D, E, F = intersect(CD, DE), intersect(DE, EF), intersect(EF, FA)
     print('A:', A)
@@ -18,7 +23,8 @@ def main():
     print('D:', D)
     print('E:', E)
     print('F:', F)
-    print('Are AD, BE and CF concurrent?', concurrency(A, D, B, E, C, F) == 0)
+    print('Are AD, BE and CF concurrent?', expand(fraction(cancel(concurrency(A, D, B, E, C, F)))[0]. \
+        subs([sub_y(a, b), sub_y(c, d), sub_y(e, f), sub_y(g, h), sub_y(j, k), sub_y(m, n)])) == 0)
 
 if __name__ == '__main__':
     main()

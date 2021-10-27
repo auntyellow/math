@@ -1,9 +1,10 @@
+from random import randint
 from sympy import Eq, solve, symbols
 from homogeneous import *
 
-def point_on_conic(conic_z_roots, x0, y0, root = 0):
+def point_on_conic(conic_z_roots, x0, y0):
     f, x, y = symbols('f, x, y')
-    return multiplied(x0, y0, conic_z_roots[root].subs(x, x0).subs(y, y0))
+    return multiplied(x0, y0, conic_z_roots[randint(0, 1)].subs(x, x0).subs(y, y0))
 
 def main():
     a, b, c, d, e, f, x, y, z = symbols('a, b, c, d, e, f, x, y, z')
