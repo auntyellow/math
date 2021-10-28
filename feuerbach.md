@@ -61,4 +61,4 @@ Other proofs of the two theorems can be found [here](https://blancosilva.github.
 
 **Theorem 3** Let *F*<sub>A</sub>, *F*<sub>B</sub>, *F*<sub>C</sub> be the touch points of the nine-point circle with the *A*-, *B*-, *C*- excircles, respectively. The lines *AF*<sub>A</sub>, *BF*<sub>B</sub>, *CF*<sub>C</sub> meet at *X*(12), the harmonic conjugate of the Feuerbach point *F*<sub>I</sub> with respect to the incenter *I* and the nine-point center *N*. <sup>[1](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachIncidence.shtml)</sup>
 
-- [ ] Proof here ...
+[Here](pythagoras/feuerbach-3.py) is a computational proof *starting from incircle*.
