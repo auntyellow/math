@@ -1,6 +1,6 @@
 ### Intersection of tangent planes
 
-> A sphere with center on the plane of the face *ABC* of a tetrahedron *SABC* passes through *A*, *B* and *C*, and meets the edges *SA*, *SB*, *SC* again at *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub>, respectively. The planes through *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> tangent to the sphere meet at a point *O*. Prove that *O* is the circumcenter of the tetrahedron *SA*<sub>1</sub>*B*<sub>1</sub>*C*<sub>1</sub>. <sup>[1]</sup>
+> A sphere with center on the plane of the face *ABC* of a tetrahedron *SABC* passes through *A*, *B* and *C*, and meets the edges *SA*, *SB*, *SC* again at *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub>, respectively. The planes through *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> tangent to the sphere meet at a point *O*. Prove that *O* is the circumcenter of the tetrahedron *SA*<sub>1</sub>*B*<sub>1</sub>*C*<sub>1</sub>. <sup>[1](https://imomath.com/index.php?options=323) (Problem 12)</sup>
 
 Of course we can define the sphere as <img src="https://latex.codecogs.com/gif.latex?x^2+y^2+z^2=r^2">, then pick arbitrary points *A*, *B* and *C* on the equator circle like <img src="https://latex.codecogs.com/gif.latex?A(r,0,0)">, <img src="https://latex.codecogs.com/gif.latex?B(b,\sqrt{r^2-b^2},0)"> and <img src="https://latex.codecogs.com/gif.latex?C(c,\sqrt{r^2-c^2},0)">. However, this will cause many radical calculations later.
 
@@ -30,7 +30,7 @@ Then it's easy to calculate the intersection *O* of the three tangent planes, an
 
 ### Eight vertices of a hexahedron lie on a sphere
 
-> If seven vertices of a (quadrilaterally-faced) hexahedron lie on a sphere, then so does the eighth vertex. <sup>[2]</sup>
+> If seven vertices of a (quadrilaterally-faced) hexahedron lie on a sphere, then so does the eighth vertex. <sup>[2](https://imomath.com/index.php?options=323) (Problem 11)</sup>
 
 Just like the previous problem, we define arbitrary points *O*(0,0,0), *A*(*a*,0,0), *B*(*b*,*c*,0) and *C*(*d*,*e*,*f*), then calculate the sphere passing through these four points:
 
@@ -55,8 +55,3 @@ Let's try <img src="https://latex.codecogs.com/gif.latex?y=m(x-x_\text{B})+y_\te
 Analogously, we can get *E* by <img src="https://latex.codecogs.com/gif.latex?x=n(z-z_\text{A})+x_\text{A}"> and get *F* by <img src="https://latex.codecogs.com/gif.latex?z=p(y-y_\text{C})+z_\text{C}">.
 
 [Here](pythagoras/sphere-11.py) is the computational proof.
-
-### Notes
-
-1. https://imomath.com/index.php?options=323, Problem 12
-2. https://imomath.com/index.php?options=323, Problem 11

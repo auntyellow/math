@@ -47,7 +47,7 @@ An interesting thing is that Eq. 1 can also be an excircle of trangle *ABC* if w
 
 Other proofs can be found [here](https://imomath.com/index.php?options=323) (Problem 7) and [here](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachProof.shtml).
 
-### Two theorems related to the Feuerbach Point
+### Theorems related to the Feuerbach Point
 
 **Theorem 1** The circle through the [feet of the internal bisectors](https://mathworld.wolfram.com/IncentralTriangle.html) *I*<sub>A</sub>*I*<sub>B</sub>*I*<sub>C</sub> of a triangle *ABC* passes through the Feuerbach point.
 
@@ -58,3 +58,7 @@ Other proofs can be found [here](https://imomath.com/index.php?options=323) (Pro
 [Here](pythagoras/feuerbach-2.py) is a computational proof *starting from incircle*.
 
 Other proofs of the two theorems can be found [here](https://blancosilva.github.io/post/2013/07/15/some-results-related-to-the-feuerbach-point.html) (computational) and [here](https://forumgeom.fau.edu/FG2012volume12/FG201205.pdf) (synthetic).
+
+**Theorem 3** Let *F*<sub>A</sub>, *F*<sub>B</sub>, *F*<sub>C</sub> be the touch points of the nine-point circle with the *A*-, *B*-, *C*- excircles, respectively. The lines *AF*<sub>A</sub>, *BF*<sub>B</sub>, *CF*<sub>C</sub> meet at *X*(12), the harmonic conjugate of the Feuerbach point *F*<sub>I</sub> with respect to the incenter *I* and the nine-point center *N*. <sup>[1](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachIncidence.shtml)</sup>
+
+- [ ] Proof here ...
