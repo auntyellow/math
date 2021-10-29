@@ -16,7 +16,7 @@ def perpendicular(P1, P2, P3, P4):
 def main():
     var('x1:11')
     A, B, C, F, E, D, H = (0, 0), (0, 1), (x1, x2), (x3, x4), (x5, x6), (x7, x8), (x9, x10)
-    # h1 = det(collinear, A, B, F) # Zero
+    h1 = det(collinear, A, B, F)   # x3
     h2 = perpendicular(A, B, F, C) # x3, x4
     h3 = det(collinear, C, A, E)   # x5, x6
     h4 = perpendicular(C, A, E, B) # x5, x6
@@ -40,8 +40,10 @@ def main():
     print('R(x6) =', R)
     R = prem(R, h3a, x5)
     print('R(x5) =', R)
-    R = prem(R, h2)
+    R = prem(R, h2, x4)
     print('R(x4) =', R)
+    R = prem(R, h1, x3)
+    print('R(x3) =', R)
 
 if __name__ == '__main__':
     main()
