@@ -46,7 +46,7 @@ which follows *D* = 0 iff *AB* = *AC*, *E* = 0 iff *AB* = *BC*, and *F* = 0 iff 
 
 [Here](pythagoras/euler-line.py) is the computational proof process.
 
-[Here](https://blancosilva.github.io/post/2013/07/09/an-automatic-geometric-proof.html) is another computational proof. More proofs can be found [here](https://math.stackexchange.com/questions/97471).
+[Here](http://blancosilva.github.io/post/2013/07/09/an-automatic-geometric-proof.html) is another computational proof. More proofs can be found [here](https://math.stackexchange.com/questions/97471).
 
 ### Note
 

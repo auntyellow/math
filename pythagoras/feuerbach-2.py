@@ -27,7 +27,7 @@ def mirror(L1, L2):
     return Eq(fraction(cancel((2*x1*x2*y2 - x2**2*y1 + y1*y2**2)*(x - P3[0]) - (x1*x2**2 - x1*y2**2 + 2*x2*y1*y2)*(y - P3[1])))[0], 0)
 
 def main():
-    # https://blancosilva.github.io/post/2013/07/15/some-results-related-to-the-feuerbach-point.html (Theorem 2)
+    # http://blancosilva.github.io/post/2013/07/15/some-results-related-to-the-feuerbach-point.html (Theorem 2)
     # The Feuerbach point of a triangle is the anti-Steiner point of the Euler line of the intouch triangle with respect to the same intouch triangle.
     a, b, r = symbols('a, b, r', positive = True)
     A, B, C, I = (-a, 0), (b, 0), ((a - b)*r**2/(a*b - r**2), 2*a*b*r/(a*b - r**2)), (0, r)
