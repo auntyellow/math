@@ -14,6 +14,7 @@ def main():
     # Prove 3 principal diagonals (AD, BE, CF) are concurrent
     a, b, c, d, e, f, g, h, j, k, m, n = symbols('a, b, c, d, e, f, g, h, j, k, m, n')
     AB, BC, CD = tangent(a, b), tangent(c, d), tangent(e, f)
+    # AB = tangent(1, 0) can be faster
     DE, EF, FA = tangent(g, h), tangent(j, k), tangent(m, n)
     A, B, C = intersect(FA, AB), intersect(AB, BC), intersect(BC, CD)
     D, E, F = intersect(CD, DE), intersect(DE, EF), intersect(EF, FA)
