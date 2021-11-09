@@ -51,14 +51,16 @@ Other proofs can be found [here](https://imomath.com/index.php?options=323) (Pro
 
 **Theorem 1** The circle through the [feet of the internal bisectors](https://mathworld.wolfram.com/IncentralTriangle.html) *I*<sub>A</sub>*I*<sub>B</sub>*I*<sub>C</sub> of a triangle *ABC* passes through the Feuerbach point.
 
-[Here](pythagoras/feuerbach-1.py) is a computational proof *starting from incircle*.
+[Here](pythagoras/feuerbach-1.py) is the computational proof *starting from incircle*.
 
 **Theorem 2** The Feuerbach point of a triangle *ABC* is the [anti-Steiner point](https://artofproblemsolving.com/community/c1646h1025320s3_antisteiner_point) of the Euler line of the [intouch triangle](https://mathworld.wolfram.com/ContactTriangle.html) *C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub> with respect to the same intouch triangle *C*<sub>A</sub>*C*<sub>B</sub>*C*<sub>C</sub>.
 
-[Here](pythagoras/feuerbach-2.py) is a computational proof *starting from incircle*.
+[Here](pythagoras/feuerbach-2.py) is the computational proof *starting from incircle*.
 
 Other proofs of the two theorems can be found [here](http://blancosilva.github.io/post/2013/07/15/some-results-related-to-the-feuerbach-point.html) (computational) and [here](https://forumgeom.fau.edu/FG2012volume12/FG201205.pdf) (synthetic).
 
 **Theorem 3** Let *F*<sub>A</sub>, *F*<sub>B</sub>, *F*<sub>C</sub> be the touch points of the nine-point circle with the *A*-, *B*-, *C*- excircles, respectively. The lines *AF*<sub>A</sub>, *BF*<sub>B</sub>, *CF*<sub>C</sub> meet at *X*(12), the harmonic conjugate of the Feuerbach point *F*<sub>I</sub> with respect to the incenter *I* and the nine-point center *N*. <sup>[1](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachIncidence.shtml)</sup>
 
-[Here](pythagoras/feuerbach-3.py) is a computational proof *starting from incircle*.
+[Here](pythagoras/feuerbach-3.py) is the computational proof *starting from incircle*.
+
+This theorem can also be proved by [Monge's theorem](monge.md#monges-theorem) (Theorem 2).

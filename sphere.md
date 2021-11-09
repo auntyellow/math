@@ -30,7 +30,7 @@ Then it's easy to calculate the intersection *O* of the three tangent planes, an
 
 ### Eight vertices of a hexahedron lie on a sphere
 
-> If seven vertices of a (quadrilaterally-faced) hexahedron lie on a sphere, then so does the eighth vertex. <sup>[2](https://imomath.com/index.php?options=323) (Problem 11)</sup>
+> If seven vertices of a (quadrilaterally-faced) hexahedron lie on a sphere, then so does the eighth vertex. <sup>[1](https://imomath.com/index.php?options=323) (Problem 11)</sup>
 
 Just like the previous problem, we define arbitrary points *O*(0,0,0), *A*(*a*,0,0), *B*(*b*,*c*,0) and *C*(*d*,*e*,*f*), then calculate the sphere passing through these four points:
 

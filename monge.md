@@ -93,31 +93,41 @@ which is between *a* and *b*. So it should be the internal intersection. Denote 
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{H'A}}{\overrightarrow{BH'}}=\frac{a-h'}{h'-b}=\frac{R}r\quad\text{(Eq.\,2)}">
 
+The external and internal intersections, are the external and internal **[homothetic centers](https://en.wikipedia.org/wiki/Homothetic_center#Circles)** of two circles, and they are harmonic conjugate with respect to the two circle centers:
+
+<img src="https://latex.codecogs.com/gif.latex?(A,B;H,H')=-1">
+
 For example, one circle is inside the other:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}x^2+y^2=9\\x^2+(y+1)^2=1\end{cases}">
 
-The two external tangent lines are <img src="https://latex.codecogs.com/gif.latex?y=\pm\sqrt{3}ix/2-3/2"> (tangent points are <img src="https://latex.codecogs.com/gif.latex?(\pm{3}\sqrt{3}i,-6)"> and <img src="https://latex.codecogs.com/gif.latex?(\pm\sqrt{3}i,-3)">), and their intersection is <img src="https://latex.codecogs.com/gif.latex?(0,-3/2)">.
+The two external tangent lines are <img src="https://latex.codecogs.com/gif.latex?y=\pm\sqrt{3}ix/2-3/2"> (tangent points are <img src="https://latex.codecogs.com/gif.latex?(\pm{3}\sqrt{3}i,-6)"> and <img src="https://latex.codecogs.com/gif.latex?(\pm\sqrt{3}i,-3)">), and their intersection (internal homothetic center) is <img src="https://latex.codecogs.com/gif.latex?(0,-3/2)">.
 
-The two internal tangent lines are <img src="https://latex.codecogs.com/gif.latex?y=\pm\sqrt{15}ix/4-3/4"> (tangent points are <img src="https://latex.codecogs.com/gif.latex?(\pm{3}\sqrt{15}i,-12)"> and <img src="https://latex.codecogs.com/gif.latex?(\pm\sqrt{15}i,3)">), and their intersection is <img src="https://latex.codecogs.com/gif.latex?(0,-3/4)">.
+The two internal tangent lines are <img src="https://latex.codecogs.com/gif.latex?y=\pm\sqrt{15}ix/4-3/4"> (tangent points are <img src="https://latex.codecogs.com/gif.latex?(\pm{3}\sqrt{15}i,-12)"> and <img src="https://latex.codecogs.com/gif.latex?(\pm\sqrt{15}i,3)">), and their intersection (external homothetic center) is <img src="https://latex.codecogs.com/gif.latex?(0,-3/4)">.
 
 ### Monge's theorem
 
 <img src="diagrams/monge.png">
 
-**Monge's theorem** states that for any three circles in a plane, the intersection points of each of the three pairs of external tangent lines are collinear. This still holds even if one circle is completely inside the other.
+**Theorem 1** For any three circles in a plane, the intersection points of each of the three pairs of external tangent lines (i.e. three external homothetic centers) are collinear. This still holds even if one circle is completely inside the other.
 
-Let's apply Eq. 1 onto three external intersections *D*, *E* and *F*:
+This can be proved by applying Eq. 1 onto *D*, *E* and *F* and Menelaus's theorem:
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{DA}}{\overrightarrow{DB}}\cdot\frac{\overrightarrow{EC}}{\overrightarrow{EA}}\cdot\frac{\overrightarrow{FB}}{\overrightarrow{FC}}=\frac{r_A}{r_B}\cdot\frac{r_C}{r_A}\cdot\frac{r_B}{r_C}=1">
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{DB}}{\overrightarrow{DC}}\cdot\frac{\overrightarrow{EC}}{\overrightarrow{EA}}\cdot\frac{\overrightarrow{FA}}{\overrightarrow{FB}}=\frac{r_B}{r_C}\cdot\frac{r_C}{r_A}\cdot\frac{r_A}{r_B}=1">
 
-According to Menelaus's theorem, *D*, *E* and *F* are collinear.
+**Theorem 2** For three circles (*A*), (*B*) and (*C*) in a plane, the external homothetic center *D* of (*B*) and (*C*), the internal homothetic center *E'* of (*C*) and (*A*), and the internal homothetic center *F'* of (*A*) and (*B*), are collinear.
 
-The three internal intersections *D'*, *E'* and *F'* have a similar property. Let's apply Eq. 2 onto them:
+This can be proved by applying Eq. 1 onto *D*, Eq. 2 onto *E'* and *F'* and Menelaus's theorem:
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{D'A}}{\overrightarrow{BD'}}\cdot\frac{\overrightarrow{E'C}}{\overrightarrow{AE'}}\cdot\frac{\overrightarrow{F'B}}{\overrightarrow{CF'}}=\frac{r_A}{r_B}\cdot\frac{r_C}{r_A}\cdot\frac{r_B}{r_C}=1">
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{DB}}{\overrightarrow{DC}}\cdot\frac{\overrightarrow{CE'}}{\overrightarrow{E'A}}\cdot\frac{\overrightarrow{AF'}}{\overrightarrow{F'B}}=\frac{r_B}{r_C}\cdot\frac{r_C}{r_A}\cdot\frac{r_A}{r_B}=1">
 
-According to Ceva's theorem, *CD'*, *BE'* and *AF'* are concurrent.
+A famous triangle center *X*(12) mentioned [here](feuerbach.md#theorems-related-to-the-feuerbach-point) (Theorem 3) can be proved by this theorem.
+
+**Theorem 3** For three circles (*A*), (*B*) and (*C*) in a plane, let *D'*, *E'* and *F'* be the internal homothetic centers of (*B*)(*C*), (*C*)(*A*) and (*A*)(*B*), respectively, then *AD'*, *BE'* and *CF'* are concurrent.
+
+This can be proved by applying Eq. 2 onto *D'*, *E'* and *F'* and Ceva's theorem:
+
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD'}}{\overrightarrow{D'C}}\cdot\frac{\overrightarrow{CE'}}{\overrightarrow{E'A}}\cdot\frac{\overrightarrow{AF'}}{\overrightarrow{F'B}}=\frac{r_B}{r_C}\cdot\frac{r_C}{r_A}\cdot\frac{r_A}{r_B}=1">
 
 ### Note
 
