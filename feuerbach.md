@@ -63,4 +63,4 @@ Other proofs of the two theorems can be found [here](http://blancosilva.github.i
 
 [Here](pythagoras/feuerbach-3.py) is the computational proof *starting from incircle*.
 
-This theorem can also be proved by [Monge's theorem](monge.md#monges-theorem) (Theorem 2).
+This theorem can also be proved by [Monge's theorem](monge.md#monges-theorem) (proposition 2).

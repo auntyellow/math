@@ -93,7 +93,7 @@ which is between *a* and *b*. So it should be the internal intersection. Denote 
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{H'A}}{\overrightarrow{BH'}}=\frac{a-h'}{h'-b}=\frac{R}r\quad\text{(Eq.\,2)}">
 
-The external and internal intersections, are the external and internal **[homothetic centers](https://en.wikipedia.org/wiki/Homothetic_center#Circles)** of two circles, and they are harmonic conjugate with respect to the two circle centers:
+In fact, the external and internal intersections are the external and internal **[homothetic centers](https://en.wikipedia.org/wiki/Homothetic_center#Circles)** of two circles, and they are harmonic conjugate with respect to the two circle centers:
 
 <img src="https://latex.codecogs.com/gif.latex?(A,B;H,H')=-1">
 
@@ -109,25 +109,20 @@ The two internal tangent lines are <img src="https://latex.codecogs.com/gif.late
 
 <img src="diagrams/monge.png">
 
-**Theorem 1** For any three circles in a plane, the intersection points of each of the three pairs of external tangent lines (i.e. three external homothetic centers) are collinear. This still holds even if one circle is completely inside the other.
+**Monge's theorem** states that for any three circles in a plane, none of which is completely inside one of the others, the intersection points of each of the three pairs of external tangent lines are collinear.
 
-This can be proved by applying Eq. 1 onto *D*, *E* and *F* and Menelaus's theorem:
+In fact, there are another three propositions.
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{DB}}{\overrightarrow{DC}}\cdot\frac{\overrightarrow{EC}}{\overrightarrow{EA}}\cdot\frac{\overrightarrow{FA}}{\overrightarrow{FB}}=\frac{r_B}{r_C}\cdot\frac{r_C}{r_A}\cdot\frac{r_A}{r_B}=1">
+For any three circles (*A*), (*B*) and (*C*) in a plane, let *D*, *E* and *F* be the external homothetic centers (intersection points of external tangent lines, if one circle is not completely inside the other) of (*B*)(*C*), (*C*)(*A*) and (*A*)(*B*) respectively, and let *D'*, *E'* and *F'* be the internal homothetic centers (intersection points of internal tangent lines, if the two circles are disjoint) of (*B*)(*C*), (*C*)(*A*) and (*A*)(*B*) respectively, then we have:
 
-**Theorem 2** For three circles (*A*), (*B*) and (*C*) in a plane, the external homothetic center *D* of (*B*) and (*C*), the internal homothetic center *E'* of (*C*) and (*A*), and the internal homothetic center *F'* of (*A*) and (*B*), are collinear.
+1. *DEF* are collinear;
+2. *DE'F'* (*D'EF'*; *D'E'F*) are collinear;
+3. *AD'*, *BE'* and *CF'* are concurrent;
+4. *AD*, *BE* and *CF'* (*AD*, *BE'* and *CF*; *AD'*, *BE* and *CF*) are concurrent.
 
-This can be proved by applying Eq. 1 onto *D*, Eq. 2 onto *E'* and *F'* and Menelaus's theorem:
+To prove these propositions, just apply Eq. 1 onto *D*, *E* and *F*, and apply Eq. 2 onto *D'*, *E'* and *F'*, then get collinearity by Menelaus's theorem, and get concurrency by Ceva's theorem.
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{DB}}{\overrightarrow{DC}}\cdot\frac{\overrightarrow{CE'}}{\overrightarrow{E'A}}\cdot\frac{\overrightarrow{AF'}}{\overrightarrow{F'B}}=\frac{r_B}{r_C}\cdot\frac{r_C}{r_A}\cdot\frac{r_A}{r_B}=1">
-
-A famous triangle center *X*(12) mentioned [here](feuerbach.md#theorems-related-to-the-feuerbach-point) (Theorem 3) can be proved by this theorem.
-
-**Theorem 3** For three circles (*A*), (*B*) and (*C*) in a plane, let *D'*, *E'* and *F'* be the internal homothetic centers of (*B*)(*C*), (*C*)(*A*) and (*A*)(*B*), respectively, then *AD'*, *BE'* and *CF'* are concurrent.
-
-This can be proved by applying Eq. 2 onto *D'*, *E'* and *F'* and Ceva's theorem:
-
-<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD'}}{\overrightarrow{D'C}}\cdot\frac{\overrightarrow{CE'}}{\overrightarrow{E'A}}\cdot\frac{\overrightarrow{AF'}}{\overrightarrow{F'B}}=\frac{r_B}{r_C}\cdot\frac{r_C}{r_A}\cdot\frac{r_A}{r_B}=1">
+A famous triangle center *X*(12) mentioned [here](feuerbach.md#theorems-related-to-the-feuerbach-point) (Theorem 3) can be proved by proposition 2.
 
 ### Note
 
