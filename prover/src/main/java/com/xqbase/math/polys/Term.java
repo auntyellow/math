@@ -7,13 +7,16 @@ public class Term implements Comparable<Term> {
 
 	private Term() {/**/}
 
-	public Term(int vars, String expr) {
+	public Term(int vars) {
 		orders = new byte[vars];
-		if (expr.isEmpty()) {
-			return;
-		}
-		for (String s : expr.replace("**", "^").split("\\*")) {
-			orders[s.charAt(0) - 'a'] = (s.length() == 1 ? 1 : Byte.parseByte(s.substring(2)));
+	}
+
+	public Term(int vars, String expr) {
+		this(vars);
+		if (!expr.isEmpty()) {
+			for (String s : expr.replace("**", "^").split("\\*")) {
+				orders[s.charAt(0) - 'a'] = (s.length() == 1 ? 1 : Byte.parseByte(s.substring(2)));
+			}
 		}
 	}
 

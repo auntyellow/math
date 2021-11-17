@@ -99,13 +99,7 @@ public class Poly extends HashMap<Term, int[]> {
 		return sb.toString();
 	}
 
-	public void mul(int n) {
-		for (int[] coeff : values()) {
-			coeff[0] *= n;
-		}
-	}
-
-	public void add(int n, Poly p) {
+	public Poly add(int n, Poly p) {
 		p.forEach((k, v) -> {
 			int[] coeff = computeIfAbsent(k, ZERO_COEFF);
 			coeff[0] += n * v[0];
@@ -113,9 +107,10 @@ public class Poly extends HashMap<Term, int[]> {
 				remove(k);
 			}
 		});
+		return this;
 	}
 
-	public void addMul(int n, Poly p1, Poly p2) {
+	public Poly addMul(int n, Poly p1, Poly p2) {
 		p1.forEach((k1, v1) -> {
 			p2.forEach((k2, v2) -> {
 				Term k = k1.mul(k2);
@@ -126,21 +121,18 @@ public class Poly extends HashMap<Term, int[]> {
 				}
 			});
 		});
+		return this;
 	}
 
 	public static Poly det(Poly p11, Poly p12, Poly p21, Poly p22) {
-		Poly p = new Poly();
-		p.addMul(1, p11, p22);
-		p.addMul(-1, p21, p12);
-		return p;
+		return new Poly().addMul(1, p11, p22).addMul(-1, p21, p12);
 	}
 
 	public static Poly det(
 			Poly p11, Poly p12, Poly p13,
 			Poly p21, Poly p22, Poly p23,
 			Poly p31, Poly p32, Poly p33) {
-		Poly p = new Poly();
-		p.addMul(1, p11, det(p22, p23, p32, p33));
+		Poly p = new Poly().addMul(1, p11, det(p22, p23, p32, p33));
 		log.trace("Det(1x3) Terms: " + p.size());
 		p.addMul(-1, p21, det(p12, p13, p32, p33));
 		log.trace("Det(2x3) Terms: " + p.size());
@@ -154,8 +146,7 @@ public class Poly extends HashMap<Term, int[]> {
 			Poly p21, Poly p22, Poly p23, Poly p24,
 			Poly p31, Poly p32, Poly p33, Poly p34,
 			Poly p41, Poly p42, Poly p43, Poly p44) {
-		Poly p = new Poly();
-		p.addMul(1, p11, det(p22, p23, p24, p32, p33, p34, p42, p43, p44));
+		Poly p = new Poly().addMul(1, p11, det(p22, p23, p24, p32, p33, p34, p42, p43, p44));
 		log.debug("Det(1x4) Terms: " + p.size());
 		p.addMul(-1, p21, det(p12, p13, p14, p32, p33, p34, p42, p43, p44));
 		log.debug("Det(2x4) Terms: " + p.size());

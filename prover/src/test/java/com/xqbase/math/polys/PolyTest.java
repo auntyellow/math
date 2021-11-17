@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.xqbase.math.geometry.Circle;
+import com.xqbase.math.geometry.Line;
 import com.xqbase.math.geometry.Point;
 import com.xqbase.math.polys.Poly;
 
@@ -37,6 +38,8 @@ public class PolyTest {
 
 	@Test
 	public void testParse() {
+		Assert.assertEquals("0", new Poly().toString());
+		Assert.assertTrue(new Poly(0, "0").isEmpty());
 		for (int i = -100; i <= 100; i ++) {
 			String expr = "" + i;
 			Assert.assertEquals(expr, "" + new Poly(VARS, expr));
@@ -86,7 +89,17 @@ public class PolyTest {
 		Poly x_J = new Poly(19, "a*d*h*n*r - a*d*j*m*r + a*e*j*k*r + a*e*k*n*s - a*f*h*k*r - a*f*k*m*s - b*d*g*n*r - b*d*k*n*s + b*f*g*k*r + b*f*k**2*s + c*d*g*m*r + c*d*k*m*s - c*e*g*k*r - c*e*k**2*s");
 		Poly y_J = new Poly(19, "a*e*h*n*r + a*e*m*n*s - a*f*h*m*r - a*f*m**2*s - b*d*j*m*r - b*d*m*n*s - b*e*g*n*r + b*e*j*k*r + b*f*g*m*r + b*f*k*m*s + c*d*h*m*r + c*d*m**2*s - c*e*h*k*r - c*e*k*m*s");
 		Poly z_J = new Poly(19, "a*e*j*n*r + a*e*n**2*s - a*f*j*m*r - a*f*m*n*s - b*d*j*n*r - b*d*n**2*s + b*f*j*k*r + b*f*k*n*s + c*d*h*n*r + c*d*m*n*s - c*e*g*n*r - c*e*k*n*s + c*f*g*m*r - c*f*h*k*r");
-		Assert.assertEquals("0", "" + Poly.det(x_G, y_G, z_G, x_H, y_H, z_H, x_J, y_J, z_J));
+		Assert.assertTrue(Poly.det(x_G, y_G, z_G, x_H, y_H, z_H, x_J, y_J, z_J).isEmpty());
+		Point pg = new Point(x_G, y_G, z_G);
+		Point ph = new Point(x_H, y_H, z_H);
+		Point pj = new Point(x_J, y_J, z_J);
+		Assert.assertTrue(Point.collinear(pg, ph, pj));
+		Assert.assertTrue(new Line(pg, ph).passesThrough(pj));
+		Line lg = new Line(x_G, y_G, z_G);
+		Line lh = new Line(x_H, y_H, z_H);
+		Line lj = new Line(x_J, y_J, z_J);
+		Assert.assertTrue(Line.concurrent(lg, lh, lj));
+		Assert.assertTrue(new Point(lg, lh).liesOn(lj));
 		// Results from pentagon.py
 		Point c4 = P(X, Y, Z);
 		Point a4 = P("e - g", "-d + f", "d*g - e*f");
