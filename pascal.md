@@ -135,7 +135,7 @@ Then we can calculate the other 3 of 6 vertices:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}B=AB{\cap}BC=AG{\cap}HC\\D=CD{\cap}DE=CJ{\cap}GE\\F=EF{\cap}FA=EH{\cap}JA\end{cases}">
 
-After some calcluations [here](projective/braikenridge-maclaurin-h.py), we get: 
+After some calculations [here](projective/braikenridge-maclaurin-h.py), we get: 
 
 <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}x_\text{A}^2&x_\text{A}y_\text{A}&y_\text{A}^2&x_\text{A}z_\text{A}&y_\text{A}z_\text{A}&z_\text{A}^2\\x_\text{B}^2&x_\text{B}y_\text{B}&y_\text{B}^2&x_\text{B}z_\text{B}&y_\text{B}z_\text{B}&z_\text{B}^2\\x_\text{C}^2&x_\text{C}y_\text{C}&y_\text{C}^2&x_\text{C}z_\text{C}&y_\text{C}z_\text{C}&z_\text{C}^2\\x_\text{D}^2&x_\text{D}y_\text{D}&y_\text{D}^2&x_\text{D}z_\text{D}&y_\text{D}z_\text{D}&z_\text{D}^2\\x_\text{E}^2&x_\text{E}y_\text{E}&y_\text{E}^2&x_\text{E}z_\text{E}&y_\text{E}z_\text{E}&z_\text{E}^2\\x_\text{F}^2&x_\text{F}y_\text{F}&y_\text{F}^2&x_\text{F}z_\text{F}&y_\text{F}z_\text{F}&z_\text{F}^2\end{matrix}\right]=0">
 
