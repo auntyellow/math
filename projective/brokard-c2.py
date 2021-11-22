@@ -26,7 +26,7 @@ def perpendicular(P1, P2, P3, P4):
     return cancel((x1 - x2)*(x3 - x4) + (y1 - y2)*(y3 - y4)) == 0
 
 def main():
-    # https://www.imomath.com/index.php?options=334 (Theorem 9)
+    # https://imomath.com/index.cgi?page=polePolarBrianchonBrokard (Theorem 9)
     a, b, c, d, e, f, g, h = symbols('a, b, c, d, e, f, g, h')
     A, B, C = (0, 0), (a, 0), (b, c)
     circle_eq = circle(A, B, C)

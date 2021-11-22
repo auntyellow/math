@@ -1,7 +1,7 @@
 from cartesian import *
 
 def main():
-    # https://imomath.com/index.php?options=334 (Theorem 7)
+    # https://imomath.com/index.cgi?page=polePolarBrianchonBrokard (Theorem 7)
     # A and B are conjugated => (A,B;C,D)=-1
     a, b, x, y = symbols('a, b, x, y')
     A, B = (0, 1/a), (b, a)

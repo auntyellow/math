@@ -130,4 +130,4 @@ In other words, (*M*, *C*) and (*A*, *B*) are [harmonic conjugates](https://en.w
 1. Here we use the diagram from [Mathoman's website](http://www.mathoman.com/de/index.php/1529-verschiedene-sehnen-in-einem-kreis). The [diagram](https://en.wikipedia.org/wiki/File:Butterfly_theorem.svg) from [Wikipedia](https://en.wikipedia.org/wiki/Butterfly_theorem) is wrong because M is not the midpoint of PQ and XY.
 2. A similar proof (but not generalized forms) can be found [here](https://www.cut-the-knot.org/pythagoras/Butterfly.shtml) (Proof 18).
 3. [Here](projective/butterfly.py) is a proof by SymPy without Vieta's formulas.
-4. A simple proof of projective harmonic conjugate can be found [here](https://www.imomath.com/index.php?options=628) (Problem 1).
+4. A simple proof of projective harmonic conjugate can be found [here](https://imomath.com/index.cgi?page=problemsInProjectiveGeometry) (Problem 1).

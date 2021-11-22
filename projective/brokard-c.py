@@ -9,7 +9,7 @@ def sub_y(x, y):
     return y, (1 - randint(0, 1)*2)*sqrt(1 - x**2)
 
 def main():
-    # https://www.imomath.com/index.php?options=334 (Theorem 9)
+    # https://imomath.com/index.cgi?page=polePolarBrianchonBrokard (Theorem 9)
     a, b, c, d, e, f, g, h = symbols('a, b, c, d, e, f, g, h')
     A, B, C, D = (a, b), (c, d), (e, f), (g, h)
     AB, AC, AD, BC, BD, CD = line(A, B), line(A, C), line(A, D), line(B, C), line(B, D), line(C, D)

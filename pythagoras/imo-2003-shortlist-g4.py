@@ -18,7 +18,7 @@ def dist2(P1, P2):
     return (P1[0] - P2[0])**2 + (P1[1] - P2[1])**2
 
 def main():
-    # https://www.imomath.com/index.php?options=323 (Example 1)
+    # https://imomath.com/index.cgi?page=inversion (Example 1)
     a, b, c, d, k = symbols('a, b, c, d, k')
     G1, G2, G3, G4 = circle((a, 0)), circle((b, k*b)), circle((c, 0)), circle((d, k*d))
     A, B, C, D, P = intersect(G1, G2), intersect(G2, G3), intersect(G3, G4), intersect(G4, G1), (0, 0)

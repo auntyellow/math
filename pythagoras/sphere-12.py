@@ -83,7 +83,7 @@ def dist2(P1, P2):
     return cancel((P1[0]/P1[3] - P2[0]/P2[3])**2 + (P1[1]/P1[3] - P2[1]/P2[3])**2 + (P1[2]/P1[3] - P2[2]/P2[3])**2)
 
 def main():
-    # https://www.imomath.com/index.php?options=323 (Problem 12)
+    # https://imomath.com/index.cgi?page=inversion (Problem 12)
     a, b, c, d, e, f, x, y, z, w = symbols('a, b, c, d, e, f, x, y, z, w')
     A, B, C, S = (a, 0, 0), (0, b, 0), (c, 0, 0), (d, e, f)
     sphere_l = sphere(A, B, C)

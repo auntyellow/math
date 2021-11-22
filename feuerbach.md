@@ -45,7 +45,7 @@ The equation set of two circles (Eq. 1 and Eq. 2) has only one root (because of 
 
 An interesting thing is that Eq. 1 can also be an excircle of trangle *ABC* if we set <img src="https://latex.codecogs.com/gif.latex?ab<r^2">. So the the tangency of nine-point circle and excircle is also proved.
 
-Other proofs can be found [here](https://imomath.com/index.php?options=323) (Problem 7) and [here](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachProof.shtml).
+Other proofs can be found [here](https://imomath.com/index.cgi?page=inversion) (Problem 7) and [here](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachProof.shtml).
 
 ### Theorems related to the Feuerbach Point
 

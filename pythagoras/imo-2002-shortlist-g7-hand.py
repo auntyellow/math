@@ -2,7 +2,7 @@ from sympy import factor
 from cartesian import *
 
 def main():
-    # https://imomath.com/index.php?options=323 (Problem 14)
+    # https://imomath.com/index.cgi?page=inversion (Problem 14)
     b, c, r = symbols('b, c, r', positive = True)
     B, C, I = (-b, 0), (c, 0), (0, r)
     print('I:', I)

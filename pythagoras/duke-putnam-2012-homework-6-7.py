@@ -2,7 +2,7 @@ from sympy import simplify, sqrt
 from cartesian import *
 
 def main():
-    # https://www.imomath.com/index.php?options=586 (Problem 7)
+    # https://imomath.com/index.cgi?page=psPutnamPreparationGeometry (Problem 7)
     a, b, r, AC = symbols('a, b, r, AC', positive = True)
     c, x, y = symbols('c, x, y')
     A, B, C, O = (-a, 0), (0, 0), (b, c), (0, r)

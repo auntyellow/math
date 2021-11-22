@@ -70,7 +70,7 @@ def on_sphere(sphere_h, P):
     return expand(sphere_h.subs(x, P[0]).subs(y, P[1]).subs(z, P[2]).subs(w, P[3])) == 0
 
 def main():
-    # https://www.imomath.com/index.php?options=323 (Problem 11)
+    # https://imomath.com/index.cgi?page=inversion (Problem 11)
     a, b, c, d, e, f, g, h, j, x, y, z, w = symbols('a, b, c, d, e, f, g, h, j, x, y, z, w')
     # quick test a special case
     # b, d, e = 0, 0, 0

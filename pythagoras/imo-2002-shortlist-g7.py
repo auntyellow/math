@@ -18,7 +18,7 @@ def center(c):
     return cancel(-poly(c, x).nth(1)/2), cancel(-poly(c, y).nth(1)/2)
 
 def main():
-    # https://imomath.com/index.php?options=323 (Problem 14)
+    # https://imomath.com/index.cgi?page=inversion (Problem 14)
     a, b, c, AB, AC = symbols('a, b, c, AB, AC', positive = True)
     A, B, C, M = (0, a), (-b, 0), (c, 0), (0, a/2)
     #AB, AC = sqrt(a**2 + b**2), sqrt(a**2 + c**2)

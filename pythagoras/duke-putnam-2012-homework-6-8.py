@@ -1,7 +1,7 @@
 from sympy import pi, cos, sin, integrate, simplify, symbols
 
 def main():
-    # https://www.imomath.com/index.php?options=586 (Problem 8)
+    # https://imomath.com/index.cgi?page=psPutnamPreparationGeometry (Problem 8)
     a, r = symbols('a, r', positive = True)
     theta, t = symbols('theta, t')
     rho2 = a**2*(cos(theta)**2 - sin(theta)**2) + r**2
