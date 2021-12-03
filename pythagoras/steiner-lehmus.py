@@ -1,9 +1,6 @@
 from sympy import factor
 from cartesian import *
 
-def dist2(P1, P2):
-    return (P1[0] - P2[0])**2 + (P1[1] - P2[1])**2
-
 def main():
     # https://en.wikipedia.org/wiki/Steiner%E2%80%93Lehmus_theorem
     a, b, r = symbols('a, b, r', positive = True)

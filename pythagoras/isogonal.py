@@ -22,9 +22,6 @@ def center(c):
     x, y = symbols('x, y')
     return cancel(-poly(c, x).nth(1)/2), cancel(-poly(c, y).nth(1)/2)
 
-def dist2(P1, P2):
-    return (P1[0] - P2[0])**2 + (P1[1] - P2[1])**2
-
 def cos2eq(a2, b2, c2, d2, e2, f2):
     left_num = fraction(cancel(a2 + b2 - c2))
     left_den1 = fraction(cancel(a2))

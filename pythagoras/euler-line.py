@@ -1,9 +1,6 @@
 from sympy import factor, poly, solve, sqrt
 from cartesian import *
 
-def dist2(p1, p2):
-    return (p1[0] - p2[0])**2 + (p1[1] - p2[1])**2
-
 def main():
     a, b, r = symbols('a, b, r', positive = True)
     # Test case: A is a right angle and AB = AC

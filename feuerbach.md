@@ -45,6 +45,30 @@ The equation set of two circles (Eq. 1 and Eq. 2) has only one root (because of 
 
 An interesting thing is that Eq. 1 can also be an excircle of trangle *ABC* if we set <img src="https://latex.codecogs.com/gif.latex?ab<r^2">. So the the tangency of nine-point circle and excircle is also proved.
 
+The tangency can also be proved by calculating the nine-point circle's center:
+
+<img src="https://latex.codecogs.com/gif.latex?N=\left(\frac{(a-b)(3r^2-ab)}{4(ab-r^2)},\frac{(ab-ar+br+r^2)(ab+ar-br+r^2)}{8r(ab-r^2)}\right)">
+
+and radius:
+
+<img src="https://latex.codecogs.com/gif.latex?r_N^2=\frac{(a^2+r^2)^2(b^2+r^2)^2}{64r^2(ab-r^2)^2}">
+
+And the distance between the two circles' centers should be:
+
+<img src="https://latex.codecogs.com/gif.latex?|NI(E)|^2=\frac{(a^2b^2+a^2r^2-8abr^2+b^2r^2+9r^4)^2}{64r^2(ab-r^2)^2}">
+
+For the incircle case (<img src="https://latex.codecogs.com/gif.latex?ab>r^2">), we have:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}r_N=\frac{(a^2+r^2)(b^2+r^2)}{8r(ab-r^2)}\\r_I=r\\|NI|=\frac{a^2b^2+a^2r^2-8abr^2+b^2r^2+9r^4}{8r(ab-r^2)}\end{cases}">
+
+So we get <img src="https://latex.codecogs.com/gif.latex?|NI|=r_\text{N}-r_\text{I}">, which means the incircle is inside and internally tangent to the nine-point circle.
+
+For the excircle case (<img src="https://latex.codecogs.com/gif.latex?ab<r^2">), we have:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}r_N=\frac{(a^2+r^2)(b^2+r^2)}{8r(r^2-ab)}\\r_E=r\\|NE|=\frac{a^2b^2+a^2r^2-8abr^2+b^2r^2+9r^4}{8r(r^2-ab)}\end{cases}">
+
+So we get <img src="https://latex.codecogs.com/gif.latex?|NE|=r_\text{N}+r_\text{E}">, which means the excircle is externally tangent to the nine-point circle.
+
 Other proofs can be found [here](https://imomath.com/index.cgi?page=inversion) (Problem 7) and [here](https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachProof.shtml).
 
 ### Theorems related to the Feuerbach Point

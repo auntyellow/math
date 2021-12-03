@@ -1,9 +1,6 @@
 from sympy import factor
 from cartesian import *
 
-def dist2(P1, P2):
-    return (P1[0] - P2[0])**2 + (P1[1] - P2[1])**2
-
 def main():
     # https://math.stackexchange.com/questions/2391840
     # 0 < ∠ABC = 2β < π/2, 0 < ∠ACB = 2γ < π/2
