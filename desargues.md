@@ -179,17 +179,27 @@ Denote points *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> as **O**, *
 
 And we denote intersection *ab* as: <sup>[6]</sup>
 
-<img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})}">
+<img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})=c(qr\mathbf{A_1}-ps\mathbf{B_1})}">
 
 Analogously, we have *ac*:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=[(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}](pu\mathbf{C_1}-qt\mathbf{A_1})">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=[(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}](pu\mathbf{C_1}-qt\mathbf{A_1})=b(pu\mathbf{C_1}-qt\mathbf{A_1})">
 
 and *bc*:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=[(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}](st\mathbf{B_1}-ru\mathbf{C_1})">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=[(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}](st\mathbf{B_1}-ru\mathbf{C_1})=a(st\mathbf{B_1}-ru\mathbf{C_1})">
 
-Finally, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">, which means *ab*, *ac* and *bc* are collinear. □
+Then we get:
+
+<img src="https://latex.codecogs.com/gif.latex?{\mathbf{H}\times\mathbf{J}=ab(pu\mathbf{C_1}-qt\mathbf{A_1})\times(st\mathbf{B_1}-ru\mathbf{C_1})=ab(pstu\mathbf{C_1}\times\mathbf{B_1}-qst^2\mathbf{A_1}\times\mathbf{B_1}+qrtu\mathbf{A_1}\times\mathbf{C_1})}">
+
+by using <img src="https://latex.codecogs.com/gif.latex?\mathbf{C_1}\times\mathbf{C_1}=0">.
+
+Finally, by using <img src="https://latex.codecogs.com/gif.latex?\mathbf{A_1}\cdot(\mathbf{A_1}\times\mathbf{B_1})=0">, <img src="https://latex.codecogs.com/gif.latex?\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{B_1})=0"> and <img src="https://latex.codecogs.com/gif.latex?\mathbf{A_1}\cdot(\mathbf{C_1}\times\mathbf{B_1})=\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{C_1})">, we get:
+
+<img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=abc(qr\mathbf{A_1}-ps\mathbf{B_1})\cdot(pstu\mathbf{C_1}\times\mathbf{B_1}-qst^2\mathbf{A_1}\times\mathbf{B_1}+qrtu\mathbf{A_1}\times\mathbf{C_1})=abc[pqrstu\mathbf{A_1}\cdot(\mathbf{C_1}\times\mathbf{B_1})-pqrstu\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{C_1})]=0}">
+
+which means *ab*, *ac* and *bc* are collinear. □
 
 ### 3D vector proof of Pappus's Theorem
 
@@ -205,7 +215,7 @@ where
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}a=(\mathbf{B}\times\mathbf{C})\cdot\mathbf{D}\\b=(\mathbf{A}\times\mathbf{C})\cdot\mathbf{D}\\c=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{D}\\d=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}\end{cases}">
 
-After some calculations, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=\mathbf{0}">, which means *G*, *H* and *J* are collinear. □
+After some calculations, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=0">, which means *G*, *H* and *J* are collinear. □
 
 ### Notes
 
