@@ -179,15 +179,19 @@ Denote points *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> as **O**, *
 
 And we denote intersection *ab* as: <sup>[6]</sup>
 
-<img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})=c(qr\mathbf{A_1}-ps\mathbf{B_1})}">
+<img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})}">
 
 Analogously, we have *ac*:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=[(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}](pu\mathbf{C_1}-qt\mathbf{A_1})=b(pu\mathbf{C_1}-qt\mathbf{A_1})">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=[(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}](pu\mathbf{C_1}-qt\mathbf{A_1})">
 
 and *bc*:
 
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=[(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}](st\mathbf{B_1}-ru\mathbf{C_1})=a(st\mathbf{B_1}-ru\mathbf{C_1})">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=[(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}](st\mathbf{B_1}-ru\mathbf{C_1})">
+
+Note that triple products in **G**, **H** and **I** are scalars, so we can simplify them as:
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}a=(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}\\b=(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}\\c=(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}\end{cases}">
 
 Then we get:
 
@@ -197,7 +201,7 @@ by using <img src="https://latex.codecogs.com/gif.latex?\mathbf{C_1}\times\mathb
 
 Finally, by using <img src="https://latex.codecogs.com/gif.latex?\mathbf{A_1}\cdot(\mathbf{A_1}\times\mathbf{B_1})=0">, <img src="https://latex.codecogs.com/gif.latex?\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{B_1})=0"> and <img src="https://latex.codecogs.com/gif.latex?\mathbf{A_1}\cdot(\mathbf{C_1}\times\mathbf{B_1})=\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{C_1})">, we get:
 
-<img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=abc(qr\mathbf{A_1}-ps\mathbf{B_1})\cdot(pstu\mathbf{C_1}\times\mathbf{B_1}-qst^2\mathbf{A_1}\times\mathbf{B_1}+qrtu\mathbf{A_1}\times\mathbf{C_1})=abc[pqrstu\mathbf{A_1}\cdot(\mathbf{C_1}\times\mathbf{B_1})-pqrstu\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{C_1})]=0}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{array}{l}\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=abc(qr\mathbf{A_1}-ps\mathbf{B_1})\cdot(pstu\mathbf{C_1}\times\mathbf{B_1}-qst^2\mathbf{A_1}\times\mathbf{B_1}+qrtu\mathbf{A_1}\times\mathbf{C_1})=\\abc[pqrstu\mathbf{A_1}\cdot(\mathbf{C_1}\times\mathbf{B_1})-pqrstu\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{C_1})]=0\end{array}">
 
 which means *ab*, *ac* and *bc* are collinear. □
 
