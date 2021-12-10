@@ -207,19 +207,41 @@ which means *ab*, *ac* and *bc* are collinear. □
 
 ### 3D vector proof of Pappus's Theorem
 
-Given 4 arbitrary points **A**, **B**, **C** and **D**, then **E** and **F** can be denoted as:
+Given 4 arbitrary points **A**, **B**, **C** and **D**, from which no three points are collinear, we can denote D as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{E}=p\mathbf{A}+q\mathbf{C}\\\mathbf{F}=r\mathbf{B}+s\mathbf{D}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{D}=\mathbf{A}+p\mathbf{B}+q\mathbf{C}">
 
-Then we have:
+**E** is collinear with **A** and **C**:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{G}=(\mathbf{A}\times\mathbf{B})\times(\mathbf{D}\times\mathbf{E})=\dots=dq\mathbf{D}-cp\mathbf{A}-cq\mathbf{C}\\\mathbf{H}=(\mathbf{B}\times\mathbf{C})\times(\mathbf{E}\times\mathbf{F})=\dots=aps\mathbf{A}+aqs\mathbf{C}-dpr\mathbf{B}-dps\mathbf{D}\\\mathbf{J}=(\mathbf{C}\times\mathbf{D})\times(\mathbf{F}\times\mathbf{A})=\dots=br\mathbf{B}+bs\mathbf{D}-ar\mathbf{A}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{E}=\mathbf{A}+r\mathbf{C}">
 
-where
+**F** is collinear with **B** and **D**:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}a=(\mathbf{B}\times\mathbf{C})\cdot\mathbf{D}\\b=(\mathbf{A}\times\mathbf{C})\cdot\mathbf{D}\\c=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{D}\\d=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}\end{cases}">
+Now let's calculate **G**:
 
-After some calculations, we get <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=0">, which means *G*, *H* and *J* are collinear. □
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}={(\mathbf{A}\times\mathbf{B})\times(\mathbf{D}\times\mathbf{E})=[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{E}]\mathbf{D}-[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{D}]\mathbf{E}=\left[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}\right](r\mathbf{D}-q\mathbf{E})}">
+
+And denote the triple product as <img src="https://latex.codecogs.com/gif.latex?t=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}">:
+
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}=t(r\mathbf{D}-q\mathbf{E})=t[(r-q)\mathbf{A}+pr\mathbf{B}]">
+
+Analogously, we have:
+
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=(\mathbf{B}\times\mathbf{C})\times(\mathbf{E}\times\mathbf{F})=\dots=-t[(p+s)\mathbf{B}+(q-r)\mathbf{C}]">
+
+and
+
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=(\mathbf{C}\times\mathbf{D})\times(\mathbf{F}\times\mathbf{A})=\dots=-t[(p+s)\mathbf{A}+p(p+s)\mathbf{B}+pq\mathbf{C}]">
+
+Then we get:
+
+<img src="https://latex.codecogs.com/gif.latex?{\mathbf{H}\times\mathbf{J}=t^2[(p+s)^2\mathbf{B}\times\mathbf{A}+pr(p+s)\mathbf{B}\times\mathbf{C}+(p+s)(q-r)\mathbf{C}\times\mathbf{A}]">
+
+Finally, we get:
+
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=t^3[pr(p+s)(r-q)\mathbf{A}\cdot(\mathbf{B}\times\mathbf{C})+pr(p+s)(q-r)\mathbf{B}\cdot(\mathbf{C}\times\mathbf{A})]=0">
+
+which means **G**, **H** and **J** are collinear. □
 
 ### Notes
 
