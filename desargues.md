@@ -217,6 +217,8 @@ Given 4 arbitrary points **A**, **B**, **C** and **D**, from which no three poin
 
 **F** is collinear with **B** and **D**:
 
+<img src="https://latex.codecogs.com/gif.latex?\mathbf{F}=s\mathbf{B}+\mathbf{D}=\mathbf{A}+(p+s)\mathbf{B}+q\mathbf{C}">
+
 Now let's calculate **G**:
 
 <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}={(\mathbf{A}\times\mathbf{B})\times(\mathbf{D}\times\mathbf{E})=[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{E}]\mathbf{D}-[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{D}]\mathbf{E}=\left[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}\right](r\mathbf{D}-q\mathbf{E})}">
