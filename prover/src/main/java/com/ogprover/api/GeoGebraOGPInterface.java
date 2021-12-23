@@ -8,11 +8,12 @@ import com.ogprover.pp.OGPInputProverProtocol;
 import com.ogprover.pp.OGPOutputProverProtocol;
 
 public class GeoGebraOGPInterface {
-	private static Logger log = LoggerFactory.getLogger(GeoGebraOGPInterface.class);
+	private static final String CLASS = "com.ogprover.api.GeoGebraOGPInterface";
+	private static final Logger log = LoggerFactory.getLogger(GeoGebraOGPInterface.class);
 
 	/** @param proverInput */
 	public OGPOutputProverProtocol prove(OGPInputProverProtocol proverInput) {
-		log.debug("");
+		log.debug(CLASS + ".prove(OGPInputProverProtocol)");
 		return new GeoGebraOGPOutputProverProtocol();
 	}
 }
