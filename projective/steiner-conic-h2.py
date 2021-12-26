@@ -3,7 +3,10 @@ from homogeneous import *
 
 def main():
     a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, x, y, z = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, x, y, z')
-    A, B, C, D, E, F = (a, b, c), (d, e, f), (g, h, j), (k, m, n), (p, q, r), (x, y, z)
+    # `A, B = (a, 0, c), (d, 0, f)` is much faster than `A, B = (a, b, c), (d, e, f)`
+    # The dual theorem is also proved when lines AB are parallel.
+    # To prove the common case that AB are not parallel, WLOG, AB meet at origin, we can use `A, B = (a, b, 0), (c, d, 0)`
+    A, B, C, D, E, F = (a, 0, c), (d, 0, f), (g, h, j), (k, m, n), (p, q, r), (x, y, z)
     AC, AD, AE, AF = cross(A, C), cross(A, D), cross(A, E), cross(A, F)
     BC, BD, BE, BF = cross(B, C), cross(B, D), cross(B, E), cross(B, F)
     L, L1, M, M1, N, N1 = cross(BC, AD), cross(AC, BD), cross(BC, AE), cross(AC, BE), cross(BC, AF), cross(AC, BF)
