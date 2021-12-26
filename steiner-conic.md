@@ -6,9 +6,13 @@ In the above figure,
 
 <img src="https://latex.codecogs.com/gif.latex?(c,d,e,f)\frac{A,c'}{\overline\wedge}(C,L,M,N)\frac{P}{\overline\wedge}(C,L',M',N')\frac{c,B}{\overline\wedge}(c',d',e',f')">
 
-Therefore, to construct point *F* by given points *ABCDE*, or to construct line *f'* by given lines *cdec'd'e'* and arbitrary line *f* passing through *A*, we can draw these points successively:
+Therefore, by given lines *cdec'd'e'* or points *ABCDE*, and by given an arbitrary line *f* passing through *A*, we can construct line *f'* or point *F* by these steps:
 
-1. <img src="https://latex.codecogs.com/gif.latex?L=BC{\cap}AD,L'=AC{\cap}BD',M=BC{\cap}AE,M'=AC{\cap}BE">
+1. <img src="https://latex.codecogs.com/gif.latex?{L=BC{\cap}AD,L'=AC{\cap}BD,M=BC{\cap}AE,M'=AC{\cap}BE,N=f{\cap}BC}">
 2. <img src="https://latex.codecogs.com/gif.latex?P=LL'{\cap}MM'">
-3. <img src="https://latex.codecogs.com/gif.latex?N'=L'M'{\cap}NP">
+3. <img src="https://latex.codecogs.com/gif.latex?N'=AC{\cap}NP">
 4. <img src="https://latex.codecogs.com/gif.latex?F=f{\cap}BN'">
+
+### Steiner conic and Quatric curve
+
+### Pascal's theorem
