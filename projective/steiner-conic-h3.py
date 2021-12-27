@@ -17,7 +17,17 @@ def main():
             row.append(rst)
         mat.append(row)
     print('M =', Matrix(mat).subs(subs))
-    print('det M =', poly(expand(Matrix(mat).det().subs(subs)), (x, y, z)).expr)
+    p = poly(expand(Matrix(mat).det().subs(subs)), (x, y, z))
+    cxx, cxy, cxz, cyy, cyz, czz = p.nth(2, 0, 0), p.nth(1, 1, 0), p.nth(1, 0, 1), p.nth(0, 2, 0), p.nth(0, 1, 1), p.nth(0, 0, 2)
+    gcd = gcd_list([cxx, cxy, cxz, cyy, cyz, czz])
+    cxx, cxy, cxz, cyy, cyz, czz = cancel(cxx/gcd), cancel(cxy/gcd), cancel(cxz/gcd), cancel(cyy/gcd), cancel(cyz/gcd), cancel(czz/gcd) 
+    print('Locus of F:')
+    print('x**2*(', cxx, ') +')
+    print('x*y*(', cxy, ') +')
+    print('x*z*(', cxz, ') +')
+    print('y**2*(', cyy, ') +')
+    print('y*z*(', cyz, ') +')
+    print('z**2*(', czz, ') = 0')
 
 if __name__ == '__main__':
     main()

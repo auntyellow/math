@@ -1,8 +1,8 @@
-from sympy import poly, symbols
+from sympy import expand, poly, symbols
 from homogeneous import *
 
 def main():
-    a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, x, y, z = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, x, y, z')
+    a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u, x, y, z = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u, x, y, z')
     AC, AD, BC, BD = (a, b, c), (d, e, f), (g, h, j), (k, m, n)
     AE, BE = span(p, AC, q, AD), span(r, BC, s, BD)
     F = (x, y, z)
@@ -16,7 +16,23 @@ def main():
     print('N1:', N1)
     P = cross(cross(L, L1), cross(M, M1))
     print('P:', P)
-    print('Locus of F:', poly(incidence(N, N1, P), F).expr, '= 0')
+    p = poly(incidence(N, N1, P), F);
+    cxx, cxy, cxz, cyy, cyz, czz = p.nth(2, 0, 0), p.nth(1, 1, 0), p.nth(1, 0, 1), p.nth(0, 2, 0), p.nth(0, 1, 1), p.nth(0, 0, 2)
+    gcd = gcd_list([cxx, cxy, cxz, cyy, cyz, czz])
+    cxx, cxy, cxz, cyy, cyz, czz = cancel(cxx/gcd), cancel(cxy/gcd), cancel(cxz/gcd), cancel(cyy/gcd), cancel(cyz/gcd), cancel(czz/gcd)
+    p = poly(cxx*x**2 + cxy*x*y + cxz*x*z + cyy*y**2 + cyz*y*z + czz*z**2, F).expr;
+    print('Locus of F:', p, '= 0')
+    # Verify if F is on the locus equation
+    B = cross(BC, BD)
+    AF = span(t, AC, u, AD)
+    print('AF:', AF)
+    N = cross(AF, BC)
+    print('N:', N)
+    N1 = cross(AC, cross(N, P))
+    print('N1:', N1)
+    F = cross(AF, cross(B, N1))
+    print('F:', F)
+    print('Is F on the locus equation?', expand(p.subs(x, F[0]).subs(y, F[1]).subs(z, F[2])) == 0)
 
 if __name__ == '__main__':
     main()
