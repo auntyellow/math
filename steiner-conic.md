@@ -15,11 +15,9 @@ Therefore, by given lines *cdec'd'e'* or points *ABCDE*, and by given an arbitra
 
 This is the construction of Steiner *point* conic. Analogously, we can construct the Steiner *line* conic according to the principle of duality.
 
-### Steiner conic and Quatric curve
+### Steiner conic → Quadric curve
 
-#### Steiner conic → Quatric curve
-
-The Steiner conic follows the quatric curve equation <img src="https://latex.codecogs.com/gif.latex?Ax^2+Bxy+Cy^2+Dxz+Eyz+F=0">. Let's denote lines *cdec'd'e'* in homogeneous coordinate:
+The Steiner conic follows the quadric curve equation <img src="https://latex.codecogs.com/gif.latex?Ax^2+Bxy+Cy^2+Dxz+Eyz+Fz^2=0">. Let's denote lines *cdec'd'e'* in homogeneous coordinate:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{c}=[a,b,c]\\\mathbf{d}=[d,e,f]\\\mathbf{e}=p\mathbf{c}+q\mathbf{d}\\\mathbf{c'}=[g,h,j]\\\mathbf{d'}=[k,m,n]\\\mathbf{e'}=r\mathbf{c'}+s\mathbf{d'}\end{cases}">
 
@@ -27,6 +25,30 @@ Point <img src="https://latex.codecogs.com/gif.latex?F(x,y,z)"> follows <img src
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{array}{l}(akps-dgqr)x^2+(amps+bkps-dhqr-egqr)xy+(bmps-ehqr)y^2+\\(anps+ckps-djqr-fgqr)xz+(bnps+cmps-ejqr-fhqr)yz+(cnps-fjqr)z^2=0\end{array}">
 
-#### Quatric curve → Steiner conic
+[Here](projective/steiner-conic-h1.py) is the calculation process.
+
+According to the duality, this process also shows that the Steiner *line* conic follows the quadric curve (the envelope of a set of straight lines) equation.
+
+### Five points determine a conic
+
+[Here](projective/steiner-conic-h2.py) we calculate lines *cdec'd'e'* by given points *ABCDE*, and get the similar result, although the time is longer and the equation is more complicated.
+
+[Here](projective/steiner-conic-h3.py) we get the same result by a rule that [five points determine a conic](https://en.wikipedia.org/wiki/Five_points_determine_a_conic):
+
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}x^2&xy&y^2&xz&yz&z^2\\x_\text{A}^2&x_\text{A}y_\text{A}&y_\text{A}^2&x_\text{A}z_\text{A}&y_\text{A}z_\text{A}&z_\text{A}^2\\x_\text{B}^2&x_\text{B}y_\text{B}&y_\text{B}^2&x_\text{B}z_\text{B}&y_\text{B}z_\text{B}&z_\text{B}^2\\x_\text{C}^2&x_\text{C}y_\text{C}&y_\text{C}^2&x_\text{C}z_\text{C}&y_\text{C}z_\text{C}&z_\text{C}^2\\x_\text{D}^2&x_\text{D}y_\text{D}&y_\text{D}^2&x_\text{D}z_\text{D}&y_\text{D}z_\text{D}&z_\text{D}^2\\x_\text{E}^2&x_\text{E}y_\text{E}&y_\text{E}^2&x_\text{E}z_\text{E}&y_\text{E}z_\text{E}&z_\text{E}^2\end{matrix}\right]=0"> 
+
+According to the duality, these two processes also shows that five straight lines determine a line conic.
+
+### Quadric curve → Steiner conic
+
+Conversely, any quadric curve is a Steiner conic. We only need to prove that for any 6 points *ABCDEF* on a quadric curve, <img src="https://latex.codecogs.com/gif.latex?(AC,AD;AE,AF)=(BC,BD;BE,BF)">.
+
+WLOG, we can put *A* onto origin and *AB* onto y-axis, and denote the quadric curve as <img src="https://latex.codecogs.com/gif.latex?ax^2+bxy+cy^2+dxz+eyz=0">. For any line <img src="https://latex.codecogs.com/gif.latex?ux+vy=0"> passing through *A*, we can get the other intersection of the line and the quadric curve <img src="https://latex.codecogs.com/gif.latex?P(v(eu-dv),u(dv-eu),av^2-buv+cu^2)">.
+
+[Here](projective/steiner-conic-h4.py) is the proof process.
+
+To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto origin, and denote the quadric curve (the envelope of a set of straight lines) as <img src="https://latex.codecogs.com/gif.latex?au^2+buv+duw+evw+fw^2=0">. For any point (*x*,0,*z*) (*z*=0 means the point at infinity) lying on *A*, we can get the other tangent line <img src="https://latex.codecogs.com/gif.latex?L[v(eu-dv),u(dv-eu),av^2-buv+cu^2]">.
+
+[Here](projective/steiner-conic-h5.py) is the proof process.
 
 ### Pascal's theorem
