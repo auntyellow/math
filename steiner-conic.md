@@ -52,3 +52,13 @@ To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto orig
 [Here](projective/steiner-conic-h5.py) is the proof process.
 
 ### Pascal's theorem
+
+The proof of Pascal's theorem on a Steiner conic is much simpler than on a quadric curve, because only incidence relations of points and straight lines should be considered, just like Desargues's theorem and Pappus's theorem.
+
+[Here](projective/pascal-v.py) is a vector proof.
+
+According to the duality, this process also proves Brianchon's theorem.
+
+### Braikenridge-Maclaurin theorem
+
+[Here](projective/braikenridge-maclaurin-v.py) is a vector proof.
