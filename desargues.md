@@ -243,7 +243,7 @@ Finally, we get:
 
 <img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=t^3[pr(p+s)(r-q)\mathbf{A}\cdot(\mathbf{B}\times\mathbf{C})+pr(p+s)(q-r)\mathbf{B}\cdot(\mathbf{C}\times\mathbf{A})]=0">
 
-which means **G**, **H** and **J** are collinear. □
+which means **G**, **H** and **J** are collinear. □ <sup>[7]</sup>
 
 ### Notes
 
@@ -253,3 +253,4 @@ which means **G**, **H** and **J** are collinear. □
 4. [Here](projective/desargues-h.py) is a proof of Desargues's theorem by homogeneous coordinates without linear algebra.
 5. [Here](projective/pappus-h.py) is a proof of Pappus's theorem by homogeneous coordinates without linear algebra; [here](projective/pappus-c1.py) and [here](projective/pappus-c2.py) are proofs by Cartesian coordinates.
 6. Here we should use some [vector formulas](diagrams/vector-formulas.png) (copied from the first page in John David Jackson's *Classical Electrodynamics*).
+7. [Here](projective/pappus-v.py) is a vector proof.

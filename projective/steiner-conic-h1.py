@@ -26,7 +26,7 @@ def main():
     B = cross(BC, BD)
     AF = span(t, AC, u, AD)
     print('AF:', AF)
-    N = cross(AF, BC)
+    N = cross(BC, AF)
     print('N:', N)
     N1 = cross(AC, cross(N, P))
     print('N1:', N1)
