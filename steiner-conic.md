@@ -19,9 +19,9 @@ This is the construction of Steiner *point* conic. Analogously, we can construct
 
 The Steiner conic follows the quadric curve equation <img src="https://latex.codecogs.com/gif.latex?Ax^2+Bxy+Cy^2+Dxz+Eyz+Fz^2=0">. Let's denote lines *cdec'd'e'* in homogeneous coordinate:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{c}=[a,b,c]\\\mathbf{d}=[d,e,f]\\\mathbf{e}=p\mathbf{c}+q\mathbf{d}\\\mathbf{c'}=[g,h,j]\\\mathbf{d'}=[k,m,n]\\\mathbf{e'}=r\mathbf{c'}+s\mathbf{d'}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}AC=[a,b,c]\\AD=[d,e,f]\\AE=pAC+qAD\\BC=[g,h,j]\\BD=[k,m,n]\\BE=rBC+sBD\end{cases}">
 
-Point <img src="https://latex.codecogs.com/gif.latex?F(x,y,z)"> follows <img src="https://latex.codecogs.com/gif.latex?N=BC{\cap}AF">, <img src="https://latex.codecogs.com/gif.latex?N'=AC{\cap}BF">, and *NN'P* are collinear, and *N* and *N'* can be calculated by step 1 and 2 in the above the construction. So we can get the equation eventually:
+Then get the equation about point <img src="https://latex.codecogs.com/gif.latex?F(x,y,z)"> by the relation <img src="https://latex.codecogs.com/gif.latex?(AC,AD;AE,AF)=(BC,BD;BE,BF)">:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{array}{l}(akps-dgqr)x^2+(amps+bkps-dhqr-egqr)xy+(bmps-ehqr)y^2+\\(anps+ckps-djqr-fgqr)xz+(bnps+cmps-ejqr-fhqr)yz+(cnps-fjqr)z^2=0\end{array}">
 
@@ -51,14 +51,14 @@ To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto orig
 
 [Here](projective/steiner-conic-h5.py) is the proof process.
 
-### Pascal's theorem
+### Pascal's theorem and Brianchon's theorem
 
 The proof of Pascal's theorem on a Steiner conic is much simpler than on a quadric curve, because only incidence relations of points and straight lines should be considered, just like Desargues's theorem and Pappus's theorem.
 
-[Here](projective/pascal-v.py) is a vector proof.
+[Here](projective/pascal-brianchon-steiner-h.py) is the computational proof.
 
 According to the duality, this process also proves Brianchon's theorem.
 
 ### Braikenridge-Maclaurin theorem
 
-[Here](projective/braikenridge-maclaurin-v.py) is a vector proof.
+[Here](projective/braikenridge-maclaurin-steiner-h.py) is the computational proof.

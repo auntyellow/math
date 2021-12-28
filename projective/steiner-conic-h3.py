@@ -2,32 +2,39 @@ from sympy import expand, poly, symbols
 from homogeneous import *
 
 def main():
-    a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, x, y, z = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, x, y, z')
-    # `A, B = (a, 0, c), (d, 0, f)` is much faster than `A, B = (a, b, c), (d, e, f)`
-    # The dual theorem is also proved when lines AB are parallel.
-    # To prove the common case that AB are not parallel, WLOG, AB meet at origin, we can use `A, B = (a, b, 0), (c, d, 0)`
-    points = [(x, y, z), (a, 0, c), (d, 0, f), (g, h, j), (k, m, n), (p, q, r)]
-    coefficients = [x**2, x*y, y**2, x*z, y*z, z**2]
-    subs, mat = [], []
-    for s in range(6):
-        row = []
-        for t in range(6):
-            rst = symbols('r' + str(s) + str(t))
-            subs.append((rst, coefficients[t].subs(x, points[s][0]).subs(y, points[s][1]).subs(z, points[s][2])))
-            row.append(rst)
-        mat.append(row)
-    print('M =', Matrix(mat).subs(subs))
-    p = poly(expand(Matrix(mat).det().subs(subs)), (x, y, z))
-    cxx, cxy, cxz, cyy, cyz, czz = p.nth(2, 0, 0), p.nth(1, 1, 0), p.nth(1, 0, 1), p.nth(0, 2, 0), p.nth(0, 1, 1), p.nth(0, 0, 2)
-    gcd = gcd_list([cxx, cxy, cxz, cyy, cyz, czz])
-    cxx, cxy, cxz, cyy, cyz, czz = cancel(cxx/gcd), cancel(cxy/gcd), cancel(cxz/gcd), cancel(cyy/gcd), cancel(cyz/gcd), cancel(czz/gcd) 
+    a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2 = symbols('a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2')
+    # `(a0, 0, a2), (b0, 0, b2)` is much faster than `(a0, a1, a2), (b0, b1, b2)`.
+    # The dual theorem is also proved when lines A and B are parallel to y-axis.
+    # To prove the common case that AB are not parallel, WLOG, AB meet at origin, we can use `(a0, a1, 0), (b0, b1, 0)`.
+
+    # This is much faster than 6x6 matrix:
+    # mat = [[a0**2, b0**2, c0**2, d0**2, e0**2, x**2], ...]
+    # conic_poly = poly(Matrix(mat).det(), (x, y, z))
+    # a = conic_poly.coeff_monomial(x**2)
+    # ...
+    # SymPy's det() may be very slow. More efficient ways in this case could be:
+    # 1. use adjugate() or Laplace expansion to reduce to 4x4 matrix
+    # 2. https://stackoverflow.com/a/37056325/4260959
+    r1 = [a0**2, b0**2, c0**2, d0**2, e0**2]
+    r2 = [a0*a1, b0*b1, c0*c1, d0*d1, e0*e1]
+    r3 = [a1**2, b1**2, c1**2, d1**2, e1**2]
+    r4 = [a0*a2, b0*b2, c0*c2, d0*d2, e0*e2]
+    r5 = [a1*a2, b1*b2, c1*c2, d1*d2, e1*e2]
+    r6 = [a2**2, b2**2, c2**2, d2**2, e2**2]
+    a, b = Matrix([r2, r3, r4, r5, r6]).det(), -Matrix([r1, r3, r4, r5, r6]).det()
+    c, d = Matrix([r1, r2, r4, r5, r6]).det(), -Matrix([r1, r2, r3, r5, r6]).det()
+    e, f = Matrix([r1, r2, r3, r4, r6]).det(), -Matrix([r1, r2, r3, r4, r5]).det()
+    # Should reduce if `a1, b1 = 0, 0`
+    # gcd = gcd_list([a, b, c, d, e, f])
+    # print('GCD:', gcd)
+    # a, b, c, d, e, f = cancel(a/gcd), cancel(b/gcd), cancel(c/gcd), cancel(d/gcd), cancel(e/gcd), cancel(f/gcd) 
     print('Locus of F:')
-    print('x**2*(', cxx, ') +')
-    print('x*y*(', cxy, ') +')
-    print('x*z*(', cxz, ') +')
-    print('y**2*(', cyy, ') +')
-    print('y*z*(', cyz, ') +')
-    print('z**2*(', czz, ') = 0')
+    print('x**2*(', a, ') +')
+    print('x*y*(', b, ') +')
+    print('y**2*(', c, ') +')
+    print('x*z*(', d, ') +')
+    print('y*z*(', e, ') +')
+    print('z**2*(', f, ') = 0')
 
 if __name__ == '__main__':
     main()

@@ -1,7 +1,7 @@
 from sympy import cancel, expand, poly, symbols
 from homogeneous import *
 
-def intersect(x, z):
+def tangent(x, z):
     a, b, d, e, f = symbols('a, b, d, e, f')
     return (z*(e*x - b*z), a*z**2 - d*x*z + f*x**2, x*(b*z - e*x))
 
@@ -10,10 +10,10 @@ def cross_ratio(a, b, c, d):
 
 def main():
     a, b, c, d, e, f, g, h, j, k, m, n, p, q, u, v, w = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, u, v, w')
-    L = intersect(g, h)
+    L = tangent(g, h)
     print('Line L:', L)
     print('Is line L tangent to conic?', expand((a*u**2 + b*u*v + d*u*w + e*v*w + f*w**2).subs(u, L[0]).subs(v, L[1]).subs(w, L[2])) == 0)
-    B, C, D, E, F = intersect(1, 0), intersect(g, h), intersect(j, k), intersect(m, n), intersect(p, q)
+    B, C, D, E, F = tangent(1, 0), tangent(g, h), tangent(j, k), tangent(m, n), tangent(p, q)
     print('(AC,AD;AE,AF) =', cross_ratio(g/h, j/k, m/n, p/q))
     BC, BD, BE, BF = cross(B, C), cross(B, D), cross(B, E), cross(B, F)
     print('Point BC:', BC)
