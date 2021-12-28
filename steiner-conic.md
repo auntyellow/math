@@ -61,4 +61,14 @@ According to the duality, this process also proves Brianchon's theorem.
 
 ### Braikenridge-Maclaurin theorem
 
+Similarly, the proof of Braikenridge-Maclaurin theorem (which is the converse of Pascal's theorem) on a Steiner conic is also much simpler.
+
 [Here](projective/braikenridge-maclaurin-steiner-h.py) is the computational proof.
+
+This process also proves its dual theorem (which is also the converse of Brianchon's theorem).
+
+<img src="diagrams/braikenridge-maclaurin.png">
+
+Braikenridge-Maclaurin theorem provides another construction of a conic: by given lines points *ABCDE* and an arbitrary line *f* passing through *A*, we can construct point *F* by <img src="https://latex.codecogs.com/gif.latex?G=AB{\cap}DE,J=CD{\cap}f,H=BC{\cap}GJ,F=f{\cap}EH">, where line *GHJ* is a Pascal line.
+
+Braikenridge-Maclaurin construction (additional 6 lines and 3 intersections) is simpler than Steiner construction (additional 10 lines and 6 intersections).
