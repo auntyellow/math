@@ -47,7 +47,7 @@ WLOG, we can put *A* onto origin and *AB* onto y-axis, and denote the quadric cu
 
 [Here](projective/steiner-conic-h4.py) is the proof process.
 
-To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto origin, and denote the quadric curve (the envelope of a set of straight lines) as <img src="https://latex.codecogs.com/gif.latex?au^2+buv+duw+evw+fw^2=0">. For any point (*x*,0,*z*) (*z*=0 means the point at infinity) lying on *A*, we can get the other tangent line <img src="https://latex.codecogs.com/gif.latex?L[v(eu-dv),u(dv-eu),av^2-buv+cu^2]">.
+To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto origin, and denote the quadric curve (the envelope of a set of straight lines) as <img src="https://latex.codecogs.com/gif.latex?au^2+buv+duw+evw+fw^2=0">. For any point (*x*,0,*z*) (*z*=0 means the point at infinity) lying on *A*, we can get the other tangent line <img src="https://latex.codecogs.com/gif.latex?L[z(ex-bz),az^2-dxz+fx^2,x(bz-ex)]">.
 
 [Here](projective/steiner-conic-h5.py) is the proof process.
 
@@ -69,6 +69,6 @@ This process also proves its dual theorem (which is also the converse of Brianch
 
 <img src="diagrams/braikenridge-maclaurin.png">
 
-Braikenridge-Maclaurin theorem provides another construction of a conic: by given lines points *ABCDE* and an arbitrary line *f* passing through *A*, we can construct point *F* by <img src="https://latex.codecogs.com/gif.latex?G=AB{\cap}DE,J=CD{\cap}f,H=BC{\cap}GJ,F=f{\cap}EH">, where line *GHJ* is a Pascal line.
+Braikenridge-Maclaurin theorem provides another construction of a conic: by given points *ABCDE* and an arbitrary line *f* passing through *A*, we can construct point *F* by <img src="https://latex.codecogs.com/gif.latex?G=AB{\cap}DE,J=CD{\cap}f,H=BC{\cap}GJ,F=f{\cap}EH">, where line *GHJ* is a Pascal line.
 
-Braikenridge-Maclaurin construction (additional 6 lines and 3 intersections) is simpler than Steiner construction (additional 10 lines and 6 intersections, note that *c"* is not necessary).
+Braikenridge-Maclaurin construction (additional 6 lines and 3 intersections) is simpler than Steiner construction (additional 10 lines and 7 intersections, note that *c"* is not necessary).
