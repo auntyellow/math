@@ -2,7 +2,9 @@ from sympy import symbols
 from homogeneous import *
 
 def projective_mapping(a0, a1, a2, a3, b0, b1, b2, b3):
-    # (a0, a1, a2, a3) =^b0^= (c0, c1, c2, c3) =^a0^= (b0, b1, b2, b3)
+    #                  b0                  a0
+    # (a0, a1, a2, a3) == (c0, c1, c2, c3) == (b0, b1, b2, b3)
+    #                  /\                  /\  
     c1 = cross(cross(a0, b1), cross(b0, a1))
     c2 = cross(cross(a0, b2), cross(b0, a2))
     c3 = cross(cross(a0, b3), cross(b0, a3))
