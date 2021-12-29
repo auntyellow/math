@@ -25,7 +25,7 @@ def main():
     L = tangent(g, h)
     print('Line L:', L)
     print('Is line L tangent to conic?', expand((a*u**2 + b*u*v + d*u*w + e*v*w + f*w**2).subs(u, L[0]).subs(v, L[1]).subs(w, L[2])) == 0)
-    A, B, C, D, E, F = (0, 1, 0), tangent(1, 0), tangent(g, h), tangent(j, k), tangent(m, n), tangent(p, q)
+    A, B, C, D, E, F = (0, 1, 0), tangent(0, 1), tangent(g, h), tangent(j, k), tangent(m, n), tangent(p, q)
     AC, AD, AE, AF = cross(A, C), cross(A, D), cross(A, E), cross(A, F)
     print('AC:', AC)
     print('AD:', AD)

@@ -27,6 +27,7 @@ def main():
     print('Is P on conic?', expand((a*x**2 + b*x*y + c*y**2 + d*x*z + e*y*z).subs(x, P[0]).subs(y, P[1]).subs(z, P[2])) == 0)
     A, B, C, D, E, F = (0, 0, 1), intersect(0, 1), intersect(g, h), intersect(j, k), intersect(m, n), intersect(p, q)
     AC, AD, AE, AF = cross(A, C), cross(A, D), cross(A, E), cross(A, F)
+    print('AB:', cross(A, B))
     print('AC:', AC)
     print('AD:', AD)
     print('AE:', AE)
