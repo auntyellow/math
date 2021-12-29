@@ -55,7 +55,7 @@ To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto orig
 
 The proof of Pascal's theorem on a Steiner conic is much simpler than on a quadric curve, because only incidence relations of points and straight lines should be considered, just like Desargues's theorem and Pappus's theorem.
 
-[Here](projective/pascal-brianchon-steiner-h.py) is the computational proof.
+[Here](projective/pascal-brianchon-steiner-h.py) and [here](projective/pascal-brianchon-steiner-v.py) are the computational proofs.
 
 According to the duality, this process also proves Brianchon's theorem.
 
@@ -63,7 +63,7 @@ According to the duality, this process also proves Brianchon's theorem.
 
 Similarly, the proof of Braikenridge-Maclaurin theorem (which is the converse of Pascal's theorem) on a Steiner conic is also much simpler.
 
-[Here](projective/braikenridge-maclaurin-steiner-h.py) is the computational proof.
+[Here](projective/braikenridge-maclaurin-steiner-h.py) and [here](projective/braikenridge-maclaurin-steiner-v.py) are the computational proofs.
 
 This process also proves its dual theorem (which is also the converse of Brianchon's theorem).
 

@@ -8,7 +8,7 @@ These problems may have smart solutions with difficult skills. However, I'd like
 - [x] [Desargues's theorem](desargues.md) and Pappus's theorem: Cartesian and Homogeneous coordinates
 - [x] [Menelaus's theorem](menelaus.md) and Ceva's theorem by Homogeneous coordinates
 - [x] [Pascal's theorem](pascal.md), Brianchon's theorem and Braikenridge-Maclaurin theorem
-- [ ] [Steiner Conic](steiner-conic.md)
+- [x] [Steiner Conic](steiner-conic.md)
 - [x] Radical Center and [Monge's theorem](monge.md)
 - [x] [Symmedian and Isogonal Conjugate](symmedian.md)
 - [x] [Euler Line and Incenter](euler-line.md)

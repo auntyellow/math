@@ -2,9 +2,9 @@ from sympy import symbols
 from homogeneous import *
 
 def main():
-    a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t')
-    AC, AD, BC, BD = (a, b, c), (d, e, f), (g, h, j), (k, m, n)
-    AE, AF, BE, BF = span(1, AC, r, AD), span(1, AC, s, AD), span(1, BC, t, BD), span(r, BC, s*t, BD)
+    a, b, c = symbols('a, b, c')
+    AC, AD, BC, BD = (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 1)
+    AE, AF, BE, BF = span(1, AC, a, AD), span(1, AC, b, AD), span(1, BC, c, BD), span(a, BC, b*c, BD)
     A, B, C, D, E, F = cross(AC, AD), cross(BC, BD), cross(AC, BC), cross(AD, BD), cross(AE, BE), cross(AF, BF)
     print('A:', A)
     print('B:', B)

@@ -79,7 +79,12 @@ For example, to reduce number of variables, we should carefully put a regular po
 **Tricks:**
 
 - Both <img src="https://latex.codecogs.com/gif.latex?(kx_1,kx_2,kx_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> represent the same point, so divide by their common factor as early as possible to simplify calculation.
-- Homogeneous coordinates can be denoted as 3D vectors. The line passing through two points, or the intersection point of two lines, can be determined by [Cross Product](https://en.wikipedia.org/wiki/Cross_product). The collinearity and concurrency can be determined by [Triple Product](https://en.wikipedia.org/wiki/Triple_product).
+- The first three non-collinear free points (*A*, *B*, *C*) can be taken as basis, and the forth non-collinear free point can be represented as <img src="https://latex.codecogs.com/gif.latex?D=A+B+C">, and the later non-collinear free points can be represented as <img src="https://latex.codecogs.com/gif.latex?P_n=A+p_nB+q_nC">.
+- If <img src="https://latex.codecogs.com/gif.latex?{E=aA+bB+cC,F=dA+eB+fC,G=gA+hB+jC,H=kA+mB+nC}">, then <img src="https://latex.codecogs.com/gif.latex?EF{\cap}GH=pA+qB+rC">, where
+
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}p=(ae-bd)(gn-jk)-(af-cd)(gm-hk)\\q=(ae-bd)(hn-jm)-(bf-ce)(gm-hk)\\r=(af-cd)(hn-jm)-(bf-ce)(gn-jk)\end{cases}\;\text{(Eq.\,1)">
+
+because *p*, *q* and *r* follow both <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}a&b&c\\d&e&f\\p&q&r\end{matrix}\right]=0"> and <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}g&h&j\\k&m&n\\p&q&r\end{matrix}\right]=0">.
 
 ### Proof
 
@@ -111,145 +116,26 @@ If *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> represent 4 lines, the
 
 **Pappus's theorem** states that given two sets of collinear points *AEC* and *DBF*, then the intersection points *G*=*AB*∩*DE*, *H*=*BC*∩*EF* and *J*=*AF*∩*CD* are collinear.
 
-Given 4 arbitrary points *A*, *B*, *C* and *D*, from which no three points are collinear, we can denote *D* as:
+Given 4 arbitrary points *A*, *B*, *C* and *D*, from which no three points are collinear, we can denote *D*, *E* and *F* as:
 
-<img src="https://latex.codecogs.com/gif.latex?D=A+pB+qC">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}D=A+B+C\\E=A+mC\\F=(n-1)B+D=A+nB+C\end{cases}">
 
-*E* is collinear with *A* and *C*:
+Now let's calculate *G*, *H* and *J* by Eq. 1:
 
-<img src="https://latex.codecogs.com/gif.latex?E=A+rC">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}G=AB{\cap}DE=(m-1)A+mB\\H=BC{\cap}EF=-nB+(m-1)C\\J=CD{\cap}FA=-nA-nB-C\end{cases}">
 
-*F* is collinear with *B* and *D*:
+Now let's calculate the coefficients' determinant of *G*, *H* and *J*:
 
-<img src="https://latex.codecogs.com/gif.latex?F=sB+D=A+(p+s)B+qC">
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}m-1&m&0\\0&-n&m-1\\-n&-n&-1\end{matrix}\right]=0">
 
-Now let's calculate *G*, *H* and *J*.
-
-*G* is collinear with *A* and *B*:
-
-<img src="https://latex.codecogs.com/gif.latex?G=A+xB">
-
-Take (*A*, *B*, *C*) as basis, then the coefficients' determinant of *D*, *E* and *G* should be zero because they are collinear:
-
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&p&q\\1&0&r\\1&x&0\end{matrix}\right]=0">
-
-Solve <img src="https://latex.codecogs.com/gif.latex?x=pr/(r-q)">:
-
-<img src="https://latex.codecogs.com/gif.latex?G=A+\frac{pr}{r-q}B\quad\text{(Eq.\,1)}">
-
-(Note that we cannot denote G again as <img src="https://latex.codecogs.com/gif.latex?G=D+x'E">. However, <img src="https://latex.codecogs.com/gif.latex?G=x'D+x''E"> or <img src="https://latex.codecogs.com/gif.latex?G'=D+x'E=x''G"> are okay and they can get the same result as Eq. 1.)
-
-Next, *H* is collinear with *B* and *C*:
-
-<img src="https://latex.codecogs.com/gif.latex?H=B+yC">
-
-And *H* is also collinear with *E* and *F*:
-
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&0&r\\1&p+s&q\\0&1&y\end{matrix}\right]=0">
-
-Solve <img src="https://latex.codecogs.com/gif.latex?y=(q-r)/(p+s)">:
-
-<img src="https://latex.codecogs.com/gif.latex?H=B+\frac{q-r}{p+s}C\quad\text{(Eq.\,2)}">
-
-Next, *J* is collinear with *C* and *D*:
-
-<img src="https://latex.codecogs.com/gif.latex?J=zC+D=A+pB+(z+q)C">
-
-And *J* is also collinear with *A* and *F*:
-
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&0&0\\1&p+s&q\\1&p&z+q\end{matrix}\right]=0">
-
-Solve <img src="https://latex.codecogs.com/gif.latex?z=-qs/(p+s)">:
-
-<img src="https://latex.codecogs.com/gif.latex?J=A+pB+\frac{pq}{p+s}C\quad\text{(Eq.\,3)}">
-
-Now let's calculate the coefficients' determinant of *G*, *H* and *J* from Eq. 1, 2 and 3:
-
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}1&\frac{pr}{r-q}&0\\0&1&\frac{q-r}{p+s}\\1&p&\frac{pq}{p+s}\end{matrix}\right]=0">
-
-which means *G*, *H* and *J* are collinear. □ <sup>[5]</sup>
+which means they are collinear. □ <sup>[5]</sup>
 
 If *A*, *C*, *E* represent 3 concurrent lines and *B*, *D*, *F* represent another 3 concurrent lines, then the 3 lines *G*, *H*, *J*, respectively passing through *A*∩*B* and *D*∩*E*, *B*∩*C* and *E*∩*F*, *A*∩*F* and *C*∩*D*, are concurrent, which is the [dual theorem](https://en.wikipedia.org/wiki/Pappus%27s_hexagon_theorem#Dual_theorem).
-
-### 3D vector proof of Desargues's theorem
-
-Denote points *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> as **O**, **A**<sub>1</sub>, **B**<sub>1</sub>, **C**<sub>1</sub>, then we have:
-
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}\mathbf{A_2}=p\mathbf{O}+q\mathbf{A_1}\\\mathbf{B_2}=r\mathbf{O}+s\mathbf{B_1}\\\mathbf{C_2}=t\mathbf{O}+u\mathbf{C_1}\end{cases}">
-
-And we denote intersection *ab* as: <sup>[6]</sup>
-
-<img src="https://latex.codecogs.com/gif.latex?{\mathbf{G}=(\mathbf{A_1}\times\mathbf{B_1})\times(\mathbf{A_2}\times\mathbf{B_2})=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{B_2}]\mathbf{A_2}-[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{A_2}]\mathbf{B_2}=\dots=[(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}](qr\mathbf{A_1}-ps\mathbf{B_1})}">
-
-Analogously, we have *ac*:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=[(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}](pu\mathbf{C_1}-qt\mathbf{A_1})">
-
-and *bc*:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=[(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}](st\mathbf{B_1}-ru\mathbf{C_1})">
-
-Note that triple products in **G**, **H** and **I** are scalars, so we can simplify them as:
-
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}a=(\mathbf{B_1}\times\mathbf{C_1})\cdot\mathbf{O}\\b=(\mathbf{C_1}\times\mathbf{A_1})\cdot\mathbf{O}\\c=(\mathbf{A_1}\times\mathbf{B_1})\cdot\mathbf{O}\end{cases}">
-
-Then we get:
-
-<img src="https://latex.codecogs.com/gif.latex?{\mathbf{H}\times\mathbf{J}=ab(pu\mathbf{C_1}-qt\mathbf{A_1})\times(st\mathbf{B_1}-ru\mathbf{C_1})=ab(pstu\mathbf{C_1}\times\mathbf{B_1}-qst^2\mathbf{A_1}\times\mathbf{B_1}+qrtu\mathbf{A_1}\times\mathbf{C_1})}">
-
-by using <img src="https://latex.codecogs.com/gif.latex?\mathbf{C_1}\times\mathbf{C_1}=0">.
-
-Finally, by using <img src="https://latex.codecogs.com/gif.latex?\mathbf{A_1}\cdot(\mathbf{A_1}\times\mathbf{B_1})=0">, <img src="https://latex.codecogs.com/gif.latex?\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{B_1})=0"> and <img src="https://latex.codecogs.com/gif.latex?\mathbf{A_1}\cdot(\mathbf{C_1}\times\mathbf{B_1})=\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{C_1})">, we get:
-
-<img src="https://latex.codecogs.com/gif.latex?\begin{array}{l}\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=abc(qr\mathbf{A_1}-ps\mathbf{B_1})\cdot(pstu\mathbf{C_1}\times\mathbf{B_1}-qst^2\mathbf{A_1}\times\mathbf{B_1}+qrtu\mathbf{A_1}\times\mathbf{C_1})=\\abc[pqrstu\mathbf{A_1}\cdot(\mathbf{C_1}\times\mathbf{B_1})-pqrstu\mathbf{B_1}\cdot(\mathbf{A_1}\times\mathbf{C_1})]=0\end{array}">
-
-which means *ab*, *ac* and *bc* are collinear. □
-
-### 3D vector proof of Pappus's Theorem
-
-Given 4 arbitrary points **A**, **B**, **C** and **D**, from which no three points are collinear, we can denote D as:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{D}=\mathbf{A}+p\mathbf{B}+q\mathbf{C}">
-
-**E** is collinear with **A** and **C**:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{E}=\mathbf{A}+r\mathbf{C}">
-
-**F** is collinear with **B** and **D**:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{F}=s\mathbf{B}+\mathbf{D}=\mathbf{A}+(p+s)\mathbf{B}+q\mathbf{C}">
-
-Now let's calculate **G**:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}={(\mathbf{A}\times\mathbf{B})\times(\mathbf{D}\times\mathbf{E})=[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{E}]\mathbf{D}-[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{D}]\mathbf{E}=\left[(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}\right](r\mathbf{D}-q\mathbf{E})}">
-
-And denote the triple product as <img src="https://latex.codecogs.com/gif.latex?t=(\mathbf{A}\times\mathbf{B})\cdot\mathbf{C}">:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}=t(r\mathbf{D}-q\mathbf{E})=t[(r-q)\mathbf{A}+pr\mathbf{B}]">
-
-Analogously, we have:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{H}=(\mathbf{B}\times\mathbf{C})\times(\mathbf{E}\times\mathbf{F})=\dots=-t[(p+s)\mathbf{B}+(q-r)\mathbf{C}]">
-
-and
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{J}=(\mathbf{C}\times\mathbf{D})\times(\mathbf{F}\times\mathbf{A})=\dots=-t[(p+s)\mathbf{A}+p(p+s)\mathbf{B}+pq\mathbf{C}]">
-
-Then we get:
-
-<img src="https://latex.codecogs.com/gif.latex?{\mathbf{H}\times\mathbf{J}=t^2[(p+s)^2\mathbf{B}\times\mathbf{A}+pr(p+s)\mathbf{B}\times\mathbf{C}+(p+s)(q-r)\mathbf{C}\times\mathbf{A}]">
-
-Finally, we get:
-
-<img src="https://latex.codecogs.com/gif.latex?\mathbf{G}\cdot(\mathbf{H}\times\mathbf{J})=t^3[pr(p+s)(r-q)\mathbf{A}\cdot(\mathbf{B}\times\mathbf{C})+pr(p+s)(q-r)\mathbf{B}\cdot(\mathbf{C}\times\mathbf{A})]=0">
-
-which means **G**, **H** and **J** are collinear. □
 
 ### Notes
 
 1. Here we use the diagram from [Cut the Knot](https://www.cut-the-knot.org/Curriculum/Geometry/Desargues.shtml).
 2. This complicated result can be solved by SymPy [here](projective/desargues-c1.py).
 3. This complicated result can be solved by SymPy [here](projective/desargues-c2.py).
-4. [Here](projective/desargues-h.py) is a proof of Desargues's theorem by homogeneous coordinates without linear algebra.
-5. [Here](projective/pappus-h.py) is a proof of Pappus's theorem by homogeneous coordinates without linear algebra; [here](projective/pappus-c1.py) and [here](projective/pappus-c2.py) are proofs by Cartesian coordinates.
-6. Here we should use some [vector formulas](diagrams/vector-formulas.png) (copied from the first page in John David Jackson's *Classical Electrodynamics*).
+4. For Desargues's theorem, [here](projective/desargues-v.py) is a vector space proof, and [here](projective/desargues-h.py) is a proof of by homogeneous coordinates without linear algebra.
+5. For Pappus's theorem, [here](projective/desargues-v.py) is a vector space proof, and [here](projective/pappus-h.py) is a proof of by homogeneous coordinates without linear algebra; [here](projective/pappus-c1.py) and [here](projective/pappus-c2.py) are proofs by Cartesian coordinates.
