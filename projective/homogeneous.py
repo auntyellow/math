@@ -1,4 +1,4 @@
-from sympy import Matrix, cancel, fraction, gcd_list, lcm_list
+from sympy import Matrix, cancel, fraction, expand, gcd_list, lcm_list
 
 def reduced(x, y, z):
     gcd = gcd_list([x, y, z])
@@ -24,3 +24,25 @@ def multiplied(x, y, z):
 
 def to_homogeneous(P):
     return multiplied(P[0], P[1], 1)
+
+def dep_coeff_index(A, B, C, i, j):
+    return expand(B[i]*C[j] - B[j]*C[i]), expand(A[j]*C[i] - A[i]*C[j])
+
+def dep_coeff(A, B, C):
+    # return (m, n) such that kC=mA+nB
+    m, n = dep_coeff_index(A, B, C, 0, 1)
+    if m != 0 and n != 0:
+        return m, n
+    m, n = dep_coeff_index(A, B, C, 1, 2)
+    if m != 0 and n != 0:
+        return m, n
+    m, n = dep_coeff_index(A, B, C, 2, 0)
+    if m != 0 and n != 0:
+        return m, n
+    return None
+
+def cross_ratio(A, B, C, D):
+    # C=pA+qB, D=rA+sB, (A,B;C,D)=qr/ps
+    p, q = dep_coeff(A, B, C)
+    r, s = dep_coeff(A, B, D)
+    return cancel(q*r/p/s)

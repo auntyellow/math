@@ -1,5 +1,4 @@
-from sympy import expand, poly, symbols
-from homogeneous import *
+from sympy import Matrix, poly, symbols
 
 def main():
     a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2 = symbols('a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2')

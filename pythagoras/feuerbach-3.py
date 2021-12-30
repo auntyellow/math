@@ -32,6 +32,9 @@ def kiss(c1_eq, c2_eq):
     x0 = -c1_coeffs[1]/2/c1_coeffs[0]
     return x0, radical_y.subs(x, x0)
 
+def cross_ratio(a, b, c, d):
+    return cancel((a - c)*(b - d)/(a - d)/(b - c))
+
 def main():
     # https://www.cut-the-knot.org/Curriculum/Geometry/FeuerbachIncidence.shtml
     # Let Fa, Fb, Fc be the touch points of the nine-point circle with the A-, B-, C- excircles, respectively.

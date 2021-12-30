@@ -1,5 +1,8 @@
 from cartesian import *
 
+def cross_ratio(a, b, c, d):
+    return cancel((a - c)*(b - d)/(a - d)/(b - c))
+
 def main():
     # https://imomath.com/index.cgi?page=polePolarBrianchonBrokard (Theorem 7)
     # A and B are conjugated => (A,B;C,D)=-1

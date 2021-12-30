@@ -1,4 +1,4 @@
-from sympy import Eq, expand, solve, symbols
+from sympy import Eq, solve, symbols
 from homogeneous import *
 
 def pair(conic, line):

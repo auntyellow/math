@@ -1,12 +1,5 @@
-from sympy import expand, poly, symbols
+from sympy import poly, symbols
 from homogeneous import *
-
-def cross_ratio_lines(a, b, c, d):
-    # To prove the dual theorem, use a[0]/a[2], ...
-    return cross_ratio_frac(a[1]/a[0], b[1]/b[0], c[1]/c[0], d[1]/d[0])
-
-def cross_ratio_frac(a, b, c, d):
-    return fraction(cancel((a - c)*(b - d)/(a - d)/(b - c)))
 
 def main():
     a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u, x, y, z = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u, x, y, z')
@@ -14,8 +7,8 @@ def main():
     AE, BE = span(p, AC, q, AD), span(r, BC, s, BD)
     F = (x, y, z)
     AF, BF = cross(cross(AC, AD), F), cross(cross(BC, BD), F)
-    crA = cross_ratio_lines(AC, AD, AE, AF)
-    crB = cross_ratio_lines(BC, BD, BE, BF)
+    crA = fraction(cross_ratio(AC, AD, AE, AF))
+    crB = fraction(cross_ratio(BC, BD, BE, BF))
     p = poly(expand(crA[0]*crB[1] - crA[1]*crB[0]), F)
     cxx, cxy, cxz, cyy, cyz, czz = p.nth(2, 0, 0), p.nth(1, 1, 0), p.nth(1, 0, 1), p.nth(0, 2, 0), p.nth(0, 1, 1), p.nth(0, 0, 2)
     gcd = gcd_list([cxx, cxy, cxz, cyy, cyz, czz])

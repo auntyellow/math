@@ -19,6 +19,3 @@ def line_coef(P1, P2):
 
 def concurrency(P1, P2, P3, P4, P5, P6):
     return Matrix([line_coef(P1, P2), line_coef(P3, P4), line_coef(P5, P6)]).det()
-
-def cross_ratio(a, b, c, d):
-    return cancel((a - c)*(b - d)/(a - d)/(b - c))

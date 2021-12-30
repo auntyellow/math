@@ -1,4 +1,4 @@
-from sympy import expand, poly, symbols
+from sympy import poly, symbols
 from homogeneous import *
 
 def on_conic(conic, P):

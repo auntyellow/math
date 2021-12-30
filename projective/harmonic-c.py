@@ -1,5 +1,8 @@
 from cartesian import *
 
+def cross_ratio(a, b, c, d):
+    return cancel((a - c)*(b - d)/(a - d)/(b - c))
+
 def main():
     # Given diagram from https://en.wikipedia.org/wiki/Projective_harmonic_conjugate, prove (A,B;C,D)=-1
     # Put MN∩KL onto origin and rotate MN onto x-axis

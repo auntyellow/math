@@ -1,11 +1,6 @@
 from sympy import Eq, solve, symbols
 from homogeneous import *
 
-def cross_ratio(p1, p2, p3, p4):
-    a, b, c, d = p1[0]/p1[2], p2[0]/p2[2], p3[0]/p3[2], p4[0]/p4[2]
-    # a, b, c, d = p1[1]/p1[2], p2[1]/p2[2], p3[1]/p3[2], p4[1]/p4[2]
-    return cancel((a - c)*(b - d)/(a - d)/(b - c))
-
 def main():
     a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u, v, x, y = \
         symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u, v, x, y')
