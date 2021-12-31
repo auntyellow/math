@@ -15,6 +15,8 @@ Therefore, by given lines *cdec'd'e'* or points *ABCDE*, and by given an arbitra
 
 This is the construction of Steiner *point* conic. Analogously, we can construct the Steiner *line* conic according to the principle of duality.
 
+In this page, we simplify the projective mapping <img src="https://latex.codecogs.com/gif.latex?(c,d,e,f)\frac{}\wedge(c',d',e',f')"> as the invariant of cross-ratio, i.e. <img src="https://latex.codecogs.com/gif.latex?(c,d;e,f)=(c',d';e',f')">.
+
 ### Steiner conic → Quadric curve
 
 The Steiner conic follows the quadric curve equation <img src="https://latex.codecogs.com/gif.latex?Ax^2+Bxy+Cy^2+Dxz+Eyz+Fz^2=0">. Let's denote lines *cdec'd'e'* in homogeneous coordinate:
@@ -65,6 +67,8 @@ Similarly, the proof of Braikenridge-Maclaurin theorem (which is the converse of
 
 [Here](projective/braikenridge-maclaurin-steiner-h.py) and [here](projective/braikenridge-maclaurin-steiner-v.py) are the computational proofs.
 
+[Here](projective/braikenridge-maclaurin-steiner-h.py) and [here](projective/braikenridge-maclaurin-steiner-v.py) are the computational proofs.
+
 This process also proves its dual theorem (which is also the converse of Brianchon's theorem).
 
 <img src="diagrams/braikenridge-maclaurin.png">
@@ -72,3 +76,19 @@ This process also proves its dual theorem (which is also the converse of Brianch
 Braikenridge-Maclaurin theorem provides another construction of a conic: by given points *ABCDE* and an arbitrary line *f* passing through *A*, we can construct point *F* by <img src="https://latex.codecogs.com/gif.latex?G=AB{\cap}DE,J=CD{\cap}f,H=BC{\cap}GJ,F=f{\cap}EH">, where line *GHJ* is a Pascal line.
 
 Braikenridge-Maclaurin construction (additional 6 lines and 3 intersections) is simpler than Steiner construction (additional 10 lines and 7 intersections, note that *c"* is not necessary).
+
+### Projective mapping, Involution, Pole and Polar
+
+Let's define the projective mapping of two point sets *A*<sub>1</sub>*A*<sub>2</sub>... and *B*<sub>1</sub>*B*<sub>2</sub>... on a conic *Γ* <img src="https://latex.codecogs.com/gif.latex?(A_1,A_2,\dots)\frac{}\wedge(B_1,B_2,\dots)"> as <img src="https://latex.codecogs.com/gif.latex?(PA_1,PA_2,\dots)\frac{}\wedge(QB_1,QB_2,\dots)">, where *P* and *Q* are two arbitrary points on *Γ*.
+
+Because *P* and *Q* can be *B*<sub>*i*</sub> and *A*<sub>*j*</sub>, all <img src="https://latex.codecogs.com/gif.latex?A_iB_j{\cap}A_jB_i"> lie on one straight line *p*, according to Pascal's theorem. We call this line *p* the *projective axis*.
+
+<img src="diagrams/conic-involution.png">
+
+A projective mapping is an **[involution](https://en.wikipedia.org/wiki/Involution_(mathematics)#Projective_geometry)** if and only if all *A*<sub>*i*</sub>*B*<sub>*i*</sub> meet at the same point *P*. <sup>[1]</sup> We call this involution a perspective mapping, and *P* is the perspective center.
+
+In an involution on a conic *Γ*, we call the perspective center *P* the **pole** of the projective axis *p*, and call *p* the **polar** of *P*, with respect to *Γ*.
+
+### Note
+
+1. [Here](projective/conic-involution-v1.py) and [here](projective/conic-involution-v2.py) are the proofs.

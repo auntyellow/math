@@ -1,10 +1,6 @@
 from sympy import symbols
 from homogeneous import *
 
-def point_on_conic(conic_z_roots, x0, y0, root = 0):
-    f, x, y = symbols('f, x, y')
-    return multiplied(x0, y0, conic_z_roots[root].subs(x, x0).subs(y, y0))
-
 def main():
     a, b, c, d, e, f, g, h, j, k, m, n, p, q, x, y, z = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, x, y, z')
     A, C, E, G, H, J = (a, b, c), (d, e, f), (g, 0, h), (0, j, k), (0, m, n), (0, p, q)
