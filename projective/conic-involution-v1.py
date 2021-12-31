@@ -3,26 +3,26 @@ from homogeneous import *
 
 def main():
     a, b, x = symbols('a, b, x')
-    # (A,B,C)->(D,E,F) is an involution, i.e. (A,B;C,D)=(D,E;F,A) => AD, BE and CF are concurrent
-    A, B, C, D, E = (1, 0, 0), (0, 1, 0), (a, b, 1), (1, 1, 1), (0, 0, 1)
-    AB, AD, AE, BD, BE, CE, DE = cross(A, B), cross(A, D), cross(A, E), cross(B, D), cross(B, E), cross(C, E), cross(D, E)
-    BF = span(x, AB, 1, BE)
-    crE = fraction(cross_ratio(AE, BE, CE, DE))
-    crB = fraction(cross_ratio(BD, BE, BF, AB))
-    x = solve(Eq(crE[0]*crB[1], crE[1]*crB[0]), x)[0]
+    # (A1,A2,A3)->(B1,B2,B3) is an involution, i.e. (A1,A2;A3,B1)=(B1,B2;B3,A1)
+    # => A1B1, A2B2 and A3B3 are concurrent
+    A1, A2, A3, B1, B2 = (1, 0, 0), (0, 1, 0), (a, b, 1), (1, 1, 1), (0, 0, 1)
+    A1A2, A1B2, A2B1, A2B2, A3B2, B1B2 = cross(A1, A2), cross(A1, B2), cross(A2, B1), cross(A2, B2), cross(A3, B2), cross(B1, B2)
+    A2B3 = span(x, A1A2, 1, A2B2)
+    crB2 = fraction(cross_ratio(A1B2, A2B2, A3B2, B1B2))
+    crA2 = fraction(cross_ratio(A2B1, A2B2, A2B3, A1A2))
+    x = solve(Eq(crB2[0]*crA2[1], crB2[1]*crA2[0]), x)[0]
     print('x =', x)
     x = fraction(x)
-    BF = span(x[0], AB, x[1], BE)
-    G, H = cross(BD, CE), cross(AE, BF)
-    print('G:', G)
-    print('H:', H)
-    GH = cross(G, H)
-    # solve F by Pascal's theorem
-    # J = cross(AD, cross(G, H))
-    # F = cross(BF, cross(C, J)) 
-    # Are AD, BE and CF concurrent?
-    # Replace CF with GH, so F is not necessary
-    print('Are AD, BE and GH concurrent?', incidence(AD, BE, GH) == 0)
+    A2B3 = span(x[0], A1A2, x[1], A2B2)
+    C12, C23 = cross(A1B2, A2B1), cross(A2B3, A3B2)
+    print('C12:', C12)
+    print('C23:', C23)
+    # construct B3 by projective axis C
+    C13 = cross(cross(A3, B1), cross(C12, C23))
+    B3 = cross(A2B3, cross(A1, C13))
+    print('B3:', B3)
+    A1B1, A3B3 = cross(A1, B1), cross(A3, B3)
+    print('Are A1B1, A2B2 and A3B3 concurrent?', incidence(A1B1, A2B2, A3B3) == 0)
 
 if __name__ == '__main__':
     main()
