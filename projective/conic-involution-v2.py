@@ -3,7 +3,7 @@ from homogeneous import *
 
 def main():
     a, b, x = symbols('a, b, x')
-    # AD, BE and CF are concurrent => (A,B;C,D)=(D,E;F,A) i.e. (A,B,C)->(D,E,F) is an involution
+    # AD, BE and CF are concurrent => (A,B;C,D)=(D,E;F,A), i.e. (A,B,C)->(D,E,F) is an involution
     A, B, C, D, E = (1, 0, 0), (0, 1, 0), (a, b, 1), (1, 1, 1), (0, 0, 1)
     AB, AD, AE, BD, BE, CE, DE = cross(A, B), cross(A, D), cross(A, E), cross(B, D), cross(B, E), cross(C, E), cross(D, E)
     BF = span(x, AB, 1, BE)
