@@ -11,7 +11,7 @@ Unlike the analytic geometry proof of [butterfly theorem](butterfly.md) where eq
 Here are some simple cases:
 
 - [harmonic conjugate](projective/harmonic-c.py)
-- [harmonic conjugate of pole-polar](projective/pole-polar-c1.py) and [converse](projective/pole-polar-c2.py)
+- [harmonic conjugate of pole-polar](projective/pole-polar-circle-c1.py) and [converse](projective/pole-polar-circle-c2.py) for a circle
 - [Menelaus's theorem](projective/menelaus-c1.py) (and its [converse](projective/menelaus-c2.py)) and [Ceva's theorem](projective/ceva-c1.py) (and its [converse](projective/ceva-c2.py))
 - [Desargues's theorem](projective/desargues-c1.py) (and its [dual](projective/desargues-c2.py)) and [Pappus's theorem](projective/pappus-c1.py) (and its [dual](projective/pappus-c2.py))
 - [Pascal's theorem](projective/pascal-circle-c.py) (and its [quadrilateral](projective/pascal-quadrilateral-c.py) form) and [Brianchon's theorem](projective/brianchon-circle-c.py) (and its [quadrilateral](projective/brianchon-quadrilateral-c.py) form) for a circle

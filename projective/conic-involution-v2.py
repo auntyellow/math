@@ -19,6 +19,7 @@ def main():
     print('x =', x)
     x = fraction(x)
     B3 = span(x[0], P, x[1], A3)
+    print('B3:', B3)
     A2B3 = cross(A2, B3)
     print('(A1,A2;A3,B1) =', cross_ratio(A1B2, A2B2, A3B2, B1B2))
     print('(B1,B2;B3,A1) =', cross_ratio(A2B1, A2B2, A2B3, A1A2))

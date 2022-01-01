@@ -53,6 +53,8 @@ To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto orig
 
 [Here](projective/steiner-conic-h5.py) is the proof process.
 
+In the following proofs, we use the cross-ratio relation instead of the quadric curve equation.
+
 ### Pascal's theorem and Brianchon's theorem
 
 The proof of Pascal's theorem on a Steiner conic is much simpler than on a quadric curve, because only incidence relations of points and straight lines should be considered, just like Desargues's theorem and Pappus's theorem.
@@ -93,12 +95,14 @@ where *C*<sub>3</sub>*C*<sub>4</sub> is the projective axis. According to Pascal
 
 <img src="diagrams/conic-involution.png">
 
-A projective mapping is an **[involution](https://en.wikipedia.org/wiki/Involution_(mathematics)#Projective_geometry)** if and only if all *A*<sub>*i*</sub>*B*<sub>*i*</sub> meet at the same point *P*. <sup>[1]</sup> We call this involution a *perspective mapping*, and *P* is the *perspective center*.
+A projective mapping is an **[involution](https://en.wikipedia.org/wiki/Involution_(mathematics)#Projective_geometry)** if and only if all *A*<sub>*i*</sub>*B*<sub>*i*</sub> meet at the same point *P*. We call this involution a *perspective mapping*, and *P* is the *perspective center*.
 
-In an involution on a conic *Γ*, the perspective center *P* is the **pole** of the projective axis *p*, and *p* the **polar** of *P*, with respect to *Γ*.
+[Here](projective/conic-involution-v1.py) and [here](projective/conic-involution-v2.py) are the computational proofs.
 
 Note that <img src="https://latex.codecogs.com/gif.latex?(A_1,A_2;A_3,A_4)=(B_1,B_2;B_3,B_4)\neq(PA_1,PA_2;PA_3,PA_4)"> in general. Let's look at <img src="https://latex.codecogs.com/gif.latex?(A_1,A_2;A_3,B_1)=(B_1,B_2;B_3,A_1)">, which is not infinity in general, but <img src="https://latex.codecogs.com/gif.latex?(PA_1,PA_2;PA_3,PB_1)=\infty">.
 
-### Note
+### Pole and Polar
 
-1. [Here](projective/conic-involution-v1.py) and [here](projective/conic-involution-v2.py) are the proofs.
+In an involution on a conic *Γ*, the perspective center *P* is the **pole** of the projective axis *p*, and *p* is the **polar** of *P*, with respect to *Γ*. In other words, for any line passing through *P*, intersecting *p* at *Q* and intersecting *Γ* at *M* and *N*, <img src="https://latex.codecogs.com/gif.latex?(P,Q;M,N)=-1">.
+
+[Here](projective/pole-polar-v.py) is the computational proof.
