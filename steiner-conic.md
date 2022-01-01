@@ -75,15 +75,25 @@ Braikenridge-Maclaurin theorem provides another construction of a conic: by give
 
 Braikenridge-Maclaurin construction (additional 6 lines and 3 intersections) is simpler than Steiner construction (additional 10 lines and 7 intersections, note that *c"* is not necessary).
 
-### Projective mapping and Involution
+### Projective mapping
 
-Let's define the projective mapping of two point sets *A*<sub>1</sub>*A*<sub>2</sub>... and *B*<sub>1</sub>*B*<sub>2</sub>... on a conic *Γ* <img src="https://latex.codecogs.com/gif.latex?(A_1,A_2,\dots)\frac{}\wedge(B_1,B_2,\dots)"> as <img src="https://latex.codecogs.com/gif.latex?(PA_1,PA_2,\dots)\frac{}\wedge(QB_1,QB_2,\dots)">, where *P* and *Q* are two arbitrary points on *Γ*.
+Let's define the *projective mapping* of two point sets *A*<sub>1</sub>*A*<sub>2</sub>... and *B*<sub>1</sub>*B*<sub>2</sub>... on a conic *Γ* <img src="https://latex.codecogs.com/gif.latex?(A_1,A_2,\dots)\frac{}\wedge(B_1,B_2,\dots)"> as <img src="https://latex.codecogs.com/gif.latex?(PA_1,PA_2,\dots)\frac{}\wedge(QB_1,QB_2,\dots)">, where *P* and *Q* are two arbitrary points on *Γ*.
 
-Because *P* and *Q* can be *B*<sub>*i*</sub> and *A*<sub>*j*</sub>, all <img src="https://latex.codecogs.com/gif.latex?A_iB_j{\cap}A_jB_i"> lie on one straight line *p*, according to Pascal's theorem. We call this line *p* the *projective axis*.
+Because *P* and *Q* can be *B*<sub>*i*</sub> and *A*<sub>*j*</sub>, all <img src="https://latex.codecogs.com/gif.latex?A_iB_j{\cap}A_jB_i"> lie on one straight line *p*, which is the *projective axis*.
+
+<img src="diagrams/conic-projective.png">
+
+In the above figure,
+
+<img src="https://latex.codecogs.com/gif.latex?(A_1,A_2,A_3,A_4)\frac{B_1}{\overline\wedge}(C_1,C_2,C_3,C_4)\frac{A_1}{\overline\wedge}(B_1,B_2,B_3,B_4)">
+
+where *C*<sub>3</sub>*C*<sub>4</sub> is the projective axis. According to Pascal's theorem, *C*<sub>34</sub> also lies on this axis.
+
+### Involution
 
 <img src="diagrams/conic-involution.png">
 
-A projective mapping is an **[involution](https://en.wikipedia.org/wiki/Involution_(mathematics)#Projective_geometry)** if and only if all *A*<sub>*i*</sub>*B*<sub>*i*</sub> meet at the same point *P*. <sup>[1]</sup> We call this involution a perspective mapping, and *P* is the *perspective center*.
+A projective mapping is an **[involution](https://en.wikipedia.org/wiki/Involution_(mathematics)#Projective_geometry)** if and only if all *A*<sub>*i*</sub>*B*<sub>*i*</sub> meet at the same point *P*. <sup>[1]</sup> We call this involution a *perspective mapping*, and *P* is the *perspective center*.
 
 In an involution on a conic *Γ*, the perspective center *P* is the **pole** of the projective axis *p*, and *p* the **polar** of *P*, with respect to *Γ*.
 
