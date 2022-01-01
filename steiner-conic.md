@@ -67,8 +67,6 @@ Similarly, the proof of Braikenridge-Maclaurin theorem (which is the converse of
 
 [Here](projective/braikenridge-maclaurin-steiner-h.py) and [here](projective/braikenridge-maclaurin-steiner-v.py) are the computational proofs.
 
-[Here](projective/braikenridge-maclaurin-steiner-h.py) and [here](projective/braikenridge-maclaurin-steiner-v.py) are the computational proofs.
-
 This process also proves its dual theorem (which is also the converse of Brianchon's theorem).
 
 <img src="diagrams/braikenridge-maclaurin.png">
