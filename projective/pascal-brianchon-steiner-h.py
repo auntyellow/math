@@ -4,7 +4,8 @@ from homogeneous import *
 def main():
     a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t')
     AC, AD, BC, BD = (a, b, c), (d, e, f), (g, h, j), (k, m, n)
-    AE, AF, BE, BF = span(1, AC, r, AD), span(1, AC, s, AD), span(1, BC, t, BD), span(r, BC, s*t, BD)
+    # (AC,AD;AE,AF)=(BC,BD;BE,BF)
+    AE, AF, BE, BF = span(1, AC, r, AD), span(1, AC, s, AD), span(t, BC, r, BD), span(t, BC, s, BD)
     A, B, C, D, E, F = cross(AC, AD), cross(BC, BD), cross(AC, BC), cross(AD, BD), cross(AE, BE), cross(AF, BF)
     print('A:', A)
     print('B:', B)
