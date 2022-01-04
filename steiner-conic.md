@@ -19,23 +19,13 @@ In this page, we simplify the projective mapping <img src="https://latex.codecog
 
 ### Steiner conic → Quadric curve
 
-The Steiner conic follows the quadric curve equation <img src="https://latex.codecogs.com/gif.latex?Ax^2+Bxy+Cy^2+Dxz+Eyz+Fz^2=0">. Let's denote lines *cdec'd'e'* in homogeneous coordinate:
+The Steiner conic follows the quadric curve equation <img src="https://latex.codecogs.com/gif.latex?Ax^2+Bxy+Cy^2+Dxz+Eyz+Fz^2=0">.
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}AC=[a,b,c]\\AD=[d,e,f]\\AE=pAC+qAD\\BC=[g,h,j]\\BD=[k,m,n]\\BE=rBC+sBD\end{cases}">
-
-Then get the equation about point <img src="https://latex.codecogs.com/gif.latex?F(x,y,z)"> by the relation <img src="https://latex.codecogs.com/gif.latex?(AC,AD;AE,AF)=(BC,BD;BE,BF)">:
-
-<img src="https://latex.codecogs.com/gif.latex?\begin{array}{l}(akps-dgqr)x^2+(amps+bkps-dhqr-egqr)xy+(bmps-ehqr)y^2+\\(anps+ckps-djqr-fgqr)xz+(bnps+cmps-ejqr-fhqr)yz+(cnps-fjqr)z^2=0\end{array}">
-
-[Here](projective/steiner-conic-h1.py) is the calculation process.
+[Here](projective/steiner-conic-h1.py) we get the equation about point <img src="https://latex.codecogs.com/gif.latex?F(x,y,z)"> by the relation <img src="https://latex.codecogs.com/gif.latex?(AC,AD;AE,AF)=(BC,BD;BE,BF)">.
 
 According to the duality, this process also shows that the Steiner *line* conic follows the quadric curve (the envelope of a set of straight lines) equation.
 
-### Five points determine a conic
-
-[Here](projective/steiner-conic-h2.py) we calculate lines *cdec'd'e'* by given points *ABCDE*, and get the similar result, although the time is longer and the equation is more complicated.
-
-[Here](projective/steiner-conic-h3.py) we get the same result by a rule that [five points determine a conic](https://en.wikipedia.org/wiki/Five_points_determine_a_conic):
+[Here](projective/steiner-conic-h2.py) we get the same result by a rule that [five points determine a conic](https://en.wikipedia.org/wiki/Five_points_determine_a_conic):
 
 <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}x^2&xy&y^2&xz&yz&z^2\\x_\text{A}^2&x_\text{A}y_\text{A}&y_\text{A}^2&x_\text{A}z_\text{A}&y_\text{A}z_\text{A}&z_\text{A}^2\\x_\text{B}^2&x_\text{B}y_\text{B}&y_\text{B}^2&x_\text{B}z_\text{B}&y_\text{B}z_\text{B}&z_\text{B}^2\\x_\text{C}^2&x_\text{C}y_\text{C}&y_\text{C}^2&x_\text{C}z_\text{C}&y_\text{C}z_\text{C}&z_\text{C}^2\\x_\text{D}^2&x_\text{D}y_\text{D}&y_\text{D}^2&x_\text{D}z_\text{D}&y_\text{D}z_\text{D}&z_\text{D}^2\\x_\text{E}^2&x_\text{E}y_\text{E}&y_\text{E}^2&x_\text{E}z_\text{E}&y_\text{E}z_\text{E}&z_\text{E}^2\end{matrix}\right]=0"> 
 
@@ -47,11 +37,11 @@ Conversely, any quadric curve is a Steiner conic. We only need to prove that for
 
 WLOG, we can put *A* onto origin and *AB* onto y-axis, and denote the quadric curve as <img src="https://latex.codecogs.com/gif.latex?ax^2+bxy+cy^2+dxz+eyz=0">. For any line <img src="https://latex.codecogs.com/gif.latex?ux+vy=0"> passing through *A*, we can get the other intersection of the line and the quadric curve <img src="https://latex.codecogs.com/gif.latex?P(v(eu-dv),u(dv-eu),av^2-buv+cu^2)">.
 
-[Here](projective/steiner-conic-h4.py) is the proof process.
+[Here](projective/steiner-conic-h3.py) is the proof process.
 
 To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto origin, and denote the quadric curve (the envelope of a set of straight lines) as <img src="https://latex.codecogs.com/gif.latex?au^2+buv+duw+evw+fw^2=0">. For any point (*x*,0,*z*) (*z*=0 means the point at infinity) lying on *A*, we can get the other tangent line <img src="https://latex.codecogs.com/gif.latex?L[z(ex-bz),az^2-dxz+fx^2,x(bz-ex)]">.
 
-[Here](projective/steiner-conic-h5.py) is the proof process.
+[Here](projective/steiner-conic-h4.py) is the proof process.
 
 In the following proofs, we use the cross-ratio relation instead of the quadric curve equation.
 
@@ -59,7 +49,7 @@ In the following proofs, we use the cross-ratio relation instead of the quadric 
 
 The proof of Pascal's theorem on a Steiner conic is much simpler than on a quadric curve, because only incidence relations of points and straight lines should be considered, just like Desargues's theorem and Pappus's theorem.
 
-[Here](projective/pascal-brianchon-steiner-h.py) and [here](projective/pascal-brianchon-steiner-v.py) are the computational proofs.
+[Here](projective/pascal-brianchon-v.py) is the computational proof.
 
 According to the duality, this process also proves Brianchon's theorem.
 
@@ -67,7 +57,7 @@ According to the duality, this process also proves Brianchon's theorem.
 
 Similarly, the proof of Braikenridge-Maclaurin theorem (which is the converse of Pascal's theorem) on a Steiner conic is also much simpler.
 
-[Here](projective/braikenridge-maclaurin-steiner-h.py) and [here](projective/braikenridge-maclaurin-steiner-v.py) are the computational proofs.
+[Here](projective/braikenridge-maclaurin-v.py) is the computational proof.
 
 This process also proves its dual theorem (which is also the converse of Brianchon's theorem).
 
@@ -81,15 +71,7 @@ Braikenridge-Maclaurin construction (additional 6 lines and 3 intersections) is 
 
 Let's define the *projective mapping* of two point sets *A*<sub>1</sub>*A*<sub>2</sub>... and *B*<sub>1</sub>*B*<sub>2</sub>... on a conic *Γ* <img src="https://latex.codecogs.com/gif.latex?(A_1,A_2,\dots)\frac{}\wedge(B_1,B_2,\dots)"> as <img src="https://latex.codecogs.com/gif.latex?(PA_1,PA_2,\dots)\frac{}\wedge(QB_1,QB_2,\dots)">, where *P* and *Q* are two arbitrary points on *Γ*.
 
-Because *P* and *Q* can be *B*<sub>*i*</sub> and *A*<sub>*j*</sub>, all <img src="https://latex.codecogs.com/gif.latex?A_iB_j{\cap}A_jB_i"> lie on one straight line *p*, which is the *projective axis*.
-
-<img src="diagrams/conic-projective.png">
-
-In the above figure,
-
-<img src="https://latex.codecogs.com/gif.latex?(A_1,A_2,A_3,A_4)\frac{B_1}{\overline\wedge}(C_1,C_2,C_3,C_4)\frac{A_1}{\overline\wedge}(B_1,B_2,B_3,B_4)">
-
-where *C*<sub>3</sub>*C*<sub>4</sub> is the projective axis. According to Pascal's theorem, *C*<sub>34</sub> also lies on this axis.
+[Here](projective/conic-projective-axis-v.py) proves that all <img src="https://latex.codecogs.com/gif.latex?A_iB_j{\cap}A_jB_i"> lie on one straight line *p* (the *projective axis*). 
 
 ### Involution
 

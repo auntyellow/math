@@ -54,7 +54,7 @@ which are collinear, i.e.
 - The straight line passing through two points <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x'_1,x'_2,x'_3)"> is <img src="https://latex.codecogs.com/gif.latex?[x_2x'_3-x_3x'_2,x_3x'_1-x_1x'_3,x_1x'_2-x_2x'_1]">.
 - The intersection point of two straight lines <img src="https://latex.codecogs.com/gif.latex?[u_1,u_2,u_3]"> and <img src="https://latex.codecogs.com/gif.latex?[u'_1,u'_2,u'_3]"> is <img src="https://latex.codecogs.com/gif.latex?(u_2u'_3-u_3u'_2,u_3u'_1-u_1u'_3,u_1u'_2-u_2u'_1)">.
 
-From linear algebra point of view:
+From linear algebra (or vector space) point of view:
 
 - Two points (straight lines) *A* and *B* are the same point (straight line) if and only if they are they are linear-dependent.
 - Three points (straight lines) *A*, *B* and *C* are collinear (concurrent) if and only if they are linear-dependent (in other words, there exists non-zero *m* and *n* such that <img src="https://latex.codecogs.com/gif.latex?A=mB+nC">, this also means their 3 x 3 determinant is zero).
@@ -78,13 +78,10 @@ For example, to reduce number of variables, we should carefully put a regular po
 
 **Tricks:**
 
-- Both <img src="https://latex.codecogs.com/gif.latex?(kx_1,kx_2,kx_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> represent the same point, so divide by their common factor as early as possible to simplify calculation.
-- The first three non-collinear free points (*A*, *B*, *C*) can be taken as basis, and the forth non-collinear free point can be represented as <img src="https://latex.codecogs.com/gif.latex?D=A+B+C">, and the later non-collinear free points can be represented as <img src="https://latex.codecogs.com/gif.latex?P_n=A+p_nB+q_nC">.
-- If <img src="https://latex.codecogs.com/gif.latex?{E=aA+bB+cC,F=dA+eB+fC,G=gA+hB+jC,H=kA+mB+nC}">, then <img src="https://latex.codecogs.com/gif.latex?EF{\cap}GH=pA+qB+rC">, where
-
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}p=(ae-bd)(gn-jk)-(af-cd)(gm-hk)\\q=(ae-bd)(hn-jm)-(bf-ce)(gm-hk)\\r=(af-cd)(hn-jm)-(bf-ce)(gn-jk)\end{cases}\;\text{(Eq.\,1)">
-
-because *p*, *q* and *r* follow both <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}a&b&c\\d&e&f\\p&q&r\end{matrix}\right]=0"> and <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}g&h&j\\k&m&n\\p&q&r\end{matrix}\right]=0">.
+1. Both <img src="https://latex.codecogs.com/gif.latex?(kx_1,kx_2,kx_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> represent the same point, so divide by their common factor as early as possible to simplify calculation.
+2. The first three non-collinear free points (*A*, *B*, *C*) can be taken as basis, and the forth non-collinear free point can be represented as <img src="https://latex.codecogs.com/gif.latex?D=A+B+C">, and the later non-collinear free points can be represented as <img src="https://latex.codecogs.com/gif.latex?P_n=A+p_nB+q_nC">.
+3. For two points <img src="https://latex.codecogs.com/gif.latex?E=aA+bB+cC"> and <img src="https://latex.codecogs.com/gif.latex?F=dA+eB+fC">, line *EF* matches the equation <img src="https://latex.codecogs.com/gif.latex?(bf-ce)x+(cd-af)y+(ae-bd)z=0">, where <img src="https://latex.codecogs.com/gif.latex?xA+yB+zC"> is a point on line *EF*.
+4. For two lines <img src="https://latex.codecogs.com/gif.latex?ax+by+cz=0"> and <img src="https://latex.codecogs.com/gif.latex?dx+ey+fz=0">, where (*x*, *y*, *z*) are coefficients on basis (*A*, *B*, *C*), their intersection is <img src="https://latex.codecogs.com/gif.latex?(bf-ce)A+(cd-af)B+(ae-bd)C">.
 
 ### Proof
 
@@ -116,11 +113,11 @@ If *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> represent 4 lines, the
 
 **Pappus's theorem** states that given two sets of collinear points *AEC* and *DBF*, then the intersection points *G*=*AB*∩*DE*, *H*=*BC*∩*EF* and *J*=*AF*∩*CD* are collinear.
 
-Given 4 arbitrary points *A*, *B*, *C* and *D*, from which no three points are collinear, we can denote *D*, *E* and *F* as:
+Given 4 arbitrary points *A*, *B*, *C* and *D*, from which no three points are collinear, we can denote *D*, *E* and *F* by Trick 2 as:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}D=A+B+C\\E=A+mC\\F=(n-1)B+D=A+nB+C\end{cases}">
 
-Now let's calculate *G*, *H* and *J* by Eq. 1:
+Now let's calculate *G*, *H* and *J* by Trick 3 and 4:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}G=AB{\cap}DE=(m-1)A+mB\\H=BC{\cap}EF=-nB+(m-1)C\\J=CD{\cap}FA=-nA-nB-C\end{cases}">
 

@@ -1,19 +1,28 @@
-from sympy import poly, symbols
-from homogeneous import *
+from sympy import Matrix, poly, symbols
 
 def main():
-    a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2, x, y, z = \
-        symbols('a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2, x, y, z')
-    # `A, B = (a0, 0, a2), (b0, 0, b2)` is much faster than `A, B = (a0, a1, a2), (b0, b1, b2)`
-    # The dual theorem is also proved when lines AB are parallel.
-    # To prove the common case that AB are not parallel, WLOG, AB meet at origin, we can use `A, B = (a, b, 0), (c, d, 0)`
-    A, B, C, D, E, F = (a0, a1, a2), (b0, b1, b2), (c0, c1, c2), (d0, d1, d2), (e0, e1, e2), (x, y, z)
-    AC, AD, AE, AF = cross(A, C), cross(A, D), cross(A, E), cross(A, F)
-    BC, BD, BE, BF = cross(B, C), cross(B, D), cross(B, E), cross(B, F)
-    crA = fraction(cross_ratio(AC, AD, AE, AF))
-    crB = fraction(cross_ratio(BC, BD, BE, BF))
-    p = poly(expand(crA[0]*crB[1] - crA[1]*crB[0]), F)
-    a, b, c, d, e, f = p.nth(2, 0, 0), p.nth(1, 1, 0), p.nth(0, 2, 0), p.nth(1, 0, 1), p.nth(0, 1, 1), p.nth(0, 0, 2)
+    a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2 = symbols('a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2')
+    # `(a0, 0, a2), (b0, 0, b2)` is much faster than `(a0, a1, a2), (b0, b1, b2)`.
+    # The dual theorem is also proved when lines A and B are parallel to y-axis.
+    # To prove the common case that AB are not parallel, WLOG, AB meet at origin, we can use `(a0, a1, 0), (b0, b1, 0)`.
+
+    # This is much faster than 6x6 matrix:
+    # mat = [[a0**2, b0**2, c0**2, d0**2, e0**2, x**2], ...]
+    # conic_poly = poly(Matrix(mat).det(), (x, y, z))
+    # a = conic_poly.coeff_monomial(x**2)
+    # ...
+    # SymPy's det() may be very slow. More efficient ways in this case could be:
+    # 1. use adjugate() or Laplace expansion to reduce to 4x4 matrix
+    # 2. https://stackoverflow.com/a/37056325/4260959
+    r1 = [a0**2, b0**2, c0**2, d0**2, e0**2]
+    r2 = [a0*a1, b0*b1, c0*c1, d0*d1, e0*e1]
+    r3 = [a1**2, b1**2, c1**2, d1**2, e1**2]
+    r4 = [a0*a2, b0*b2, c0*c2, d0*d2, e0*e2]
+    r5 = [a1*a2, b1*b2, c1*c2, d1*d2, e1*e2]
+    r6 = [a2**2, b2**2, c2**2, d2**2, e2**2]
+    a, b = Matrix([r2, r3, r4, r5, r6]).det(), -Matrix([r1, r3, r4, r5, r6]).det()
+    c, d = Matrix([r1, r2, r4, r5, r6]).det(), -Matrix([r1, r2, r3, r5, r6]).det()
+    e, f = Matrix([r1, r2, r3, r4, r6]).det(), -Matrix([r1, r2, r3, r4, r5]).det()
     # Should reduce if `a1, b1 = 0, 0`
     # gcd = gcd_list([a, b, c, d, e, f])
     # print('GCD:', gcd)
