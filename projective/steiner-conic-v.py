@@ -1,16 +1,13 @@
 from sympy import factor, poly, symbols
 from homogeneous import *
 
-def factor_all(P):
-    return factor(P[0]), factor(P[1]), factor(P[2])
-
 def main():
     a, b, t, x, y, z = symbols('a, b, t, x, y, z')
     A, B, C, D = (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 1)
     AC, AD, BC, BD = cross(A, C), cross(A, D), cross(B, C), cross(B, D)
     # (AC,AD;AE,AF)=(BC,BD;BE,BF)
     AE, BE = span(a, AC, 1, AD), span(b, BC, 1, BD)
-    print('E:', factor_all(cross(AE, BE)))
+    print('E:', factor(cross(AE, BE)))
     F = (x, y, z)
     AF, BF = cross(A, F), cross(B, F)
     crA = fraction(cross_ratio(AC, AD, AE, AF))
@@ -37,7 +34,7 @@ def main():
     N1 = cross(AC, cross(N, P))
     print('N\':', N1)
     F = cross(AF, cross(B, N1))
-    print('Parametric Equation:', factor_all(F))
+    print('Parametric Equation:', factor(F))
 
 if __name__ == '__main__':
     main()
