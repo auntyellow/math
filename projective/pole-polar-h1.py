@@ -1,4 +1,4 @@
-from sympy import Eq, Matrix, factor, poly, solve, symbols
+from sympy import Eq, solve, symbols
 from homogeneous import *
 
 def subs_all(P, subs):
@@ -12,10 +12,6 @@ def on_conic(P):
     x, y, z = P[0], P[1], P[2]
     return a*x**2 + 2*b*x*y + c*y**2 + 2*d*x*z + 2*e*y*z + f*z**2
 
-def coeff_matrix(p):
-    a, b, c, d, e, f = p.nth(2, 0, 0), p.nth(1, 1, 0), p.nth(0, 2, 0), p.nth(1, 0, 1), p.nth(0, 1, 1), p.nth(0, 0, 2)
-    return Matrix([[a, b/2, d/2], [b/2, c, e/2], [d/2, e/2, f]])
-
 def main():
     s, t, x0, y0, z0, x1, y1, z1, x2, y2, z2 = symbols('s, t, x0, y0, z0, x1, y1, z1, x2, y2, z2')
     P, P1 = (x0, y0, z0), (x1, y1, z1)
@@ -28,11 +24,11 @@ def main():
     t = fraction(cancel(solve(Eq(cross_ratio(P, Q, M, N), -1), t)[0]))
     Q = span(t[1], P, t[0], P1)
     print('Q:', Q)
-    polarP = cross(Q, subs_all(Q, [(x1, x2), (y1, y2), (z1, z2)]))
-    print('P\'s Polar:', polarP)
-    polarQ = subs_all(polarP, [(x0, x2), (y0, y2), (z0, z2), (x2, Q[0]), (y2, Q[1]), (z2, Q[2])])
-    print('Q\'s Polar:', polarQ)
-    print('Is P on Q\'s Polar?', lies_on(P, polarQ))
+    p = cross(Q, subs_all(Q, [(x1, x2), (y1, y2), (z1, z2)]))
+    print('P\'s Polar:', p)
+    q = subs_all(p, [(x0, x2), (y0, y2), (z0, z2), (x2, Q[0]), (y2, Q[1]), (z2, Q[2])])
+    print('Q\'s Polar:', q)
+    print('Is P on Q\'s Polar?', lies_on(P, q))
 
 if __name__ == '__main__':
     main()
