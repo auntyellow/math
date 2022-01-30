@@ -87,4 +87,4 @@ Note that <img src="https://latex.codecogs.com/gif.latex?(A_1,A_2;A_3,A_4)=(B_1,
 
 In an involution on a conic *Γ*, the perspective center *P* is the **pole** of the projective axis *p*, and *p* is the **polar** of *P*, with respect to *Γ*. In other words, for any line passing through *P*, intersecting *p* at *Q* and intersecting *Γ* at *M* and *N*, <img src="https://latex.codecogs.com/gif.latex?(P,Q;M,N)=-1">.
 
-[Here](projective/pole-polar-v.py) is the computational proof.
+[Here](projective/conic-involution-v3.py) is the computational proof.

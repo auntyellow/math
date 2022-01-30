@@ -1,30 +1,63 @@
-from sympy import Eq, solve, symbols
+from sympy import Eq, Matrix, factor, poly, solve, symbols
 from homogeneous import *
 
+def subs_all(P, t, u):
+    return P[0].subs(t, u), P[1].subs(t, u), P[2].subs(t, u)
+
+def lies_on(P, L):
+    return expand(P[0]*L[0] + P[1]*L[1] + P[2]*L[2]) == 0
+
+def coeff_matrix(p):
+    a, b, c, d, e, f = p.nth(2, 0, 0), p.nth(1, 1, 0), p.nth(0, 2, 0), p.nth(1, 0, 1), p.nth(0, 1, 1), p.nth(0, 0, 2)
+    return Matrix([[a, b/2, d/2], [b/2, c, e/2], [d/2, e/2, f]])
+
 def main():
-    a, b, c, x = symbols('a, b, c, x')
-    A, B, C, D, E = (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 1), (a + 1, b + 1, (a + 1)*(b + 1))
-    # results from conic-involution-v2.py
-    F = (a**2*b + a**2 - a*b**2 - 2*a*b + b**2, a**2*b**2 + 2*a**2*b + a**2 - a*b**3 - 3*a*b**2 - 2*a*b + b**3 + b**2, a**2*b + a**2 - 2*a*b**2 - 2*a*b + b**3 + b**2)
-    AE, AF, BD, CD = cross(A, E), cross(A, F), cross(B, D), cross(C, D)
-    G, H = cross(AE, BD), cross(AF, CD)
-    p = cross(G, H)
-    AD, BE = PA, PB = cross(A, D), cross(B, E)
-    P = cross(AD, BE)
-    PQ = span(c, PA, 1, PB)
-    Q = cross(p, PQ)
-    print('Q:', Q)
-    M = span(x, P, 1, Q)
-    AM, BF, BM = cross(A, M), cross(B, F), cross(B, M)
-    # M is on the conic so (AD,AE;AF,AM) = (BD,BE;BF,BM)
-    x = solve(Eq(cross_ratio(AD, AE, AF, AM), cross_ratio(BD, BE, BF, BM)), x)
-    print('x1 =', x[0])
-    print('x2 =', x[1])
-    M = span(x[0], P, 1, Q)
-    N = span(x[1], P, 1, Q)
-    print('M:', M)
+    a, b, t, u, v, w, x, y, z = symbols('a, b, t, u, v, w, x, y, z')
+    # results from steiner-conic-v.py
+    P, M = (x, y, z), (t*(a + t), t*(b + t), (a + t)*(b + t))
+    N = subs_all(M, t, u)
+    u = solve(Eq(incidence(P, M, N), 0), u)
+    u = u[1] if u[0] == t else u[0]
+    N = subs_all(M, t, u)
+    N = multiplied(N[0], N[1], N[2])
     print('N:', N)
-    print('(P,Q;M,N) =', cross_ratio(P, Q, M, N))
+    Q = span(1, M, v, P)
+    v = fraction(cancel(solve(Eq(cross_ratio(P, Q, M, N), -1), v)[0]))
+    Q = span(v[1], M, v[0], P)
+    print('Q:', Q)
+    p = cross(Q, subs_all(Q, t, w))
+    print('P\'s Polar:', p)
+    xx, yy, zz = symbols('xx, yy, zz')
+    subs = [(x, xx), (y, yy), (z, zz), (xx, Q[0]), (yy, Q[1]), (zz, Q[2])]
+    q = reduced(p[0].subs(subs), p[1].subs(subs), p[2].subs(subs))
+    print('Q\'s Polar:', q)
+    print('Is P on Q\'s Polar?', lies_on(P, q))
+
+    subs = [(x, M[0]), (y, M[1]), (z, M[2])]
+    m = reduced(p[0].subs(subs), p[1].subs(subs), p[2].subs(subs))
+    print('M\'s Tangent Line m:', factor(m))
+    print('Is M on m?', lies_on(M, m))
+    t0, t1, t2, t3, t4 = symbols('t0, t1, t2, t3, t4')
+    m0, m1, m2, m3, m4 = subs_all(m, t, t0), subs_all(m, t, t1), subs_all(m, t, t2), subs_all(m, t, t3), subs_all(m, t, t4)
+    m_m1, m_m2, m_m3, m_m4 = cross(m, m1), cross(m, m2), cross(m, m3), cross(m, m4)
+    print('(m m1,m m2;m m3,m m4) =', cross_ratio(m_m1, m_m2, m_m3, m_m4))
+    m0m1, m0m2, m0m3, m0m4 = cross(m0, m1), cross(m0, m2), cross(m0, m3), cross(m0, m4)
+    print('(m0m1,m0m2;m0m3,m0m4) =', cross_ratio(m0m1, m0m2, m0m3, m0m4))
+
+    u, v, w = symbols('u, v, w')
+    m4 = (u, v, w)
+    m_m4, m0m4 = cross(m, m4), cross(m0, m4)
+    cr = fraction(cross_ratio(m_m1, m_m2, m_m3, m_m4))
+    cr0 = fraction(cross_ratio(m0m1, m0m2, m0m3, m0m4))
+    p = expand(cr[0]*cr0[1] - cr[1]*cr0[0])
+    print('Quadric Equation:', factor(p), '= 0')
+    print('Are they equivalent?', expand(p.subs(u, m[0]).subs(v, m[1]).subs(w, m[2])) == 0);
+
+    point_coeffs = coeff_matrix(poly(a*x*y - a*y*z - b*x*y + b*x*z, (x, y, z)))
+    line_coeffs = coeff_matrix(poly(a**2*u**2 + 2*a**2*u*w + a**2*w**2 + 2*a*b*u*v - 2*a*b*u*w - 2*a*b*v*w - 2*a*b*w**2 + b**2*v**2 + 2*b**2*v*w + b**2*w**2, (u, v, w)))
+    print('Coefficients of Point Conic:', point_coeffs)
+    print('Coefficients of Line Conic:', line_coeffs)
+    print('Their Product:', expand(point_coeffs*line_coeffs))
 
 if __name__ == '__main__':
     main()
