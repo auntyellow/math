@@ -6,7 +6,7 @@ def main():
         symbols('a0, a1, a2, b0, b1, b2, c0, c1, c2, d0, d1, d2, e0, e1, e2, x, y, z')
     # `A, B = (a0, 0, a2), (b0, 0, b2)` is much faster than `A, B = (a0, a1, a2), (b0, b1, b2)`
     # The dual theorem is also proved when lines AB are parallel.
-    # To prove the common case that AB are not parallel, WLOG, AB meet at origin, we can use `A, B = (a, b, 0), (c, d, 0)`
+    # To prove the common case that AB are not parallel, WLOG, AB meet at origin, we can use `(a0, a1, 0), (b0, b1, 0)`
     A, B, C, D, E, F = (a0, a1, a2), (b0, b1, b2), (c0, c1, c2), (d0, d1, d2), (e0, e1, e2), (x, y, z)
     AC, AD, AE, AF = cross(A, C), cross(A, D), cross(A, E), cross(A, F)
     BC, BD, BE, BF = cross(B, C), cross(B, D), cross(B, E), cross(B, F)
@@ -19,6 +19,7 @@ def main():
     # print('GCD:', gcd)
     # a, b, c, d, e, f = cancel(a/gcd), cancel(b/gcd), cancel(c/gcd), cancel(d/gcd), cancel(e/gcd), cancel(f/gcd) 
     print('Locus of F:')
+    print(p.expr, '= 0')
     print('x**2*(', a, ') +')
     print('x*y*(', b, ') +')
     print('y**2*(', c, ') +')
