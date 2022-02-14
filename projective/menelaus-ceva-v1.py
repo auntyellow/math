@@ -2,18 +2,13 @@ from sympy import Eq, solve, symbols
 from homogeneous import *
 
 def main():
-    a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u, v, x, y = \
-        symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, r, s, t, u, v, x, y')
-    A, B, C = (a, b, c), (d, e, f), (g, h, j)
-    D0, E0, F0 = span(k, B, m, C), span(n, C, p, A), span(q, A, x, B)
-    x = solve(Eq(incidence(D0, E0, F0), 0), x)[0]
-    F0 = span(q, A, x, B)
-    F0 = multiplied(F0[0], F0[1], F0[2])
+    a, b, c = symbols('a, b, c')
+    A, B, C, D0, E0 = (1, 0, 0), (0, 1, 0), (0, 0, 1), (0, 1, 1), (1, 0, 1)
+    F0 = cross(cross(A, B), cross(D0, E0))
     print('F0:', F0)
-    D, E, F = span(r, B, s, C), span(t, C, u, A), span(v, A, y, B)
-    y = solve(Eq(incidence(D, E, F), 0), y)[0]
-    F = span(v, A, y, B)
-    F = multiplied(F[0], F[1], F[2])
+    D, E, F = (0, b, 1), (1, 0, c), (a, 1, 0)
+    a = solve(Eq(incidence(D, E, F), 0), a)[0]
+    F = multiplied(a, 1, 0)
     print('F:', F)
     print('Are B, C, D0 and D collinear/concurrent?', incidence(B, C, D0) == 0 and incidence(B, C, D) == 0)
     print('Are C, A, E0 and E collinear/concurrent?', incidence(C, A, E0) == 0 and incidence(C, A, E) == 0)

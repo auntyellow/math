@@ -48,7 +48,7 @@ It is not obvious that Menelaus's theorem and Ceva's theorem are dual. Let's sta
 
 <img src="https://latex.codecogs.com/gif.latex?(B,C;D,D_0)\cdot(C,A;E,E_0)\cdot(A,B;F,F_0)=1">
 
-A simple proof uses the lemma that if four different collinear points are represented in homogeneous coordinates as *A*, *B*, *C*(*A*+*mB*) and *D*(*A*+*nB*) (*m* and *n* are not zero), then <img src="https://latex.codecogs.com/gif.latex?(A,B;C,D)=m/n">. <sup>[4]</sup>
+A simple proof uses the lemma that if four different collinear points are represented in homogeneous coordinates as *A*, *B*, *C*=*A*+*mB* and *D*=*A*+*nB* (*m* and *n* are not zero), then <img src="https://latex.codecogs.com/gif.latex?(A,B;C,D)=m/n">. <sup>[4]</sup>
 
 When we write *D*<sub>0</sub>, *E*<sub>0</sub>, *F*<sub>0</sub>, *D*, *E* and *F* as:
 
@@ -76,5 +76,5 @@ When *d*<sub>0</sub>, *e*<sub>0</sub> and *f*<sub>0</sub> meet at the incenter, 
 2. [Here](projective/menelaus-c1.py) and [here](projective/menelaus-c2.py) are proofs of Menelaus's theorem by Cartesian coordinates.
 3. [Here](projective/ceva-c1.py) and [here](projective/ceva-c2.py) are proofs of Ceva's theorem by Cartesian coordinates.
 4. [Here](projective/cross-ratio.py) is the proof.
-5. [Here](projective/menelaus-ceva-h1.py) and [here](projective/menelaus-ceva-h2.py) are proofs by homogeneous coordinates.
+5. [Here](projective/menelaus-ceva-v1.py) and [here](projective/menelaus-ceva-v2.py) are vector space proofs.
 6. [Here](https://www.cut-the-knot.org/triangle/TrigCeva.shtml) is the explanation.

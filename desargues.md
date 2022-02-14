@@ -134,5 +134,5 @@ If *A*, *C*, *E* represent 3 concurrent lines and *B*, *D*, *F* represent anothe
 1. Here we use the diagram from [Cut the Knot](https://www.cut-the-knot.org/Curriculum/Geometry/Desargues.shtml).
 2. This complicated result can be solved by SymPy [here](projective/desargues-c1.py).
 3. This complicated result can be solved by SymPy [here](projective/desargues-c2.py).
-4. For Desargues's theorem, [here](projective/desargues-v.py) is a vector space proof, and [here](projective/desargues-h.py) is a proof by homogeneous coordinates without linear algebra.
-5. For Pappus's theorem, [here](projective/pappus-v.py) is a vector space proof, and [here](projective/pappus-h.py) is a proof by homogeneous coordinates without linear algebra; [here](projective/pappus-c1.py) and [here](projective/pappus-c2.py) are proofs by Cartesian coordinates.
+4. For Desargues's theorem, [here](projective/desargues-v.py) is a vector space proof.
+5. For Pappus's theorem, [here](projective/pappus-v.py) is a vector space proof, and [here](projective/pappus-c1.py) and [here](projective/pappus-c2.py) are proofs by Cartesian coordinates.
