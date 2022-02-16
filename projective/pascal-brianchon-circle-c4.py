@@ -19,15 +19,15 @@ def main():
     # A quadrilateral EFGH circumscribed about a unit circle with tangent points ABCD
     a, b, c, d, e, f, g, h = symbols('a, b, c, d, e, f, g, h')
     A, B, C, D = (a, b), (c, d), (e, f), (g, h)
-    aa, bb, cc, dd = tangent(a, b), tangent(c, d), tangent(e, f), tangent(g, h)
-    # print('A\'s Tangent:', aa)
-    # print('B\'s Tangent:', bb)
-    # print('C\'s Tangent:', cc)
-    # print('D\'s Tangent:', dd)
+    AA, BB, CC, DD = tangent(a, b), tangent(c, d), tangent(e, f), tangent(g, h)
+    # print('A\'s Tangent:', AA)
+    # print('B\'s Tangent:', BB)
+    # print('C\'s Tangent:', CC)
+    # print('D\'s Tangent:', DD)
     subs = [sub_y(a, b), sub_y(c, d), sub_y(e, f), sub_y(g, h)]
 
     # Prove 2 diagonals and 2 lines connecting to opposite tangent points (AC, BD, EG, FH) are concurrent
-    E, F, G, H = intersect(aa, bb), intersect(bb, cc), intersect(cc, dd), intersect(dd, aa)
+    E, F, G, H = intersect(AA, BB), intersect(BB, CC), intersect(CC, DD), intersect(DD, AA)
     # AC, BD, EG, FH = line(A, C), line(B, D), line(E, G), line(F, H)
     # print('AC:', AC)
     # print('BD:', BD)
@@ -38,7 +38,7 @@ def main():
     # Prove intersections of 2 opposite tangent lines (aa∩cc and bb∩dd, denoted as J and K), and
     # intersections of 2 opposite edges (AB∩CD and BC∩DA, denoted as L and M), are collinear
     AB, BC, CD, DA = line(A, B), line(B, C), line(C, D), line(D, A)
-    J, K, L, M = intersect(aa, cc), intersect(bb, dd), intersect(AB, CD), intersect(DA, BC)
+    J, K, L, M = intersect(AA, CC), intersect(BB, DD), intersect(AB, CD), intersect(DA, BC)
     print('J:', J)
     print('K:', K)
     print('L:', L)
