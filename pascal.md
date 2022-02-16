@@ -54,11 +54,11 @@ The numerator of this expression contains 422 terms, where so many *P*, *Q* and 
 
 **Braikenridge-Maclaurin theorem** is the converse to Pascal's theorem.
 
-We use the diagram of Pascal's theorem and put I onto the origin again. But here we rotate the hexagon to make *GH* onto y-axis, and denote 6 lines as:
+We use the diagram of Pascal's theorem and put *I* onto the origin again. But here we rotate the hexagon to make *GH* onto y-axis, and denote 6 lines as:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}AB:y=jx+g\\DE:y=kx+g\\BC:y=mx+h\\EF:y=nx+h\\AF:y=px\\CD:y=qx\end{cases}">
 
-Let's assume the conic doesn't go through origin I, then we need to prove the 6 points:
+Let's assume the conic doesn't go through origin *I*, then we need to prove the 6 points:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:\left(\frac{g}{p-j},\frac{gp}{p-j}\right)\\B:\left(\frac{h-g}{j-m},\frac{hj-gm}{j-m}\right)\\C:\left(\frac{h}{q-m},\frac{hq}{q-m}\right)\\D:\left(\frac{g}{q-k},\frac{gq}{q-k}\right)\\E:\left(\frac{h-g}{k-n},\frac{hk-gn}{k-n}\right)\\F:\left(\frac{h}{p-n},\frac{hp}{p-n}\right)\end{cases}">
 
