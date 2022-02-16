@@ -1,4 +1,3 @@
-from sympy import poly
 from cartesian import *
 
 def circle(P1, P2, P3):

@@ -1,4 +1,4 @@
-from sympy import factor, poly, solve, sqrt
+from sympy import factor, sqrt
 from cartesian import *
 
 def main():
@@ -13,8 +13,8 @@ def main():
     AC = line(A, (-r*y0/a, y0))
     y0 = solve(incircle.subs(x, r*y/b)/y, y)[0]
     BC = line(B, (r*y0/b, y0))
-    print('AC:', AC)
-    print('BC:', BC)
+    print('AC:', AC.lhs, '= 0')
+    print('BC:', BC.lhs, '= 0')
     C = intersect(AC, BC)
     print('C:', C)
     print()

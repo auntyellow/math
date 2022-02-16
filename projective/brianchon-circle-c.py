@@ -24,7 +24,7 @@ def main():
     print('D:', D)
     print('E:', E)
     print('F:', F)
-    print('Are AD, BE and CF concurrent?', expand(fraction(cancel(concurrency(A, D, B, E, C, F)))[0]. \
+    print('Are AD, BE and CF concurrent?', expand(fraction(cancel(concurrency(line(A, D), line(B, E), line(C, F))))[0]. \
         subs([sub_y(a, b), sub_y(c, d), sub_y(e, f), sub_y(g, h), sub_y(j, k), sub_y(m, n)])) == 0)
 
 if __name__ == '__main__':

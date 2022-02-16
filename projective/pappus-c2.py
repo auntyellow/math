@@ -13,7 +13,7 @@ def main():
     G, H = intersect(a, d), intersect(c, f)
     J, K = intersect(a, e), intersect(b, f)
     M, N = intersect(b, d), intersect(c, e)
-    print('Are GH, JK and MN concurrent?', concurrency(G, H, J, K, M, N) == 0)
+    print('Are GH, JK and MN concurrent?', concurrency(line(G, H), line(J, K), line(M, N)) == 0)
 
 if __name__ == '__main__':
     main()
