@@ -14,7 +14,7 @@ def main():
     # This is much faster than 6x6 matrix:
     # mat = [[a0**2, b0**2, c0**2, d0**2, e0**2, x**2], ...]
     # conic_poly = poly(Matrix(mat).det(), (x, y, z))
-    # a = conic_poly.coeff_monomial(x**2)
+    # a = conic_poly.nth(2, 0, 0)
     # ...
     # SymPy's det() may be very slow. More efficient ways in this case could be:
     # 1. use adjugate() or Laplace expansion to reduce to 4x4 matrix

@@ -69,10 +69,10 @@ def tangent_plane(sphere_poly, P):
     # a = c = f
     # b = d = e = j = 0
     x, y, z, w = symbols('x, y, z, w')
-    coeff_a = sphere_poly.coeff_monomial(x**2)
-    coeff_g = sphere_poly.coeff_monomial(x*w)/2
-    coeff_h = sphere_poly.coeff_monomial(y*w)/2
-    coeff_k = sphere_poly.coeff_monomial(w**2)
+    coeff_a = sphere_poly.nth(2, 0, 0, 0)
+    coeff_g = sphere_poly.nth(1, 0, 0, 1)/2
+    coeff_h = sphere_poly.nth(0, 1, 0, 1)/2
+    coeff_k = sphere_poly.nth(0, 0, 0, 2)
     x0 = coeff_a*P[0] + coeff_g*P[3]
     y0 = coeff_a*P[1] + coeff_h*P[3]
     z0 = coeff_a*P[2]
