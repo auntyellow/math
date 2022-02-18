@@ -3,7 +3,10 @@ from homogeneous import *
 
 def main():
     m, n = symbols('m, n')
+    # desargues.md, trick 2a
     A, B, C, D, E, F = (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 1), (1, 0, m), (1, n, 1)
+    # desargues.md, trick 2b
+    # A, B, C, D, E, F = (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, m), (1, 0, 1), (1, n, m)
     print('Are ACE collinear/concurrent?', incidence(A, C, E) == 0)
     print('Are BDF collinear/concurrent?', incidence(B, D, F) == 0)
     AB, BC, CD, DE, EF, FA = cross(A, B), cross(B, C), cross(C, D), cross(D, E), cross(E, F), cross(F, A)

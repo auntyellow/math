@@ -12,33 +12,35 @@ In a triangle *ABC*: *D*, *E* and *F* are three points on edges *BC*, *CA* and *
 
 <img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD}}{\overrightarrow{CD}}\cdot\frac{\overrightarrow{CE}}{\overrightarrow{AE}}\cdot\frac{\overrightarrow{AF}}{\overrightarrow{BF}}=-1">
 
-When all points *ABCDEF* are written as homogeneous coordinates, we use some properties mentioned [here](desargues.md#proof-by-homogeneous-coordinates) and get:
+When all points *ABCDEF* are written as homogeneous coordinates, we use some properties mentioned [here](desargues.md#tricks) (Trick 2c) and get:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}D=gB+hC\\E=jC+kA\\F=mA+nB\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}D=B+C\\E=C+A\\F=A+nB\end{cases}">
 
 Then we calculate each ratio:
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD}}{\overrightarrow{CD}}=\frac{\frac{x_\text{B}}{z_\text{B}}-\frac{x_\text{D}}{z_\text{D}}}{\frac{x_\text{C}}{z_\text{C}}-\frac{x_\text{D}}{z_\text{D}}}=\frac{\frac{x_\text{B}}{z_\text{B}}-\frac{gx_\text{B}+hx_\text{C}}{gz_\text{B}+hz_\text{C}}}{\frac{x_\text{C}}{z_\text{C}}-\frac{gx_\text{B}+hx_\text{C}}{gz_\text{B}+hz_\text{C}}}=\dots=-\frac{hz_\text{C}}{gz_\text{B}}">
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD}}{\overrightarrow{CD}}=\frac{\frac{x_\text{B}}{z_\text{B}}-\frac{x_\text{D}}{z_\text{D}}}{\frac{x_\text{C}}{z_\text{C}}-\frac{x_\text{D}}{z_\text{D}}}=\frac{\frac{x_\text{B}}{z_\text{B}}-\frac{x_\text{B}+x_\text{C}}{z_\text{B}+z_\text{C}}}{\frac{x_\text{C}}{z_\text{C}}-\frac{x_\text{B}+x_\text{C}}{z_\text{B}+z_\text{C}}}=\dots=-\frac{z_\text{C}}{z_\text{B}}">
 
-Analogously, we have <img src="https://latex.codecogs.com/gif.latex?\overrightarrow{CE}/\overrightarrow{AE}=-kz_\text{A}/jz_\text{C}"> and <img src="https://latex.codecogs.com/gif.latex?\overrightarrow{AF}/\overrightarrow{BF}=-nz_\text{B}/mz_\text{A}">. Then we get:
+Analogously, we have <img src="https://latex.codecogs.com/gif.latex?\overrightarrow{CE}/\overrightarrow{AE}=-z_\text{A}/z_\text{C}"> and <img src="https://latex.codecogs.com/gif.latex?\overrightarrow{AF}/\overrightarrow{BF}=-nz_\text{B}/z_\text{A}">. Then we get:
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD}}{\overrightarrow{CD}}\cdot\frac{\overrightarrow{CE}}{\overrightarrow{AE}}\cdot\frac{\overrightarrow{AF}}{\overrightarrow{BF}}=-\frac{hkn}{gjm}">
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD}}{\overrightarrow{CD}}\cdot\frac{\overrightarrow{CE}}{\overrightarrow{AE}}\cdot\frac{\overrightarrow{AF}}{\overrightarrow{BF}}=-n">
 
 Take (*A*, *B*, *C*) as basis, then *D*, *E* and *F* are collinear if and only if:
 
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}0&g&h\\k&0&j\\m&n&0\end{matrix}\right]=0">
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}0&1&1\\1&0&1\\1&n&0\end{matrix}\right]=0">
 
-We rewrite it as <img src="https://latex.codecogs.com/gif.latex?-hkn/gjm=1">, which proves Menelaus's theorem. <sup>[2]</sup>
+i.e. *n* = -1, which proves Menelaus's theorem. <sup>[2]</sup>
 
-Now let's prove Ceva's theorem.
+To prove Ceva's theorem, we should calculate *AD*, *BE* and *CF* by [Trick 3](desargues.md#tricks):
 
-Let *O* be a point on *AD*, then *AD*, *BE* and *CF* are concurrent if and only if both *BOE* and *COF* are collinear.
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}AD:-y+z=0\\BE:x-z=0\\CF:-nx+y=0\end{cases}">
 
-When written as homogeneous coordinates, <img src="https://latex.codecogs.com/gif.latex?O=pA+qD=pA+gqB+hqC">, then *AD*, *BE* and *CF* are concurrent if and only if:
+where (*x*, *y*, *z*) are coefficients on basis (*A*, *B*, *C*).
 
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}0&1&0\\p&gq&hq\\k&0&j\end{matrix}\right]=0\quad\&\enspace\det\left[\begin{matrix}0&0&1\\p&gq&hq\\m&n&0\end{matrix}\right]=0">
+Then they are concurrent if and only if:
 
-We get <img src="https://latex.codecogs.com/gif.latex?hkn/gjm=1"> by eliminating *p* and *q*. Conversely, <img src="https://latex.codecogs.com/gif.latex?hkn/gjm=1"> means there exists *p* and *q* matching the above two equations. Therefore, Ceva's theorem is proved. <sup>[3]</sup>
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}0&-1&1\\1&0&-1\\-n&1&0\end{matrix}\right]=0">
+
+i.e. *n* = 1. <sup>[3]</sup>
 
 ### Duality
 

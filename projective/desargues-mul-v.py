@@ -5,8 +5,8 @@ def main():
     # This program shows the definition of multiplication
     # see ISBN 9787040537550 §10.2, Figure 10-6
     a, b = symbols('a, b')
-    O, U, A = (1, 0, 0), (0, 1, 0), (0, 0, 1)
-    I, A0, B0, B = span(1, O, 1, U), span(1, O, a, U), span(1, O, b, U), span(1, A, 1, U)
+    # desargues.md, trick 2c
+    O, U, A, I, B, A0, B0 = (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, 1, 0), (0, 1, 1), (1, a, 0), (1, b, 0)
     L, Lu, La, Lb = cross(O, U), cross(U, A), cross(A0, A), cross(B0, B)
     D = cross(cross(I, B), La)
     C = cross(cross(O, D), Lb)

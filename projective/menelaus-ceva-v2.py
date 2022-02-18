@@ -3,6 +3,7 @@ from homogeneous import *
 
 def main():
     a, b, c = symbols('a, b, c')
+    # desargues.md, trick 2c
     A, B, C, D0, E0 = (1, 0, 0), (0, 1, 0), (0, 0, 1), (0, 1, 1), (1, 0, 1)
     F0 = cross(cross(A, B), cross(D0, E0))
     print('F0:', F0)

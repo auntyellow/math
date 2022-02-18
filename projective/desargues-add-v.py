@@ -5,8 +5,8 @@ def main():
     # This program shows the definition of addition
     # see ISBN 9787040537550 §10.2, Figure 10-4
     a, b = symbols('a, b')
-    O, U, A = (1, 0, 0), (0, 1, 0), (0, 0, 1)
-    A0, B0, B = span(1, O, a, U), span(1, O, b, U), span(1, A, 1, U)
+    # desargues.md, trick 2b or 2c
+    O, U, A, B, A0, B0 = (1, 0, 0), (0, 1, 0), (0, 0, 1), (0, 1, 1), (1, a, 0), (1, b, 0)
     L, Lu1, La, Lb = cross(O, U), cross(U, A), cross(A0, A), cross(B0, B)
     D = cross(cross(O, B), La)
     Lu2 = cross(U, D)

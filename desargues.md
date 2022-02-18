@@ -60,50 +60,31 @@ From linear algebra (or vector space) point of view:
 - Three points (straight lines) *A*, *B* and *C* are collinear (concurrent) if and only if they are linear-dependent (in other words, there exists non-zero *m* and *n* such that <img src="https://latex.codecogs.com/gif.latex?A=mB+nC">, this also means their 3 x 3 determinant is zero).
 - Four points (straight lines) whether collinear (concurrent) or not, are always linear-dependent.
 
-**Advantages:**
+According to the duality, dual incidence propositions share the same proof process, so no necessary to prove twice.
 
-- A theorem and its dual theorem share the same proof process, so no necessary to prove twice.
-- There are only additions, subtractions and multiplications during proof process, so all expressions are polynomials, which are simpler than rational functions.
+Another advantage is that only additions, subtractions and multiplications appear in the proof process, so all expressions are polynomials, which are simpler than rational functions.
 
-**Disadvantages:**
-
-- Each point needs 3 variables, more than Cartesian coordinates.
-- Should use origin and axes carefully, because the origin and axes are dual as lines and points at infinity.
-
-For example, to reduce number of variables, we should carefully put a regular point *P*(*a*,*b*,*c*) onto special places:
-
-- put onto origin as *P*(0,0,1), which may not work for the dual process because line [0,0,1] denotes a line at infinity;
-- put onto y-axis as *P*(0,*b*,1), which may not cover the parallel case in "3 lines are parallel or concurrent at point *P*";  
-- put onto y-axis as *P*(0,*b*,*c*), which may work well.
-
-**Tricks:**
+### Tricks
 
 1. Both <img src="https://latex.codecogs.com/gif.latex?(kx_1,kx_2,kx_3)"> and <img src="https://latex.codecogs.com/gif.latex?(x_1,x_2,x_3)"> represent the same point, so divide by their common factor as early as possible to simplify calculation.
-2. The first three non-collinear free points (*A*, *B*, *C*) can be taken as basis, and the forth non-collinear free point can be represented as <img src="https://latex.codecogs.com/gif.latex?D=A+B+C">, and the later non-collinear free points can be represented as <img src="https://latex.codecogs.com/gif.latex?P_n=A+p_nB+q_nC">.
+2. The first three non-collinear free points (*A*, *B*, *C*) can be taken as basis, then
+    - a. the forth non-collinear free point can be represented as <img src="https://latex.codecogs.com/gif.latex?D=A+B+C"> (adjust *B* and *C*), and the later non-collinear free points can be represented as <img src="https://latex.codecogs.com/gif.latex?P_n=A+p_nB+q_nC">, or
+    - b. the forth semi-free point lying on *AB* can be represented as <img src="https://latex.codecogs.com/gif.latex?D=A+B"> (adjust *B*), and the fifth non-collinear free point can be represented as <img src="https://latex.codecogs.com/gif.latex?E=A+pB+C"> (adjust *C*), and the later non-collinear free points can be represented as <img src="https://latex.codecogs.com/gif.latex?P_n=A+p_nB+q_nC">, or
+    - c. the forth semi-free point lying on *AB* can be represented as <img src="https://latex.codecogs.com/gif.latex?D=A+B"> (adjust *B*), and the fifth semi-free point lying on *AC* can be represented as <img src="https://latex.codecogs.com/gif.latex?E=A+C"> (adjust *C*), and the later non-collinear free points can be represented as <img src="https://latex.codecogs.com/gif.latex?P_n=A+p_nB+q_nC">.
 3. For two points <img src="https://latex.codecogs.com/gif.latex?E=aA+bB+cC"> and <img src="https://latex.codecogs.com/gif.latex?F=dA+eB+fC">, line *EF* matches the equation <img src="https://latex.codecogs.com/gif.latex?(bf-ce)x+(cd-af)y+(ae-bd)z=0">, where <img src="https://latex.codecogs.com/gif.latex?xA+yB+zC"> is a point on line *EF*.
 4. For two lines <img src="https://latex.codecogs.com/gif.latex?ax+by+cz=0"> and <img src="https://latex.codecogs.com/gif.latex?dx+ey+fz=0">, where (*x*, *y*, *z*) are coefficients on basis (*A*, *B*, *C*), their intersection is <img src="https://latex.codecogs.com/gif.latex?(bf-ce)A+(cd-af)B+(ae-bd)C">.
 
 ### Proof
 
-Because *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> are concurrent at *O*, we have:
+Given 4 arbitrary points *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> and *O*, from which no three points are collinear, we can denote *O*, *A*<sub>2</sub>, *B*<sub>2</sub> and *C*<sub>2</sub> by Trick 2a (we can also take (*O*, *A*<sub>1</sub>, *B*<sub>1</sub>) as basis and denote the other points by Trick 2b or 2c) as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_2=pO+qA_1\\B_2=rO+sB_1\\C_2=tO+uC_1\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}O=A_1+B_1+C_1\\A_2=aA_1+O=(a+1)A_1+B_1+C_1\\B_2=bB_1+O=A_1+(b+1)B_1+C_1\\C_2=cC_1+O=A_1+B_1+(c+1)C_1\end{cases}">
 
-Then we have <img src="https://latex.codecogs.com/gif.latex?rA_2-pB_2=qrA_1-psB_1">, so there exists a point:
+Now let's calculate *G*(*ab*), *H*(*ac*) and *J*(*bc*) by Trick 3 and 4:
 
-<img src="https://latex.codecogs.com/gif.latex?G=rA_2-pB_2=qrA_1-psB_1">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}G=A_1B_1{\cap}A_2B_2=aA_1-bB_1\\H=A_1C_1{\cap}A_2C_2=-aA_1+cC_1\\J=B_1C_1{\cap}B_2C_2=bB_1-cC_1\end{cases}">
 
-which is collinear to *A*<sub>1</sub>*B*<sub>1</sub> and *A*<sub>2</sub>*B*<sub>2</sub>, i.e. <img src="https://latex.codecogs.com/gif.latex?G=A_1B_1{\cap}A_2B_2=ab">.
-
-Analogously, we have *ac*:
-
-<img src="https://latex.codecogs.com/gif.latex?H=tB_2-rC_2=stB_1-ruC_1">
-
-and *bc*:
-
-<img src="https://latex.codecogs.com/gif.latex?J=pC_2-tA_2=puC_1-qtA_1">
-
-Finally, we get <img src="https://latex.codecogs.com/gif.latex?tG+pH+rJ=0">, which means *ab*, *ac* and *bc* are collinear. □ <sup>[4]</sup>
+They are obviously linear dependent, which means *ab*, *ac* and *bc* are collinear. □ <sup>[4]</sup>
 
 If *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> represent 4 lines, then *A*<sub>2</sub>, *B*<sub>2</sub>, *C*<sub>2</sub> are 3 lines respectively passing through intersections *OA*<sub>1</sub>, *OB*<sub>1</sub>, *OC*<sub>1</sub>. Then *A*<sub>1</sub> *B*<sub>1</sub> *C*<sub>1</sub> and *A*<sub>2</sub> *B*<sub>2</sub> *C*<sub>2</sub> are 6 edges of two perspective triangles. So the above proof process also means the 3 perspective lines *G*, *H* and *J* are concurrent, which is the dual and converse theorem.
 
@@ -113,7 +94,7 @@ If *O*, *A*<sub>1</sub>, *B*<sub>1</sub>, *C*<sub>1</sub> represent 4 lines, the
 
 **Pappus's theorem** states that given two sets of collinear points *AEC* and *DBF*, then the intersection points *G*=*AB*∩*DE*, *H*=*BC*∩*EF* and *J*=*AF*∩*CD* are collinear.
 
-Given 4 arbitrary points *A*, *B*, *C* and *D*, from which no three points are collinear, we can denote *D*, *E* and *F* by Trick 2 as:
+Given 4 arbitrary points *A*, *B*, *C* and *D*, from which no three points are collinear, we can denote *D*, *E* and *F* by Trick 2a as:
 
 <img src="https://latex.codecogs.com/gif.latex?\begin{cases}D=A+B+C\\E=A+mC\\F=(n-1)B+D=A+nB+C\end{cases}">
 

@@ -3,7 +3,12 @@ from homogeneous import *
 
 def main():
     a, b, c = symbols('a, b, c')
-    O, A1, B1, C1, A2, B2, C2 = (1, 1, 1), (1, 0, 0), (0, 1, 0), (0, 0, 1), (a, 1, 1), (1, b, 1), (1, 1, c)
+    # desargues.md, trick 2a
+    O, A1, B1, C1, A2, B2, C2 = (1, 1, 1), (1, 0, 0), (0, 1, 0), (0, 0, 1), (a + 1, 1, 1), (1, b + 1, 1), (1, 1, c + 1)
+    # desargues.md, trick 2b
+    # O, A1, B1, C1, A2, B2, C2 = (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, a, 1), (1, 1, 0), (1, 0, b), (c + 1, a, 1)
+    # desargues.md, trick 2c
+    # O, A1, B1, C1, A2, B2, C2 = (1, 0, 0), (0, 1, 0), (0, 0, 1), (1, a, b), (1, 1, 0), (1, 0, 1), (c + 1, a, b)
     print('Are O, A1 and A2 collinear/concurrent?', incidence(O, A1, A2) == 0)
     print('Are O, B1 and B2 collinear/concurrent?', incidence(O, B1, B2) == 0)
     print('Are O, C1 and C2 collinear/concurrent?', incidence(O, C1, C2) == 0)
