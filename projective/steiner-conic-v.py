@@ -1,4 +1,4 @@
-from sympy import factor, poly, symbols
+from sympy import Eq, factor, poly, solve, symbols
 from homogeneous import *
 
 def main():
@@ -17,7 +17,11 @@ def main():
     AF, BF = span(a, AC, t, AD), span(b, BC, t, BD)
     F = cross(AF, BF)
     print('Parametric Equation:', factor(F))
-    print('Are they equivalent?', expand(p.subs(x, F[0]).subs(y, F[1]).subs(z, F[2])) == 0);
+    print('Are they equivalent?', expand(p.subs(x, F[0]).subs(y, F[1]).subs(z, F[2])) == 0)
+    txz = fraction(cancel(solve(Eq(x/z, F[0]/F[2]), t)[0]))
+    tyz = fraction(cancel(solve(Eq(y/z, F[1]/F[2]), t)[0]))
+    p = expand(txz[0]*tyz[1] - txz[1]*tyz[0])
+    print('Quadric Equation:', p, '= 0')
     print('Steiner Construction:')
     L, L1, M, M1 = cross(BC, AD), cross(AC, BD), cross(BC, AE), cross(AC, BE)
     print('L:', L)
