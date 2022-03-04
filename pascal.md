@@ -64,16 +64,11 @@ Let's assume the conic doesn't go through origin *I*, then we need to prove the 
 
 lie on the a conic.
 
-According to [this rule](https://en.wikipedia.org/wiki/Five_points_determine_a_conic#Construction), the rest thing is to prove:
+According to [this rule](https://en.wikipedia.org/wiki/Five_points_determine_a_conic#Construction), we just need to prove:
 
 <img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}\frac{g^2}{\left(p-j\right)^2}&\frac{g^2p}{\left(p-j\right)^2}&\frac{g^2p^2}{\left(p-j\right)^2}&\frac{g}{p-j}&\frac{gp}{p-j}&1\\\frac{\left(h-g\right)^2}{\left(j-m\right)^2}&\frac{\left(h-g\right)\left(hj-gm\right)}{\left(j-m\right)^2}&\frac{\left(hj-gm\right)^2}{\left(j-m\right)^2}&\frac{h-g}{j-m}&\frac{hj-gm}{j-m}&1\\\frac{h^2}{\left(q-m\right)^2}&\frac{h^2q}{\left(q-m\right)^2}&\frac{h^2q^2}{\left(q-m\right)^2}&\frac{h}{q-m}&\frac{hq}{q-m}&1\\\frac{g^2}{\left(q-k\right)^2}&\frac{g^2q}{\left(q-k\right)^2}&\frac{g^2q^2}{\left(q-k\right)^2}&\frac{g}{q-k}&\frac{gq}{q-k}&1\\\frac{\left(h-g\right)^2}{\left(k-n\right)^2}&\frac{\left(h-g\right)\left(hk-gn\right)}{\left(k-n\right)^2}&\frac{\left(hk-gn\right)^2}{\left(k-n\right)^2}&\frac{h-g}{k-n}&\frac{hk-gn}{k-n}&1\\\frac{h^2}{\left(p-n\right)^2}&\frac{h^2p}{\left(p-n\right)^2}&\frac{h^2p^2}{\left(p-n\right)^2}&\frac{h}{p-n}&\frac{hp}{p-n}&1\end{matrix}\right]=0">
 
-It doesn't look too complicated. However, we have to use 2 tricks to speed up calculation:
-
-1. Multiply each row by LCD to avoid fraction calculation, see [here](https://math.stackexchange.com/a/4236022/919440);
-2. Expand determinant early to avoid simplification, then do substitution, see [here](https://stackoverflow.com/a/37056325/4260959).
-
-[Here](projective/braikenridge-maclaurin-c.py) is the proof process.
+[Here](projective/braikenridge-maclaurin-c.py) is the proof process.<sup>[2]</sup>
 
 ### Proof by Homogeneous coordinates
 
@@ -143,6 +138,7 @@ which implies all 6 vertices lying on a conic.
 
 This process also proves its dual theorem (which is also the converse of Brianchon's theorem).
 
-### Note
+### Notes
 
 1. More explanations can be found [here](https://docs.sympy.org/latest/tutorial/simplification.html).
+2. More details can be found [here](https://math.stackexchange.com/questions/4232539) and [here](https://docs.sympy.org/latest/modules/matrices/matrices.html#sympy.matrices.matrices.MatrixDeterminant.det).

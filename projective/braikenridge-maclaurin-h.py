@@ -2,7 +2,7 @@ from sympy import symbols
 from homogeneous import *
 
 def main():
-    a, b, c, d, e, f, g, h, j, k, m, n, p, q, x, y, z = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q, x, y, z')
+    a, b, c, d, e, f, g, h, j, k, m, n, p, q = symbols('a, b, c, d, e, f, g, h, j, k, m, n, p, q')
     A, C, E, G, H, J = (a, b, c), (d, e, f), (g, 0, h), (0, j, k), (0, m, n), (0, p, q)
     # The dual theorem is also proved when lines GHJ are parallel.
     # To prove the common case that GHJ are concurrent, we should use:
@@ -12,18 +12,13 @@ def main():
     print('B:', B)
     print('D:', D)
     print('F:', F)
-    points = [A, B, C, D, E, F]
-    coefficients = [x**2, x*y, y**2, x*z, y*z, z**2]
-    subs, mat = [], []
-    for s in range(6):
-        row = []
-        for t in range(6):
-            rst = symbols('r' + str(s) + str(t))
-            subs.append((rst, coefficients[t].subs(x, points[s][0]).subs(y, points[s][1]).subs(z, points[s][2])))
-            row.append(rst)
-        mat.append(row)
-    print('M =', Matrix(mat).subs(subs))
-    print('det M =', expand(Matrix(mat).det().subs(subs)))
+
+    mat = []
+    for P in [A, B, C, D, E, F]:
+        x, y, z = P[0], P[1], P[2]
+        mat.append([x*x, x*y, y*y, x*z, y*z, z*z])
+    print('M =', Matrix(mat))
+    print('det M =', Matrix(mat).det(method='domain-ge'))
 
 if __name__ == '__main__':
     main()
