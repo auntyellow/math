@@ -38,7 +38,7 @@ Most contest geometry problems are too complicated to solve by coordinate approa
 - [Duke 2012 Putnam preparation, Homework 6: Geometry, Problem 6](pythagoras/duke-putnam-2012-homework-6-6.py)
 - [Duke 2012 Putnam preparation, Homework 6: Geometry, Problem 7](pythagoras/duke-putnam-2012-homework-6-7.py)
 
-Although computational approaches are not allowed in math contest, there are a lot of fun in solutions. [Here](https://math.stackexchange.com/a/4257734/919440) is a complicated example solved by [Barycentric coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system). Next, we'd like to use Cartesian coordinates to solve the problem.
+Although computational approaches are not allowed in math contest, there are a lot of fun in solutions. [Here](https://math.stackexchange.com/a/4257734) is a complicated example solved by [Barycentric coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system). Next, we'd like to use Cartesian coordinates to solve the problem.
 
 > The incircle Ω of the acute-angled triangle *ABC* is tangent to *BC* at *K*. Let *AD* be an altitude of triangle *ABC* and let *M* be the midpoint of *AD*. If *N* is the other common point of Ω and *KM*, prove that Ω and the circumcircle of triangle *BCN* are tangent at *N*. <sup>[2]</sup>
 
