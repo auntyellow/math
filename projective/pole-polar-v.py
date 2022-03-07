@@ -50,7 +50,7 @@ def main():
     cr = fraction(cross_ratio(m_m1, m_m2, m_m3, m_m4))
     cr0 = fraction(cross_ratio(m0m1, m0m2, m0m3, m0m4))
     p = expand(cr[0]*cr0[1] - cr[1]*cr0[0])
-    print('Quadric Equation:', factor(p), '= 0')
+    print('Quadratic Equation:', factor(p), '= 0')
     print('Are they equivalent?', expand(p.subs(u, m[0]).subs(v, m[1]).subs(w, m[2])) == 0);
 
     point_coeffs = coeff_matrix(poly(a*x*y - a*y*z - b*x*y + b*x*z, (x, y, z)))

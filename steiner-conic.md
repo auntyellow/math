@@ -17,13 +17,13 @@ This is the construction of Steiner *point* conic. Analogously, we can construct
 
 In this page, we simplify the projective mapping <img src="https://latex.codecogs.com/gif.latex?(c,d,e,f)\frac{}\wedge(c',d',e',f')"> as the invariant of cross-ratio, i.e. <img src="https://latex.codecogs.com/gif.latex?(c,d;e,f)=(c',d';e',f')">.
 
-### Steiner conic → Quadric curve
+### Steiner conic → Quadratic curve
 
-The Steiner conic follows the quadric curve equation <img src="https://latex.codecogs.com/gif.latex?Ax^2+Bxy+Cy^2+Dxz+Eyz+Fz^2=0">.
+The Steiner conic follows the quadratic curve equation <img src="https://latex.codecogs.com/gif.latex?Ax^2+Bxy+Cy^2+Dxz+Eyz+Fz^2=0">.
 
 [Here](projective/steiner-conic-h1.py) we get the equation about point <img src="https://latex.codecogs.com/gif.latex?F(x,y,z)"> by the relation <img src="https://latex.codecogs.com/gif.latex?(AC,AD;AE,AF)=(BC,BD;BE,BF)">.
 
-According to the duality, this process also shows that the Steiner *line* conic follows the quadric curve (the envelope of a set of straight lines) equation.
+According to the duality, this process also shows that the Steiner *line* conic follows the quadratic curve (the envelope of a set of straight lines) equation.
 
 [Here](projective/steiner-conic-h2.py) we get the same result by a rule that [five points determine a conic](https://en.wikipedia.org/wiki/Five_points_determine_a_conic):
 
@@ -31,23 +31,23 @@ According to the duality, this process also shows that the Steiner *line* conic 
 
 According to the duality, these two processes also shows that five straight lines determine a line conic.
 
-### Quadric curve → Steiner conic
+### Quadratic curve → Steiner conic
 
-Conversely, any quadric curve is a Steiner conic. We only need to prove that for any 6 points *ABCDEF* on a quadric curve, <img src="https://latex.codecogs.com/gif.latex?(AC,AD;AE,AF)=(BC,BD;BE,BF)">.
+Conversely, any quadratic curve is a Steiner conic. We only need to prove that for any 6 points *ABCDEF* on a quadratic curve, <img src="https://latex.codecogs.com/gif.latex?(AC,AD;AE,AF)=(BC,BD;BE,BF)">.
 
-WLOG, we can put *A* onto origin and *AB* onto y-axis, and denote the quadric curve as <img src="https://latex.codecogs.com/gif.latex?ax^2+bxy+cy^2+dxz+eyz=0">. For any line <img src="https://latex.codecogs.com/gif.latex?ux+vy=0"> passing through *A*, we can get the other intersection of the line and the quadric curve <img src="https://latex.codecogs.com/gif.latex?P(v(eu-dv),u(dv-eu),av^2-buv+cu^2)">.
+WLOG, we can put *A* onto origin and *AB* onto y-axis, and denote the quadratic curve as <img src="https://latex.codecogs.com/gif.latex?ax^2+bxy+cy^2+dxz+eyz=0">. For any line <img src="https://latex.codecogs.com/gif.latex?ux+vy=0"> passing through *A*, we can get the other intersection of the line and the quadratic curve <img src="https://latex.codecogs.com/gif.latex?P(v(eu-dv),u(dv-eu),av^2-buv+cu^2)">.
 
 [Here](projective/steiner-conic-h3.py) is the proof process.
 
-To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto origin, and denote the quadric curve (the envelope of a set of straight lines) as <img src="https://latex.codecogs.com/gif.latex?au^2+buv+duw+evw+fw^2=0">. For any point (*x*,0,*z*) (*z*=0 means the point at infinity) lying on *A*, we can get the other tangent line <img src="https://latex.codecogs.com/gif.latex?L[z(ex-bz),az^2-dxz+fx^2,x(bz-ex)]">.
+To prove the dual fact, we can put line *A* onto x-axis and point *AB* onto origin, and denote the quadratic curve (the envelope of a set of straight lines) as <img src="https://latex.codecogs.com/gif.latex?au^2+buv+duw+evw+fw^2=0">. For any point (*x*,0,*z*) (*z*=0 means the point at infinity) lying on *A*, we can get the other tangent line <img src="https://latex.codecogs.com/gif.latex?L[z(ex-bz),az^2-dxz+fx^2,x(bz-ex)]">.
 
 [Here](projective/steiner-conic-h4.py) is the proof process.
 
-In the following proofs, we use the cross-ratio relation instead of the quadric curve equation.
+In the following proofs, we use the cross-ratio relation instead of the quadratic curve equation.
 
 ### Pascal's theorem and Brianchon's theorem
 
-The proof of Pascal's theorem on a Steiner conic is much simpler than on a quadric curve, because only incidence relations of points and straight lines should be considered, just like Desargues's theorem and Pappus's theorem.
+The proof of Pascal's theorem on a Steiner conic is much simpler than on a quadratic curve, because only incidence relations of points and straight lines should be considered, just like Desargues's theorem and Pappus's theorem.
 
 [Here](projective/pascal-brianchon-v.py) is the computational proof.
 
