@@ -50,8 +50,6 @@ def to_homogeneous(P):
 
 def reduced(x, y, z, w):
     gcd = gcd_list([x, y, z, w])
-    if gcd == 0:
-        return 0, 0, 0, 1
     return cancel(x/gcd), cancel(y/gcd), cancel(z/gcd), cancel(w/gcd)
 
 def cross(P1, P2, P3):
