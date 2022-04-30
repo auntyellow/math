@@ -18,15 +18,15 @@ We put *F* onto the origin of Cartesian coordinates, then get the equations for 
 
 The solutions are:
 
-<img src="https://latex.codecogs.com/gif.latex?x=-p\tan\alpha\pm\sqrt{p(p/\cos^{2}\alpha+2b)}">
+<img src="https://latex.codecogs.com/gif.latex?x=-p\tan\alpha\pm\sqrt{p\left(\frac{p}{\cos^2\alpha}+2b\right)}">
 
-Here let <img src="https://latex.codecogs.com/gif.latex?q=p/\cos^{2}\alpha+2b">, then <img src="https://latex.codecogs.com/gif.latex?\sqrt{pq}"> can be constructed by [Geometric Mean Theorem](https://en.wikipedia.org/wiki/Geometric_mean_theorem).
+Here let <img src="https://latex.codecogs.com/gif.latex?q=\frac{p}{\cos^2\alpha}+2b">, then <img src="https://latex.codecogs.com/gif.latex?\sqrt{pq}"> can be constructed by [Geometric Mean Theorem](https://en.wikipedia.org/wiki/Geometric_mean_theorem).
 
 #### Special Cases
 
 There is only a tangent point if *q* = 0, and no intersection or tangent points if *q* < 0.
 
-If *c* is a vertical line, then the equation for *P*(*x*,*y*) (*x* is the distance from *F* to *c*) is <img src="https://latex.codecogs.com/gif.latex?y+p=\sqrt{x^2+y^2}">. The solution is <img src="https://latex.codecogs.com/gif.latex?y=(x^2-p^2)/2p">.
+If *c* is a vertical line, then the equation for *P*(*x*,*y*) (*x* is the distance from *F* to *c*) is <img src="https://latex.codecogs.com/gif.latex?y+p=\sqrt{x^2+y^2}">. The solution is <img src="https://latex.codecogs.com/gif.latex?y=\frac{x^2-p^2}{2p}">.
 
 ### Synthetic Solutions
 
