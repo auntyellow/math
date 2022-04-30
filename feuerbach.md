@@ -37,7 +37,7 @@ If we use the coordinates mentioned [here](euler-line.md) (proof of Theorem 1), 
 
 <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-2ry=0\quad\text{(Eq.\,1)}">
 
-and two vertices *A*(-*a*,0) and *B*(*b*,0) on x-axis, then *C* is <img src="https://latex.codecogs.com/gif.latex?(\frac{(a-b)r^2}{ab-r^2},\frac{2abr}{ab-r^2})">. And the nine-point equation is:
+and two vertices *A*(-*a*,0) and *B*(*b*,0) on x-axis, then *C* is <img src="https://latex.codecogs.com/gif.latex?\left(\frac{(a-b)r^2}{ab-r^2},\frac{2abr}{ab-r^2}\right)">. And the nine-point equation is:
 
 <img src="https://latex.codecogs.com/gif.latex?{x^2+y^2-\frac{(a-b)(3r^2-ab)x}{2(ab-r^2)}-\frac{(ab-ar+br+r^2)(ab+ar-br+r^2)y}{4(ab-r^2)r}-\frac{(a-b)^2r^2}{2(ab-r^2)}=0\quad\text{(Eq.\,2)}">
 
@@ -59,13 +59,13 @@ And the distance between the two circles' centers should be:
 
 For the incircle case (<img src="https://latex.codecogs.com/gif.latex?ab>r^2">), we have:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}r_N=\frac{(a^2+r^2)(b^2+r^2)}{8r(ab-r^2)}\\r_I=r\\|NI|=\frac{a^2b^2+a^2r^2-8abr^2+b^2r^2+9r^4}{8r(ab-r^2)}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}r_N=\dfrac{(a^2+r^2)(b^2+r^2)}{8r(ab-r^2)}\\r_I=r\\|NI|=\dfrac{a^2b^2+a^2r^2-8abr^2+b^2r^2+9r^4}{8r(ab-r^2)}\end{cases}">
 
 So we get <img src="https://latex.codecogs.com/gif.latex?|NI|=r_\text{N}-r_\text{I}">, which means the incircle is inside and internally tangent to the nine-point circle.
 
 For the excircle case (<img src="https://latex.codecogs.com/gif.latex?ab<r^2">), we have:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}r_N=\frac{(a^2+r^2)(b^2+r^2)}{8r(r^2-ab)}\\r_E=r\\|NE|=\frac{a^2b^2+a^2r^2-8abr^2+b^2r^2+9r^4}{8r(r^2-ab)}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}r_N=\dfrac{(a^2+r^2)(b^2+r^2)}{8r(r^2-ab)}\\r_E=r\\|NE|=\dfrac{a^2b^2+a^2r^2-8abr^2+b^2r^2+9r^4}{8r(r^2-ab)}\end{cases}">
 
 So we get <img src="https://latex.codecogs.com/gif.latex?|NE|=r_\text{N}+r_\text{E}">, which means the excircle is externally tangent to the nine-point circle.
 

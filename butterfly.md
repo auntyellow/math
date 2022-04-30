@@ -47,7 +47,7 @@ Then all y-coordinates can be replaced with 0 or x-coordinates:
 
 We solve *x*<sub>C</sub> and *x*<sub>D</sub> as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{C}=(q-r)x_\text{P}x_\text{S}/(qx_\text{P}-rx_\text{S})\\x_\text{D}=(q-r)x_\text{Q}x_\text{R}/(qx_\text{Q}-rx_\text{R})\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{C}=\dfrac{(q-r)x_\text{P}x_\text{S}}{qx_\text{P}-rx_\text{S}}\\[1em]x_\text{D}=\dfrac{(q-r)x_\text{Q}x_\text{R}}{qx_\text{Q}-rx_\text{R}}\end{cases}">
 
 (Here *x*<sub>C</sub> and *x*<sub>D</sub> should exist because *y*<sub>P</sub> ≠ *y*<sub>S</sub> and *y*<sub>Q</sub> ≠ *y*<sub>R</sub>.)
 
@@ -63,13 +63,13 @@ Note that *x*<sub>P</sub> and *x*<sub>Q</sub> are two roots of equations:
 
 So we have:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{P}x_\text{Q}=f/Q\\x_\text{P}+x_\text{Q}=-(d+eq)/Q\end{cases}\;\text{(Eq.\,3a)}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{P}x_\text{Q}=\dfrac{f}Q\\x_\text{P}+x_\text{Q}=-\dfrac{d+eq}Q\end{cases}\;\text{(Eq.\,3a)}">
 
 where <img src="https://latex.codecogs.com/gif.latex?Q=a+bq+cq^2">. (Here we don't consider *Q* = 0 because the line intersects the conic at two different points.)
 
 Analogously, we have:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{R}x_\text{S}=f/R\\x_\text{R}+x_\text{S}=-(d+er)/R\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{R}x_\text{S}=\dfrac{f}R\\x_\text{R}+x_\text{S}=-\dfrac{d+er}R\end{cases}">
 
 where <img src="https://latex.codecogs.com/gif.latex?R=a+br+cr^2">.
 
@@ -85,7 +85,7 @@ If *RS* is perpendicular to *AB*, we can still use Eq. 2a but keep *y*<sub>R</su
 
 We solve *x*<sub>C</sub> and *x*<sub>D</sub> as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{C}=x_\text{P}y_\text{S}/(y_\text{S}-qx_\text{P})\\x_\text{D}=x_\text{Q}y_\text{R}/(y_\text{R}-qx_\text{Q})\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{C}=\dfrac{x_\text{P}y_\text{S}}{y_\text{S}-qx_\text{P}}\\[1em]x_\text{D}=\dfrac{x_\text{Q}y_\text{R}}{y_\text{R}-qx_\text{Q}}\end{cases}">
 
 (Here *x*<sub>C</sub> and *x*<sub>D</sub> should exist because *y*<sub>P</sub> ≠ *y*<sub>S</sub> and *y*<sub>Q</sub> ≠ *y*<sub>R</sub>.)
 
@@ -101,7 +101,7 @@ Note that *y*<sub>R</sub> and *y*<sub>S</sub> are two roots of equations:
 
 So we have:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}y_\text{R}y_\text{S}=f/c\\y_\text{R}+y_\text{S}=-e/c\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}y_\text{R}y_\text{S}=\dfrac{f}c\\y_\text{R}+y_\text{S}=-\dfrac{e}c\end{cases}">
 
 And we still have Eq. 3a.
 

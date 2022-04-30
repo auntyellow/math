@@ -4,7 +4,7 @@
 
 Put *AB* onto x-axis and *C* onto y-axis and set coordinates as *A*(-*a*, 0), *B*(*b*,0), *C*(0,*c*), where *a*, *b* and *c* are positive numbers, then we get all vertices and centers:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:(-a,0)\\B:(b,0)\\C:(0,c)\\H:(0,\frac{ab}c)\\N:(\frac{b-a}4,\frac{c^2+ab}{4c})\\G:(\frac{b-a}3,\frac{c}3)\\O:(\frac{b-a}2,\frac{c^2-ab}{2c})\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:(-a,0)\\[1em]B:(b,0)\\[1em]C:(0,c)\\[1em]H:\left(0,\dfrac{ab}c\right)\\[1em]N:\left(\dfrac{b-a}4,\dfrac{c^2+ab}{4c}\right)\\[1em]G:\left(\dfrac{b-a}3,\dfrac{c}3\right)\\[1em]O:\left(\dfrac{b-a}2,\dfrac{c^2-ab}{2c}\right)\end{cases}">
 
 So it's easy to prove that *HNGO* are collinear and *HN* = *NO* and *HG* = 2*GO*.
 
@@ -32,7 +32,7 @@ A more simple way is to draw a circle orthogonal to the incircle with center *A*
 
 Now we have three vertices and three centers:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:(-a,0)\\B:(b,0)\\C:(\frac{(a-b)r^2}{ab-r^2},\frac{2abr}{ab-r^2})\\G:(\frac{b}3-\frac{a}3+\frac{(a-b)r^2}{3(ab-r^2)},\frac{2abr}{3(r^2-ab)})\\H:(\frac{(a-b)r^2}{ab-r^2},\frac{(a+r)(a-r)(b+r)(b-r)}{2r(ab-r^2)})\\I:(0,r)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:(-a,0)\\[1em]B:(b,0)\\[1em]C:\left(\dfrac{(a-b)r^2}{ab-r^2},\dfrac{2abr}{ab-r^2}\right)\\[1em]G:\left(\dfrac{b}3-\dfrac{a}3+\dfrac{(a-b)r^2}{3(ab-r^2)},\dfrac{2abr}{3(r^2-ab)}\right)\\[1em]H:\left(\dfrac{(a-b)r^2}{ab-r^2},\dfrac{(a+r)(a-r)(b+r)(b-r)}{2r(ab-r^2)}\right)\\[1em]I:(0,r)\end{cases}">
 
 After some factoring work, we get the determinant of collinearity:
 
@@ -40,7 +40,7 @@ After some factoring work, we get the determinant of collinearity:
 
 Obviously *F* = 0 iff *AC* = *BC*, but *D* and *E* are not obvious. So we should calculate the isosceles conditions:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}|AB|^2-|AC|^2=\frac{a(r^2-2ab-b^2)(ar^2+2br^2-ab^2)}{(ab-r^2)^2}=\frac{a(r^2-2ab-b^2)D}{(ab-r^2)^2}\\|AB|^2-|BC|^2=\frac{b(r^2-a^2-2ab)(2ar^2+br^2-a^2b)}{(ab-r^2)^2}=\frac{b(r^2-a^2-2ab)E}{(ab-r^2)^2}\\|AC|^2-|BC|^2=\frac{(a-b)(a+b)(ab+r^2)}{ab-r^2}=-\frac{(a+b)(ab+r^2)F}{ab-r^2}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}|AB|^2-|AC|^2=\dfrac{a(r^2-2ab-b^2)(ar^2+2br^2-ab^2)}{(ab-r^2)^2}=\dfrac{a(r^2-2ab-b^2)D}{(ab-r^2)^2}\\|AB|^2-|BC|^2=\dfrac{b(r^2-a^2-2ab)(2ar^2+br^2-a^2b)}{(ab-r^2)^2}=\dfrac{b(r^2-a^2-2ab)E}{(ab-r^2)^2}\\|AC|^2-|BC|^2=\dfrac{(a-b)(a+b)(ab+r^2)}{ab-r^2}=-\dfrac{(a+b)(ab+r^2)F}{ab-r^2}\end{cases}">
 
 which follows *D* = 0 iff *AB* = *AC*, *E* = 0 iff *AB* = *BC*, and *F* = 0 iff *AC* = *BC*.
 

@@ -16,15 +16,15 @@ Either positive or negative root is okay.
 
 The area of each part is:
 
-<img src="https://latex.codecogs.com/gif.latex?A_i=\frac{1}{2}\int_{\theta_0+\frac{i}4\pi}^{\theta_0+\frac{i+1}4\pi}\rho(\theta)^2d\theta">
+<img src="https://latex.codecogs.com/gif.latex?A_i=\frac{1}2\int_{\theta_0+\frac{i}4\pi}^{\theta_0+\frac{i+1}4\pi}\rho(\theta)^2d\theta">
 
 The result doesn't look analytic. Fortunately, the diagonal two parts can be calculated together because:
 
-<img src="https://latex.codecogs.com/gif.latex?{A_i+A_{i+4}=\frac{1}{2}\left[\int_{\theta_0+\frac{i}4\pi}^{\theta_0+\frac{i+1}4\pi}\rho(\theta)^2d\theta+\int_{\theta_0+\frac{i+4}4\pi}^{\theta_0+\frac{i+5}4\pi}\rho(\theta)^2d\theta\right]=\frac{1}{2}\int_{\theta_0+\frac{i}4\pi}^{\theta_0+\frac{i+1}4\pi}\left[\rho(\theta)^2+\rho(\theta+\pi)^2\right]d\theta=\int_{\theta_0+\frac{i}4\pi}^{\theta_0+\frac{i+1}4\pi}\left[r^2+a^2(\cos^2\theta-sin^2\theta)\right]d\theta}">
+<img src="https://latex.codecogs.com/gif.latex?{A_i+A_{i+4}=\frac{1}2\left[\int_{\theta_0+\frac{i}4\pi}^{\theta_0+\frac{i+1}4\pi}\rho(\theta)^2d\theta+\int_{\theta_0+\frac{i+4}4\pi}^{\theta_0+\frac{i+5}4\pi}\rho(\theta)^2d\theta\right]=\frac{1}2\int_{\theta_0+\frac{i}4\pi}^{\theta_0+\frac{i+1}4\pi}\left[\rho(\theta)^2+\rho(\theta+\pi)^2\right]d\theta=\int_{\theta_0+\frac{i}4\pi}^{\theta_0+\frac{i+1}4\pi}\left[r^2+a^2(\cos^2\theta-sin^2\theta)\right]d\theta}">
 
 After some calculations, we have:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_0+A_4=\frac{{\pi}r^2}4+\frac{1}{\sqrt{2}}a^2\cos(2\theta_0+\frac{\pi}4)\\A_1+A_5=\frac{{\pi}r^2}4-\frac{1}{\sqrt{2}}a^2\sin(2\theta_0+\frac{\pi}4)\\A_2+A_6=\frac{{\pi}r^2}4-\frac{1}{\sqrt{2}}a^2\cos(2\theta_0+\frac{\pi}4)\\A_3+A_7=\frac{{\pi}r^2}4+\frac{1}{\sqrt{2}}a^2\sin(2\theta_0+\frac{\pi}4)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A_0+A_4=\dfrac{{\pi}r^2}4+\dfrac{1}{\sqrt{2}}a^2\cos(2\theta_0+\dfrac{\pi}4)\\A_1+A_5=\dfrac{{\pi}r^2}4-\dfrac{1}{\sqrt{2}}a^2\sin(2\theta_0+\dfrac{\pi}4)\\A_2+A_6=\dfrac{{\pi}r^2}4-\dfrac{1}{\sqrt{2}}a^2\cos(2\theta_0+\dfrac{\pi}4)\\A_3+A_7=\dfrac{{\pi}r^2}4+\dfrac{1}{\sqrt{2}}a^2\sin(2\theta_0+\dfrac{\pi}4)\end{cases}">
 
 Finally, we get:
 
@@ -77,7 +77,7 @@ Finally, we can prove any of the following statements:
 
 If we use the coordinates mentioned [here](euler-line.md) (the proof in Theorem 1), it is possible to finish the proof by hand. Given an incircle <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-2ry=0"> and two vertices *B*(-*b*,0) and *C*(*c*,0) on x-axis, then *A* is <img src="https://latex.codecogs.com/gif.latex?(\frac{(b-c)r^2}{bc-r^2},\frac{2bcr}{bc-r^2})">, *M* is <img src="https://latex.codecogs.com/gif.latex?(\frac{(b-c)r^2}{bc-r^2},\frac{bcr}{bc-r^2})">, and *KM* is <img src="https://latex.codecogs.com/gif.latex?y=\frac{bcx}{(b-c)r}">. Then we get *I*, *N* and *S*:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}I:(0,r)\\N:(\frac{2bc(b-c)r^2}{b^2c^2+b^2r^2-2bcr^2+c^2r^2},\frac{2b^2c^2r}{b^2c^2+b^2r^2-2bcr^2+c^2r^2})\\S:(\frac{c-b}2,\frac{b^2r^2+2bcr^2+c^2r^2-b^2c^2}{4bcr})\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}I:(0,r)\\[1em]N:\left(\dfrac{2bc(b-c)r^2}{b^2c^2+b^2r^2-2bcr^2+c^2r^2},\dfrac{2b^2c^2r}{b^2c^2+b^2r^2-2bcr^2+c^2r^2}\right)\\[1em]S:\left(\dfrac{c-b}2,\dfrac{b^2r^2+2bcr^2+c^2r^2-b^2c^2}{4bcr}\right)\end{cases}">
 
 which are collinear.
 

@@ -18,7 +18,7 @@ When all points *ABCDEF* are written as homogeneous coordinates, we use some pro
 
 Then we calculate each ratio:
 
-<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD}}{\overrightarrow{CD}}=\frac{\frac{x_\text{B}}{z_\text{B}}-\frac{x_\text{D}}{z_\text{D}}}{\frac{x_\text{C}}{z_\text{C}}-\frac{x_\text{D}}{z_\text{D}}}=\frac{\frac{x_\text{B}}{z_\text{B}}-\frac{x_\text{B}+x_\text{C}}{z_\text{B}+z_\text{C}}}{\frac{x_\text{C}}{z_\text{C}}-\frac{x_\text{B}+x_\text{C}}{z_\text{B}+z_\text{C}}}=\dots=-\frac{z_\text{C}}{z_\text{B}}">
+<img src="https://latex.codecogs.com/gif.latex?\frac{\overrightarrow{BD}}{\overrightarrow{CD}}=\frac{\dfrac{x_\text{B}}{z_\text{B}}-\dfrac{x_\text{D}}{z_\text{D}}}{\dfrac{x_\text{C}}{z_\text{C}}-\dfrac{x_\text{D}}{z_\text{D}}}=\frac{\dfrac{x_\text{B}}{z_\text{B}}-\dfrac{x_\text{B}+x_\text{C}}{z_\text{B}+z_\text{C}}}{\dfrac{x_\text{C}}{z_\text{C}}-\dfrac{x_\text{B}+x_\text{C}}{z_\text{B}+z_\text{C}}}=\dots=-\frac{z_\text{C}}{z_\text{B}}">
 
 Analogously, we have <img src="https://latex.codecogs.com/gif.latex?\overrightarrow{CE}/\overrightarrow{AE}=-z_\text{A}/z_\text{C}"> and <img src="https://latex.codecogs.com/gif.latex?\overrightarrow{AF}/\overrightarrow{BF}=-nz_\text{B}/z_\text{A}">. Then we get:
 

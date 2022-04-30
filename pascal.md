@@ -34,7 +34,7 @@ We get two roots by solving the combination of a conic and a straight line. Howe
 
 Assume the conic is <img src="https://latex.codecogs.com/gif.latex?x^2+y^2-1=0"> and the line *AF* is <img src="https://latex.codecogs.com/gif.latex?y=x">, we should get *A* in quadrant I and *F* in quadrant III. So we should use `F, A = solve(...)` but not `A, F = solve(...)`. Then we get 6 points:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2})/(a+2bg+cg^2)\\x_\text{B}=-(bk+d+\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2})/a\\x_\text{C}=-(d+eh-\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2})/(a+2bh+ch^2)\\x_\text{D}=-(d+eh+\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2})/(a+2bh+ch^2)\\x_\text{E}=-(bk+d-\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2})/a\\x_\text{F}=-(d+eg+\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2})/(a+2bg+cg^2)\end{cases}\;\text{(Eq.\,1)">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-\dfrac{d+eg-\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2}}{a+2bg+cg^2}\\[1em]x_\text{B}=-\dfrac{bk+d+\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2}}a\\[1em]x_\text{C}=-\dfrac{d+eh-\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2}}{a+2bh+ch^2}\\[1em]x_\text{D}=-\dfrac{d+eh+\sqrt{-af-2bfh-cfh^2+d^2+2deh+e^2h^2}}{a+2bh+ch^2}\\[1em]x_\text{E}=-\dfrac{bk+d-\sqrt{-ack^2-2aek-af+b^2k^2+2bdk+d^2}}a\\[1em]x_\text{F}=-\dfrac{d+eg+\sqrt{-af-2bfg-cfg^2+d^2+2deg+e^2g^2}}{a+2bg+cg^2}\end{cases}\;\text{(Eq.\,1)">
 
 Without further simplification, SymPy can hardly solve the intersections *G* and *H*. (This may be due to too many fraction calculations.<sup>[1]</sup> I don't know if Mathematica or other alternatives can do this.) So we need to replace all square roots with:
 
@@ -42,7 +42,7 @@ Without further simplification, SymPy can hardly solve the intersections *G* and
 
 Then the 6 points are simplified as:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-(d+eg-P)/(a+2bg+cg^2)\\x_\text{B}=-(bk+d+R)/a\\x_\text{C}=-(d+eh-Q)/(a+2bh+ch^2)\\x_\text{D}=-(d+eh+Q)/(a+2bh+ch^2)\\x_\text{E}=-(bk+d-R)/a\\x_\text{F}=-(d+eg+P)/(a+2bg+cg^2)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A}=-\dfrac{d+eg-P}{a+2bg+cg^2}\\[1em]x_\text{B}=-\dfrac{bk+d+R}a\\[1em]x_\text{C}=-\dfrac{d+eh-Q}{a+2bh+ch^2}\\[1em]x_\text{D}=-\dfrac{d+eh+Q}{a+2bh+ch^2}\\[1em]x_\text{E}=-\dfrac{bk+d-R}a\\[1em]x_\text{F}=-\dfrac{d+eg+P}{a+2bg+cg^2}\end{cases}">
 
 Then we get *AB*, *DE*, *BC* and *EF*, and their intersections *G* and *H*, and the expression <img src="https://latex.codecogs.com/gif.latex?x_\text{G}y_\text{H}-x_\text{H}y_\text{G}"> to check if *G*, *H* and *I* are collinear.
 
@@ -60,13 +60,13 @@ We use the diagram of Pascal's theorem and put *I* onto the origin again. But he
 
 Let's assume the conic doesn't go through origin *I*, then we need to prove the 6 points:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:\left(\frac{g}{p-j},\frac{gp}{p-j}\right)\\B:\left(\frac{h-g}{j-m},\frac{hj-gm}{j-m}\right)\\C:\left(\frac{h}{q-m},\frac{hq}{q-m}\right)\\D:\left(\frac{g}{q-k},\frac{gq}{q-k}\right)\\E:\left(\frac{h-g}{k-n},\frac{hk-gn}{k-n}\right)\\F:\left(\frac{h}{p-n},\frac{hp}{p-n}\right)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}A:\left(\dfrac{g}{p-j},\dfrac{gp}{p-j}\right)\\[1em]B:\left(\dfrac{h-g}{j-m},\dfrac{hj-gm}{j-m}\right)\\[1em]C:\left(\dfrac{h}{q-m},\dfrac{hq}{q-m}\right)\\[1em]D:\left(\dfrac{g}{q-k},\dfrac{gq}{q-k}\right)\\[1em]E:\left(\dfrac{h-g}{k-n},\dfrac{hk-gn}{k-n}\right)\\[1em]F:\left(\dfrac{h}{p-n},\dfrac{hp}{p-n}\right)\end{cases}">
 
 lie on the a conic.
 
 According to [this rule](https://en.wikipedia.org/wiki/Five_points_determine_a_conic#Construction), we just need to prove:
 
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}\frac{g^2}{\left(p-j\right)^2}&\frac{g^2p}{\left(p-j\right)^2}&\frac{g^2p^2}{\left(p-j\right)^2}&\frac{g}{p-j}&\frac{gp}{p-j}&1\\\frac{\left(h-g\right)^2}{\left(j-m\right)^2}&\frac{\left(h-g\right)\left(hj-gm\right)}{\left(j-m\right)^2}&\frac{\left(hj-gm\right)^2}{\left(j-m\right)^2}&\frac{h-g}{j-m}&\frac{hj-gm}{j-m}&1\\\frac{h^2}{\left(q-m\right)^2}&\frac{h^2q}{\left(q-m\right)^2}&\frac{h^2q^2}{\left(q-m\right)^2}&\frac{h}{q-m}&\frac{hq}{q-m}&1\\\frac{g^2}{\left(q-k\right)^2}&\frac{g^2q}{\left(q-k\right)^2}&\frac{g^2q^2}{\left(q-k\right)^2}&\frac{g}{q-k}&\frac{gq}{q-k}&1\\\frac{\left(h-g\right)^2}{\left(k-n\right)^2}&\frac{\left(h-g\right)\left(hk-gn\right)}{\left(k-n\right)^2}&\frac{\left(hk-gn\right)^2}{\left(k-n\right)^2}&\frac{h-g}{k-n}&\frac{hk-gn}{k-n}&1\\\frac{h^2}{\left(p-n\right)^2}&\frac{h^2p}{\left(p-n\right)^2}&\frac{h^2p^2}{\left(p-n\right)^2}&\frac{h}{p-n}&\frac{hp}{p-n}&1\end{matrix}\right]=0">
+<img src="https://latex.codecogs.com/gif.latex?{\det\left[\begin{matrix}\dfrac{g^2}{\left(p-j\right)^2}&\dfrac{g^2p}{\left(p-j\right)^2}&\dfrac{g^2p^2}{\left(p-j\right)^2}&\dfrac{g}{p-j}&\dfrac{gp}{p-j}&1\\\dfrac{\left(h-g\right)^2}{\left(j-m\right)^2}&\dfrac{\left(h-g\right)\left(hj-gm\right)}{\left(j-m\right)^2}&\dfrac{\left(hj-gm\right)^2}{\left(j-m\right)^2}&\dfrac{h-g}{j-m}&\dfrac{hj-gm}{j-m}&1\\\dfrac{h^2}{\left(q-m\right)^2}&\dfrac{h^2q}{\left(q-m\right)^2}&\dfrac{h^2q^2}{\left(q-m\right)^2}&\dfrac{h}{q-m}&\dfrac{hq}{q-m}&1\\\dfrac{g^2}{\left(q-k\right)^2}&\dfrac{g^2q}{\left(q-k\right)^2}&\dfrac{g^2q^2}{\left(q-k\right)^2}&\dfrac{g}{q-k}&\dfrac{gq}{q-k}&1\\\dfrac{\left(h-g\right)^2}{\left(k-n\right)^2}&\dfrac{\left(h-g\right)\left(hk-gn\right)}{\left(k-n\right)^2}&\dfrac{\left(hk-gn\right)^2}{\left(k-n\right)^2}&\dfrac{h-g}{k-n}&\dfrac{hk-gn}{k-n}&1\\\dfrac{h^2}{\left(p-n\right)^2}&\dfrac{h^2p}{\left(p-n\right)^2}&\dfrac{h^2p^2}{\left(p-n\right)^2}&\dfrac{h}{p-n}&\dfrac{hp}{p-n}&1\end{matrix}\right]=0}">
 
 [Here](projective/braikenridge-maclaurin-c.py) is the proof process.<sup>[2]</sup>
 

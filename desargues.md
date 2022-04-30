@@ -12,7 +12,7 @@ Let's put point *ab* onto the origin, put *ac* and *bc* onto y-axis, and denote 
 
 Then we get 6 vertices:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A1}=e/(g-j)\\y_\text{A1}=eg/(g-j)\\x_\text{A2}=e/(h-k)\\y_\text{A2}=eh/(h-k)\\x_\text{B1}=f/(g-m)\\y_\text{B1}=fg/(g-m)\\x_\text{B2}=f/(h-n)\\y_\text{B2}=fh/(h-n)\\x_\text{C1}=(f-e)/(j-m)\\y_\text{C1}=(fj-em)/(j-m)\\x_\text{C2}=(f-e)/(k-n)\\y_\text{C2}=(fk-en)/(k-n)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{A1}=\dfrac{e}{g-j}\\[1em]y_\text{A1}=\dfrac{eg}{g-j}\\[1em]x_\text{A2}=\dfrac{e}{h-k}\\[1em]y_\text{A2}=\dfrac{eh}{h-k}\\[1em]x_\text{B1}=\dfrac{f}{g-m}\\[1em]y_\text{B1}=\dfrac{fg}{g-m}\\[1em]x_\text{B2}=\dfrac{f}{h-n}\\[1em]y_\text{B2}=\dfrac{fh}{h-n}\\[1em]x_\text{C1}=\dfrac{f-e}{j-m}\\[1em]y_\text{C1}=\dfrac{fj-em}{j-m}\\[1em]x_\text{C2}=\dfrac{f-e}{k-n}\\[1em]y_\text{C2}=\dfrac{fk-en}{k-n}\end{cases}">
 
 Then we denote lines *A*<sub>1</sub>*A*<sub>2</sub>, *B*<sub>1</sub>*B*<sub>2</sub> and *C*<sub>1</sub>*C*<sub>2</sub> as:
 
@@ -40,7 +40,7 @@ Then we denote 6 lines of 2 triangles as:
 
 Finally, we get *ab*, *ac* and *bc*:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{ab}=(-ghj+ghk+gjk-hjk)/(gk-hj)\\y_\text{ab}=(egjk-ehjk)/(gk-hj)\\x_\text{ac}=(-ghm+ghn+gmn-hmn)/(gn-hm)\\y_\text{ac}=(fgmn-fhmn)/(gn-hm)\\x_\text{bc}=(-jkm+jkn+jmn-kmn)/(jn-km)\\y_\text{bc}=(-ejkm+ejkn+fjmn-fkmn)/(jn-km)\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}x_\text{ab}=\dfrac{-ghj+ghk+gjk-hjk}{gk-hj}\\[1em]y_\text{ab}=\dfrac{egjk-ehjk}{gk-hj}\\[1em]x_\text{ac}=\dfrac{-ghm+ghn+gmn-hmn}{gn-hm}\\[1em]y_\text{ac}=\dfrac{fgmn-fhmn}{gn-hm}\\[1em]x_\text{bc}=\dfrac{-jkm+jkn+jmn-kmn}{jn-km}\\[1em]y_\text{bc}=\dfrac{-ejkm+ejkn+fjmn-fkmn}{jn-km}\end{cases}">
 
 which are collinear, i.e.
 
