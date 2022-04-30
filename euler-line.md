@@ -40,7 +40,7 @@ After some factoring work, we get the determinant of collinearity:
 
 Obviously *F* = 0 iff *AC* = *BC*, but *D* and *E* are not obvious. So we should calculate the isosceles conditions:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}|AB|^2-|AC|^2=\dfrac{a(r^2-2ab-b^2)(ar^2+2br^2-ab^2)}{(ab-r^2)^2}=\dfrac{a(r^2-2ab-b^2)D}{(ab-r^2)^2}\\|AB|^2-|BC|^2=\dfrac{b(r^2-a^2-2ab)(2ar^2+br^2-a^2b)}{(ab-r^2)^2}=\dfrac{b(r^2-a^2-2ab)E}{(ab-r^2)^2}\\|AC|^2-|BC|^2=\dfrac{(a-b)(a+b)(ab+r^2)}{ab-r^2}=-\dfrac{(a+b)(ab+r^2)F}{ab-r^2}\end{cases}">
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}|AB|^2-|AC|^2=\dfrac{a(r^2-2ab-b^2)(ar^2+2br^2-ab^2)}{(ab-r^2)^2}=\dfrac{a(r^2-2ab-b^2)D}{(ab-r^2)^2}\\[1em]|AB|^2-|BC|^2=\dfrac{b(r^2-a^2-2ab)(2ar^2+br^2-a^2b)}{(ab-r^2)^2}=\dfrac{b(r^2-a^2-2ab)E}{(ab-r^2)^2}\\[1em]|AC|^2-|BC|^2=\dfrac{(a-b)(a+b)(ab+r^2)}{ab-r^2}=-\dfrac{(a+b)(ab+r^2)F}{ab-r^2}\end{cases}">
 
 which follows *D* = 0 iff *AB* = *AC*, *E* = 0 iff *AB* = *BC*, and *F* = 0 iff *AC* = *BC*.
 
