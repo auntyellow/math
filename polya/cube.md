@@ -47,8 +47,20 @@ Let's calculate the integral:
 
 <img src="https://latex.codecogs.com/gif.latex?\int_0^{\text{arccot}\cos\phi}\frac{\sin\theta}{\cos\theta}d\theta=-\ln\cos\theta\bigg\rvert_0^{\text{arccot}\cos\phi}=\ln\sqrt{\cos^2\phi+1}-\ln\cos\phi"> (0 ≤ *ϕ* ≤ *π*/4)
 
-Although the antiderivative of this function doesn't look analytic, we can get the numeric solution:
+Although the antiderivative of this function doesn't look analytic, we can get the numeric solution: <sup>[1]</sup>
 
 <img src="https://latex.codecogs.com/gif.latex?r_\text{avg}=\frac{12}\pi\int_0^{\pi/4}(\ln\sqrt{\cos^2\phi+1}-\ln\cos\phi)d\phi\approx1.2214">
 
 This is close to the isovolumic-sphere definition but far different from Pólya's note.
+
+### Note
+
+1. Here is the calculation:
+
+```python
+from numpy import *
+from scipy.integrate import dblquad
+
+result, abserr = dblquad(lambda t, f : tan(t), 0, pi/4, 0, lambda f : pi/2 - arctan(cos(f)))
+print(12/pi*result)
+```
