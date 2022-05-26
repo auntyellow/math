@@ -24,7 +24,7 @@ def main():
     print('Orthocenter:', H)
     I = (0, r)
     print('Incenter:', I)
-    x1, y1, x2, y2, x3, y3 = G[0], G[1], H[0], H[1], I[0], I[1]
+    (x1, y1), (x2, y2), (x3, y3) = G, H, I
     print('They are collinear if and only if', factor(x1*y2 + x2*y3 + x3*y1 - x2*y1 - x3*y2 - x1*y3), '= 0')
     AB2 = cancel(dist2(A, B))
     AC2 = cancel(dist2(A, C))

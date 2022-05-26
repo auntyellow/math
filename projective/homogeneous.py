@@ -8,7 +8,7 @@ def span(m, P1, n, P2):
     return reduced(m*P1[0] + n*P2[0], m*P1[1] + n*P2[1], m*P1[2] + n*P2[2])
 
 def cross(P1, P2):
-    a, b, c, d, e, f = P1[0], P1[1], P1[2], P2[0], P2[1], P2[2]
+    (a, b, c), (d, e, f) = P1, P2
     # | a b c |
     # | d e f |
     # | x y z |

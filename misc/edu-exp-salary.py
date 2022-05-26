@@ -21,7 +21,7 @@ def main():
     # In the book, Eq 8.1: salary = 2500*ex + 5000*ed + 65000
     print('Name: S(edu=0), S(edu=1), S(edu=2), error')
     for i in data:
-        name, exp, edu, salary = i[0], i[1], i[2], i[3]
+        name, exp, edu, salary = i
         base = salary - x2*edu
         error = base - x1*exp - x3
         print(f'{name}: {base:.0f}, {base + x2:.0f}, {base + x2*2:.0f}, {error:.0f}')
@@ -35,7 +35,7 @@ def main():
     print(f'salary = {x1:.0f}*(exp + 4*edu) + {x2:.0f}*edu + {x3:.0f} + error')
     print('Name: S(edu=0), S(edu=1), S(edu=2), error')
     for i in data:
-        name, exp, edu, salary = i[0], i[1], i[2], i[3]
+        name, exp, edu, salary = i
         base = salary - x2*edu
         error = base - x1*(exp + 4*edu) - x3
         print(f'{name}: {base:.0f}, {base + x2:.0f}, {base + x2*2:.0f}, {error:.0f}')

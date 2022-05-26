@@ -20,7 +20,7 @@ def tangent(circle_eq, P):
     x, y = symbols('x, y')
     circle_poly = poly(circle_eq, (x, y))
     d, e, f = circle_poly.nth(1, 0)/2, circle_poly.nth(0, 1)/2, circle_poly.nth(0, 0)
-    x0, y0 = P[0], P[1]
+    x0, y0 = P
     return Eq((x0 + d)*x + (y0 + e)*y + (d*x0 + e*y0 + f), 0)
 
 def main():

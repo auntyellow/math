@@ -5,7 +5,7 @@ def reduced(x, y, z):
     return cancel(x/gcd), cancel(y/gcd), cancel(z/gcd)
 
 def cross(P1, P2):
-    a, b, c, d, e, f = P1[0], P1[1], P1[2], P2[0], P2[1], P2[2]
+    (a, b, c), (d, e, f) = P1, P2
     # | a b c |
     # | d e f |
     # | x y z |

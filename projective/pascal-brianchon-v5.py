@@ -2,7 +2,7 @@ from sympy import symbols
 from homogeneous import *
 
 def polar(P):
-    x, y, z = P[0], P[1], P[2]
+    x, y, z = P
     a, b = symbols('a, b')
     # result from pole-polar-v.py
     return a*y - b*y + b*z, a*x - a*z - b*x, -a*y + b*x

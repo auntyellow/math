@@ -19,13 +19,13 @@ def dist(P1, P2):
     return sqrt(f[0])/simp_sqrt(f[1])
 
 def bisector(A, B, C):
-    xA, yA, zA, xB, yB, zB, xC, yC, zC = A[0], A[1], A[2], B[0], B[1], B[2], C[0], C[1], C[2]
+    (xA, yA, zA), (xB, yB, zB), (xC, yC, zC) = A, B, C
     r, s, u, v = yA*zB - yB*zA, xB*zA - xA*zB, yB*zC - yC*zB, xC*zB - xB*zC
     m, n, q = r*v + s*u, s*v - r*u, sqrt(r**2 + s**2)*sqrt(u**2 + v**2)
     return reduced(yB*zB*(n + q) + xB*zB*m, xB*zB*(n - q) - yB*zB*m, (yB**2 - xB**2)*m - 2*xB*yB*n)
 
 def equals(P1, P2):
-    a, b, c, d, e, f = P1[0], P1[1], P1[2], P2[0], P2[1], P2[2]
+    (a, b, c), (d, e, f) = P1, P2
     # | a b c |
     # | d e f |
     # | x y z |

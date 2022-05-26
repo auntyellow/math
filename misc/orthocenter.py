@@ -1,16 +1,16 @@
 from sympy import Matrix, prem, var
 
-def collinear(x, y):
-    return [x, y, 1]
+def collinear(P):
+    return [P[0], P[1], 1]
 
 def det(row_def, *points):
     mat = []
     for point in points:
-        mat.append(row_def(point[0], point[1]))
+        mat.append(row_def(point))
     return Matrix(mat).det()
 
 def perpendicular(P1, P2, P3, P4):
-    x1, y1, x2, y2, x3, y3, x4, y4 = P1[0], P1[1], P2[0], P2[1], P3[0], P3[1], P4[0], P4[1]
+    (x1, y1), (x2, y2), (x3, y3), (x4, y4) = P1, P2, P3, P4
     return (x1 - x2)*(x3 - x4) + (y1 - y2)*(y3 - y4)
 
 def main():

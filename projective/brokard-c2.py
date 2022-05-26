@@ -21,7 +21,7 @@ def center(circle_eq):
     return cancel(-poly(circle_eq, x).nth(1)/2), cancel(-poly(circle_eq, y).nth(1)/2)
 
 def perpendicular(P1, P2, P3, P4):
-    x1, y1, x2, y2, x3, y3, x4, y4 = P1[0], P1[1], P2[0], P2[1], P3[0], P3[1], P4[0], P4[1]
+    (x1, y1), (x2, y2), (x3, y3), (x4, y4) = P1, P2, P3, P4
     return cancel((x1 - x2)*(x3 - x4) + (y1 - y2)*(y3 - y4)) == 0
 
 def main():

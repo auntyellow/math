@@ -18,7 +18,7 @@ def main():
 
     mat = []
     for P in [A, B, C, D, E, F]:
-        x, y = P[0], P[1]
+        x, y = P
         mat.append([x*x, x*y, y*y, x, y, 1])
     print('M =', Matrix(mat))
     print('det M =', Matrix(mat).det(method='domain-ge'))

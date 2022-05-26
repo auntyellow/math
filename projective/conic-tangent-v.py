@@ -1,7 +1,7 @@
 from sympy import Matrix, factor, poly, symbols
 
 def line(P1, P2):
-    a, b, c, d, e, f = P1[0], P1[1], P1[2], P2[0], P2[1], P2[2]
+    (a, b, c), (d, e, f) = P1, P2
     # | a b c |
     # | d e f |
     # | x y z |
@@ -9,7 +9,7 @@ def line(P1, P2):
     return (b*f - c*e)*x + (c*d - a*f)*y + (a*e - b*d)*z
 
 def tangent(P):
-    x0, y0, z0 = P[0], P[1], P[2]
+    x0, y0, z0 = P
     a, b, x, y, z = symbols('a, b, x, y, z')
     # result from pole-polar-v.py
     return (a*y0 - b*y0 + b*z0)*x + (a*x0 - a*z0 - b*x0)*y + (-a*y0 + b*x0)*z

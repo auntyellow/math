@@ -9,7 +9,7 @@ def lies_on(P, L):
 
 def on_conic(P):
     a, b, c, d, e, f = symbols('a, b, c, d, e, f')
-    x, y, z = P[0], P[1], P[2]
+    x, y, z = P
     return a*x**2 + 2*b*x*y + c*y**2 + 2*d*x*z + 2*e*y*z + f*z**2
 
 def main():

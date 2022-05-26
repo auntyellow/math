@@ -2,11 +2,11 @@ from sympy import Eq, Matrix, cancel, fraction, lcm_list, poly, solve, symbols
 
 def on_conic(P):
     a, b, c, d, e, f = symbols('a, b, c, d, e, f')
-    x, y = P[0], P[1]
+    x, y = P
     return cancel(a*x**2 + 2*b*x*y + c*y**2 + 2*d*x + 2*e*y + f) == 0
 
 def tangent(P):
-    x0, y0 = P[0], P[1]
+    x0, y0 = P
     a, b, c, d, e, f, x, y = symbols('a, b, c, d, e, f, x, y')
     return (a*x0 + b*y0 + d)*x + (b*x0 + c*y0 + e)*y + (d*x0 + e*y0 + f)
 
