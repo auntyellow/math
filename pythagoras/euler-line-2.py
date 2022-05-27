@@ -12,7 +12,6 @@ def cos2(a, b, c):
 
 def main():
     a, b, c = symbols('a, b, c', positive = True)
-    # a, b, c = 1.5, 2.6, 3.7
     cosA, cosB, cosC = cos1(a, b, c), cos1(b, c, a), cos1(c, a, b)
     # https://en.wikipedia.org/wiki/Trilinear_coordinates
     G = [1/a, 1/b, 1/c]
