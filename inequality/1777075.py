@@ -14,6 +14,8 @@ def sum_cyc(p):
 def main():
     x, y, z = symbols('x, y, z')
     ineq = sum_cyc(x**3/(13*x**2 + 5*y**2)) - (x + y + z)/18
+    # This is not always non-negative:
+    # ineq = sum_cyc(x**3/(8*x**2 + 3*y**2)) - (x + y + z)/11
     p, q = symbols('p, q', positive = True)
     # x <= z <= y
     print('ineq(xzy) =', factor(ineq.subs(z, x*(1 + p)).subs(y, x*(1 + p + q))))
