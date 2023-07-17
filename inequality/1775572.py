@@ -3,35 +3,35 @@ from sympy import *
 # https://math.stackexchange.com/a/2120874
 # https://math.stackexchange.com/q/1775572
 
-def cyc(p):
+def cyc(f):
     x, y, z, t = symbols('x, y, z, t')
-    return p.subs(x, t).subs(y, x).subs(z, y).subs(t, z)
+    return f.subs(x, t).subs(y, x).subs(z, y).subs(t, z)
 
-def sum_cyc(p):
-    p1 = cyc(p)
-    return p + p1 + cyc(p1)
+def sum_cyc(f):
+    f1 = cyc(f)
+    return f + f1 + cyc(f1)
 
 def main():
     x, y, z = symbols('x, y, z')
-    ineq = sum_cyc(x**4/(8*x**3 + 5*y**3)) - (x + y + z)/13
-    p, q = symbols('p, q', positive = True)
+    f = sum_cyc(x**4/(8*x**3 + 5*y**3)) - (x + y + z)/13
+    u, v = symbols('u, v', positive = True)
     # x <= z <= y
-    print('ineq(xzy) =', factor(ineq.subs(z, x*(1 + p)).subs(y, x*(1 + p + q))))
+    print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v))))
     # x <= y <= z doesn't work
-    print('ineq(xyz) =', factor(ineq.subs(y, x*(1 + p)).subs(z, x*(1 + p + q))))
-    ineq = 65*p**10 + 215*p**9*q + 546*p**9 + 285*p**8*q**2 + 1503*p**8*q + 1989*p**8 + 275*p**7*q**3 + 1488*p**7*q**2 + 4284*p**7*q + 4095*p**7 + 315*p**6*q**4 + 1061*p**6*q**3 + 2436*p**6*q**2 + 6093*p**6*q + 5226*p**6 + 285*p**5*q**5 + 1290*p**5*q**4 + 591*p**5*q**3 - 441*p**5*q**2 + 4029*p**5*q + 4329*p**5 + 135*p**4*q**6 + 1185*p**4*q**5 + 1725*p**4*q**4 - 3020*p**4*q**3 - 5898*p**4*q**2 + 570*p**4*q + 2392*p**4 + 25*p**3*q**7 + 500*p**3*q**6 + 1890*p**3*q**5 + 779*p**3*q**4 - 5556*p**3*q**3 - 6582*p**3*q**2 - 326*p**3*q + 858*p**3 + 75*p**2*q**7 + 690*p**2*q**6 + 1866*p**2*q**5 + 762*p**2*q**4 - 2778*p**2*q**3 - 2400*p**2*q**2 + 192*p**2*q + 156*p**2 + 75*p*q**7 + 636*p*q**6 + 1617*p*q**5 + 1527*p*q**4 + 318*p*q**3 + 114*p*q**2 + 156*p*q + 65*q**7 + 351*q**6 + 741*q**5 + 754*q**4 + 390*q**3 + 156*q**2
-    r, s = symbols('r, s', positive = True)
-    # p, q <= 1 doesn't work
-    # p <= q <= 1
-    print('ineq(pq1) =', factor(ineq.subs(q, 1/(1 + r)).subs(p, 1/(1 + r + s))))
-    # q <= p <= 1
-    print('ineq(qp1) =', factor(ineq.subs(p, 1/(1 + r)).subs(q, 1/(1 + r + s))))
-    # p <= 1 <= q
-    print('ineq(p1q) =', factor(ineq.subs(p, 1/(1 + r)).subs(q, 1 + s)))
-    # q <= 1 <= p
-    print('ineq(q1p) =', factor(ineq.subs(q, 1/(1 + r)).subs(p, 1 + s)))
-    # 1 <= p, q
-    print('ineq(1pq) =', factor(ineq.subs(p, 1 + r).subs(q, 1 + s)))
+    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
+    f = 65*u**10 + 215*u**9*v + 546*u**9 + 285*u**8*v**2 + 1503*u**8*v + 1989*u**8 + 275*u**7*v**3 + 1488*u**7*v**2 + 4284*u**7*v + 4095*u**7 + 315*u**6*v**4 + 1061*u**6*v**3 + 2436*u**6*v**2 + 6093*u**6*v + 5226*u**6 + 285*u**5*v**5 + 1290*u**5*v**4 + 591*u**5*v**3 - 441*u**5*v**2 + 4029*u**5*v + 4329*u**5 + 135*u**4*v**6 + 1185*u**4*v**5 + 1725*u**4*v**4 - 3020*u**4*v**3 - 5898*u**4*v**2 + 570*u**4*v + 2392*u**4 + 25*u**3*v**7 + 500*u**3*v**6 + 1890*u**3*v**5 + 779*u**3*v**4 - 5556*u**3*v**3 - 6582*u**3*v**2 - 326*u**3*v + 858*u**3 + 75*u**2*v**7 + 690*u**2*v**6 + 1866*u**2*v**5 + 762*u**2*v**4 - 2778*u**2*v**3 - 2400*u**2*v**2 + 192*u**2*v + 156*u**2 + 75*u*v**7 + 636*u*v**6 + 1617*u*v**5 + 1527*u*v**4 + 318*u*v**3 + 114*u*v**2 + 156*u*v + 65*v**7 + 351*v**6 + 741*v**5 + 754*v**4 + 390*v**3 + 156*v**2
+    s, t = symbols('s, t', positive = True)
+    # u, v <= 1 doesn't work
+    # u <= v <= 1
+    print('f(uv1) =', factor(f.subs(v, 1/(1 + s)).subs(u, 1/(1 + s + t))))
+    # v <= u <= 1
+    print('f(vu1) =', factor(f.subs(u, 1/(1 + s)).subs(v, 1/(1 + s + t))))
+    # u <= 1 <= v
+    print('f(u1v) =', factor(f.subs(u, 1/(1 + s)).subs(v, 1 + t)))
+    # v <= 1 <= u
+    print('f(v1u) =', factor(f.subs(v, 1/(1 + s)).subs(u, 1 + t)))
+    # 1 <= u, v
+    print('f(1uv) =', factor(f.subs(u, 1 + s).subs(v, 1 + t)))
 
 if __name__ == '__main__':
     main()

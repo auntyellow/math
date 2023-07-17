@@ -11,10 +11,10 @@ def main():
     print('E:', E)
     print('AD**2 - BE**2 =', factor(dist2(A, D) - dist2(B, E)))
     # should prove this factor is always negative:
-    ineq = -a**4*b**2 - 4*a**3*b**3 - a**2*b**4 + 5*a**2*b**2*r**2 - 4*a*b*r**4 + r**6
-    p, q = symbols('p, q', positive = True)
+    f = -a**4*b**2 - 4*a**3*b**3 - a**2*b**4 + 5*a**2*b**2*r**2 - 4*a*b*r**4 + r**6
+    u, v = symbols('u, v', positive = True)
     # 0 < r < a < b
-    print('ineq =', factor(ineq.subs(a, r + p).subs(b, r + p + q)))
+    print('f =', factor(f.subs(a, r + u).subs(b, r + u + v)))
 
 if __name__ == '__main__':
     main()

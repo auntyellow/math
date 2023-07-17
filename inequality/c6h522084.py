@@ -2,50 +2,50 @@ from sympy import *
 
 # https://artofproblemsolving.com/community/c6h522084
 
-def cyc(p):
+def cyc(f):
     x, y, z, t = symbols('x, y, z, t')
-    return p.subs(x, t).subs(y, x).subs(z, y).subs(t, z)
+    return f.subs(x, t).subs(y, x).subs(z, y).subs(t, z)
 
-def sum_cyc(p):
-    p1 = cyc(p)
-    return p + p1 + cyc(p1)
+def sum_cyc(f):
+    f1 = cyc(f)
+    return f + f1 + cyc(f1)
 
-def cyc4(p):
+def cyc4(f):
     a, b, c, d, t = symbols('a, b, c, d, t')
-    return p.subs(a, t).subs(b, a).subs(c, b).subs(d, c).subs(t, d)
+    return f.subs(a, t).subs(b, a).subs(c, b).subs(d, c).subs(t, d)
 
-def sum_cyc4(p):
-    p1 = cyc4(p)
-    p2 = cyc4(p1)
-    return p + p1 + p2 + cyc4(p2)
+def sum_cyc4(f):
+    f1 = cyc4(f)
+    f2 = cyc4(f1)
+    return f + f1 + f2 + cyc4(f2)
 
 def main():
     x, y, z = symbols('x, y, z')
-    ineq = sum_cyc(x**3 - x**2*y - x**2*z + x*y*z)
-    p, q = symbols('p, q', positive = True)
+    f = sum_cyc(x**3 - x**2*y - x**2*z + x*y*z)
+    u, v = symbols('u, v', positive = True)
     # y and z can swap
     # x <= y <= z
-    print('ineq =', expand(ineq.subs(y, x + p).subs(z, x + p + q)))
+    print('f =', expand(f.subs(y, x + u).subs(z, x + u + v)))
     print()
 
     # for all triangles
-    ineq = sum_cyc(x**3*y**2 - (x**2)*x*y*z)
-    r = symbols('r', positive = True)
+    f = sum_cyc(x**3*y**2 - (x**2)*x*y*z)
+    w = symbols('w', positive = True)
     # x <= y <= z
-    print('ineq(xyz) =', expand(ineq.subs(x, p + q).subs(y, p + q + r).subs(z, p + 2*q + r)))
+    print('f(xyz) =', expand(f.subs(x, u + v).subs(y, u + v + w).subs(z, u + 2*v + w)))
     # x <= z <= y
-    print('ineq(xzy) =', expand(ineq.subs(x, p + q).subs(z, p + q + r).subs(y, p + 2*q + r)))
+    print('f(xzy) =', expand(f.subs(x, u + v).subs(z, u + v + w).subs(y, u + 2*v + w)))
     print()
 
     a, b, c, d = symbols('a, b, c, d')
-    ineq = sum_cyc4(a**4 + a*b*c*d - 2*a**2*b*c)
+    f = sum_cyc4(a**4 + a*b*c*d - 2*a**2*b*c)
     # b and c can swap
     # a <= b <= c <= d
-    print('ineq(abcd) =', expand(ineq.subs(b, a + p).subs(c, a + p + q).subs(d, a + p + q + r)))
+    print('f(abcd) =', expand(f.subs(b, a + u).subs(c, a + u + v).subs(d, a + u + v + w)))
     # a <= b <= d <= c
-    print('ineq(abdc) =', expand(ineq.subs(b, a + p).subs(d, a + p + q).subs(c, a + p + q + r)))
+    print('f(abdc) =', expand(f.subs(b, a + u).subs(d, a + u + v).subs(c, a + u + v + w)))
     # a <= d <= b <= c
-    print('ineq(adbc) =', expand(ineq.subs(d, a + p).subs(b, a + p + q).subs(c, a + p + q + r)))
+    print('f(adbc) =', expand(f.subs(d, a + u).subs(b, a + u + v).subs(c, a + u + v + w)))
 
 if __name__ == '__main__':
     main()
