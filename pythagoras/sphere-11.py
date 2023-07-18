@@ -28,7 +28,7 @@ def intersect(P1, P2, P3, slope, sphere_l, ai0, ai1, ai2):
     axes = symbols('x, y, z')
     axis0, axis1, axis2 = axes[ai0], axes[ai1], axes[ai2]
     # return the intersect point P of:
-    # `axis2 = plane_p(axis0, axis1)` passing through P1, P2 and P3 
+    # `axis2 = plane_p(axis0, axis1)` passing through P1, P2 and P3
     # `axis1 = plane_q(axis0)` with `slope = axis1/axis0` passing through P1
     # `sphere_l(x, y, z) = 0`
     plane_p = solve(plane(P1, P2, P3), axis2)[0]

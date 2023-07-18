@@ -63,7 +63,7 @@ def tangent_plane(sphere_poly, P):
     # |y| |b c e h||y| = 0 is |b c e h||y0|
     # |z| |d e f j||z|        |d e f j||z0|
     # \w/ \g h j k/\w/        \g h j k/\w0/
-    # For a sphere with equator on xy: 
+    # For a sphere with equator on xy:
     # a = c = f
     # b = d = e = j = 0
     x, y, z, w = symbols('x, y, z, w')

@@ -15,7 +15,7 @@ def main():
     colorings = powerset(edges)
     cliques = []
     for clique in combinations(vertices, 3):
-        a, b, c = clique 
+        a, b, c = clique
         cliques.append(set([(a, b), (a, c), (b, c)]))
     non_monochromatic_count = 0
     for coloring in colorings:

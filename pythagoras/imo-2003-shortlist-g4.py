@@ -6,7 +6,7 @@ def circle(G):
 
 def intersect(Ga, Gb):
     x, y = symbols('x, y')
-    # Must root[0] be (0, 0)? 
+    # Must root[0] be (0, 0)?
     # return solve([Ga, Gb], (x, y))[1]
     yi = solve(Eq(Ga.lhs - Gb.lhs, Ga.rhs - Gb.rhs), y)[0]
     eqGa = Ga.subs(y, yi)

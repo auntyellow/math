@@ -27,7 +27,7 @@ According to the duality, this process also shows that the Steiner *line* conic 
 
 [Here](projective/steiner-conic-h2.py) we get the same result by a rule that [five points determine a conic](https://en.wikipedia.org/wiki/Five_points_determine_a_conic):
 
-<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}x^2&xy&y^2&xz&yz&z^2\\x_\text{A}^2&x_\text{A}y_\text{A}&y_\text{A}^2&x_\text{A}z_\text{A}&y_\text{A}z_\text{A}&z_\text{A}^2\\x_\text{B}^2&x_\text{B}y_\text{B}&y_\text{B}^2&x_\text{B}z_\text{B}&y_\text{B}z_\text{B}&z_\text{B}^2\\x_\text{C}^2&x_\text{C}y_\text{C}&y_\text{C}^2&x_\text{C}z_\text{C}&y_\text{C}z_\text{C}&z_\text{C}^2\\x_\text{D}^2&x_\text{D}y_\text{D}&y_\text{D}^2&x_\text{D}z_\text{D}&y_\text{D}z_\text{D}&z_\text{D}^2\\x_\text{E}^2&x_\text{E}y_\text{E}&y_\text{E}^2&x_\text{E}z_\text{E}&y_\text{E}z_\text{E}&z_\text{E}^2\end{matrix}\right]=0"> 
+<img src="https://latex.codecogs.com/gif.latex?\det\left[\begin{matrix}x^2&xy&y^2&xz&yz&z^2\\x_\text{A}^2&x_\text{A}y_\text{A}&y_\text{A}^2&x_\text{A}z_\text{A}&y_\text{A}z_\text{A}&z_\text{A}^2\\x_\text{B}^2&x_\text{B}y_\text{B}&y_\text{B}^2&x_\text{B}z_\text{B}&y_\text{B}z_\text{B}&z_\text{B}^2\\x_\text{C}^2&x_\text{C}y_\text{C}&y_\text{C}^2&x_\text{C}z_\text{C}&y_\text{C}z_\text{C}&z_\text{C}^2\\x_\text{D}^2&x_\text{D}y_\text{D}&y_\text{D}^2&x_\text{D}z_\text{D}&y_\text{D}z_\text{D}&z_\text{D}^2\\x_\text{E}^2&x_\text{E}y_\text{E}&y_\text{E}^2&x_\text{E}z_\text{E}&y_\text{E}z_\text{E}&z_\text{E}^2\end{matrix}\right]=0">
 
 According to the duality, these two processes also shows that five straight lines determine a line conic.
 
@@ -71,7 +71,7 @@ Braikenridge-Maclaurin construction (additional 6 lines and 3 intersections) is 
 
 Let's define the *projective mapping* of two point sets *A*<sub>1</sub>*A*<sub>2</sub>... and *B*<sub>1</sub>*B*<sub>2</sub>... on a conic *Γ* <img src="https://latex.codecogs.com/gif.latex?(A_1,A_2,\dots)\frac{}\wedge(B_1,B_2,\dots)"> as <img src="https://latex.codecogs.com/gif.latex?(PA_1,PA_2,\dots)\frac{}\wedge(QB_1,QB_2,\dots)">, where *P* and *Q* are two arbitrary points on *Γ*.
 
-[Here](projective/conic-projective-axis-v.py) proves that all <img src="https://latex.codecogs.com/gif.latex?A_iB_j{\cap}A_jB_i"> lie on one straight line *p* (the *projective axis*). 
+[Here](projective/conic-projective-axis-v.py) proves that all <img src="https://latex.codecogs.com/gif.latex?A_iB_j{\cap}A_jB_i"> lie on one straight line *p* (the *projective axis*).
 
 ### Involution
 

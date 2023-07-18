@@ -26,7 +26,7 @@ def main():
     # Should reduce if `a1, b1 = 0, 0`
     # gcd = gcd_list([a, b, c, d, e, f])
     # print('GCD:', gcd)
-    # a, b, c, d, e, f = cancel(a/gcd), cancel(b/gcd), cancel(c/gcd), cancel(d/gcd), cancel(e/gcd), cancel(f/gcd) 
+    # a, b, c, d, e, f = cancel(a/gcd), cancel(b/gcd), cancel(c/gcd), cancel(d/gcd), cancel(e/gcd), cancel(f/gcd)
     print('Locus of F:')
     print('x**2*(', a, ') +')
     print('x*y*(', b, ') +')

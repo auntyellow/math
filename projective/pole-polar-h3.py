@@ -6,7 +6,7 @@ def coeff_matrix(p):
 
 def main():
     # This program shows why line $p_0^T{\cdot}A{\cdot}p=0$ is tangent to the conic $p^T{\cdot}A{\cdot}p=0$,
-    # and why B is A's adjugate for a point conic $p^T{\cdot}A{\cdot}p=0$ and its line conic $l^T{\cdot}B{\cdot}l=0$ 
+    # and why B is A's adjugate for a point conic $p^T{\cdot}A{\cdot}p=0$ and its line conic $l^T{\cdot}B{\cdot}l=0$
     a, b, c, d, e, f, u, v, w, x, y, z, x0, y0 = symbols('a, b, c, d, e, f, u, v, w, x, y, z, x0, y0')
     conic_eq = a*x**2 + 2*b*x*y + c*y**2 + 2*d*x + 2*e*y + f
     line_eq = (a*x0 + b*y0 + d)*x + (b*x0 + c*y0 + e)*y + (d*x0 + e*y0 + f)

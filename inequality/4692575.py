@@ -8,7 +8,7 @@ def main():
     u, v = symbols('u, v', positive = True)
     # a <= 1 <= b, c
     print('f(a1bc) =', factor(f.subs(a, 1/b/c).subs(b, 1 + u).subs(c, 1 + v)))
-    # a, b <= 1 <= c 
+    # a, b <= 1 <= c
     print('f(ab1c) =', factor(f.subs(c, 1/a/b).subs(a, 1/(1 + u)).subs(b, 1/(1 + v))))
 
 if __name__ == '__main__':

@@ -20,7 +20,7 @@ def perpendicular(P1, P2, P3, P4):
 def main():
     # https://en.wikipedia.org/wiki/Simson_line
     var('x1:11')
-    A, B, C, P, F, E, D = (0, 0), (0, 1), (x1, x2), (x3, x4), (x5, x6), (x7, x8), (x9, x10) 
+    A, B, C, P, F, E, D = (0, 0), (0, 1), (x1, x2), (x3, x4), (x5, x6), (x7, x8), (x9, x10)
     h1 = det(concyclic, A, B, C, P) # x3, x4
     h2 = det(collinear, A, B, F)    # x5
     h3 = perpendicular(A, B, F, P)  # x5, x6

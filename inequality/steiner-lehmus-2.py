@@ -7,13 +7,13 @@ def main():
     # ∠DBC = β + δ, ∠DBA = β - δ, ∠ECB = γ + δ, ∠EBA = γ - δ, |δ| < min(β,γ)
     # ∠DBC + ∠ECA = ∠DBA + ∠ECB = β + γ, BD = CE, prove β = γ
     # 0 < b = tan β < 1, 0 < c = tan γ < 1, d = tan δ, |d| < min(b,c)
-    # If δ = 0, it's Steiner-Lehmus theorem 
+    # If δ = 0, it's Steiner-Lehmus theorem
     a, b, c = symbols('a, b, c', positive = True)
     d, x, y = symbols('d, x, y')
     tan_2b = 2*b/(1 - b**2)
     tan_2c = 2*c/(1 - c**2)
     tan_bd = (b + d)/(1 - b*d)
-    tan_cd = (c + d)/(1 - c*d) 
+    tan_cd = (c + d)/(1 - c*d)
     A, B, C = (0, a), (-a/tan_2b, 0), (a/tan_2c, 0)
     AB, AC, BD, CE = line(A, B), line(A, C), Eq(y, tan_bd*(x - B[0])), Eq(y, -tan_cd*(x - C[0]))
     D, E = intersect(BD, AC), intersect(CE, AB)

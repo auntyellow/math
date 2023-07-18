@@ -53,7 +53,7 @@ def main():
     AB = a + b
     AC = b*(a**2 + r**2)/(a*b - r**2)
     BC = a*(b**2 + r**2)/(a*b - r**2)
-    # G, H, K are tangent points of BC, AC and AB with AB side excircle 
+    # G, H, K are tangent points of BC, AC and AB with AB side excircle
     AK = (AB + BC - AC)/2
     BK = AB - AK
     K = (AK - a, 0)

@@ -27,7 +27,7 @@ Another approach is to calculate radii and distance:
 
 Because all of |*NI*|, *r*<sub>N</sub>, *r*<sub>I</sub> and *r*<sub>E</sub> contain square roots, which are too difficult to calculate, we need to rewrite them to simplify calculation:
 
-<img src="https://latex.codecogs.com/gif.latex?\begin{cases}(r_N^2+r_I^2-|NI|^2)^2=4r_N^2r_I^2\\(r_N^2+r_E^2-|NE|^2)^2=4r_N^2r_E^2\end{cases}"> 
+<img src="https://latex.codecogs.com/gif.latex?\begin{cases}(r_N^2+r_I^2-|NI|^2)^2=4r_N^2r_I^2\\(r_N^2+r_E^2-|NE|^2)^2=4r_N^2r_E^2\end{cases}">
 
 Neither of the two approaches can tell us whether two circles are internally or externally tangent. However, the incircle is obviously inside and internally tangent to the nine-point circle, because the incircle is inside the triangle and the nine-point circle intersects all three edges; each excircle is abviously externally tangent to the nine-point circle, because each excircle is outside of the triangle.
 

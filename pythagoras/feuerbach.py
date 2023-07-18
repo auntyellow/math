@@ -47,7 +47,7 @@ def main():
 
     # AB, AC, BC = a + b, sqrt(a**2 + c**2), sqrt(b**2 + c**2)
     AB = a + b
-    # AD, BE, CF are internal bisectors  
+    # AD, BE, CF are internal bisectors
     AF = (AB + AC - BC)/2
     BF = AB - AF
     F = (AF - a, 0)
@@ -57,7 +57,7 @@ def main():
     print()
     print('Incircle Equation:', incircle, '= 0')
     print('Does Nine-Point Circle kiss Incircle?', kiss(nine_point, incircle))
-    # G, H, K are tangent points of BC, AC and AB with AB side excircle 
+    # G, H, K are tangent points of BC, AC and AB with AB side excircle
     AK = (AB + BC - AC)/2
     BK = AB - AK
     K = (AK - a, 0)

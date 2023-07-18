@@ -20,7 +20,7 @@ def cross(P1, P2, P3):
 
 def plucker_list(Lx):
     return reduced([Lx[0, 1], Lx[0, 2], Lx[0, 3], Lx[1, 2], Lx[1, 3], Lx[2, 3]])
-    
+
 def plucker_matrix(L):
     return Matrix([[0, L[0], L[1], L[2]], [-L[0], 0, L[3], L[4]], [-L[1], -L[3], 0, L[5]], [-L[2], -L[4], -L[5], 0]])
 
