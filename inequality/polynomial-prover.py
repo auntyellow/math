@@ -1,24 +1,30 @@
 from sympy import *
 
 def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
-    x, y, u, v = symbols('x, y, u, v', positive = True)
-    # debug
+    x, y = symbols('x, y', positive = True)
+
+    # try to find counterexample
     f0 = f.subs(x, x0).subs(y, y0)
     if f0 < 0:
         return f'f({x0},{y0})={f0}'
+
+    # try to prove by buffalo way
     dx, dy = x1 - x0, y1 - y0
+    u, v = symbols('u, v', positive = True)
     f1 = f.subs(x, x0 + (u if dx == oo else dx/(1 + u))). \
         subs(y, y0 + (v if dy == oo else dy/(1 + v)))
     f1 = factor(f1)
     if not '-' in f'{f1}':
         # debug
-        print(f'non_negative:X=[{x0},{x1}],Y=[{y0},{y1}]')
+        print(f'non_negative:X=[{x0},{x1}],Y=[{y0},{y1}],f({x0},{y0})={f0}')
         return ''
     # debug
-    print(f'not_proved:X=[{x0},{x1}],Y=[{y0},{y1}]')
+    print(f'not_proved:X=[{x0},{x1}],Y=[{y0},{y1}],f({x0},{y0})={f0}')
+
+    # divide
     xm = (1 if x0 == 0 else x0*2) if x1 == oo else x0 + dx/Integer(2)
     ym = (1 if y0 == 0 else y0*2) if y1 == oo else y0 + dy/Integer(2)
-    n = negative(f, x0, xm, y0, ym)
+    n = negative(f, xm, x1, ym, y1)
     if n != '':
         return n
     n = negative(f, x0, xm, ym, y1)
@@ -27,7 +33,7 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     n = negative(f, xm, x1, y0, ym)
     if n != '':
         return n
-    return negative(f, xm, x1, ym, y1)
+    return negative(f, x0, xm, y0, ym)
 
 def main():
     x, y = symbols('x, y', positive = True)
