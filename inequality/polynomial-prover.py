@@ -1,6 +1,10 @@
 import logging
 from sympy import *
 
+# May not work if:
+# 1. zero on x or y != m/2^n, e.g. (x-1/3)^2+y^2
+# 2. critical point on x = y (example? why?)
+
 def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     x, y = symbols('x, y', positive = True)
 
