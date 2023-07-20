@@ -1,3 +1,4 @@
+import logging
 from sympy import *
 
 def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
@@ -6,7 +7,7 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     # try to find counterexample
     f0 = f.subs(x, x0).subs(y, y0)
     if f0 < 0:
-        return f'f({x0},{y0})={f0}'
+        return 'f({},{})={}'.format(x0, y0, f0)
 
     # try to prove by buffalo way
     dx, dy = x1 - x0, y1 - y0
@@ -14,12 +15,10 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     f1 = f.subs(x, x0 + (u if dx == oo else dx/(1 + u))). \
         subs(y, y0 + (v if dy == oo else dy/(1 + v)))
     f1 = factor(f1)
-    if not '-' in f'{f1}':
-        # debug
-        print(f'non_negative:X=[{x0},{x1}],Y=[{y0},{y1}],f({x0},{y0})={f0}')
+    if not '-' in str(f1):
+        logging.info('non_negative: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, f0))
         return ''
-    # debug
-    print(f'not_proved:X=[{x0},{x1}],Y=[{y0},{y1}],f({x0},{y0})={f0}')
+    logging.info('try_dividing: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, f0))
 
     # divide
     xm = (1 if x0 == 0 else x0*2) if x1 == oo else x0 + dx/Integer(2)
@@ -36,6 +35,7 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     return negative(f, x0, xm, y0, ym)
 
 def main():
+    logging.basicConfig(level = 'INFO')
     x, y = symbols('x, y', positive = True)
     # https://math.stackexchange.com/q/3831395
     f = x**5 - x**3/2 - x + Integer(4)/5
@@ -49,7 +49,7 @@ def main():
     # intermediate step for sum_cyc(x**3/(8*x**2 + 3*y**2)) - (x + y + z)/11
     # f = 33*u**7 + 69*u**6*v + 143*u**6 + 42*u**5*v**2 + 190*u**5*v + 220*u**5 + 18*u**4*v**3 + 2*u**4*v**2 + 30*u**4*v + 165*u**4 + 21*u**3*v**4 - 24*u**3*v**3 - 336*u**3*v**2 - 194*u**3*v + 77*u**3 + 9*u**2*v**5 + 39*u**2*v**4 - 141*u**2*v**3 - 401*u**2*v**2 - 81*u**2*v + 22*u**2 + 18*u*v**5 + 71*u*v**4 - 42*u*v**3 - 92*u*v**2 + 22*u*v + 33*v**5 + 77*v**4 + 33*v**3 + 22*v**2
     f = f.subs(u, x).subs(v, y)
-    print(f'[{negative(f)}]')
+    print('[' + negative(f) + ']')
 
 if __name__ == '__main__':
     main()
