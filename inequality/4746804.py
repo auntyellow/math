@@ -6,11 +6,15 @@ def main():
     a, b = symbols('a, b', positive = True)
     c = (1 - a*b)/(a + b)
     f = 1 + 36*(a*b*c)**2 - 21*a*b*c/(a + b + c)
-    u, v, w = symbols('u, v, w', positive = True)
-    print('f =', factor(f.subs(a, u).subs(b, 1/(u + v))))
+    u, v = symbols('u, v', positive = True)
+    # a <= 1, b >= 1/a (so a*b <= 1)
+    print('f =', factor(f.subs(b, 1/(a + u))))
 
-    g = u**10 + 6*u**9*v + 15*u**8*v**2 + 4*u**8 + 20*u**7*v**3 + 15*u**6*v**4 - 3*u**6*v**2 + 6*u**6 + 6*u**5*v**5 - 4*u**5*v**3 - 16*u**5*v + u**4*v**6 - 18*u**4*v**4 - 10*u**4*v**2 + 4*u**4 - 12*u**3*v**5 + 18*u**3*v**3 - 8*u**3*v + u**2*v**6 + 8*u**2*v**4 + 9*u**2*v**2 + u**2 + 2*u*v**5 - 14*u*v**3 + 2*u*v + v**4 + v**2
-    print('g(uv) =', factor(g.subs(v, u*(1 + w))))
+    g = a**10 + 6*a**9*u + 15*a**8*u**2 + 4*a**8 + 20*a**7*u**3 + 15*a**6*u**4 - 3*a**6*u**2 + 6*a**6 + 6*a**5*u**5 - 4*a**5*u**3 - 16*a**5*u + a**4*u**6 - 18*a**4*u**4 - 10*a**4*u**2 + 4*a**4 - 12*a**3*u**5 + 18*a**3*u**3 - 8*a**3*u + a**2*u**6 + 8*a**2*u**4 + 9*a**2*u**2 + a**2 + 2*a*u**5 - 14*a*u**3 + 2*a*u + u**4 + u**2
+    # u <= a can be proved by polynomial-prover with u = [0, oo], v = [0, oo]
+    print('g(ua) =', factor(g.subs(a, u*(1 + v))))
+    # a <= u doesn't work, even if we know minimum at a = 1/sqrt(3) and v = 1
+    print('g(au) =', factor(g.subs(u, a*(1 + v))))
 
 if __name__ == '__main__':
     main()
