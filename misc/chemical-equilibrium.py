@@ -36,10 +36,10 @@ K = np.array([1e-14, 1.77e-5, 4.3e-7, 4.8e-11])
 X0 = np.array([2e-14, -1e-14, -1e-14, 1e-14])
 '''
 def concentr(X):
-    return N.transpose() @ X + C
+    return np.matmul(N.transpose(), X) + C
 
 def chem_eq(X):
-    return np.linalg.norm(N @ np.log(concentr(X)) - np.log(K))
+    return np.linalg.norm(np.matmul(N, np.log(concentr(X))) - np.log(K))
 
 def main():
     print('Inequilibrium:', chem_eq(X0))
