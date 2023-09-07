@@ -7,10 +7,13 @@ def sign(f):
     if f.func == Pow:
         return sign(f.args[0])**f.args[1]
     if f.func == Mul:
-        s0 = sign(f.args[0])
-        if s0 == 0:
-            return 0
-        return s0*sign(f.args[1])
+        s = 1
+        for p in f.args:
+            s0 = sign(p)
+            if s0 == 0:
+                return 0
+            s *= s0
+        return s
     p = Poly(f, u, v)
     pos = false
     neg = false
