@@ -52,7 +52,7 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
         return ''
     elif s < 0:
         return 'f={}<0'.format(f1)
-        
+
     logging.info('try_dividing: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, f0))
 
     # divide
