@@ -1,6 +1,30 @@
 import logging
 from sympy import *
 
+def sign(f):
+    # return 0 if sign is not determined
+    u, v = symbols('u, v', positive = True)
+    if f.func == Pow:
+        return sign(f.args[0])**f.args[1]
+    if f.func == Mul:
+        s0 = sign(f.args[0])
+        if s0 == 0:
+            return 0
+        return s0*sign(f.args[1])
+    p = Poly(f, u, v)
+    pos = false
+    neg = false
+    for coef in p.coeffs():
+        if coef > 0:
+            if neg:
+                return 0
+            pos = true
+        elif coef < 0:
+            if pos:
+                return 0
+            neg = true
+    return 1 if pos else (-1 if neg else 0)
+
 # May not work if:
 # 1. zero on x or y != m/2^n, e.g. (x-1/3)^2+y^2
 # 2. critical point on x = y (example? why?)
@@ -19,9 +43,13 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     f1 = f.subs(x, x0 + (u if dx == oo else dx/(1 + u))). \
         subs(y, y0 + (v if dy == oo else dy/(1 + v)))
     f1 = factor(f1)
-    if not '-' in str(f1):
+    s = sign(f1)
+    if s > 0:
         logging.info('non_negative: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, f0))
         return ''
+    elif s < 0:
+        return 'f={}<0'.format(f1)
+        
     logging.info('try_dividing: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, f0))
 
     # divide
