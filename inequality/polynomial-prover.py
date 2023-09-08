@@ -30,7 +30,8 @@ def sign(f):
 
 # May not work if:
 # 1. zero on x or y != m/2^n, e.g. (x-1/3)^2+y^2
-# 2. critical point on x = y (example? why?)
+# 2. critical point near x = y or x = 1/y (why?)
+#    example: g in 4746804.py, so try x <= y and y <= x (why usually work?)
 
 def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     x, y = symbols('x, y', positive = True)
