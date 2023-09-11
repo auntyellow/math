@@ -46,6 +46,31 @@ def main():
     print('f(abdc) =', expand(f.subs(b, a + u).subs(d, a + u + v).subs(c, a + u + v + w)))
     # a <= d <= b <= c
     print('f(adbc) =', expand(f.subs(d, a + u).subs(b, a + u + v).subs(c, a + u + v + w)))
+    print()
+
+    # https://math.stackexchange.com/q/2098409
+    f = sum_cyc(1/(x + y - z) - 1/x)
+    # x <= y <= z
+    print('f(xyz) =', factor(f.subs(x, u + v).subs(y, u + v + w).subs(z, u + 2*v + w)))
+    print()
+
+    # https://math.stackexchange.com/q/4762885/
+    f = sum_cyc(x/(y + z)) + 3*x*y*z/sum_cyc(x*y*(x + y)) - 2
+    # x <= y <= z
+    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
+    print()
+
+    # https://math.stackexchange.com/q/4765187
+    f = ((1 + a)*(1 + b)*(1 + c))**7 - 7**7*a**4*b**4*c**4
+    u, v, w = symbols('u, v, w', positive = True)
+    # a, b, c <= 1
+    print('f(abc1) =', factor(f.subs(a, 1/(1 + u)).subs(b, 1/(1 + v)).subs(c, 1/(1 + w))))
+    # a, b <= 1 <= c
+    print('f(ab1c) =', factor(f.subs(a, 1/(1 + u)).subs(b, 1/(1 + v)).subs(c, 1 + w)))
+    # a <= 1 <= b, c
+    print('f(a1bc) =', factor(f.subs(a, 1/(1 + u)).subs(b, 1 + v).subs(c, 1 + w)))
+    # 1 <= a, b, c
+    print('f(1abc) =', factor(f.subs(a, 1 + u).subs(b, 1 + v).subs(c, 1 + w)))
 
 if __name__ == '__main__':
     main()
