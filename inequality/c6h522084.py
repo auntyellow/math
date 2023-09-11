@@ -54,7 +54,7 @@ def main():
     print('f(xyz) =', factor(f.subs(x, u + v).subs(y, u + v + w).subs(z, u + 2*v + w)))
     print()
 
-    # https://math.stackexchange.com/q/4762885/
+    # https://math.stackexchange.com/q/4762885
     f = sum_cyc(x/(y + z)) + 3*x*y*z/sum_cyc(x*y*(x + y)) - 2
     # x <= y <= z
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
@@ -71,6 +71,19 @@ def main():
     print('f(a1bc) =', factor(f.subs(a, 1/(1 + u)).subs(b, 1 + v).subs(c, 1 + w)))
     # 1 <= a, b, c
     print('f(1abc) =', factor(f.subs(a, 1 + u).subs(b, 1 + v).subs(c, 1 + w)))
+    print()
+
+    # https://math.stackexchange.com/q/4744552
+    a = sqrt(x/(x + y + z))
+    b = sqrt(y/(x + y + z))
+    c = sqrt(z/(x + y + z))
+    f = a*b/c + b*c/a + c*a/b
+    # x <= y <= z
+    print('f(xyz) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
+    # so we guess maximum or minimum is sqrt(3) when u = v = 0 (x = y = z)
+    f23 = f*f - 3
+    print('f^2 - 3 =', factor(f23.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
+    # f23 >= 0 so sqrt(3) is minimum
 
 if __name__ == '__main__':
     main()
