@@ -103,7 +103,8 @@ def main():
     k, l, m, n = symbols('k, l, m, n', positive = True)
     # k, l, m, n = a^2, b^2, c^2, d^2
     f = sum_cyc4((a**2*b**2 + b**2*c**2 + c**2*a**2)/(a**6 + b**6 + c**6)) - sum_comb4((a**4 + b**4)/(a**3*b**3))
-    print('f =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v)).subs(d, a*(1 + u + v + w))))
+    # too slow
+    # print('f =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v)).subs(d, a*(1 + u + v + w))))
 
 if __name__ == '__main__':
     main()
