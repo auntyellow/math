@@ -4,7 +4,7 @@ from sympy import *
 
 def cyc(f):
     x, y, z, t = symbols('x, y, z, t')
-    return f.subs(x, t).subs(y, x).subs(z, y).subs(t, z)
+    return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f):
     f1 = cyc(f)
@@ -12,12 +12,22 @@ def sum_cyc(f):
 
 def cyc4(f):
     a, b, c, d, t = symbols('a, b, c, d, t')
-    return f.subs(a, t).subs(b, a).subs(c, b).subs(d, c).subs(t, d)
+    return f.subs(d, t).subs(c, d).subs(b, c).subs(a, b).subs(t, a)
 
 def sum_cyc4(f):
     f1 = cyc4(f)
     f2 = cyc4(f1)
     return f + f1 + f2 + cyc4(f2)
+
+def cyc3(f):
+    b, c, d, t = symbols('b, c, d, t')
+    return f.subs(d, t).subs(c, d).subs(b, c).subs(t, b)
+
+def sum_comb4(f):
+    f1 = cyc4(f)
+    f2 = cyc4(f1)
+    f3 = cyc3(f2)
+    return f + f1 + f2 + cyc4(f2) + f3 + cyc4(f3)
 
 def main():
     x, y, z = symbols('x, y, z')
@@ -38,6 +48,7 @@ def main():
     print()
 
     a, b, c, d = symbols('a, b, c, d')
+    print(cyc4(a*b), cyc3(a*b), sum_cyc4(a*b), sum_comb4(a*b))
     f = sum_cyc4(a**4 + a*b*c*d - 2*a**2*b*c)
     # b and c can swap
     # a <= b <= c <= d
@@ -84,6 +95,15 @@ def main():
     f23 = f*f - 3
     print('f^2 - 3 =', factor(f23.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
     # f23 >= 0 so sqrt(3) is minimum
+    print()
+
+    a, b, c, d = symbols('a, b, c, d')
+    # https://math.stackexchange.com/q/4767134
+    # https://i.stack.imgur.com/zVGzB.png
+    k, l, m, n = symbols('k, l, m, n', positive = True)
+    # k, l, m, n = a^2, b^2, c^2, d^2
+    f = sum_cyc4((a**2*b**2 + b**2*c**2 + c**2*a**2)/(a**6 + b**6 + c**6)) - sum_comb4((a**4 + b**4)/(a**3*b**3))
+    print('f =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v)).subs(d, a*(1 + u + v + w))))
 
 if __name__ == '__main__':
     main()

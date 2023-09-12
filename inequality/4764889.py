@@ -4,7 +4,7 @@ from sympy import *
 
 def cyc(f):
     x, y, z, t = symbols('x, y, z, t', positive = True)
-    return f.subs(x, t).subs(y, x).subs(z, y).subs(t, z)
+    return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f):
     f1 = cyc(f)
