@@ -36,22 +36,19 @@ def main():
     print(f'  + B({p.nth(0, 1, 0)})')
     print(f'  + C({p.nth(0, 0, 1)})')
     print(f'+ ABC({p.nth(1, 1, 1)})')
-    print('...A + ...B + ...C =', factor((p.nth(1, 0, 0)*A + p.nth(0, 1, 0)*B + p.nth(0, 0, 1)*C).subs(A, sqrt(b + c)).subs(B, sqrt(c + a)).subs(C, sqrt(a + b)).subs(a, c*(1 + u)).subs(b, c*(1 + v))))
-    # should prove ...A + ...B + ...C >= 0
-    print('...(ABC) =', factor(p.nth(1, 1, 1).subs(a, c*(1 + u)).subs(b, c*(1 + v))))
-    # should prove ...ABC <= 0
+    # try if ...A + ...B - ...C - ...ABC >= 0 (a <= b, c): looks work
+    print('...A + ...B - ...C - ...ABC =', factor((p.nth(1, 0, 0)*A + p.nth(0, 1, 0)*B - p.nth(0, 0, 1)*C - p.nth(1, 1, 1)*A*B*C).subs(A, sqrt(b + c)).subs(B, sqrt(c + a)).subs(C, sqrt(a + b)).subs(b, a*(1 + u)).subs(c, a*(1 + v))))
 
-    h = (p.nth(1, 0, 0)*A + p.nth(0, 1, 0)*B + p.nth(0, 0, 1)*C)**2 - (p.nth(1, 1, 1)*A*B*C)**2
+    h = (p.nth(1, 0, 0)*A + p.nth(0, 1, 0)*B)**2 - (p.nth(0, 0, 1)*C + p.nth(1, 1, 1)*A*B*C)**2
     h = expand(h.subs(A**2, b + c).subs(B**2, c + a).subs(C**2, a + b)).subs(sqrt(a + b), C).subs(sqrt(b + c), A).subs(sqrt(c + a), B)
     # numeric validation
-    # print('h =', factor(h.subs(A, sqrt(b + c)).subs(B, sqrt(c + a)).subs(C, sqrt(a + b)).subs(a, c*(1 + u)).subs(b, c*(1 + v))))
+    print('h =', factor(h.subs(A, sqrt(b + c)).subs(B, sqrt(c + a)).subs(C, sqrt(a + b)).subs(b, a*(1 + u)).subs(c, a*(1 + v))))
     p = poly(h, (A, B, C))
-    print('Is h = ... + ...AB + ...BC + ...CA?', expand(p.nth(0, 0, 0) + p.nth(1, 1, 0)*A*B + p.nth(0, 1, 1)*B*C + p.nth(1, 0, 1)*C*A) == h)
+    print('Is h = ... + ...AB?', expand(p.nth(0, 0, 0) + p.nth(1, 1, 0)*A*B) == h)
     print(f'h = ({p.nth(0, 0, 0)})')
     print(f'+ AB({p.nth(1, 1, 0)})')
-    print(f'+ BC({p.nth(0, 1, 1)})')
-    print(f'+ CA({p.nth(1, 0, 1)})')
-    # too complicated to prove ...
+    # try if ...AB - ... >= 0 (a <= b, c): doesn't work
+    print('...AB - ... =', factor((p.nth(1, 1, 0)*A*B - p.nth(0, 0, 0)).subs(A, sqrt(b + c)).subs(B, sqrt(c + a)).subs(C, sqrt(a + b)).subs(b, a*(1 + u)).subs(c, a*(1 + v))))
 
 if __name__ == '__main__':
     main()
