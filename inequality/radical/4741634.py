@@ -32,10 +32,10 @@ def main():
     g = -5*A*B*C*a**5*b**3*c - 10*A*B*C*a**5*b**2*c**2 - 5*A*B*C*a**5*b*c**3 - 10*A*B*C*a**4*b**4*c - 30*A*B*C*a**4*b**3*c**2 - 30*A*B*C*a**4*b**2*c**3 - 10*A*B*C*a**4*b*c**4 - 5*A*B*C*a**3*b**5*c - 30*A*B*C*a**3*b**4*c**2 - 114*A*B*C*a**3*b**3*c**3 - 30*A*B*C*a**3*b**2*c**4 - 5*A*B*C*a**3*b*c**5 - 10*A*B*C*a**2*b**5*c**2 - 30*A*B*C*a**2*b**4*c**3 - 30*A*B*C*a**2*b**3*c**4 - 10*A*B*C*a**2*b**2*c**5 - 5*A*B*C*a*b**5*c**3 - 10*A*B*C*a*b**4*c**4 - 5*A*B*C*a*b**3*c**5 - 4*A*a**6*b**4 - 6*A*a**6*b**3*c + 2*A*a**6*b*c**3 - 4*A*a**5*b**5 - 10*A*a**5*b**4*c - 2*A*a**5*b**3*c**2 + 10*A*a**5*b**2*c**3 + 6*A*a**5*b*c**4 - 2*A*a**4*b**5*c + 10*A*a**4*b**4*c**2 + 32*A*a**4*b**3*c**3 + 10*A*a**4*b**2*c**4 + 6*A*a**4*b*c**5 + 2*A*a**3*b**6*c + 18*A*a**3*b**5*c**2 + 48*A*a**3*b**4*c**3 + 20*A*a**3*b**3*c**4 + 6*A*a**3*b**2*c**5 + 2*A*a**3*b*c**6 + 6*A*a**2*b**6*c**2 + 30*A*a**2*b**5*c**3 + 32*A*a**2*b**4*c**4 - 2*A*a**2*b**3*c**5 + 6*A*a**2*b**2*c**6 + 6*A*a*b**6*c**3 + 18*A*a*b**5*c**4 + 2*A*a*b**4*c**5 + 6*A*a*b**3*c**6 + 2*A*b**6*c**4 + 4*A*b**5*c**5 + 2*A*b**4*c**6 + 2*B*a**6*b**3*c + 6*B*a**6*b**2*c**2 + 6*B*a**6*b*c**3 + 2*B*a**6*c**4 + 6*B*a**5*b**4*c + 6*B*a**5*b**3*c**2 - 2*B*a**5*b**2*c**3 + 2*B*a**5*b*c**4 + 4*B*a**5*c**5 + 6*B*a**4*b**5*c + 10*B*a**4*b**4*c**2 + 20*B*a**4*b**3*c**3 + 32*B*a**4*b**2*c**4 + 18*B*a**4*b*c**5 + 2*B*a**4*c**6 + 2*B*a**3*b**6*c + 10*B*a**3*b**5*c**2 + 32*B*a**3*b**4*c**3 + 48*B*a**3*b**3*c**4 + 30*B*a**3*b**2*c**5 + 6*B*a**3*b*c**6 - 2*B*a**2*b**5*c**3 + 10*B*a**2*b**4*c**4 + 18*B*a**2*b**3*c**5 + 6*B*a**2*b**2*c**6 - 6*B*a*b**6*c**3 - 10*B*a*b**5*c**4 - 2*B*a*b**4*c**5 + 2*B*a*b**3*c**6 - 4*B*b**6*c**4 - 4*B*b**5*c**5 + 2*C*a**6*b**4 + 6*C*a**6*b**3*c + 6*C*a**6*b**2*c**2 + 2*C*a**6*b*c**3 + 4*C*a**5*b**5 + 18*C*a**5*b**4*c + 30*C*a**5*b**3*c**2 + 18*C*a**5*b**2*c**3 - 2*C*a**5*b*c**4 - 4*C*a**5*c**5 + 2*C*a**4*b**6 + 2*C*a**4*b**5*c + 32*C*a**4*b**4*c**2 + 48*C*a**4*b**3*c**3 + 10*C*a**4*b**2*c**4 - 10*C*a**4*b*c**5 - 4*C*a**4*c**6 + 6*C*a**3*b**6*c - 2*C*a**3*b**5*c**2 + 20*C*a**3*b**4*c**3 + 32*C*a**3*b**3*c**4 - 2*C*a**3*b**2*c**5 - 6*C*a**3*b*c**6 + 6*C*a**2*b**6*c**2 + 6*C*a**2*b**5*c**3 + 10*C*a**2*b**4*c**4 + 10*C*a**2*b**3*c**5 + 2*C*a*b**6*c**3 + 6*C*a*b**5*c**4 + 6*C*a*b**4*c**5 + 2*C*a*b**3*c**6
     p = poly(g, (A, B, C))
     print('Is g = ...A + ...B + ...C + ...ABC?', expand(p.nth(1, 0, 0)*A + p.nth(0, 1, 0)*B + p.nth(0, 0, 1)*C + p.nth(1, 1, 1)*A*B*C) == g)
-    print(f'g = A({p.nth(1, 0, 0)})')
-    print(f'  + B({p.nth(0, 1, 0)})')
-    print(f'  + C({p.nth(0, 0, 1)})')
-    print(f'+ ABC({p.nth(1, 1, 1)})')
+    print('g = A({})'.format(p.nth(1, 0, 0)))
+    print('  + B({})'.format(p.nth(0, 1, 0)))
+    print('  + C({})'.format(p.nth(0, 0, 1)))
+    print('+ ABC({})'.format(p.nth(1, 1, 1)))
     # try if ...A + ...B - ...C - ...ABC >= 0 (a <= b, c): looks work
     print('...A + ...B - ...C - ...ABC =', factor((p.nth(1, 0, 0)*A + p.nth(0, 1, 0)*B - p.nth(0, 0, 1)*C - p.nth(1, 1, 1)*A*B*C).subs(A, sqrt(b + c)).subs(B, sqrt(c + a)).subs(C, sqrt(a + b)).subs(b, a*(1 + u)).subs(c, a*(1 + v))))
 
@@ -45,8 +45,8 @@ def main():
     print('h =', factor(h.subs(A, sqrt(b + c)).subs(B, sqrt(c + a)).subs(C, sqrt(a + b)).subs(b, a*(1 + u)).subs(c, a*(1 + v))))
     p = poly(h, (A, B, C))
     print('Is h = ... + ...AB?', expand(p.nth(0, 0, 0) + p.nth(1, 1, 0)*A*B) == h)
-    print(f'h = ({p.nth(0, 0, 0)})')
-    print(f'+ AB({p.nth(1, 1, 0)})')
+    print('h = ({})'.format(p.nth(0, 0, 0)))
+    print('+ AB({})'.format(p.nth(1, 1, 0)))
     # try if ...AB - ... >= 0 (a <= b, c): doesn't work
     print('...AB - ... =', factor((p.nth(1, 1, 0)*A*B - p.nth(0, 0, 0)).subs(A, sqrt(b + c)).subs(B, sqrt(c + a)).subs(C, sqrt(a + b)).subs(b, a*(1 + u)).subs(c, a*(1 + v))))
 
