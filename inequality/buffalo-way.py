@@ -121,5 +121,15 @@ def main():
     # too slow
     # print('f =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v)).subs(d, a*(1 + u + v + w))))
 
+    # ISBN 9787030655189, p223, ex 8.5.1
+    f = y**3 - (x + 1)*y**2 - (x**2 - 3*x + 1)*y + x**3 - x**2 - x + 1
+    # f is symmetric
+    # 0 <= x <= y <= 1
+    print('f(xy1) =', factor(f.subs(x, 1/(1 + u + v)).subs(y, 1/(1 + v))))
+    # 0 <= x <= 1 <= y
+    print('f(x1y) =', factor(f.subs(x, 1/(1 + u)).subs(y, 1 + v)))
+    # 1 <= x <= y
+    print('f(1xy) =', factor(f.subs(x, 1 + u).subs(y, 1 + u + v)))
+
 if __name__ == '__main__':
     main()
