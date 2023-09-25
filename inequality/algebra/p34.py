@@ -1,6 +1,7 @@
 from sympy import *
 
 # ISBN 9787542848482, p34, §2.1, ex1
+# (a**2 + 2)*(b**2 + 2)*(c**2 + 2) >= 9*(a*b + a*c + b*c)
 
 def main():
     a, b, c = symbols('a, b, c', positive = True)
