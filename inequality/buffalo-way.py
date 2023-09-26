@@ -58,6 +58,7 @@ def main():
     print('f(adbc) =', expand(f.subs(d, a + u).subs(b, a + u + v).subs(c, a + u + v + w)))
     print()
 
+    '''
     # https://math.stackexchange.com/q/2098409
     f = sum_cyc(1/(x + y - z) - 1/x)
     # x <= y <= z
@@ -130,6 +131,23 @@ def main():
     print('f(x1y) =', factor(f.subs(x, 1/(1 + u)).subs(y, 1 + v)))
     # 1 <= x <= y
     print('f(1xy) =', factor(f.subs(x, 1 + u).subs(y, 1 + u + v)))
+    print()
+
+    # https://artofproblemsolving.com/community/c6h154
+    A, B, C, D = x, x + u, x + u + v, x + u + v + w
+    ABCD = A + B + C + D
+    a, b, c, d = A/ABCD, B/ABCD, C/ABCD, D/ABCD
+    print('f =', factor((1 + 176*a*b*c*d)/27 - b*c*d + c*d*a + d*a*b + a*b*c))
+    print()
+    '''
+
+    # https://artofproblemsolving.com/community/c6h218191
+    f = sum_cyc(x**5/(x**3 + y**3) + x**3/(x + y) - x**4/(x**2 + y**2) - x**2/2)
+    # doesn't hold
+    # f = sum_cyc(-x**5/(x**3 + y**3) + x**3/(x + y) + x**4/(x**2 + y**2) - x**2/2)
+    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
+    print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v))))
+    print()
 
 if __name__ == '__main__':
     main()
