@@ -1,7 +1,7 @@
 from sympy import *
 
 # ISBN 9787542848482, p35, §2.1, ex2
-# x+y+z=xyz => 1/sqrt(1+x^2)+1/sqrt(1+y^2)+1/sqrt(1+z^2)<=3/2
+# x+y+z=xyz -> 1/sqrt(1+x^2)+1/sqrt(1+y^2)+1/sqrt(1+z^2)<=3/2
 
 def main():
     x, y = symbols('x, y', positive = True)

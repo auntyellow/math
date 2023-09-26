@@ -1,19 +1,28 @@
 from sympy import *
 
 # ISBN 9787542848482, p36, §2.1, ex3
-# x**2 + y**2 + z**2 + x*y*z = 4 => 0 <= x*y + y*z + z*x - x*y*z <= 2
+# x**2 + y**2 + z**2 + x*y*z = 4 -> 0 <= x*y + y*z + z*x - x*y*z <= 2
 
 def main():
     x, y, z = symbols('x, y, z', positive = True)
-    z = solve(Eq(x*x + y*y + z*z + x*y*z, 4), z)[1]
+    z = solve(Eq(x**2 + y**2 + z**2 + x*y*z, 4), z)[1]
     print('z =', z)
     sxy = x**2*y**2 - 4*x**2 - 4*y**2 + 16
     print('  = sqrt({})/2 - x*y/2'.format(factor(sxy)))
-    ym = solve(Eq(sxy, (x*y)**2), y)[0]
+    ym = solve(Eq(sxy, (x*y)**2), y)[1]
     print('y <=', ym)
 
     f = x*y + y*z + z*x - x*y*z
-    print('f =', factor(f))
+    print('f = x*y + y*z + z*x - x*y*z =', factor(f))
+    u, v = symbols('u, v', positive = True)
+    print('  =', factor(f.subs(y, ym/(1 + v)).subs(x, 2/(1 + u))))
+    u4v2_2u = u**4*v**2 + 2*u**4*v + 4*u**3*v**2 + 8*u**3*v + 5*u**2*v**2 + 10*u**2*v + u**2 + 2*u*v**2 + 4*u*v + 2*u
+    print('u**4*v**2 + ... + 2*u =', factor(u4v2_2u))
+    u2v2_1 = u**2*v**2 + 2*u**2*v + 2*u*v**2 + 4*u*v + v**2 + 2*v + 1
+    U = symbols('U', positive = True)
+    print('f =', factor(f.subs(y, ym/(1 + v)).subs(x, 2/(1 + u))). \
+        subs(sqrt(u4v2_2u), U*sqrt(u2v2_1)).subs(sqrt(u**2 + 2*u), U).subs(U, sqrt(u**2 + 2*u)).factor())
+
     # a**2 - b**2 <= 0 && a + b <= 0 => a - b >= 0
     g = (x**2*y**2 - x**2*y - x*y**2 + 2*x*y)**2 - ((x*y - x - y)*sqrt(x**2*y**2 - 4*x**2 - 4*y**2 + 16))**2
     h = (x**2*y**2 - x**2*y - x*y**2 + 2*x*y) + ((x*y - x - y)*sqrt(x**2*y**2 - 4*x**2 - 4*y**2 + 16))
