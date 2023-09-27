@@ -25,6 +25,10 @@ def main():
     print('f(xy3z) =', factor(h.subs(z, 1 - x - y).subs(y, s3/(1 + u)).subs(x, s3/(1 + u + v))))
     # x <= 1/3 <= y <= (1 - x)/2, z = 1 - x - y >= y
     print('f(x3yz) =', factor(h.subs(z, 1 - x - y).subs(y, s3 + ((1 - x)/2 - s3)/(1 + v)).subs(x, s3/(1 + u))))
+    # another approach: X = 1, Y = 1 + u, Z = 1 + u + v, x = X/(X + Y + Z), ...
+    X, Y, Z = 1, 1 + u, 1 + u + v
+    XYZ = X + Y + Z
+    print('f =', factor(h.subs(x, X/XYZ).subs(y, Y/XYZ).subs(z, Z/XYZ)))
 
 if __name__ == '__main__':
     main()
