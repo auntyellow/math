@@ -5,7 +5,7 @@ from sympy import *
 
 def main():
     x, y, z, t = symbols('x, y, z, t', positive = True)
-    # a**2 - b**2 <= 0 && a + b >= 0 => a - b <= 0
+    # a**2 - b**2 <= 0 && a + b >= 0 -> a - b <= 0
     e = (sqrt(x**2 + y*z) + sqrt(y**2 + z*x)) - (3*(x + y + z)/2 - sqrt(z**2 + x*y))
     f = (sqrt(x**2 + y*z) + sqrt(y**2 + z*x))**2 - (3*(x + y + z)/2 - sqrt(z**2 + x*y))**2
     # to prove: f1 = (sqrt(x**2 + y*z) + sqrt(y**2 + z*x)) + (3*(x + y + z)/2 - sqrt(z**2 + x*y)) >= 0

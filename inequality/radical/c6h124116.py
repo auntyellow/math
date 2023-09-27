@@ -4,7 +4,7 @@ from sympy import *
 
 def main():
     x, y, z, t = symbols('x, y, z, t', positive = True)
-    # a**2 - b**2 <= 0 && a + b >= 0 => a - b <= 0
+    # a**2 - b**2 <= 0 && a + b >= 0 -> a - b <= 0
     f = (sqrt(578*x**2 + 1143*y*z) + sqrt(578*y**2 + 1143*z*x))**2 - (253*sqrt(527)*(x + y + z)/140 - sqrt(578*z**2 + 1143*x*y))**2
     # to prove: f1 = sqrt(578*x**2 + 1143*y*z) + sqrt(578*y**2 + 1143*z*x) + 253*sqrt(527)*(x + y + z)/140 - sqrt(578*z**2 + 1143*x*y) >= 0
     f1 = (253*sqrt(527)*(x + y + z)/140)**2 - (sqrt(578*z**2 + 1143*x*y))**2

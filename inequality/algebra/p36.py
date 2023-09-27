@@ -39,7 +39,7 @@ def main():
     print('g = ({})*U + {}'.format(a, b))
     # doesn't work because a*U - b is undetermined
 
-    # a**2 - b**2 <= 0 && a + b <= 0 => a - b >= 0
+    # a**2 - b**2 <= 0 && a + b <= 0 -> a - b >= 0
     g = (x**2*y**2 - x**2*y - x*y**2 + 2*x*y)**2 - ((x*y - x - y)*sqrt(x**2*y**2 - 4*x**2 - 4*y**2 + 16))**2
     h = (x**2*y**2 - x**2*y - x*y**2 + 2*x*y) + ((x*y - x - y)*sqrt(x**2*y**2 - 4*x**2 - 4*y**2 + 16))
     u, v = symbols('u, v', positive = True)
@@ -51,7 +51,7 @@ def main():
     f = 2 - (x*y + y*z + z*x - x*y*z)
     print('f =', factor(f))
     print('  =', factor(f.subs(y, ym/(1 + v)).subs(x, 2/(1 + u))))
-    # a**2 - b**2 >= 0 && a + b <= 0 => a - b <= 0
+    # a**2 - b**2 >= 0 && a + b <= 0 -> a - b <= 0
     g = (x**2*y**2 - x**2*y - x*y**2 + 2*x*y - 4)**2 - ((x*y - x - y)*sqrt(x**2*y**2 - 4*x**2 - 4*y**2 + 16))**2
     h = (x**2*y**2 - x**2*y - x*y**2 + 2*x*y - 4) + ((x*y - x - y)*sqrt(x**2*y**2 - 4*x**2 - 4*y**2 + 16))
     # to prove: g <= 0 (a**2 - b**2 >= 0)
