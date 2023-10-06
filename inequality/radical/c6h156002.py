@@ -18,7 +18,7 @@ def main():
     print('h =', factor(h))
     print('Is h cyclic?', h.subs(z, t).subs(y, z).subs(x, y).subs(t, x) == h)
     print('Is h symmetric?', h.subs(y, t).subs(x, y).subs(t, x) == h)
-    s3 = Integer(1)/3
+    s3 = S(1)/3
     print('h(1/3) =', h.subs(x, s3).subs(y, s3).subs(z, s3))
     u, v = symbols('u, v', positive = True)
     # x <= y <= 1/3 <= z

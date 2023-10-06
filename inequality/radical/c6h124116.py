@@ -20,7 +20,7 @@ def main():
     print('h =', factor(h))
     print('Is h cyclic?', h.subs(z, t).subs(y, z).subs(x, y).subs(t, x) == h)
     print('Is h symmetric?', h.subs(y, t).subs(x, y).subs(t, x) == h)
-    m = Integer(51)/38
+    m = S(51)/38
     print('h(m) =', h.subs(x, 1).subs(y, m).subs(z, m))
     u, v = symbols('u, v', positive = True)
     # 1 <= y <= z <= m

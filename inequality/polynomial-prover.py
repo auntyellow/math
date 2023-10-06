@@ -57,8 +57,8 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     logging.info('try_dividing: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, f0))
 
     # divide
-    xm = (1 if x0 == 0 else x0*2) if x1 == oo else x0 + dx/Integer(2)
-    ym = (1 if y0 == 0 else y0*2) if y1 == oo else y0 + dy/Integer(2)
+    xm = (1 if x0 == 0 else x0*2) if x1 == oo else x0 + dx/S(2)
+    ym = (1 if y0 == 0 else y0*2) if y1 == oo else y0 + dy/S(2)
     n = negative(f, xm, x1, ym, y1)
     if n != '':
         return n
@@ -95,9 +95,9 @@ def negative3(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo, z0 = 0, z1 = oo):
     logging.info('try_dividing: [{},{},{},{},{},{}], f={}'.format(x0, x1, y0, y1, z0, z1, f0))
 
     # divide
-    xm = (1 if x0 == 0 else x0*2) if x1 == oo else x0 + dx/Integer(2)
-    ym = (1 if y0 == 0 else y0*2) if y1 == oo else y0 + dy/Integer(2)
-    zm = (1 if z0 == 0 else z0*2) if z1 == oo else z0 + dz/Integer(2)
+    xm = (1 if x0 == 0 else x0*2) if x1 == oo else x0 + dx/S(2)
+    ym = (1 if y0 == 0 else y0*2) if y1 == oo else y0 + dy/S(2)
+    zm = (1 if z0 == 0 else z0*2) if z1 == oo else z0 + dz/S(2)
     n = negative3(f, xm, x1, ym, y1, zm, z1)
     if n != '':
         return n
@@ -125,11 +125,11 @@ def main():
     logging.basicConfig(level = 'INFO')
     x, y, z = symbols('x, y, z', positive = True)
     # https://math.stackexchange.com/q/3831395
-    f = x**5 - x**3/2 - x + Integer(4)/5
+    f = x**5 - x**3/2 - x + S(4)/5
     # https://math.stackexchange.com/q/83670
-    f = x**8 - x**7 + 2*x**6 - 2*x**5 + 3*x**4 - 3*x**3 + 4*x**2 - 4*x + Integer(5)/2
+    f = x**8 - x**7 + 2*x**6 - 2*x**5 + 3*x**4 - 3*x**3 + 4*x**2 - 4*x + S(5)/2
     # https://math.stackexchange.com/q/4765187
-    f = (1 + x)**7 - 7**(Integer(7)/3)*x**4
+    f = (1 + x)**7 - 7**(S(7)/3)*x**4
     u, v = symbols('u, v', positive = True)
     # https://math.stackexchange.com/q/1775572
     f = 65*u**10 + 215*u**9*v + 546*u**9 + 285*u**8*v**2 + 1503*u**8*v + 1989*u**8 + 275*u**7*v**3 + 1488*u**7*v**2 + 4284*u**7*v + 4095*u**7 + 315*u**6*v**4 + 1061*u**6*v**3 + 2436*u**6*v**2 + 6093*u**6*v + 5226*u**6 + 285*u**5*v**5 + 1290*u**5*v**4 + 591*u**5*v**3 - 441*u**5*v**2 + 4029*u**5*v + 4329*u**5 + 135*u**4*v**6 + 1185*u**4*v**5 + 1725*u**4*v**4 - 3020*u**4*v**3 - 5898*u**4*v**2 + 570*u**4*v + 2392*u**4 + 25*u**3*v**7 + 500*u**3*v**6 + 1890*u**3*v**5 + 779*u**3*v**4 - 5556*u**3*v**3 - 6582*u**3*v**2 - 326*u**3*v + 858*u**3 + 75*u**2*v**7 + 690*u**2*v**6 + 1866*u**2*v**5 + 762*u**2*v**4 - 2778*u**2*v**3 - 2400*u**2*v**2 + 192*u**2*v + 156*u**2 + 75*u*v**7 + 636*u*v**6 + 1617*u*v**5 + 1527*u*v**4 + 318*u*v**3 + 114*u*v**2 + 156*u*v + 65*v**7 + 351*v**6 + 741*v**5 + 754*v**4 + 390*v**3 + 156*v**2
