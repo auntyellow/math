@@ -112,10 +112,10 @@ def main():
     print('p3(u,v) =', p3)
     # find possible p and q
     fraction_range = [0]
-    step = S(16)/15
+    ratio = S(16)/15
     for i in range(-50, 51):
         k = 0
-        for j in continued_fraction_convergents(continued_fraction(step**i)):
+        for j in continued_fraction_convergents(continued_fraction(ratio**i)):
             k = j
             if j.q >= 100:
                 break
@@ -157,6 +157,7 @@ def main():
     f = f.subs(p, p0).subs(q, q0)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
+    print()
 
     # https://math.stackexchange.com/q/3657950
     # sum_cyc(sqrt(a/(b + c))) >= 2
@@ -189,7 +190,8 @@ def main():
     m0 = solve([eq1, eq3, eq6], m)
     print('m =', m0)
     f = f.subs(m, m0[0][0])
-    print('f =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
+    print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
+    print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
     print()
 
     # https://yufeizhao.com/olympiad/wc08/ineq.pdf
