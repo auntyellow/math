@@ -1,54 +1,57 @@
 from sympy import *
 
-def cyc(f):
-    x, y, z, t = symbols('x, y, z, t', positive = True)
+def cyc(f, vars):
+    x, y, z = vars
+    t = symbols('t', positive = True)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
-def sum_cyc(f):
-    f1 = cyc(f)
-    return f + f1 + cyc(f1)
+def sum_cyc(f, vars):
+    f1 = cyc(f, vars)
+    return f + f1 + cyc(f1, vars)
 
-def cyc4(f):
-    a, b, c, d, t = symbols('a, b, c, d, t', positive = True)
+def cyc4(f, vars):
+    a, b, c, d = vars
+    t = symbols('t', positive = True)
     return f.subs(d, t).subs(c, d).subs(b, c).subs(a, b).subs(t, a)
 
-def sum_cyc4(f):
-    f1 = cyc4(f)
-    f2 = cyc4(f1)
-    return f + f1 + f2 + cyc4(f2)
+def sum_cyc4(f, vars):
+    f1 = cyc4(f, vars)
+    f2 = cyc4(f1, vars)
+    return f + f1 + f2 + cyc4(f2, vars)
 
-def cyc3(f):
-    b, c, d, t = symbols('b, c, d, t', positive = True)
+def cyc3(f, vars):
+    a, b, c, d = vars
+    t = symbols('t', positive = True)
     return f.subs(d, t).subs(c, d).subs(b, c).subs(t, b)
 
-def sum_comb4(f):
-    f1 = cyc4(f)
-    f2 = cyc4(f1)
-    f3 = cyc3(f2)
-    return f + f1 + f2 + cyc4(f2) + f3 + cyc4(f3)
+def sum_comb4(f, vars):
+    f1 = cyc4(f, vars)
+    f2 = cyc4(f1, vars)
+    f3 = cyc3(f2, vars)
+    return f + f1 + f2 + cyc4(f2, vars) + f3 + cyc4(f3, vars)
 
 def main():
     a, b, c, d = symbols('a, b, c, d', positive = True)
-    u, v, w = symbols('u, v, w', positive = True)
     x, y, z = symbols('x, y, z', positive = True)
+    u, v, w = symbols('u, v, w', positive = True)
 
     # https://artofproblemsolving.com/community/c6h522084
-    f = sum_cyc(x**3 - x**2*y - x**2*z + x*y*z)
+    f = sum_cyc(x**3 - x**2*y - x**2*z + x*y*z, (x, y, z))
     # y and z can swap
     # x <= y <= z
     print('f =', expand(f.subs(y, x + u).subs(z, x + u + v)))
     print()
 
     # for all triangles
-    f = sum_cyc(x**3*y**2 - (x**2)*x*y*z)
+    f = sum_cyc(a**3*b**2 - (a**2)*a*b*c, (a, b, c))
     # x <= y <= z
-    print('f(xyz) =', expand(f.subs(x, u + v).subs(y, u + v + w).subs(z, u + 2*v + w)))
+    print('f(xyz) =', expand(f.subs(a, u + v).subs(b, u + v + w).subs(c, u + 2*v + w)))
     # x <= z <= y
-    print('f(xzy) =', expand(f.subs(x, u + v).subs(z, u + v + w).subs(y, u + 2*v + w)))
+    print('f(xzy) =', expand(f.subs(a, u + v).subs(c, u + v + w).subs(b, u + 2*v + w)))
     print()
 
-    print(cyc4(a*b), cyc3(a*b), sum_cyc4(a*b), sum_comb4(a*b))
-    f = sum_cyc4(a**4 + a*b*c*d - 2*a**2*b*c)
+    print(cyc4(a*b, (a, b, c, d)), cyc3(a*b, (a, b, c, d)), sum_cyc4(a*b, (a, b, c, d)), sum_comb4(a*b, (a, b, c, d)))
+    f = sum_cyc4(a**4 + a*b*c*d - 2*a**2*b*c, (a, b, c, d))
     # b and c can swap
     # a <= b <= c <= d
     print('f(abcd) =', expand(f.subs(b, a + u).subs(c, a + u + v).subs(d, a + u + v + w)))
@@ -60,9 +63,9 @@ def main():
 
     '''
     # https://math.stackexchange.com/q/2098409
-    f = sum_cyc(1/(x + y - z) - 1/x)
+    f = sum_cyc(1/(a + b - c) - 1/a, (a, b, c))
     # x <= y <= z
-    print('f(xyz) =', factor(f.subs(x, u + v).subs(y, u + v + w).subs(z, u + 2*v + w)))
+    print('f(xyz) =', factor(f.subs(a, u + v).subs(b, u + v + w).subs(c, u + 2*v + w)))
     print()
 
     # https://math.stackexchange.com/q/4692575
@@ -84,7 +87,7 @@ def main():
     print()
  
     # https://math.stackexchange.com/q/4762885
-    f = sum_cyc(x/(y + z)) + 3*x*y*z/sum_cyc(x*y*(x + y)) - 2
+    f = sum_cyc(x/(y + z), (x, y, z)) + 3*x*y*z/sum_cyc(x*y*(x + y), (x, y, z)) - 2
     # x <= y <= z
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print()
@@ -118,7 +121,7 @@ def main():
     # https://i.stack.imgur.com/zVGzB.png
     k, l, m, n = symbols('k, l, m, n', positive = True)
     # k, l, m, n = a^2, b^2, c^2, d^2
-    f = sum_cyc4((a**2*b**2 + b**2*c**2 + c**2*a**2)/(a**6 + b**6 + c**6)) - sum_comb4((a**4 + b**4)/(a**3*b**3))
+    f = sum_cyc4((a**2*b**2 + b**2*c**2 + c**2*a**2)/(a**6 + b**6 + c**6), (a, b, c, d)) - sum_comb4((a**4 + b**4)/(a**3*b**3), (a, b, c, d))
     # too slow
     # print('f =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v)).subs(d, a*(1 + u + v + w))))
 
@@ -137,14 +140,14 @@ def main():
     A, B, C, D = x, x + u, x + u + v, x + u + v + w
     ABCD = A + B + C + D
     a, b, c, d = A/ABCD, B/ABCD, C/ABCD, D/ABCD
-    print('f =', factor((1 + 176*a*b*c*d)/27 - b*c*d + c*d*a + d*a*b + a*b*c))
+    print('f =', factor((1 + 176*a*b*c*d)/27 - b*c*d - c*d*a - d*a*b - a*b*c))
     print()
     '''
 
     # https://artofproblemsolving.com/community/c6h218191
-    f = sum_cyc(x**5/(x**3 + y**3) + x**3/(x + y) - x**4/(x**2 + y**2) - x**2/2)
+    f = sum_cyc(x**5/(x**3 + y**3) + x**3/(x + y) - x**4/(x**2 + y**2) - x**2/2, (x, y, z))
     # doesn't hold
-    # f = sum_cyc(-x**5/(x**3 + y**3) + x**3/(x + y) + x**4/(x**2 + y**2) - x**2/2)
+    # f = sum_cyc(-x**5/(x**3 + y**3) + x**3/(x + y) + x**4/(x**2 + y**2) - x**2/2, (x, y, z))
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v))))
     print()

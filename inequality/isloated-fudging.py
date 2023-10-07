@@ -1,7 +1,5 @@
 from sympy import *
 
-# Isolated Fudging
-
 def cyc(f, vars):
     x, y, z = vars
     t = symbols('t', positive = True)

@@ -2,13 +2,14 @@ from sympy import *
 
 # https://math.stackexchange.com/q/4764889
 
-def cyc(f):
-    x, y, z, t = symbols('x, y, z, t', positive = True)
+def cyc(f, vars):
+    x, y, z = vars
+    t = symbols('t', positive = True)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
-def sum_cyc(f):
-    f1 = cyc(f)
-    return f + f1 + cyc(f1)
+def sum_cyc(f, vars):
+    f1 = cyc(f, vars)
+    return f + f1 + cyc(f1, vars)
 
 def main():
     a, b, c = symbols('a, b, c', positive = True)
@@ -19,14 +20,14 @@ def main():
 
     x, y, z = symbols('x, y, z', positive = True)
     # left ineq: 1 <= f
-    f = sum_cyc(x/(1 + x*y)).subs(x, x1).subs(y, y1).subs(z, z1)
+    f = sum_cyc(x/(1 + x*y), (x, y, z)).subs(x, x1).subs(y, y1).subs(z, z1)
     print('f =', factor(f))
     A, B, C = symbols('A, B, C', positive = True)
     f1 = fraction(factor(f.subs(sqrt(a), A).subs(sqrt(b), B).subs(sqrt(c), C)))
     print('g =', factor(f1[0]**2 - f1[1]**2))
 
     # right ineq: f <= 3*sqrt(3)/2
-    f = sum_cyc(x/(1 - x*y)).subs(x, x1).subs(y, y1).subs(z, z1)
+    f = sum_cyc(x/(1 - x*y), (x, y, z)).subs(x, x1).subs(y, y1).subs(z, z1)
     print('f =', factor(f))
     f1 = fraction(factor(f.subs(sqrt(a), A).subs(sqrt(b), B).subs(sqrt(c), C)))
     g = f1[0]**2*4 - f1[1]**2*27

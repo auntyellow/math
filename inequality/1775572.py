@@ -3,17 +3,18 @@ from sympy import *
 # https://math.stackexchange.com/a/2120874
 # https://math.stackexchange.com/q/1775572
 
-def cyc(f):
-    x, y, z, t = symbols('x, y, z, t')
+def cyc(f, vars):
+    x, y, z = vars
+    t = symbols('t', positive = True)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
-def sum_cyc(f):
-    f1 = cyc(f)
-    return f + f1 + cyc(f1)
+def sum_cyc(f, vars):
+    f1 = cyc(f, vars)
+    return f + f1 + cyc(f1, vars)
 
 def main():
     x, y, z = symbols('x, y, z')
-    f = sum_cyc(x**4/(8*x**3 + 5*y**3)) - (x + y + z)/13
+    f = sum_cyc(x**4/(8*x**3 + 5*y**3), (x, y, z)) - (x + y + z)/13
     u, v = symbols('u, v', positive = True)
     # x <= z <= y
     print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v))))
