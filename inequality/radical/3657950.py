@@ -152,6 +152,8 @@ def main():
             break
     '''
     p0, q0 = S(4)/101, S(74)/109
+    # more simple: p0, q0 = 0, S(2)/3
+    # can hardly find: p0, q0 = S(1)/3, S(2)/3
     print('g =', factor(g.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
     print('h =', factor(h.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
     f = f.subs(p, p0).subs(q, q0)

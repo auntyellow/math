@@ -121,6 +121,14 @@ def main():
     f = (24*a + 13)/(24*a + 13*b*c) - g**2/h**2
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
+    print()
+
+    g = 23874618777*(b**3 + c**3) - 1926709440*a**3 + 237472565797*(a**2*b + a**2*c) + 224225730930*(a*b**2 + a*c**2) + 114310011527*(b**2*c + b*c**2) + 464791023360*a*b*c
+    h = 2*(7637088019*(a**3 + b**3 + c**3) + 96001384709*(a**2*b + a**2*c + a*b**2 + a*c**2 + b**2*c + b*c**2) + 232395511680*a*b*c)
+    print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (x, y, z))))
+    f = (24*a + 13)/(24*a + 13*b*c) - g**2/h**2
+    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
+    print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
 
 if __name__ == '__main__':
     main()
