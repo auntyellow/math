@@ -21,16 +21,13 @@ def main():
     f = a/(b + c) - g/h/2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    # f_a,b,c(1,1,1) = 0
-    eq2 = Eq(diff(f, a).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    eq2_ = Eq(diff(f, a).subs(a, 2).subs(b, 2).subs(c, 2), 0)
-    eq3 = Eq(diff(f, b).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    eq4 = Eq(diff(f, c).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    print('eq1:', eq1)
+    # homogeneous, hence assume a + b + c = 3
+    # f_a,b(1,1) = 0
+    eq2 = Eq(diff(f.subs(c, 3 - a - b), a).subs(a, 1).subs(b, 1), 0)
+    eq3 = Eq(diff(f.subs(c, 3 - a - b), b).subs(a, 1).subs(b, 1), 0)
+    print('eq1:', factor(eq1)) # True
     print('eq2:', factor(eq2))
-    print('eq2\':', factor(eq2_)) # = eq2
-    print('eq3:', factor(eq3)) # = eq2
-    print('eq4:', factor(eq4)) # = eq2
+    print('eq3:', factor(eq3)) # True
     m0 = solve(eq2, m)
     print('m =', m0)
     u, v = symbols('u, v', positive = True)
@@ -43,55 +40,48 @@ def main():
 
     # https://math.stackexchange.com/a/3658031
     # sum_cyc(1/(2 + a**2 + b**2)) <= 3/4
-    x, y, z = symbols('x, y, z', positive = True)
-    xyz = (x + y + z)/3
-    a, b, c = x/xyz, y/xyz, z/xyz
-    print('a + b + c =', factor(a + b + c))
     n = 1
-    g = n*x + m*(y + z)
-    h = (n + 2*m)*(x + y + z)/3
-    print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (x, y, z))))
+    g = n*a + m*(b + c)
+    h = (n + 2*m)*(a + b + c)/3
+    print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (a, b, c))))
     f = 1/(2 + b**2 + c**2) - g/h/4
     # f(1,1,1) = 0
-    eq1 = Eq(f.subs(x, 1).subs(y, 1).subs(z, 1), 0)
-    # f_x,y,z(1,1,1) = 0
-    eq2 = Eq(diff(f, x).subs(x, 1).subs(y, 1).subs(z, 1), 0)
-    eq2_ = Eq(diff(f, x).subs(x, 2).subs(y, 2).subs(z, 2), 0)
-    eq3 = Eq(diff(f, y).subs(x, 1).subs(y, 1).subs(z, 1), 0)
-    eq4 = Eq(diff(f, z).subs(x, 1).subs(y, 1).subs(z, 1), 0)
-    print('eq1:', eq1)
+    eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
+    # f_a,b(1,1) = 0
+    eq2 = Eq(diff(f.subs(c, 3 - a - b), a).subs(a, 1).subs(b, 1), 0)
+    eq3 = Eq(diff(f.subs(c, 3 - a - b), b).subs(a, 1).subs(b, 1), 0)
+    print('eq1:', factor(eq1)) # True
     print('eq2:', factor(eq2))
-    print('eq2\':', factor(eq2_)) # = eq2
-    print('eq3:', factor(eq3)) # = eq2
-    print('eq4:', factor(eq4)) # = eq2
+    print('eq3:', factor(eq3)) # True
     m0 = solve(eq2, m)
     print('m =', m0)
     f = f.subs(m, m0[0])
-    print('f(1,1,2) =', f.subs(x, 1).subs(y, 1).subs(z, 2))
+    print('f(1,1,2) =', f.subs(a, .8).subs(b, .8).subs(c, 1.4))
     # doesn't work
-    print('f(1,2,2) =', f.subs(x, 1).subs(y, 2).subs(z, 2))
+    print('f(1,2,2) =', f.subs(a, .6).subs(b, 1.2).subs(c, 1.2))
     # try quadratic homogeneous polynomial
     p, q = symbols('p, q')
     n = 1
-    g = n*x**2 + m*(y**2 + z**2) + p*(x*y + x*z) + q*y*z
-    h = (n + 2*m)*(x**2 + y**2 + z**2)/3 + (2*p + q)*(x*y + x*z + y*z)/3
-    print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (x, y, z))))
+    g = n*a**2 + m*(b**2 + c**2) + p*(a*b + a*c) + q*b*c
+    h = (n + 2*m)*(a**2 + b**2 + c**2)/3 + (2*p + q)*(a*b + a*c + b*c)/3
+    print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (a, b, c))))
     f = 1/(2 + b**2 + c**2) - g/h/4
     # f(1,1,1) = 0
-    eq1 = Eq(f.subs(x, 1).subs(y, 1).subs(z, 1), 0)
-    # f_x,y,z(1,1,1) = 0
-    eq2 = Eq(diff(f, x).subs(x, 1).subs(y, 1).subs(z, 1), 0)
-    eq2_ = Eq(diff(f, x).subs(x, 2).subs(y, 2).subs(z, 2), 0)
-    eq3 = Eq(diff(f, y).subs(x, 1).subs(y, 1).subs(z, 1), 0)
-    eq4 = Eq(diff(f, z).subs(x, 1).subs(y, 1).subs(z, 1), 0)
-    print('eq1:', eq1)
+    eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
+    # f_a,b(1,1) = 0
+    eq2 = Eq(diff(f.subs(c, 3 - a - b), a).subs(a, 1).subs(b, 1), 0)
+    eq3 = Eq(diff(f.subs(c, 3 - a - b), b).subs(a, 1).subs(b, 1), 0)
+    print('eq1:', factor(eq1)) # True
     print('eq2:', factor(eq2))
-    print('eq2\':', factor(eq2_)) # = eq2
-    print('eq3:', factor(eq3)) # = eq2
-    print('eq4:', factor(eq4)) # = eq2
+    print('eq3:', factor(eq3)) # True
     m0 = solve(eq2, m)
     print('m =', m0)
     f = f.subs(m, m0[0])
+    x, y, z = symbols('x, y, z', positive = True)
+    xyz = (x + y + z)/3
+    a0, b0, c0 = x/xyz, y/xyz, z/xyz
+    print('a + b + c =', factor(a0 + b0 + c0))
+    f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     # x <= y <= z
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     # z <= y <= x
@@ -170,24 +160,20 @@ def main():
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 0), 0)
     eq2 = Eq(f.subs(a, 1).subs(b, 0).subs(c, 1), 0)
     eq3 = Eq(f.subs(a, 0).subs(b, 1).subs(c, 1), 0)
-    # f_b,c(a=0,1,1) = 0
-    eq4 = Eq(diff(f, b).subs(a, 0).subs(b, 1).subs(c, 1), 0)
-    eq4_ = Eq(diff(f, b).subs(a, 0).subs(b, 2).subs(c, 2), 0)
-    eq5 = Eq(diff(f, c).subs(a, 0).subs(b, 1).subs(c, 1), 0)
-    # f_a,c(1,b=0,1) = 0
-    eq6 = Eq(diff(f, a).subs(a, 1).subs(b, 0).subs(c, 1), 0)
-    eq6_ = Eq(diff(f, a).subs(a, 2).subs(b, 0).subs(c, 2), 0)
-    eq7 = Eq(diff(f, c).subs(a, 1).subs(b, 0).subs(c, 1), 0)
+    # homogeneous, hence assume a + b = 2
+    # f_a(1,1,0) = 0
+    eq4 = Eq(diff(f.subs(c, 0).subs(b, 2 - a), a).subs(a, 1), 0)
+    # f_a(1,0,1) = 0
+    eq5 = Eq(diff(f.subs(b, 0).subs(c, 2 - a), a).subs(a, 1), 0)
+    # f_b(0,1,1) = 0
+    eq6 = Eq(diff(f.subs(a, 0).subs(c, 2 - b), b).subs(b, 1), 0)
     print('eq1:', factor(eq1))
     print('eq2:', factor(eq2)) # = eq1
     print('eq3:', factor(eq3))
-    print('eq4:', factor(eq4)) # True
-    print('eq4\':', factor(eq4_)) # True
-    print('eq5:', factor(eq5)) # True
-    print('eq6:', factor(eq6))
-    print('eq6\':', factor(eq6_)) # = eq6
-    print('eq7:', factor(eq7)) # = eq6
-    m0 = solve([eq1, eq3, eq6], m)
+    print('eq4:', factor(eq4))
+    print('eq5:', factor(eq5)) # = eq4
+    print('eq6:', factor(eq6)) # = eq4
+    m0 = solve([eq1, eq3, eq4], m)
     print('m =', m0)
     f = f.subs(m, m0[0][0])
     print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
@@ -199,16 +185,12 @@ def main():
     f = a**2/(a**2 + 8*b*c) - (g/h/3)**2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    # f_a,b,c(1,1,1) = 0
-    eq2 = Eq(diff(f, a).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    eq2_ = Eq(diff(f, a).subs(a, 2).subs(b, 2).subs(c, 2), 0)
-    eq3 = Eq(diff(f, b).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    eq4 = Eq(diff(f, c).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    print('eq1:', eq1)
+    # f_a,b(1,1) = 0
+    eq2 = Eq(diff(f.subs(c, 3 - a - b), a).subs(a, 1).subs(b, 1), 0)
+    eq3 = Eq(diff(f.subs(c, 3 - a - b), b).subs(a, 1).subs(b, 1), 0)
+    print('eq1:', factor(eq1)) # True
     print('eq2:', factor(eq2))
-    print('eq2\':', factor(eq2_)) # = eq2
-    print('eq3:', factor(eq3)) # = eq2
-    print('eq4:', factor(eq4)) # = eq2
+    print('eq3:', factor(eq3)) # True
     m0 = solve(eq2, m)
     print('m =', m0)
     f = f.subs(m, m0[0])
@@ -223,16 +205,12 @@ def main():
     f = a**2/(a**2 + 8*b*c) - (g/h/3)**2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    # f_x,y,z(1,1,1) = 0
-    eq2 = Eq(diff(f, a).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    eq2_ = Eq(diff(f, a).subs(a, 2).subs(b, 2).subs(c, 2), 0)
-    eq3 = Eq(diff(f, b).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    eq4 = Eq(diff(f, c).subs(a, 1).subs(b, 1).subs(c, 1), 0)
-    print('eq1:', eq1)
+    # f_a,b(1,1) = 0
+    eq2 = Eq(diff(f.subs(c, 3 - a - b), a).subs(a, 1).subs(b, 1), 0)
+    eq3 = Eq(diff(f.subs(c, 3 - a - b), b).subs(a, 1).subs(b, 1), 0)
+    print('eq1:', factor(eq1)) # True
     print('eq2:', factor(eq2))
-    print('eq2\':', factor(eq2_)) # = eq2
-    print('eq3:', factor(eq3)) # = eq2
-    print('eq4:', factor(eq4)) # = eq2
+    print('eq3:', factor(eq3)) # True
     m0 = solve(eq2, m)
     print('m =', m0)
     f = f.subs(m, m0[0])
@@ -249,7 +227,7 @@ def main():
     print('p1(u,v) =', p1)
     print('p2(u,v) =', p2)
     # find possible p and q
-    # '''
+    '''
     for i in fraction_range:
         found = False
         for j in fraction_range:
@@ -272,6 +250,8 @@ def main():
             break
         if found:
             break
+    '''
+    found = False
     if found:
         print('g =', factor(g.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
         print('h =', factor(h.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
