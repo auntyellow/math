@@ -102,7 +102,7 @@ def main():
     print('p1(u,v) =', p1)
     print('p2(u,v) =', p2)
     print('p3(u,v) =', p3)
-    # find possible p and q
+    # search possible p and q
     fraction_range = [0]
     ratio = S(16)/15
     for i in range(-50, 51):
@@ -148,6 +148,8 @@ def main():
     # can hardly find: p0, q0 = S(1)/3, S(2)/3
     print('g =', factor(g.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
     print('h =', factor(h.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
+    # graph of g/4h(a=b)
+    print('y =', factor((g/h/4).subs(m, m0[0]).subs(p, p0).subs(q, q0).subs(c, x).subs(a, (3 - x)/2).subs(b, (3 - x)/2)))
     f = f.subs(p, p0).subs(q, q0)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))

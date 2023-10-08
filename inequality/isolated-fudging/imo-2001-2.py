@@ -16,7 +16,7 @@ def main():
     a, b, c = symbols('a, b, c', positive = True)
     x, y, z = symbols('x, y, z', positive = True)
     f0 = a/sqrt(a**2 + 8*b*c)
-    # graph of f0(a=b)
+    # graph of f0(b=c)
     print('y =', factor(f0.subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     print()
 
@@ -38,7 +38,7 @@ def main():
     m0 = solve(eq2, m)
     print('m =', m0)
     m0 = m0[0]
-    # graph of g/3h(a=b)
+    # graph of g/3h(b=c)
     print('y =', factor((g/3/h).subs(m, m0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, m0)
     print('f(1,1,1) =', f.subs(a, 1).subs(b, 1).subs(c, 1))
@@ -79,16 +79,66 @@ def main():
     h = h.subs(m, mpq0[0]).subs(p, mpq0[1]).subs(q, mpq0[2])
     print('g =', factor(g))
     print('h =', factor(h))
-    # graph of g/3h(a=b)
+    # graph of g/3h(b=c)
     print('y =', factor((g/h/3).subs(m, mpq0[0]).subs(p, mpq0[1]).subs(q, mpq0[2]).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, mpq0[0]).subs(p, mpq0[1]).subs(q, mpq0[2])
-    xyz = (x + y + z)/3
-    a0, b0, c0 = x/xyz, y/xyz, z/xyz
-    print('a + b + c =', factor(a0 + b0 + c0))
-    f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     u, v = symbols('u, v', positive = True)
-    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
-    print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
+    print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
+    print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
+    print()
+
+    # search possible p and q without assuming f(1,1,0) = f(0,0,1) = 0
+    m0 = solve(eq2, m)
+    print('m =', m0)
+    f = f.subs(m, m0[0])
+    # a <= b <= c
+    print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
+    # c <= b <= a
+    print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
+    # k1 <= 0
+    k1 = 800*p**2*u**6 + 2400*p**2*u**5*v + 320*p**2*u**5 + 3200*p**2*u**4*v**2 + 800*p**2*u**4*v - 4092*p**2*u**4 + 2400*p**2*u**3*v**3 + 1600*p**2*u**3*v**2 - 8184*p**2*u**3*v - 5024*p**2*u**3 + 1000*p**2*u**2*v**4 + 1600*p**2*u**2*v**3 - 6264*p**2*u**2*v**2 - 7536*p**2*u**2*v - 1512*p**2*u**2 + 200*p**2*u*v**5 + 880*p**2*u*v**4 - 2172*p**2*u*v**3 - 4416*p**2*u*v**2 - 1512*p**2*u*v + 200*p**2*v**5 - 195*p**2*v**4 - 952*p**2*v**3 - 540*p**2*v**2 + 1120*p*q*u**4*v**2 + 224*p*q*u**4 + 2240*p*q*u**3*v**3 + 1344*p*q*u**3*v**2 + 448*p*q*u**3*v + 2016*p*q*u**3 + 1680*p*q*u**2*v**4 + 2016*p*q*u**2*v**3 - 2380*p*q*u**2*v**2 + 3024*p*q*u**2*v + 1512*p*q*u**2 + 560*p*q*u*v**5 + 1792*p*q*u*v**4 - 2604*p*q*u*v**3 - 2016*p*q*u*v**2 + 1512*p*q*u*v + 560*p*q*v**5 - 98*p*q*v**4 - 1512*p*q*v**3 - 756*p*q*v**2 - 640*p*u**6 - 1920*p*u**5*v - 2048*p*u**5 - 2560*p*u**4*v**2 - 5120*p*u**4*v - 3536*p*u**4 - 1920*p*u**3*v**3 - 5760*p*u**3*v**2 - 7072*p*u**3*v - 4000*p*u**3 - 800*p*u**2*v**4 - 3520*p*u**2*v**3 - 5584*p*u**2*v**2 - 6000*p*u**2*v - 1512*p*u**2 - 160*p*u*v**5 - 1152*p*u*v**4 - 2048*p*u*v**3 - 4800*p*u*v**2 - 1512*p*u*v - 160*p*v**5 - 12*p*v**4 - 1400*p*v**3 - 1836*p*v**2 - 196*q**2*u**4 - 392*q**2*u**3*v + 392*q**2*u**2*v**4 - 588*q**2*u**2*v**2 + 392*q**2*u*v**5 + 784*q**2*u*v**4 - 392*q**2*u*v**3 + 392*q**2*v**5 + 245*q**2*v**4 - 448*q*u**4*v**2 + 1008*q*u**4 - 896*q*u**3*v**3 - 1792*q*u**3*v**2 + 2016*q*u**3*v + 2016*q*u**3 - 672*q*u**2*v**4 - 2688*q*u**2*v**3 - 1792*q*u**2*v**2 + 3024*q*u**2*v + 1512*q*u**2 - 224*q*u*v**5 - 1344*q*u*v**4 - 2800*q*u*v**3 - 2016*q*u*v**2 + 1512*q*u*v - 224*q*v**5 - 196*q*v**4 - 1512*q*v**3 - 756*q*v**2 + 128*u**6 + 384*u**5*v + 768*u**5 + 512*u**4*v**2 + 1920*u**4*v + 1536*u**4 + 384*u**3*v**3 + 2048*u**3*v**2 + 3072*u**3*v + 1024*u**3 + 160*u**2*v**4 + 1152*u**2*v**3 + 1856*u**2*v**2 + 1536*u**2*v + 32*u*v**5 + 320*u*v**4 + 320*u*v**3 - 384*u*v**2 + 32*v**5 - 160*v**4 - 448*v**3 - 1296*v**2
+    # k2 <= 0
+    k2 = 17*p**2*u**6 + 158*p**2*u**5*v + 106*p**2*u**5 + 557*p**2*u**4*v**2 + 818*p**2*u**4*v - 579*p**2*u**4 + 868*p**2*u**3*v**3 + 2816*p**2*u**3*v**2 - 1620*p**2*u**3*v - 1208*p**2*u**3 + 512*p**2*u**2*v**4 + 4592*p**2*u**2*v**3 - 864*p**2*u**2*v**2 - 3792*p**2*u**2*v - 540*p**2*u**2 - 40*p**2*u*v**5 + 3208*p**2*u*v**4 + 2280*p**2*u*v**3 - 4560*p**2*u*v**2 - 1512*p**2*u*v - 100*p**2*v**6 + 520*p**2*v**5 + 1908*p**2*v**4 - 1024*p**2*v**3 - 1512*p**2*v**2 + 98*p*q*u**6 + 448*p*q*u**5*v + 756*p*q*u**5 + 770*p*q*u**4*v**2 + 4900*p*q*u**4*v - 98*p*q*u**4 + 532*p*q*u**3*v**3 + 10696*p*q*u**3*v**2 + 7980*p*q*u**3*v - 1512*p*q*u**3 - 224*p*q*u**2*v**4 + 9912*p*q*u**2*v**3 + 17276*p*q*u**2*v**2 + 5040*p*q*u**2*v - 756*p*q*u**2 - 616*p*q*u*v**5 + 4368*p*q*u*v**4 + 12544*p*q*u*v**3 + 9072*p*q*u*v**2 + 1512*p*q*u*v - 280*p*q*v**6 + 448*p*q*v**5 + 3248*p*q*v**4 + 4032*p*q*v**3 + 1512*p*q*v**2 - 288*p*u**6 - 776*p*u**5*v - 3008*p*u**5 + 204*p*u**4*v**2 - 8248*p*u**4*v - 6828*p*u**4 + 2408*p*u**3*v**3 - 6968*p*u**3*v**2 - 14552*p*u**3*v - 5944*p*u**3 + 2900*p*u**2*v**4 - 784*p*u**2*v**3 - 11416*p*u**2*v**2 - 8592*p*u**2*v - 1836*p*u**2 + 1544*p*u*v**5 + 1712*p*u*v**4 - 4288*p*u*v**3 - 6096*p*u*v**2 - 1512*p*u*v + 360*p*v**6 + 928*p*v**5 - 608*p*v**4 - 2048*p*v**3 - 1512*p*v**2 - 147*q**2*u**6 - 686*q**2*u**5*v + 98*q**2*u**5 - 1519*q**2*u**4*v**2 - 1078*q**2*u**4*v + 245*q**2*u**4 - 1960*q**2*u**3*v**3 - 1960*q**2*u**3*v**2 - 392*q**2*u**3*v - 1568*q**2*u**2*v**4 - 1960*q**2*u**2*v**3 - 588*q**2*u**2*v**2 - 784*q**2*u*v**5 - 1176*q**2*u*v**4 - 392*q**2*u*v**3 - 196*q**2*v**6 - 392*q**2*v**5 - 196*q**2*v**4 + 784*q*u**6 + 3192*q*u**5*v + 1344*q*u**5 + 6356*q*u**4*v**2 + 7448*q*u**4*v - 196*q*u**4 + 7784*q*u**3*v**3 + 16184*q*u**3*v**2 + 7784*q*u**3*v - 1512*q*u**3 + 5852*q*u**2*v**4 + 17360*q*u**2*v**3 + 17864*q*u**2*v**2 + 5040*q*u**2*v - 756*q*u**2 + 2520*q*u*v**5 + 9072*q*u*v**4 + 14112*q*u*v**3 + 9072*q*u*v**2 + 1512*q*u*v + 504*q*v**6 + 2016*q*v**5 + 4032*q*v**4 + 4032*q*v**3 + 1512*q*v**2 - 1040*u**6 - 3776*u**5*v - 4192*u**5 - 5792*u**4*v**2 - 11712*u**4*v - 6592*u**4 - 4928*u**3*v**3 - 13312*u**3*v**2 - 12736*u**3*v - 4736*u**3 - 2512*u**2*v**4 - 8512*u**2*v**3 - 9376*u**2*v**2 - 4800*u**2*v - 1296*u**2 - 768*u*v**5 - 3456*u*v**4 - 4608*u*v**3 - 1536*u*v**2 - 128*v**6 - 768*v**5 - 1536*v**4 - 1024*v**3
+    p1 = Poly(k1, (u, v))
+    p2 = Poly(k2, (u, v))
+    print('p1(u,v) =', p1)
+    print('p2(u,v) =', p2)
+    fraction_range = [0]
+    # can find only at p = S(2)/5 and q = 0, so (S(16)/15)**i doesn't work
+    step = S(1)/5
+    for i in range(-50, 51):
+        fraction_range.append(i*step)
+        fraction_range.insert(0, -i*step)
+    for i in fraction_range:
+        found = False
+        for j in fraction_range:
+            hold = True
+            for coef in p1.coeffs():
+                if coef.subs(p, i).subs(q, j) > 0:
+                    hold = False
+                    break
+            if not hold:
+                continue
+            for coef in p2.coeffs():
+                if coef.subs(p, i).subs(q, j) > 0:
+                    hold = False
+                    break
+            if not hold:
+                continue
+            p0, q0 = i, j
+            print('p =', p0, ', q =', q0)
+            found = True
+            break
+        if found:
+            break
+    if found:
+        print('g =', factor(g.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
+        print('h =', factor(h.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
+        f = f.subs(p, p0).subs(q, q0)
+        print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
+        print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
+    else:
+        print('Not Found')
 
 if __name__ == '__main__':
     main()

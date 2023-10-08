@@ -13,13 +13,18 @@ def sum_cyc(f, vars):
 
 def main():
     a, b, c = symbols('a, b, c', positive = True)
-    # isolated fudging
+    x, y, z = symbols('x, y, z', positive = True)
+    f0 = sqrt((24*a + 13)/(24*a + 13*b*c))
+    # graph of f0(b=c)
+    print('y =', factor(f0.subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
+    print()
+
     m, n, p, q, r, s, t = symbols('m, n, p, q, r, s, t')
     n = 1
     g = n*a**2 + m*(b**2 + c**2) + p*(a*b + a*c) + q*b*c
     h = (n + 2*m)*(a**2 + b**2 + c**2)/3 + (2*p + q)*(a*b + a*c + b*c)/3
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (a, b, c))))
-    f = (24*a + 13)/(24*a + 13*b*c) - g**2/h**2
+    f = f0**2 - (g/h)**2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
     s32 = S(3)/2
@@ -48,8 +53,11 @@ def main():
     print('eq8:', factor(eq8)) # = eq7
     print('eq9:', factor(eq9)) # True
     mpq = solve([eq2, eq4, eq5, eq7], (m, p, q))
-    print('[eq2, eq4, eq5, eq7] ->', mpq)
-    f = f.subs(m, mpq[0][0]).subs(p, mpq[0][1]).subs(q, mpq[0][2])
+    print('mpq =', mpq)
+    mpq = mpq[0]
+    # graph of g/h(b=c)
+    print('y =', factor((g/h).subs(m, mpq[0]).subs(p, mpq[1]).subs(q, mpq[2]).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
+    f = f.subs(m, mpq[0]).subs(p, mpq[1]).subs(q, mpq[2])
     x, y, z = symbols('x, y, z', positive = True)
     xyz = (x + y + z)/3
     a0, b0, c0 = x/xyz, y/xyz, z/xyz
@@ -63,12 +71,11 @@ def main():
     print()
 
     # try cubic homogeneous polynomial
-    # n, p, q, r, s, t = 5234, 102924, 105253, 50591, 14537, 182976
     g = n*a**3 + p*(a**2*b + a**2*c) + q*(a*b**2 + a*c**2) + r*(b**2*c + b*c**2) + s*(b**3 + c**3) + t*a*b*c
     h = (n + 2*s)*(a**3 + b**3 + c**3)/3 + (p + q + r)*(a**2*b + a**2*c + a*b**2 + a*c**2 + b**2*c + b*c**2)/3 + t*a*b*c
     # factor(sum_cyc(...)) is too slow
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (a, b, c))))
-    f = (24*a + 13)/(24*a + 13*b*c) - g**2/h**2
+    f = f0**2 - (g/h)**2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
     # f(3/2,3/2,0) = 0
@@ -96,12 +103,16 @@ def main():
     print('eq8:', factor(eq8)) # = eq7
     print('eq9:', factor(eq9)) # True
     pqr = solve([eq2, eq4, eq5, eq7], (p, q, r))
-    print('[eq2, eq4, eq5, eq7] ->', pqr)
+    print('pqr =', pqr)
     pqr = pqr[0]
+    # https://math.stackexchange.com/a/4776836
+    # n, p, q, r, s, t = 5234, 102924, 105253, 50591, 14537, 182976
+    # graph of g/h(b=c)
+    s0, t0 = S(14537)/5234, S(182976)/5234
+    p0, q0, r0 = pqr[0].subs(s, s0).subs(t, t0), pqr[1].subs(s, s0).subs(t, t0), pqr[2].subs(s, s0).subs(t, t0)
+    print('pqr =', p0, q0, r0)
+    print('y =', factor((g/h).subs(p, p0).subs(q, q0).subs(r, r0).subs(s, s0).subs(t, t0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2])
-    xyz = (x + y + z)/3
-    a0, b0, c0 = x/xyz, y/xyz, z/xyz
-    print('a + b + c =', factor(a0 + b0 + c0))
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     u, v = symbols('u, v', positive = True)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
@@ -150,11 +161,13 @@ def main():
             break
     '''
     s0, t0 = -S(289463)/23360, -S(349068)/1447
+    # graph of g/h(b=c)
+    print('y =', factor((g/h).subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     g = g.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     h = h.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     print('g =', factor(g))
     print('h =', factor(h))
-    f = (24*a + 13)/(24*a + 13*b*c) - g**2/h**2
+    f = f0**2 - (g/h)**2
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
@@ -163,7 +176,7 @@ def main():
     g = 23874618777*(b**3 + c**3) - 1926709440*a**3 + 237472565797*(a**2*b + a**2*c) + 224225730930*(a*b**2 + a*c**2) + 114310011527*(b**2*c + b*c**2) + 464791023360*a*b*c
     h = 2*(7637088019*(a**3 + b**3 + c**3) + 96001384709*(a**2*b + a**2*c + a*b**2 + a*c**2 + b**2*c + b*c**2) + 232395511680*a*b*c)
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (a, b, c))))
-    f = (24*a + 13)/(24*a + 13*b*c) - g**2/h**2
+    f = f0**2 - (g/h)**2
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
