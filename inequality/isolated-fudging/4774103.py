@@ -45,7 +45,7 @@ def main():
     eq9 = Eq(diff(f.subs(a, 0).subs(c, 3 - b), b).subs(b, s32), 0)
     print('eq1:', factor(eq1)) # True
     print('eq2:', factor(eq2))
-    print('eq3:', factor(eq3)) # = eq3
+    print('eq3:', factor(eq3)) # = eq2
     print('eq4:', factor(eq4))
     print('eq5:', factor(eq5))
     print('eq6:', factor(eq6)) # True
@@ -95,7 +95,7 @@ def main():
     eq9 = Eq(diff(f.subs(a, 0).subs(c, 3 - b), b).subs(b, s32), 0)
     print('eq1:', factor(eq1)) # True
     print('eq2:', factor(eq2))
-    print('eq3:', factor(eq3)) # = eq3
+    print('eq3:', factor(eq3)) # = eq2
     print('eq4:', factor(eq4))
     print('eq5:', factor(eq5))
     print('eq6:', factor(eq6)) # True

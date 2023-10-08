@@ -47,9 +47,10 @@ def main():
     print('eq3:', factor(eq3)) # = eq2
     m0 = solve(eq2, m)
     print('m =', m0)
+    m0 = m0[0]
     # graph of g/4h(a=b)
-    print('y =', factor((g/h/4).subs(m, m0[0]).subs(c, x).subs(a, (3 - x)/2).subs(b, (3 - x)/2)))
-    f = f.subs(m, m0[0])
+    print('y =', factor((g/h/4).subs(m, m0).subs(c, x).subs(a, (3 - x)/2).subs(b, (3 - x)/2)))
+    f = f.subs(m, m0)
     print('f(1,1,2) =', f.subs(a, .8).subs(b, .8).subs(c, 1.4))
     # doesn't work
     print('f(1,2,2) =', f.subs(a, .6).subs(b, 1.2).subs(c, 1.2))
@@ -84,7 +85,8 @@ def main():
 
     m0 = solve(eq2, m)
     print('m =', m0)
-    f = f.subs(m, m0[0])
+    m0 = m0[0]
+    f = f.subs(m, m0)
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     # x <= y <= z
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
@@ -146,10 +148,10 @@ def main():
     p0, q0 = S(4)/101, S(74)/109
     # more simple: p0, q0 = 0, S(2)/3
     # can hardly find: p0, q0 = S(1)/3, S(2)/3
-    print('g =', factor(g.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
-    print('h =', factor(h.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
+    print('g =', factor(g.subs(m, m0).subs(p, p0).subs(q, q0)))
+    print('h =', factor(h.subs(m, m0).subs(p, p0).subs(q, q0)))
     # graph of g/4h(a=b)
-    print('y =', factor((g/h/4).subs(m, m0[0]).subs(p, p0).subs(q, q0).subs(c, x).subs(a, (3 - x)/2).subs(b, (3 - x)/2)))
+    print('y =', factor((g/h/4).subs(m, m0).subs(p, p0).subs(q, q0).subs(c, x).subs(a, (3 - x)/2).subs(b, (3 - x)/2)))
     f = f.subs(p, p0).subs(q, q0)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
