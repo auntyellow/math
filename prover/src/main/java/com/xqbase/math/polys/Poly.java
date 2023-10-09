@@ -7,9 +7,9 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Poly extends HashMap<Term, long[]> {
+public class Poly extends HashMap<Mono, long[]> {
 	private static final long serialVersionUID = 1L;
-	private static final Function<Term, long[]> ZERO_COEFF = k -> new long[] {0};
+	private static final Function<Mono, long[]> ZERO_COEFF = k -> new long[] {0};
 
 	private static Logger log = LoggerFactory.getLogger(Poly.class);
 
@@ -29,14 +29,14 @@ public class Poly extends HashMap<Term, long[]> {
 				s = s.substring(i + 1);
 			}
 		}
-		append(minus ? -c : c, new Term(vars, s));
+		append(minus ? -c : c, new Mono(vars, s));
 	}
 
-	public void append(long n, Term term) {
-		long[] coeff = computeIfAbsent(term, ZERO_COEFF);
+	public void append(long n, Mono mono) {
+		long[] coeff = computeIfAbsent(mono, ZERO_COEFF);
 		coeff[0] += n;
 		if (coeff[0] == 0) {
-			remove(term);
+			remove(mono);
 		}
 	}
 
@@ -57,7 +57,7 @@ public class Poly extends HashMap<Term, long[]> {
 		if (isEmpty()) {
 			return "0";
 		}
-		TreeMap<Term, long[]> sorted = new TreeMap<>(this);
+		TreeMap<Mono, long[]> sorted = new TreeMap<>(this);
 		StringBuilder sb = new StringBuilder();
 		sorted.forEach((k, v) -> {
 			long c = v[0];
@@ -116,7 +116,7 @@ public class Poly extends HashMap<Term, long[]> {
 	public Poly addMul(long n, Poly p1, Poly p2) {
 		p1.forEach((k1, v1) -> {
 			p2.forEach((k2, v2) -> {
-				Term k = k1.mul(k2);
+				Mono k = k1.mul(k2);
 				long[] coeff = computeIfAbsent(k, ZERO_COEFF);
 				coeff[0] += n * v1[0] * v2[0];
 				if (coeff[0] == 0) {
@@ -125,6 +125,24 @@ public class Poly extends HashMap<Term, long[]> {
 			});
 		});
 		return this;
+	}
+
+	public TreeMap<Mono, Poly> coeffsOf(String gen) {
+		TreeMap<Mono, Poly> coeffs = new TreeMap<>();
+		forEach((mono, coeff) -> {
+			String vars = mono.getVars();
+			byte[] exps = mono.getExps();
+			byte[] expsGen = new byte[exps.length];
+			byte[] expsCoeff = exps.clone();
+			for (int i = 0; i < gen.length(); i ++) {
+				int j = vars.indexOf(gen.charAt(i));
+				expsGen[j] = exps[j];
+				expsCoeff[j] = 0;
+			}
+			coeffs.computeIfAbsent(new Mono(vars, expsGen), k -> new Poly()).
+					append(coeff[0], new Mono(vars, expsCoeff));
+		});
+		return coeffs;
 	}
 
 	public static Poly det(Poly p11, Poly p12, Poly p21, Poly p22) {
