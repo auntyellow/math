@@ -51,9 +51,9 @@ def main():
     # graph of g/4h(a=b)
     print('y =', factor((g/h/4).subs(m, m0).subs(c, x).subs(a, (3 - x)/2).subs(b, (3 - x)/2)))
     f = f.subs(m, m0)
-    print('f(1,1,2) =', f.subs(a, .8).subs(b, .8).subs(c, 1.4))
+    print('f(.8,.8,1.4) =', f.subs(a, .8).subs(b, .8).subs(c, 1.4))
     # doesn't work
-    print('f(1,2,2) =', f.subs(a, .6).subs(b, 1.2).subs(c, 1.2))
+    print('f(.6,1.2,1.2) =', f.subs(a, .6).subs(b, 1.2).subs(c, 1.2))
     print()
 
     # try quadratic homogeneous polynomial

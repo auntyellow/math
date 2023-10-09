@@ -23,7 +23,7 @@ def main():
     g = n*a + m*(b + c)
     h = (n + 2*m)*(a + b + c)/3
     print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (a, b, c))))
-    f = a/(b + c) - g/h/2
+    f = f0 - g/h/2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
     # homogeneous, hence assume a + b + c = 3
