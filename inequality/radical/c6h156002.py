@@ -4,7 +4,7 @@ from sympy import *
 
 def main():
     x, y, z, t = symbols('x, y, z, t', positive = True)
-    # a**2 - b**2 >= 0 && a + b >= 0 -> a - b >= 0
+    # A**2 - B**2 >= 0 && A + B >= 0 -> A - B >= 0
     f = (sqrt(1 - 2*x*y) + sqrt(1 - 2*x*z))**2 - (sqrt(7) - sqrt(1 - 2*y*z))**2
     # to prove: sqrt(1 - 2*x*y) + sqrt(1 - 2*x*z) + sqrt(7) - sqrt(1 - 2*y*z) >= 0, which is obvious
     print('f =', factor(f))

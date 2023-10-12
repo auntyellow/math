@@ -10,7 +10,7 @@ def main():
     print('x + y + z - x*y*z =', factor(x + y + z - x*y*z))
     # f >= 0
     f = 3*sqrt(x**2 + 1)*sqrt(y**2 + 1) - 2*(x*y - 1) - 2*sqrt(x**2 + 1) - 2*sqrt(y**2 + 1)
-    # a**2 - b**2 >= 0 && a + b >= 0 -> a - b >= 0
+    # A**2 - B**2 >= 0 && A + B >= 0 -> A - B >= 0
     g = (3*sqrt(x**2 + 1)*sqrt(y**2 + 1) - 2*(x*y - 1))**2 - (2*sqrt(x**2 + 1) + 2*sqrt(y**2 + 1))**2
     # to prove: (3*sqrt(x**2 + 1)*sqrt(y**2 + 1) - 2*(x*y - 1)) + (2*sqrt(x**2 + 1) + 2*sqrt(y**2 + 1)) >= 0
     # 3*sqrt(x**2 + 1)*sqrt(y**2 + 1) > 3*x*y > 2*(x*y - 1)
