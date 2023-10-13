@@ -125,57 +125,27 @@ def main():
     p2 = Poly(k2, (u, v))
     print('p1(u,v) =', p1)
     print('p2(u,v) =', p2)
-    # find possible s and t
-    fraction_range = [0]
-    ratio = S(16)/15
-    for i in range(-100, 101):
-        k = 0
-        for j in continued_fraction_convergents(continued_fraction(ratio**i)):
-            k = j
-            if j.q >= 1000:
-                break
-        fraction_range.append(k)
-        fraction_range.insert(0, -k)
-    '''
-    for i in fraction_range:
-        found = False
-        for j in fraction_range:
-            hold = True
-            for coef in p1.coeffs():
-                if coef.subs(s, i).subs(t, j) < 0:
-                    hold = False
-                    break
-            if not hold:
-                continue
-            for coef in p2.coeffs():
-                if coef.subs(s, i).subs(t, j) > 0:
-                    hold = False
-                    break
-            if not hold:
-                continue
-            s0, t0 = i, j
-            print('s =', s0, ', t =', t0)
-            found = True
-            break
-        if found:
-            break
-    '''
-    s0, t0 = -S(289463)/23360, -S(349068)/1447
+    # search possible s and t
+    print()
+    print('```python')
+    print('    non_negative_coeffs = [ \\')
+    for coeff in p1.coeffs():
+        print('        ' + str(coeff) + ', \\')
+    print('    ]')
+    print('    non_positive_coeffs = [ \\')
+    for coeff in p2.coeffs():
+        print('        ' + str(coeff) + ', \\')
+    print('    ]')
+    print('```')
+    print()
+    # result from 4774103a.py
+    s0, t0 = S(207)/2, S(363609)/196
     # graph of g/h(b=c)
     print('y =', factor((g/h).subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     g = g.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     h = h.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     print('g =', factor(g))
     print('h =', factor(h))
-    f = f0**2 - (g/h)**2
-    f = f.subs(a, a0).subs(b, b0).subs(c, c0)
-    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
-    print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
-    print()
-
-    g = 23874618777*(b**3 + c**3) - 1926709440*a**3 + 237472565797*(a**2*b + a**2*c) + 224225730930*(a*b**2 + a*c**2) + 114310011527*(b**2*c + b*c**2) + 464791023360*a*b*c
-    h = 2*(7637088019*(a**3 + b**3 + c**3) + 96001384709*(a**2*b + a**2*c + a*b**2 + a*c**2 + b**2*c + b*c**2) + 232395511680*a*b*c)
-    print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (a, b, c))))
     f = f0**2 - (g/h)**2
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))

@@ -1,6 +1,6 @@
 from sympy import *
 
-# https://yufeizhao.com/olympiad/wc08/ineq.pdf
+# IMO 2001 problem 2
 # sum_cyc(a/sqrt(a**2 + 8*b*c)) >= 1
 
 def cyc(f, vars):
@@ -103,42 +103,23 @@ def main():
     p2 = Poly(k2, (u, v))
     print('p1(u,v) =', p1)
     print('p2(u,v) =', p2)
-    fraction_range = [0]
-    # can find only at p = S(2)/5 and q = 0, so (S(16)/15)**i doesn't work
-    step = S(1)/5
-    for i in range(-50, 51):
-        fraction_range.append(i*step)
-        fraction_range.insert(0, -i*step)
-    for i in fraction_range:
-        found = False
-        for j in fraction_range:
-            hold = True
-            for coef in p1.coeffs():
-                if coef.subs(p, i).subs(q, j) > 0:
-                    hold = False
-                    break
-            if not hold:
-                continue
-            for coef in p2.coeffs():
-                if coef.subs(p, i).subs(q, j) > 0:
-                    hold = False
-                    break
-            if not hold:
-                continue
-            p0, q0 = i, j
-            print('p =', p0, ', q =', q0)
-            found = True
-            break
-        if found:
-            break
-    if found:
-        print('g =', factor(g.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
-        print('h =', factor(h.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
-        f = f.subs(p, p0).subs(q, q0)
-        print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
-        print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
-    else:
-        print('Not Found')
+    print()
+    print('```python')
+    print('    non_positive_coeffs = [ \\')
+    for coeff in p1.coeffs():
+        print('        ' + str(coeff) + ', \\')
+    for coeff in p2.coeffs():
+        print('        ' + str(coeff) + ', \\')
+    print('    ]')
+    print('```')
+    print()
+    # result from imo-2001-2a.py
+    p0, q0 = S(2)/5, 0
+    print('g =', factor(g.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
+    print('h =', factor(h.subs(m, m0[0]).subs(p, p0).subs(q, q0)))
+    f = f.subs(p, p0).subs(q, q0)
+    print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
+    print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
 
 if __name__ == '__main__':
     main()

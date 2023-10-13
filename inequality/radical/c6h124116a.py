@@ -11,10 +11,10 @@ def main():
     # https://artofproblemsolving.com/community/c6h124116
     # When does the equality hold (except for trival x = y = z = 0)? Assume x <= y <= z:
     min = inf
-    yz_range = [1, 2, 4, 8, 16]
-    for y0 in yz_range:
-        for z0 in yz_range:
-            result = minimize(fun, [y0, z0], bounds=((1, 10000), (1, 10000)), \
+    initial_guesses = [1, 2, 4, 8, 16]
+    for y0 in initial_guesses:
+        for z0 in initial_guesses:
+            result = minimize(fun, [y0, z0], bounds=((1, inf), (1, inf)), \
                 method = 'Nelder-Mead', options={'xatol': 1e-10, 'maxiter': 10000})
                 # CG doesn't seem to work here
                 # method = 'CG', options={'gtol': 1e-15, 'eps': 1e-15})
@@ -23,6 +23,11 @@ def main():
                 y, z = result.x[0], result.x[1]
                 print(result)
                 print(y0, '->', y, ',', z0, '->', z)
+                if result.fun < 2e-10:
+                    found = True
+                    break
+        if found:
+            break
     print('y =', nsimplify(y, tolerance = 0.001))
     print('z =', nsimplify(z, tolerance = 0.001))
 

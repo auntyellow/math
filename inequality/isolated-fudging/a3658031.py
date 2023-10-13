@@ -105,47 +105,22 @@ def main():
     print('p2(u,v) =', p2)
     print('p3(u,v) =', p3)
     # search possible p and q
-    fraction_range = [0]
-    ratio = S(16)/15
-    for i in range(-50, 51):
-        k = 0
-        for j in continued_fraction_convergents(continued_fraction(ratio**i)):
-            k = j
-            if j.q >= 100:
-                break
-        fraction_range.append(k)
-        fraction_range.insert(0, -k)
-    '''
-    for i in fraction_range:
-        found = False
-        for j in fraction_range:
-            hold = True
-            for coef in p1.coeffs():
-                if coef.subs(p, i).subs(q, j) > 0:
-                    hold = False
-                    break
-            if not hold:
-                continue
-            for coef in p2.coeffs():
-                if coef.subs(p, i).subs(q, j) < 0:
-                    hold = False
-                    break
-            if not hold:
-                continue
-            for coef in p3.coeffs():
-                if coef.subs(p, i).subs(q, j) < 0:
-                    hold = False
-                    break
-            if not hold:
-                continue
-            p0, q0 = i, j
-            print('p =', p0, ', q =', q0)
-            found = True
-            break
-        if found:
-            break
-    '''
-    p0, q0 = S(4)/101, S(74)/109
+    print()
+    print('```python')
+    print('    non_positive_coeffs = [ \\')
+    for coeff in p1.coeffs():
+        print('        ' + str(coeff) + ', \\')
+    print('    ]')
+    print('    non_negative_coeffs = [ \\')
+    for coeff in p2.coeffs():
+        print('        ' + str(coeff) + ', \\')
+    for coeff in p3.coeffs():
+        print('        ' + str(coeff) + ', \\')
+    print('    ]')
+    print('```')
+    print()
+    # result from a3658031a.py
+    p0, q0 = S(55)/829, S(61)/90
     # more simple: p0, q0 = 0, S(2)/3
     # can hardly find: p0, q0 = S(1)/3, S(2)/3
     print('g =', factor(g.subs(m, m0).subs(p, p0).subs(q, q0)))
