@@ -10,7 +10,7 @@ import com.xqbase.math.geometry.Point;
 import com.xqbase.math.polys.Poly;
 
 public class Pentagon {
-	private static final int VARS = 7;
+	private static final String VARS = "abcdefg";
 
 	// Results from pentagon.py
 	private static final String X_C4 = "b**2*c**2*d*e**2*g**2 - b**2*c**2*d*e*g**3 - b**2*c**2*e**3*f*g + b**2*c**2*e**2*f*g**2 - b**2*c*d*e**3*g**2 + b**2*c*d*e*g**4 + b**2*c*e**4*f*g - b**2*c*e**2*f*g**3 + b**2*d*e**3*g**3 - b**2*d*e**2*g**4 - b**2*e**4*f*g**2 + b**2*e**3*f*g**3 - b*c**3*d**2*e*g**2 + b*c**3*d**2*g**3 + b*c**3*e**3*f**2 - b*c**3*e**2*f**2*g + b*c**2*d**2*e**2*g**2 - b*c**2*d**2*g**4 - b*c**2*e**4*f**2 + b*c**2*e**2*f**2*g**2 - b*c*d**2*e**2*g**3 + b*c*d**2*e*g**4 + b*c*e**4*f**2*g - b*c*e**3*f**2*g**2 + c**4*d**2*e*f*g - c**4*d**2*f*g**2 - c**4*d*e**2*f**2 + c**4*d*e*f**2*g - c**3*d**2*e**2*f*g + c**3*d**2*f*g**3 + c**3*d*e**3*f**2 - c**3*d*e*f**2*g**2 + c**2*d**2*e**2*f*g**2 - c**2*d**2*e*f*g**3 - c**2*d*e**3*f**2*g + c**2*d*e**2*f**2*g**2";

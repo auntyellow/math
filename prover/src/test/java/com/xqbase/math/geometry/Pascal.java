@@ -3,7 +3,7 @@ package com.xqbase.math.geometry;
 import com.xqbase.math.polys.Poly;
 
 public class Pascal {
-	private static final int VARS = 6;
+	private static final String VARS = "abcdef";
 
 	private static Point P(String x, String y, String z) {
 		return new Point(new Poly(VARS, x), new Poly(VARS, y), new Poly(VARS, z));

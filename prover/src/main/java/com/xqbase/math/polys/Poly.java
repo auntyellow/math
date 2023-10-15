@@ -13,7 +13,7 @@ public class Poly extends HashMap<Term, int[]> {
 
 	private static Logger log = LoggerFactory.getLogger(Poly.class);
 
-	private void append(int vars, String expr, boolean minus) {
+	private void append(String vars, String expr, boolean minus) {
 		if (expr.isEmpty()) {
 			return;
 		}
@@ -39,7 +39,7 @@ public class Poly extends HashMap<Term, int[]> {
 
 	public Poly() {/**/}
 
-	public Poly(int vars, String expr) {
+	public Poly(String vars, String expr) {
 		for (String ss : expr.replace(" ", "").replace("**", "^").split("\\+")) {
 			boolean minus = false;
 			for (String s : ss.split("\\-")) {
