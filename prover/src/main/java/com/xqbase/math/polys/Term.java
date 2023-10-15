@@ -6,10 +6,17 @@ public class Term implements Comparable<Term> {
 	private transient String vars;
 	private byte[] orders;
 
-	private Term() {/**/}
+	private Term(String vars) {
+		this.vars = vars;
+	}
+
+	public Term(String vars, byte[] orders) {
+		this(vars);
+		this.orders = orders;
+	}
 
 	public Term(String vars, String expr) {
-		this.vars = vars;
+		this(vars);
 		orders = new byte[vars.length()];
 		if (!expr.isEmpty()) {
 			for (String s : expr.replace("**", "^").split("\\*")) {
@@ -18,9 +25,12 @@ public class Term implements Comparable<Term> {
 		}
 	}
 
+	public byte[] getOrders() {
+		return orders;
+	}
+
 	public Term mul(Term o) {
-		Term o2 = new Term();
-		o2.vars = vars;
+		Term o2 = new Term(vars);
 		o2.orders = new byte[orders.length];
 		for (int i = 0; i < orders.length; i ++) {
 			o2.orders[i] = (byte) (orders[i] + o.orders[i]);

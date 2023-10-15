@@ -7,9 +7,9 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Poly extends HashMap<Term, int[]> {
+public class Poly extends HashMap<Term, long[]> {
 	private static final long serialVersionUID = 1L;
-	private static final Function<Term, int[]> ZERO_COEFF = k -> new int[] {0};
+	private static final Function<Term, long[]> ZERO_COEFF = k -> new long[] {0};
 
 	private static Logger log = LoggerFactory.getLogger(Poly.class);
 
@@ -17,23 +17,26 @@ public class Poly extends HashMap<Term, int[]> {
 		if (expr.isEmpty()) {
 			return;
 		}
-		int c = 1;
+		long c = 1;
 		String s = expr;
 		if (s.charAt(0) < 'a') {
 			int i = s.indexOf('*');
 			if (i < 0) {
-				c = Integer.parseInt(s);
+				c = Long.parseLong(s);
 				s = "";
 			} else {
-				c = Integer.parseInt(s.substring(0, i));
+				c = Long.parseLong(s.substring(0, i));
 				s = s.substring(i + 1);
 			}
 		}
-		Term key = new Term(vars, s);
-		int[] coeff = computeIfAbsent(key, ZERO_COEFF);
-		coeff[0] += (minus ? -c : c);
+		append(minus ? -c : c, new Term(vars, s));
+	}
+
+	public void append(long n, Term term) {
+		long[] coeff = computeIfAbsent(term, ZERO_COEFF);
+		coeff[0] += n;
 		if (coeff[0] == 0) {
-			remove(key);
+			remove(term);
 		}
 	}
 
@@ -54,10 +57,10 @@ public class Poly extends HashMap<Term, int[]> {
 		if (isEmpty()) {
 			return "0";
 		}
-		TreeMap<Term, int[]> sorted = new TreeMap<>(this);
+		TreeMap<Term, long[]> sorted = new TreeMap<>(this);
 		StringBuilder sb = new StringBuilder();
 		sorted.forEach((k, v) -> {
-			int c = v[0];
+			long c = v[0];
 			if (sb.length() == 0) {
 				if (c == -1) {
 					sb.append('-');
@@ -99,9 +102,9 @@ public class Poly extends HashMap<Term, int[]> {
 		return sb.toString();
 	}
 
-	public Poly add(int n, Poly p) {
+	public Poly add(long n, Poly p) {
 		p.forEach((k, v) -> {
-			int[] coeff = computeIfAbsent(k, ZERO_COEFF);
+			long[] coeff = computeIfAbsent(k, ZERO_COEFF);
 			coeff[0] += n * v[0];
 			if (coeff[0] == 0) {
 				remove(k);
@@ -110,11 +113,11 @@ public class Poly extends HashMap<Term, int[]> {
 		return this;
 	}
 
-	public Poly addMul(int n, Poly p1, Poly p2) {
+	public Poly addMul(long n, Poly p1, Poly p2) {
 		p1.forEach((k1, v1) -> {
 			p2.forEach((k2, v2) -> {
 				Term k = k1.mul(k2);
-				int[] coeff = computeIfAbsent(k, ZERO_COEFF);
+				long[] coeff = computeIfAbsent(k, ZERO_COEFF);
 				coeff[0] += n * v1[0] * v2[0];
 				if (coeff[0] == 0) {
 					remove(k);
