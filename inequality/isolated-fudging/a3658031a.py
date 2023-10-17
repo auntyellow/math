@@ -1,4 +1,4 @@
-from math import sqrt, inf
+from math import sqrt
 from scipy.optimize import minimize
 from sympy import nsimplify
 
@@ -49,28 +49,11 @@ def fun(X):
     return v
 
 def main():
-    min = inf
-    initial_guesses = [0]
-    # not necessary to search range
-    '''
-    ratio = 2
-    for i in range(-10, 11):
-        initial_guesses.append(ratio**i)
-        initial_guesses.insert(0, -ratio**i)
-    '''
-    for p0 in initial_guesses:
-        print('Guess p0 =', p0, 'and all q0 ...')
-        for q0 in initial_guesses:
-            result = minimize(fun, [p0, q0], \
-                method = 'Nelder-Mead', options={'xatol': 1e-10, 'maxiter': 10000})
-            # necessary to check result.success ? 
-            if result.fun < min:
-                min = result.fun
-                p, q = result.x[0], result.x[1]
-                print(result)
-                print(p0, '->', p, ',', q0, '->', q)
-    print('p =', nsimplify(p, tolerance = 0.001))
-    print('q =', nsimplify(q, tolerance = 0.001))
+    res = minimize(fun, [0, 0], method = 'Nelder-Mead')
+    print(res)
+    p0 = nsimplify(res.x[0], tolerance = 0.001, rational = True)
+    q0 = nsimplify(res.x[1], tolerance = 0.001, rational = True)
+    print('f({},{}) ='.format(p0, q0), fun([p0, q0]))
 
 if __name__ == '__main__':
     main()

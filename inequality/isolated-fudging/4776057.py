@@ -121,7 +121,7 @@ def main():
     print('```')
     print()
     # result from a3658031a.py
-    p0, q0 = S(9)/70, S(201)/388
+    p0, q0 = S(121)/941, S(201)/388
     print('g =', factor(g.subs(m, m0).subs(p, p0).subs(q, q0)))
     print('h =', factor(h.subs(m, m0).subs(p, p0).subs(q, q0)))
     # graph of g/s5h(b=c)

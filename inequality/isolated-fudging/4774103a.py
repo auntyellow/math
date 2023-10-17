@@ -1,5 +1,5 @@
-from math import sqrt, inf
-from scipy.optimize import minimize
+from math import sqrt
+from scipy.optimize import basinhopping
 from sympy import nsimplify
 
 # https://math.stackexchange.com/q/4774103
@@ -98,31 +98,12 @@ def fun(X):
     return v
 
 def main():
-    min = inf
-    initial_guesses = [0]
-    ratio = 4
-    for i in range(-5, 6):
-        initial_guesses.append(-ratio**i)
-        initial_guesses.insert(0, ratio**i)
-    for s0 in initial_guesses:
-        found = False
-        for t0 in initial_guesses:
-            print('Guess s0 =', s0, ', t0 =', t0, '...')
-            result = minimize(fun, [s0, t0], \
-                method = 'Nelder-Mead', options={'xatol': 1e-10, 'maxiter': 10000})
-            # necessary to check result.success ? 
-            if result.fun < min:
-                min = result.fun
-                s, t = result.x[0], result.x[1]
-                print(result)
-                print(s0, '->', s, ',', t0, '->', t)
-                if result.fun < 2e-10:
-                    found = True
-                    break
-        if found:
-            break
-    print('s =', nsimplify(s, tolerance = 0.001))
-    print('t =', nsimplify(t, tolerance = 0.001))
+    res = basinhopping(fun, [0, 0], minimizer_kwargs = {'method': 'Nelder-Mead'})
+    print(res)
+    s0 = nsimplify(res.x[0], tolerance = 0.001, rational = True)
+    t0 = nsimplify(res.x[1], tolerance = 0.001, rational = True)
+    # sometimes not zero, so should verify, or set tolerance to 0.0001
+    print('f({},{}) ='.format(s0, t0), fun([s0, t0]))
 
 if __name__ == '__main__':
     main()
