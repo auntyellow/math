@@ -1,4 +1,3 @@
-from math import sqrt
 from scipy.optimize import basinhopping
 from sympy import nsimplify
 
@@ -6,6 +5,14 @@ from sympy import nsimplify
 
 def fun(X):
     s, t = X[0], X[1]
+    # make g/h positive to avoid checking f0 + g/h >= 0 (A**2 <= B**2 && A + B >= 0 -> A <= B)
+    vars = [10597*s/57 - 1105*t/114 - 947/6, 4550*s/19 - 481*t/38 - 405/2, 6887*s/57 - 364*t/57 - 308/3, s, t]
+    bounds = 0
+    for v in vars:
+        if v < 0:
+            bounds += (1 + v**2)*1e10
+    if bounds > 0:
+        return bounds
     non_negative_coeffs = [ \
         54133868544*s**2 - 5801472768*s*t - 91110302976*s + 155361024*t**2 + 4882253376*t + 38335843392, \
         21743275008*s**2 - 2322692736*s*t - 37012440192*s + 62008128*t**2 + 1976537472*t + 15749557824, \
@@ -98,7 +105,9 @@ def fun(X):
     return v
 
 def main():
-    res = basinhopping(fun, [0, 0], minimizer_kwargs = {'method': 'Nelder-Mead'})
+    # default niter is not enough
+    res = basinhopping(fun, [0, 0], niter = 1000, \
+        minimizer_kwargs = {'method': 'Nelder-Mead'})
     print(res)
     s0 = nsimplify(res.x[0], tolerance = 0.001, rational = True)
     t0 = nsimplify(res.x[1], tolerance = 0.001, rational = True)
