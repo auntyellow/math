@@ -24,5 +24,48 @@ def main():
     print('f >=', min)
     print('f =', factor(f.subs(v, min)))
 
+    f = a/(b**3 + 4) + b/(c**3 + 4) + c/(d**3 + 4) + d/(a**3 + 4) - S(2)/3
+    # assume w = min(w, x, y, z)
+    # 1. w > 0
+    print('f(wxyz) =', factor(f.subs(x, w*(1 + p)).subs(y, w*(1 + p + q)).subs(z, w*(1 + p + q + r))))
+    print('f(wxzy) =', factor(f.subs(x, w*(1 + p)).subs(z, w*(1 + p + q)).subs(y, w*(1 + p + q + r))))
+    print('f(wyxz) =', factor(f.subs(y, w*(1 + p)).subs(x, w*(1 + p + q)).subs(z, w*(1 + p + q + r))))
+    print('f(wyzx) =', factor(f.subs(y, w*(1 + p)).subs(z, w*(1 + p + q)).subs(x, w*(1 + p + q + r))))
+    print('f(wzxy) =', factor(f.subs(z, w*(1 + p)).subs(x, w*(1 + p + q)).subs(y, w*(1 + p + q + r))))
+    print('f(wzyx) =', factor(f.subs(z, w*(1 + p)).subs(y, w*(1 + p + q)).subs(x, w*(1 + p + q + r))))
+    # equality never occurs
+
+    # 2. w = 0
+    f = f.subs(w, 0)
+    # x = min(x, y, z) > 0
+    print('f(0xyz) =', factor(f.subs(y, x*(1 + p)).subs(z, x*(1 + p + q))))
+    print('f(0xzy) =', factor(f.subs(z, x*(1 + p)).subs(y, x*(1 + p + q))))
+    # y = min(x, y, z) > 0
+    print('f(0yxz) =', factor(f.subs(x, y*(1 + p)).subs(z, y*(1 + p + q))))
+    print('f(0yzx) =', factor(f.subs(z, y*(1 + p)).subs(x, y*(1 + p + q))))
+    # z = min(x, y, z) > 0
+    print('f(0zxy) =', factor(f.subs(x, z*(1 + p)).subs(y, z*(1 + p + q))))
+    print('f(0zyx) =', factor(f.subs(y, z*(1 + p)).subs(x, z*(1 + p + q))))
+    # equality never occurs
+
+    # 3.1. w = x = 0
+    print('f(00yz) =', factor(f.subs(x, 0).subs(z, y*(1 + p))))
+    print('f(00zy) =', factor(f.subs(x, 0).subs(y, z*(1 + p))))
+    # equality occurs when p = 0, i.e. y = z, or c = d
+    # 3.2. w = y = 0
+    print('f(0x0z) =', factor(f.subs(y, 0).subs(z, x*(1 + p))))
+    print('f(0z0x) =', factor(f.subs(y, 0).subs(x, z*(1 + p))))
+    # equality never occurs
+    # 3.3. w = z = 0
+    print('f(0xy0) =', factor(f.subs(z, 0).subs(y, x*(1 + p))))
+    print('f(0yx0) =', factor(f.subs(z, 0).subs(x, y*(1 + p))))
+    # equality occurs when p = 0, i.e. x = y, or b = c
+
+    # 4. w = x = y = 0 or w = x = z = 0 or w = y = z = 0
+    print('f(000z) =', factor(f.subs(x, 0).subs(y, 0)))
+    print('f(00y0) =', factor(f.subs(x, 0).subs(z, 0)))
+    print('f(0x00) =', factor(f.subs(y, 0).subs(z, 0)))
+    # equality never occurs
+
 if __name__ == '__main__':
     main()
