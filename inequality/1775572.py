@@ -13,7 +13,7 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    x, y, z = symbols('x, y, z')
+    x, y, z = symbols('x, y, z', positive = True)
     f = sum_cyc(x**4/(8*x**3 + 5*y**3), (x, y, z)) - (x + y + z)/13
     u, v = symbols('u, v', positive = True)
     # x <= z <= y

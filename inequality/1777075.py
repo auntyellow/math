@@ -13,7 +13,7 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    x, y, z = symbols('x, y, z')
+    x, y, z = symbols('x, y, z', positive = True)
     f = sum_cyc(x**3/(13*x**2 + 5*y**2), (x, y, z)) - (x + y + z)/18
     # This is not always non-negative:
     # f = sum_cyc(x**3/(8*x**2 + 3*y**2), (x, y, z)) - (x + y + z)/11
