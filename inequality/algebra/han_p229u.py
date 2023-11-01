@@ -41,6 +41,9 @@ def main():
     # equivalent to g1(uvw)
     h = 64*u**6 + 192*u**5*v + 576*u**5 + 240*u**4*v**2 - 288*u**4*v + 2160*u**4 + 160*u**3*v**3 - 2016*u**3*v**2 + 864*u**3*v + 4320*u**3 + 60*u**2*v**4 - 1008*u**2*v**3 - 1944*u**2*v**2 + 4752*u**2*v + 4860*u**2 + 12*u*v**5 + 180*u*v**4 - 648*u*v**3 + 1512*u*v**2 + 4860*u*v + 2916*u + v**6 + 18*v**5 + 135*v**4 + 540*v**3 + 1215*v**2 + 1458*v + 729
     print('h =', factor(h.subs(u, 1 + s).subs(v, 1 + s + t)))
+    # (a + b + c)**6 >= 1728*(a - b)*(a - c)*(b - c)*a*b*c
+    # equality occurs when a = 2 + 2*cos(pi/9), b = 2 - 2*cos(4*pi/9) and c = 2 - 2*cos(2*pi/9)
+    # see https://math.stackexchange.com/a/3353472
 
 if __name__ == '__main__':
     main()
