@@ -1,7 +1,7 @@
 from scipy.optimize import basinhopping
 from sympy import nsimplify
 
-# ISBN 9787312056185, p229, ex 6.44
+# ISBN 9787560349800, p198, ex 7.30
 
 def fun(X):
     bounds = 0
