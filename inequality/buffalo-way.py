@@ -43,11 +43,12 @@ def main():
     print()
 
     # for all triangles
+    a, b, c = y + z, x + z, x + y
     f = sum_cyc(a**3*b**2 - (a**2)*a*b*c, (a, b, c))
     # x <= y <= z
-    print('f(xyz) =', expand(f.subs(a, u + v).subs(b, u + v + w).subs(c, u + 2*v + w)))
+    print('f(xyz) =', expand(f.subs(y, x + u).subs(z, x + u + v)))
     # x <= z <= y
-    print('f(xzy) =', expand(f.subs(a, u + v).subs(c, u + v + w).subs(b, u + 2*v + w)))
+    print('f(xzy) =', expand(f.subs(z, x + u).subs(y, x + u + v)))
     print()
 
     print(cyc4(a*b, (a, b, c, d)), cyc3(a*b, (a, b, c, d)), sum_cyc4(a*b, (a, b, c, d)), sum_comb4(a*b, (a, b, c, d)))
@@ -139,6 +140,16 @@ def main():
     print('f(x1y) =', factor(f.subs(x, 1/(1 + u)).subs(y, 1 + v)))
     # 1 <= x <= y
     print('f(1xy) =', factor(f.subs(x, 1 + u).subs(y, 1 + u + v)))
+    print()
+
+    # ISBN 9787560349800, p314, ex 13.4
+    a, b, c = y + z, x + z, x + y
+    f = (a + b + c)*(1/a + 1/b + 1/c) - 9 - (a - c)**2/b**2
+    u, v = symbols('u, v', positive = True)
+    # x <= y <= z <-> c <= b <= a, x and z are symmetric 
+    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
+    print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v))))
+    print('f(yxz) =', factor(f.subs(x, y*(1 + u)).subs(z, y*(1 + u + v))))
     print()
 
     # https://artofproblemsolving.com/community/c6h154
