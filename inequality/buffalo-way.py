@@ -74,6 +74,11 @@ def main():
     print('f(a1bc) =', factor(f.subs(a, 1/b/c).subs(b, 1 + u).subs(c, 1 + v)))
     # a, b <= 1 <= c
     print('f(ab1c) =', factor(f.subs(c, 1/a/b).subs(a, 1/(1 + u)).subs(b, 1/(1 + v))))
+    # another approach:
+    a, b, c = x/y, y/z, z/x
+    f = 1/a + 1/b + 1/c + 6/(a + b + c) - 5
+    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
+    print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v)))) 
     print()
 
     # https://math.stackexchange.com/q/4765317
@@ -85,7 +90,7 @@ def main():
     # a, b, c <= 1
     print('f(abc1) =', factor(f.subs(a, 1/(1 + u + v + w)).subs(b, 1/(1 + u + v)).subs(c, 1/(1 + u))))
     print()
- 
+
     # https://math.stackexchange.com/q/4762885
     f = sum_cyc(x/(y + z), (x, y, z)) + 3*x*y*z/sum_cyc(x*y*(x + y), (x, y, z)) - 2
     # x <= y <= z
