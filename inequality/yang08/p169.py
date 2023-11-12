@@ -20,10 +20,10 @@ def sum_comb4(f, vars):
 
 def main():
     x1, x2, x3, x4 = symbols('x1, x2, x3, x4', positive = True)
-    n = 100
+    n = 1000
     f = sum_comb4((-x3**2 - 2*x4*x1 + 6*x1**2 + 6*x2**2 + 4*x2*x1 - x4**2 - 2*x2*x3 - 2*x3*x1 - 2*x4*x2)*(x1 - x2)**n, (x1, x2, x3, x4))
-    u, v, w = symbols('u, v, w', positive = True)
-    print('f =', factor(f.subs(x2, x1*(1 + u)).subs(x3, x1*(1 + u + v)).subs(x4, x1*(1 + u + v + w))))
+    a, u, v, w = symbols('a, u, v, w', positive = True)
+    print('f =', expand(f.subs(x1, a).subs(x2, a + u).subs(x3, a + u + v).subs(x4, a + u + v + w)))
 
 if __name__ == '__main__':
     main()
