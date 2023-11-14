@@ -24,7 +24,7 @@ def main():
 
     # Step 2: remove 1 radical
     # (2*sqrt(A*B) + 4*sqrt(C)) + (4 + C - A - B) >= 0 is obvious
-    # (2*sqrt(A*B) + 4*sqrt(C)) - (4 + C - A - B) <= 0 if and only if (and only if?):
+    # (2*sqrt(A*B) + 4*sqrt(C)) - (4 + C - A - B) <= 0 if (and only if?):
     # (2*sqrt(A*B) + 4*sqrt(C))**2 - (4 + C - A - B)**2 =
     '''
     A, B, C = symbols('A, B, C', positive = True)
@@ -34,7 +34,7 @@ def main():
     # 16*sqrt(A*B*C) - (16 + A**2 + B**2 + C**2 - 8*(A + B + C) - 2*(A*B + A*C + B*C)) <= 0
 
     # Step 3: remove 1 radical
-    # 16*sqrt(A*B*C) + (16 + A**2 + B**2 + C**2 - 8*(A + B + C) - 2*(A*B + A*C + B*C)) is obvious?
+    # 16*sqrt(A*B*C) + (16 + A**2 + B**2 + C**2 - 8*(A + B + C) - 2*(A*B + A*C + B*C)) >= 0 is obvious?
     f0 = 16 + A**2 + B**2 + C**2 - 8*(A + B + C) - 2*(A*B + A*C + B*C)
     u, v = symbols('u, v', positive = True)
     print('f0 =', factor(f0.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
