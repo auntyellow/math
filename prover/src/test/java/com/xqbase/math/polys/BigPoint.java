@@ -2,8 +2,6 @@ package com.xqbase.math.polys;
 
 import java.math.BigInteger;
 
-import com.xqbase.math.polys.BigPoly;
-
 public class BigPoint {
 	private static final BigInteger _1 = BigInteger.ONE;
 	private static final BigInteger _2 = _1.add(_1);
