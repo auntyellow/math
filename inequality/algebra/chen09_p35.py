@@ -23,7 +23,7 @@ def main():
     print('g(ux) =', factor(g.subs(x, u*(1 + x))))
 
     f3 = (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D))**2 - 64*A*B*C*D
-    # print('f3 =', factor(f3.subs(y, (1 + u)/x)))
+    print('f3 =', factor(f3.subs(y, (1 + u)/x)))
 
     # f3's one numerator
     g2 = 25*u**4*x**4 - 14*u**4*x**2 + 25*u**4 + 372*u**3*x**4 + 344*u**3*x**2 + 100*u**3 - 14*u**2*x**6 + 666*u**2*x**4 + 766*u**2*x**2 + 150*u**2 + 372*u*x**6 + 716*u*x**4 + 444*u*x**2 + 100*u + 25*x**8 + 36*x**6 + 22*x**4 + 36*x**2 + 25

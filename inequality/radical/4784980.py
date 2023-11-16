@@ -2,15 +2,6 @@ from sympy import *
 
 # https://math.stackexchange.com/q/4784980
 
-def cyc(f, vars):
-    x, y, z = vars
-    t = symbols('t', positive = True)
-    return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
-
-def sum_cyc(f, vars):
-    f1 = cyc(f, vars)
-    return f + f1 + cyc(f1, vars)
-
 def main():
     a, b, c = symbols('a, b, c', positive = True)
     A, B, C, D = a**2/(a**2 + 5*b*c/4), a**2/(b**2 + 5*c*a/4), c**2/(c**2 + 5*a*b/4), 4
