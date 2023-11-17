@@ -17,12 +17,12 @@ def main():
     # Step 3: prove that inequality holds only if
     # 2*(A*B + A*C + B*C) - A**2 - B**2 - C**2 <= 0 (II)
     A, B, C, D = symbols('A, B, C, D', positive = True)
-    f2 = 2*(A*B + A*C + B*C) - A**2 - B**2 - C**2
+    f2 = A**2 + B**2 + C**2 - 2*(A*B + A*C + B*C)
     print('f2 =', factor(f2.subs(C, (sqrt(A) + sqrt(B) + D)**2)))
 
     # Conclusion: sqrt(A) + sqrt(B) <= sqrt(C) if and only if:
-    # (I) A + B <= C, and
-    # (II) 2*(A*B + A*C + B*C) - A**2 - B**2 - C**2 <= 0
+    # (I) C - A - B >= 0, and
+    # (II) A**2 + B**2 + C**2 - 2*(A*B + A*C + B*C) >= 0
     # equality occurs if and only if (II)'s equality occurs
     # see ISBN 9787560349800, p322
  

@@ -8,8 +8,8 @@ def main():
     c0 = t**4 - 4*s1*t**3 + 2*(3*s1**2 - 4*s2)*t**2 - 4*(s1**3 - 4*s1*s2 + 16*s3)*t + (s1**2 - 4*s2)**2
     print('c0 =', expand(c0))
     # see radical3.py
-    f3 = 64*A*B*C*D - (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D))**2
-    print('Is c0 >= 0 equivalent to (I)?', expand(c0 + f3) == 0)
+    f3 = (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D))**2 - 64*A*B*C*D
+    print('Is c0 >= 0 equivalent to (III)?', expand(c0 - f3) == 0)
 
     c1 = t**3 - 3*s1*t**2 + (3*s1**2 - 4*s2)*t - (s1**3 - 4*s1*s2 + 16*s3)
     print('c1 =', expand(c1))
