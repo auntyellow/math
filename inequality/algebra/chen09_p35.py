@@ -12,7 +12,7 @@ def main():
     A, B, C, D = 1/(1 + x**2), 1/(1 + y**2), 1/(1 + z**2), S(9)/4
 
     f1 = D - A - B - C
-    u, v = symbols('u, v', positive = True)
+    u = symbols('u', positive = True)
     print('f1 =', factor(f1.subs(y, (1 + u)/x)))
 
     f2 = A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D)
