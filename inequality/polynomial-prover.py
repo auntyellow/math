@@ -123,7 +123,7 @@ def negative3(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo, z0 = 0, z1 = oo):
 
 def main():
     logging.basicConfig(level = 'INFO')
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y = symbols('x, y', positive = True)
     # https://math.stackexchange.com/q/3831395
     f = x**5 - x**3/2 - x + S(4)/5
     # https://math.stackexchange.com/q/83670
@@ -141,6 +141,7 @@ def main():
     # intermediate step for sum_cyc(x**3/(8*x**2 + 3*y**2)) - (x + y + z)/11
     # f = 33*u**7 + 69*u**6*v + 143*u**6 + 42*u**5*v**2 + 190*u**5*v + 220*u**5 + 18*u**4*v**3 + 2*u**4*v**2 + 30*u**4*v + 165*u**4 + 21*u**3*v**4 - 24*u**3*v**3 - 336*u**3*v**2 - 194*u**3*v + 77*u**3 + 9*u**2*v**5 + 39*u**2*v**4 - 141*u**2*v**3 - 401*u**2*v**2 - 81*u**2*v + 22*u**2 + 18*u*v**5 + 71*u*v**4 - 42*u*v**3 - 92*u*v**2 + 22*u*v + 33*v**5 + 77*v**4 + 33*v**3 + 22*v**2
     print('[' + negative(f) + ']')
+    z = symbols('z', positive = True)
     # https://math.stackexchange.com/q/4765187
     f = ((1 + x)*(1 + y)*(1 + z))**7 - 7**7*x**4*y**4*z**4
     print('[' + negative3(f) + ']')
