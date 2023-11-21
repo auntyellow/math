@@ -119,7 +119,8 @@ def main():
     print('f(xyz) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
     # so we guess maximum or minimum is sqrt(3) when u = v = 0 (x = y = z)
     f23 = f*f - 3
-    print('f^2 - 3 =', factor(f23.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
+    # need "factor" twice for "negative = False"?
+    print('f^2 - 3 =', factor(factor(f23.subs(y, z*(1 + u)).subs(x, z*(1 + u + v)))))
     # f23 >= 0 so sqrt(3) is minimum
     print()
 

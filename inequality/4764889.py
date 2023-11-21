@@ -13,21 +13,21 @@ def sum_cyc(f, vars):
 
 def main():
     a, b, c = symbols('a, b, c', negative = False)
-    x1 = sqrt(a/(a + b + c))
-    y1 = sqrt(b/(a + b + c))
-    z1 = sqrt(c/(a + b + c))
-    print('x*x + y*y + z*z =', factor(x1*x1 + y1*y1 + z1*z1))
+    x = sqrt(a/(a + b + c))
+    y = sqrt(b/(a + b + c))
+    z = sqrt(c/(a + b + c))
+    print('x**2 + y**2 + z**2 =', factor(x**2 + y**2 + z**2))
 
-    x, y, z = symbols('x, y, z', negative = False)
     # left ineq: 1 <= f
-    f = sum_cyc(x/(1 + x*y), (x, y, z)).subs(x, x1).subs(y, y1).subs(z, z1)
+    f = sum_cyc(x/(1 + x*y), (a, b, c))
     print('f =', factor(f))
-    A, B, C = symbols('A, B, C', negative = False)
+    # "negative = False" doesn't make sqrt(A**2) = A work
+    A, B, C = symbols('A, B, C', positive = True)
     f1 = fraction(factor(f.subs(sqrt(a), A).subs(sqrt(b), B).subs(sqrt(c), C)))
     print('g =', factor(f1[0]**2 - f1[1]**2))
 
     # right ineq: f <= 3*sqrt(3)/2
-    f = sum_cyc(x/(1 - x*y), (x, y, z)).subs(x, x1).subs(y, y1).subs(z, z1)
+    f = sum_cyc(x/(1 - x*y), (x, y, z))
     print('f =', factor(f))
     f1 = fraction(factor(f.subs(sqrt(a), A).subs(sqrt(b), B).subs(sqrt(c), C)))
     g = f1[0]**2*4 - f1[1]**2*27
