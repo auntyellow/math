@@ -5,7 +5,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -13,8 +13,8 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
-    x, y, z = symbols('x, y, z', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
+    x, y, z = symbols('x, y, z', negative = False)
     f0 = a/sqrt(a**2 + 8*b*c)
     # graph of f0(b=c)
     print('y =', factor(f0.subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
@@ -82,7 +82,7 @@ def main():
     # graph of g/3h(b=c)
     print('y =', factor((g/h/3).subs(m, mpq0[0]).subs(p, mpq0[1]).subs(q, mpq0[2]).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, mpq0[0]).subs(p, mpq0[1]).subs(q, mpq0[2])
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
     print()

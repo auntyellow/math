@@ -3,11 +3,11 @@ from sympy import *
 # ISBN 9787030207210, p171, §7.3.3, ex 9
 
 def main():
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y, z = symbols('x, y, z', negative = False)
     f = 8*x**7 + (8*z + 6*y)*x**6 + 2*y*(31*y - 77*z)*x**5 - y*(69*y**2 - 2*z**2 - 202*y*z)*x**4 \
         + 2*y*(9*y**3 + 57*y*z**2 - 85*y**2*z + 9*z**3)*x**3 + 2*y**2*z*(-13*z**2 - 62*y*z + 27*y**2)*x**2 \
         + 2*y**3*z**2*(-11*z + 27*y)*x + y**3*z**3*(z + 18*y)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v))))
     print('f(yxz) =', factor(f.subs(x, y*(1 + u)).subs(z, y*(1 + u + v))))

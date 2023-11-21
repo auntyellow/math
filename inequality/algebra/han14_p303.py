@@ -4,7 +4,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -12,9 +12,9 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     f = sum_cyc((3*a**4 + a**2*b**2)/(a**3 + b**3), (a, b, c)) - 2*(a + b + c)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v)))) # g
     print('f(bca) =', factor(f.subs(c, a*(1 + u)).subs(b, a*(1 + u + v))))
     # f(abc)'s numerator

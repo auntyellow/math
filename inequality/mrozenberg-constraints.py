@@ -4,7 +4,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -12,13 +12,13 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     f = sum_cyc(4*a*b*(a**2 + b**2) - a**4 - 5*a**2*b**2 - 2*a**2*b*c, (a, b, c))
     print('f =', factor(f))
     # see ggb, sufficient to prove:
     # 1. a, b <= 1 <= c <= 2 (red) and
     # 2. a <= 1 <= b, c <= 2 (organge)
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y, z = symbols('x, y, z', negative = False)
     xyz = x + y + z
     a0, b0, c0 = 1 - x/xyz, 1 - y/xyz, 2 - z/xyz
     print('a + b + c =', factor(a0 + b0 + c0))

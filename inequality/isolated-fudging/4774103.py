@@ -4,7 +4,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -12,8 +12,8 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
-    x, y, z = symbols('x, y, z', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
+    x, y, z = symbols('x, y, z', negative = False)
     f0 = sqrt((24*a + 13)/(24*a + 13*b*c))
     # graph of f0(b=c)
     print('y =', factor(f0.subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
@@ -58,12 +58,12 @@ def main():
     # graph of g/h(b=c)
     print('y =', factor((g/h).subs(m, mpq[0]).subs(p, mpq[1]).subs(q, mpq[2]).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, mpq[0]).subs(p, mpq[1]).subs(q, mpq[2])
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y, z = symbols('x, y, z', negative = False)
     xyz = (x + y + z)/3
     a0, b0, c0 = x/xyz, y/xyz, z/xyz
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     print('a + b + c =', factor(a0 + b0 + c0))
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     # doesn't hold
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
@@ -114,7 +114,7 @@ def main():
     print('y =', factor((g/h).subs(p, p0).subs(q, q0).subs(r, r0).subs(s, s0).subs(t, t0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2])
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
     # k1 >= 0

@@ -3,9 +3,9 @@ from sympy import *
 # ISBN 9787030207210, p172, §7.3.3, ex 10
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     f = a*(a + b)**5 + b*(c + b)**5 + c*(a + c)**5
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(++-,abc) =', factor(f.subs(c, -c).subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     print('f(++-,acb) =', factor(f.subs(c, -c).subs(c, a*(1 + u)).subs(b, a*(1 + u + v))))
     print('f(++-,bac) =', factor(f.subs(c, -c).subs(a, b*(1 + u)).subs(c, b*(1 + u + v))))

@@ -5,7 +5,7 @@ from sympy import *
 # sum_cyc(a/(b**3 + 4)) >= ?
 
 def main():
-    w, x, y, z, v, p, q, r = symbols('w, x, y, z, v, p, q, r', positive = True)
+    w, x, y, z, v, p, q, r = symbols('w, x, y, z, v, p, q, r', negative = False)
     wxyz = (w + x + y + z)/4
     a, b, c, d = w/wxyz, x/wxyz, y/wxyz, z/wxyz
     print('a + b + c + d =', factor(a + b + c + d))

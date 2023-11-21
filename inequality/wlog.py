@@ -5,20 +5,20 @@ from sympy import *
 
 def is_cyclic(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x) == f
 
 def is_symmetric(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return is_cyclic(f, vars) and f.subs(y, t).subs(x, y).subs(t, x) == f
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     f = a/(b + c) + b/(c + a) + c/(a + b) - S(3)/2
     print('Is f cyclic?', is_cyclic(f, (a, b, c)))
     print('Is f symmetric?', is_symmetric(f, (a, b, c)))
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(a≥b≥c) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
     print()
 

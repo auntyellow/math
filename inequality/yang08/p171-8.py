@@ -3,9 +3,9 @@ from sympy import *
 # ISBN 9787030207210, p171, §7.3.3, ex 8
 
 def main():
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y, z = symbols('x, y, z', negative = False)
     f = x**4*y**2 - 2*x**4*y*z + x**4*z**2 + 3*x**3*y**2*z - 2*x**3*y*z**2 - 2*x**2*y**4 - 2*x**2*y**3*z + x**2*y**2*z**2 + 2*x*y**4*z + y**6
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v))))
     print('f(yxz) =', factor(f.subs(x, y*(1 + u)).subs(z, y*(1 + u + v)))) # *
@@ -18,7 +18,7 @@ def main():
     g = u**6 + 4*u**5*v + 2*u**5 + 6*u**4*v**2 + 6*u**4*v + 4*u**3*v**3 + 6*u**3*v**2 - u**3*v - 2*u**3 + u**2*v**4 + 2*u**2*v**3 - 2*u**2*v**2 - 3*u**2*v - u**2 - u*v**3 - u*v + v**3 - v + 1
     s2 = S(1)/2
     print('g(1/2,1/2) =', factor(g.subs(u, s2).subs(v, s2)))
-    s, t = symbols('s, t', positive = True)
+    s, t = symbols('s, t', negative = False)
     print('g(uv2) =', factor(g.subs(u, s2/(1 + s + t)).subs(v, s2/(1 + s))))
     print('g(vu2) =', factor(g.subs(v, s2/(1 + s + t)).subs(u, s2/(1 + s))))
     print('g(u2v) =', factor(g.subs(u, s2/(1 + s)).subs(v, s2*(1 + t))))

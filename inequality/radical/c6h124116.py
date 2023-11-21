@@ -3,7 +3,7 @@ from sympy import *
 # https://artofproblemsolving.com/community/c6h124116
 
 def main():
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y, z = symbols('x, y, z', negative = False)
     # use conclusion from radical3.py
     A, B, C, D = 578*x**2 + 1143*y*z, 578*y**2 + 1143*z*x, 578*z**2 + 1143*x*y, 527*(253*(x + y + z)/140)**2
     f1 = D - A - B - C
@@ -14,7 +14,7 @@ def main():
     # result from c6h124116a.py
     m = S(51)/38
     print('f3(1mm) =', f3.subs(x, 1).subs(y, m).subs(z, m))
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f3(1yzm) =', factor(f3.subs(x, 1).subs(y, 1 + (m - 1)/(1 + u + v)).subs(z, 1 + (m - 1)/(1 + u))))
     print('f3(1ymz) =', factor(f3.subs(x, 1).subs(y, 1 + (m - 1)/(1 + u)).subs(z, m + v)))
     print('f3(1myz) =', factor(f3.subs(x, 1).subs(y, m + u).subs(z, m + u + v)))

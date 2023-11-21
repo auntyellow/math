@@ -5,7 +5,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -13,8 +13,8 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
-    x, y, z = symbols('x, y, z', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
+    x, y, z = symbols('x, y, z', negative = False)
     f0 = 1/(2 + a**2 + b**2)
     # graph of f0(a=b)
     print('y =', factor(f0.subs(c, x).subs(a, (3 - x)/2).subs(b, (3 - x)/2)))
@@ -25,7 +25,7 @@ def main():
     a0, b0, c0 = x/xyz, y/xyz, z/xyz
     print('a + b + c =', factor(a0 + b0 + c0))
     f = sum_cyc(f0, (a, b, c)).subs(a, a0).subs(b, b0).subs(c, c0) - S(3)/4
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print()
 

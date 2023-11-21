@@ -3,11 +3,11 @@ from sympy import *
 # https://math.stackexchange.com/q/4741634
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     x, y, z = 2 - 4*b*c/(b + a)/(c + a), 2 - 4*c*a/(c + b)/(a + b), 2 - 4*a*b/(a + c)/(b + c)
     print('x**2 + y**2 + z**2 + x*y*z =', factor(x**2 + y**2 + z**2 + x*y*z))
     # not negative because x may be negative
-    s, t, u, v = symbols('s, t, u, v', positive = True)
+    s, t, u, v = symbols('s, t, u, v', negative = False)
     print('x =', factor(x.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     print('y =', factor(y.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     print('z =', factor(z.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))

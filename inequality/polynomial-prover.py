@@ -3,7 +3,7 @@ from sympy import *
 
 def sign(f):
     # return 0 if sign is not determined
-    u, v, w = symbols('u, v, w', positive = True)
+    u, v, w = symbols('u, v, w', negative = False)
     if f.func == Pow:
         return sign(f.args[0])**f.args[1]
     if f.func == Mul:
@@ -34,7 +34,7 @@ def sign(f):
 #    example: g in 4746804.py, so try x <= y and y <= x (why usually work?)
 
 def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
-    x, y = symbols('x, y', positive = True)
+    x, y = symbols('x, y', negative = False)
 
     # try to find counterexample
     f0 = f.subs(x, x0).subs(y, y0)
@@ -43,7 +43,7 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
 
     # try to prove by buffalo way
     dx, dy = x1 - x0, y1 - y0
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     f1 = f.subs(x, x0 + (u if dx == oo else dx/(1 + u))). \
         subs(y, y0 + (v if dy == oo else dy/(1 + v)))
     f1 = factor(f1)
@@ -71,7 +71,7 @@ def negative(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo):
     return negative(f, x0, xm, y0, ym)
 
 def negative3(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo, z0 = 0, z1 = oo):
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y, z = symbols('x, y, z', negative = False)
 
     # try to find counterexample
     f0 = f.subs(x, x0).subs(y, y0).subs(z, z0)
@@ -80,7 +80,7 @@ def negative3(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo, z0 = 0, z1 = oo):
 
     # try to prove by buffalo way
     dx, dy, dz = x1 - x0, y1 - y0, z1 - z0
-    u, v, w = symbols('u, v, w', positive = True)
+    u, v, w = symbols('u, v, w', negative = False)
     f1 = f.subs(x, x0 + (u if dx == oo else dx/(1 + u))). \
         subs(y, y0 + (v if dy == oo else dy/(1 + v))). \
         subs(z, z0 + (w if dz == oo else dz/(1 + w)))
@@ -123,7 +123,7 @@ def negative3(f, x0 = 0, x1 = oo, y0 = 0, y1 = oo, z0 = 0, z1 = oo):
 
 def main():
     logging.basicConfig(level = 'INFO')
-    x, y = symbols('x, y', positive = True)
+    x, y = symbols('x, y', negative = False)
     # https://math.stackexchange.com/q/3831395
     f = x**5 - x**3/2 - x + S(4)/5
     # https://math.stackexchange.com/q/83670
@@ -141,7 +141,7 @@ def main():
     # intermediate step for sum_cyc(x**3/(8*x**2 + 3*y**2)) - (x + y + z)/11
     # f = 33*u**7 + 69*u**6*v + 143*u**6 + 42*u**5*v**2 + 190*u**5*v + 220*u**5 + 18*u**4*v**3 + 2*u**4*v**2 + 30*u**4*v + 165*u**4 + 21*u**3*v**4 - 24*u**3*v**3 - 336*u**3*v**2 - 194*u**3*v + 77*u**3 + 9*u**2*v**5 + 39*u**2*v**4 - 141*u**2*v**3 - 401*u**2*v**2 - 81*u**2*v + 22*u**2 + 18*u*v**5 + 71*u*v**4 - 42*u*v**3 - 92*u*v**2 + 22*u*v + 33*v**5 + 77*v**4 + 33*v**3 + 22*v**2
     print('[' + negative(f) + ']')
-    z = symbols('z', positive = True)
+    z = symbols('z', negative = False)
     # https://math.stackexchange.com/q/4765187
     f = ((1 + x)*(1 + y)*(1 + z))**7 - 7**7*x**4*y**4*z**4
     print('[' + negative3(f) + ']')

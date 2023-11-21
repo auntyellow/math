@@ -1,7 +1,7 @@
 from sympy import *
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     abc = a + b + c
     x, y, z = a/abc, b/abc, c/abc
     # https://artofproblemsolving.com/community/c6h156002
@@ -10,7 +10,7 @@ def main():
     f1 = D - C
     print('f1 =', factor(f1))
     f2 = D + C - A - B
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f2 =', factor(f2.subs(b, a + u).subs(c, a + u + v)))
     f3 = A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D)
     print('f3 =', factor(f3.subs(b, a + u).subs(c, a + u + v)))
@@ -25,7 +25,7 @@ def main():
     f1 = D - C
     print('f1 =', factor(f1))
     f2 = D + C - A - B
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f2 =', factor(f2.subs(b, a + u).subs(c, a + u + v)))
     # isn't always non-negative when ignore constraints A >= 0, B >= 0 and C >= 0
     f3 = A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D)

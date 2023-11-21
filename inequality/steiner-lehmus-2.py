@@ -8,7 +8,7 @@ def main():
     # ∠DBC + ∠ECA = ∠DBA + ∠ECB = β + γ, BD = CE, prove β = γ
     # 0 < b = tan β < 1, 0 < c = tan γ < 1, d = tan δ, |d| < min(b,c)
     # If δ = 0, it's Steiner-Lehmus theorem
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     d, x, y = symbols('d, x, y')
     tan_2b = 2*b/(1 - b**2)
     tan_2c = 2*c/(1 - c**2)
@@ -23,7 +23,7 @@ def main():
     # should prove this factor is always negative:
     f = b**5*c**4 + 2*b**5*c**3*d + b**5*c**2*d**2 + b**4*c**5 + 6*b**4*c**4*d + 5*b**4*c**3*d**2 - 4*b**4*c**3 - 4*b**4*c**2*d + 2*b**3*c**5*d + 5*b**3*c**4*d**2 - 4*b**3*c**4 - 14*b**3*c**3*d - 5*b**3*c**2*d**2 + 5*b**3*c**2 + 4*b**3*c*d - b**3 + b**2*c**5*d**2 - 4*b**2*c**4*d - 5*b**2*c**3*d**2 + 5*b**2*c**3 + 14*b**2*c**2*d + 4*b**2*c*d**2 - 5*b**2*c - 2*b**2*d + 4*b*c**3*d + 4*b*c**2*d**2 - 5*b*c**2 - 6*b*c*d - b*d**2 - c**3 - 2*c**2*d - c*d**2
     # https://math.stackexchange.com/a/4313860
-    u, v, w = symbols('u, v, w', positive = True)
+    u, v, w = symbols('u, v, w', negative = False)
     # 0 = d < c <= b < 1
     print('f(0,c,b) =', factor(f.subs(d, 0).subs(c, 1/(1 + u + v)).subs(b, 1/(1 + u))))
     # 0 < d < c <= b < 1

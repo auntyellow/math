@@ -14,7 +14,7 @@ def main():
     # 2*(sqrt(A*B) + sqrt(C*D)) - (D + C - A - B) <= 0 if (and only if?):
     # 4*(sqrt(A*B) + sqrt(C*D))**2 - (D + C - A - B)**2 =
 
-    A, B, C, D = symbols('A, B, C, D', positive = True)
+    A, B, C, D = symbols('A, B, C, D', negative = False)
     f20 = 4*(sqrt(A*B) + sqrt(C*D))**2 - (D + C - A - B)**2
     print('f2_0 =', expand(f20))
     # 8*sqrt(A*B*C*D) - (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D)) <= 0
@@ -27,7 +27,7 @@ def main():
     # Step 4: prove that inequality holds only if
     # A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D) >= 0 (II)
     f2 = A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D)
-    E = symbols('E', positive = True)
+    E = symbols('E', negative = False)
     print('f2 =', expand(f2.subs(D, (sqrt(A) + sqrt(B) + sqrt(C) + E)**2)))
 
     # Step 5: prove that inequality holds only if

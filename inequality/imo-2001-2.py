@@ -5,7 +5,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -13,7 +13,7 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     # sum_cyc(a/sqrt(a**2 + 8*b*c)) < 2
     # https://math.stackexchange.com/a/4785071
     # Cauchy-Schwarz:
@@ -25,7 +25,7 @@ def main():
     f = 4 - sum_cyc(a*(b + c), (a, b, c))*sum_cyc(a/(b + c)/(a**2 + 8*b*c), (a, b, c))
     f = factor(f)
     print('f =', f)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('  =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     print()
 
@@ -38,7 +38,7 @@ def main():
     f = sum_cyc(a, (a, b, c))**3 - sum_cyc(a*(a**2 + 8*b*c), (a, b, c))
     f = factor(f)
     print('f =', f)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('  =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
 
 if __name__ == '__main__':

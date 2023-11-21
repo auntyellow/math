@@ -4,15 +4,15 @@ from sympy import *
 # (a**2 + 2)*(b**2 + 2)*(c**2 + 2) >= 9*(a*b + a*c + b*c)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     f = (a**2 + 2)*(b**2 + 2)*(c**2 + 2) - 9*(a*b + a*c + b*c)
-    u, v, w = symbols('u, v, w', positive = True)
+    u, v, w = symbols('u, v, w', negative = False)
     # a <= b <= c <= 1
     print('f(abc1) =', factor(f.subs(a, 1/(1 + u + v + w)).subs(b, 1/(1 + u + v)).subs(c, 1/(1 + u))))
     # a <= b <= 1 <= c
     print('f(ab1c) =', factor(f.subs(a, 1/(1 + u + v)).subs(b, 1/(1 + u)).subs(c, 1 + w)))
     g = 4*u**4*w**2 + 8*u**4*w + 12*u**4 + 8*u**3*v*w**2 + 16*u**3*v*w + 24*u**3*v + 16*u**3*w**2 + 14*u**3*w + 30*u**3 + 4*u**2*v**2*w**2 + 8*u**2*v**2*w + 12*u**2*v**2 + 24*u**2*v*w**2 + 21*u**2*v*w + 45*u**2*v + 28*u**2*w**2 + 2*u**2*w + 21*u**2 + 8*u*v**2*w**2 + 7*u*v**2*w + 15*u*v**2 + 28*u*v*w**2 + 2*u*v*w + 21*u*v + 24*u*w**2 - 6*u*w + 6*v**2*w**2 + 3*v**2*w + 9*v**2 + 12*v*w**2 - 3*v*w + 9*w**2
-    s, t = symbols('s, t', positive = True)
+    s, t = symbols('s, t', negative = False)
     # u, v <= w
     print('g(uvw) =', factor(g.subs(u, w/(1 + s)).subs(v, w/(1 + t))))
     # w <= u, v

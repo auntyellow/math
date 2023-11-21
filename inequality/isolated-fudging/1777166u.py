@@ -7,7 +7,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -15,7 +15,7 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
     x = 2*a/sqrt((a + b)*(a + c))
     y = 2*b/sqrt((b + c)*(b + a))
     z = 2*c/sqrt((c + a)*(c + b))
@@ -48,7 +48,7 @@ def main():
     # graph of g/2h(b=c)
     print('y =', factor((g/h).subs(m, m0).subs(a, x_).subs(b, (3 - x_)/2).subs(c, (3 - x_)/2)))
     f = f.subs(m, m0)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     # a <= b <= c
     # print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     # c <= b <= a
@@ -77,7 +77,7 @@ def main():
     print('m =', m0)
     m0 = m0[0]
     f = f.subs(m, m0)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     # too slow
     # print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     # print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
@@ -128,7 +128,7 @@ def main():
     print('t =', t0)
     t0 = t0[0]
     f = f.subs(t, t0)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     # too slow
     # print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     # print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))

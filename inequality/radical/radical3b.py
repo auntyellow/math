@@ -13,7 +13,7 @@ def main():
     # 2*(sqrt(A*B) + sqrt(C*D)) - (D + C - A - B) >= 0 if:
     # 4*(sqrt(A*B) + sqrt(C*D))**2 - (D + C - A - B)**2 =
 
-    A, B, C, D = symbols('A, B, C, D', positive = True)
+    A, B, C, D = symbols('A, B, C, D', negative = False)
     f1 = 4*(sqrt(A*B) + sqrt(C*D))**2 - (D + C - A - B)**2
     print('f1 =', expand(f1))
     # 8*sqrt(A*B*C*D) - (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D)) >= 0

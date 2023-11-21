@@ -4,7 +4,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -12,8 +12,8 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    a, b, c = symbols('a, b, c', positive = True)
-    x, y, z = symbols('x, y, z', positive = True)
+    a, b, c = symbols('a, b, c', negative = False)
+    x, y, z = symbols('x, y, z', negative = False)
     f0 = a/sqrt(5 - 4*b*c)
     s5 = sqrt(5)
     # graph of f0(b=c)
@@ -42,12 +42,12 @@ def main():
     # graph of g/3h(b=c)
     print('y =', factor((g/h/3).subs(m, m0).subs(a, x).subs(b, (s5 - x)/2).subs(c, (s5 - x)/2)))
     f = f.subs(m, m0)
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y, z = symbols('x, y, z', negative = False)
     xyz = (x + y + z)/s5
     a0, b0, c0 = x/xyz, y/xyz, z/xyz
     print('a + b + c =', factor(a0 + b0 + c0))
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
     print()
@@ -71,7 +71,7 @@ def main():
     print('y =', factor((g/h/s5).subs(m, m0).subs(a, x).subs(b, (s5 - x)/2).subs(c, (s5 - x)/2)))
     f = f.subs(m, m0)
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     # doesn't hold
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))

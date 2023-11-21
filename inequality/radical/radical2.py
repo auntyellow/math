@@ -16,7 +16,7 @@ def main():
 
     # Step 3: prove that inequality holds only if
     # 2*(A*B + A*C + B*C) - A**2 - B**2 - C**2 <= 0 (II)
-    A, B, C, D = symbols('A, B, C, D', positive = True)
+    A, B, C, D = symbols('A, B, C, D', negative = False)
     f2 = A**2 + B**2 + C**2 - 2*(A*B + A*C + B*C)
     print('f2 =', factor(f2.subs(C, (sqrt(A) + sqrt(B) + D)**2)))
 

@@ -3,11 +3,11 @@ from sympy import *
 # ISBN 9787030207210, p152, §7
 
 def main():
-    x, y, z = symbols('x, y, z', positive = True)
+    x, y, z = symbols('x, y, z', negative = False)
     f0 = x**6 + y**6 + 2*x**5*y + 5*y**4*x**2 + 4*x*y**5
     print('f =', f0)
     # x >= 0 and y >= 0: obvious positive
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     # x >= 0 and y <= 0:
     f = f0.subs(y, -y)
     print('f =', f)

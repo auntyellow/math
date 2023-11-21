@@ -2,7 +2,7 @@ from sympy import *
 
 def cyc(f, vars):
     x, y, z = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
 
 def sum_cyc(f, vars):
@@ -11,7 +11,7 @@ def sum_cyc(f, vars):
 
 def cyc4(f, vars):
     a, b, c, d = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(d, t).subs(c, d).subs(b, c).subs(a, b).subs(t, a)
 
 def sum_cyc4(f, vars):
@@ -21,7 +21,7 @@ def sum_cyc4(f, vars):
 
 def cyc3(f, vars):
     a, b, c, d = vars
-    t = symbols('t', positive = True)
+    t = symbols('t', negative = False)
     return f.subs(d, t).subs(c, d).subs(b, c).subs(t, b)
 
 def sum_comb4(f, vars):
@@ -31,9 +31,9 @@ def sum_comb4(f, vars):
     return f + f1 + f2 + cyc4(f2, vars) + f3 + cyc4(f3, vars)
 
 def main():
-    a, b, c, d = symbols('a, b, c, d', positive = True)
-    x, y, z = symbols('x, y, z', positive = True)
-    u, v, w = symbols('u, v, w', positive = True)
+    a, b, c, d = symbols('a, b, c, d', negative = False)
+    x, y, z = symbols('x, y, z', negative = False)
+    u, v, w = symbols('u, v, w', negative = False)
 
     # https://artofproblemsolving.com/community/c6h522084
     f = sum_cyc(x**3 - x**2*y - x**2*z + x*y*z, (x, y, z))
@@ -125,7 +125,7 @@ def main():
 
     # https://math.stackexchange.com/q/4767134
     # https://i.stack.imgur.com/zVGzB.png
-    k, l, m, n = symbols('k, l, m, n', positive = True)
+    k, l, m, n = symbols('k, l, m, n', negative = False)
     # k, l, m, n = a^2, b^2, c^2, d^2
     f = sum_cyc4((a**2*b**2 + b**2*c**2 + c**2*a**2)/(a**6 + b**6 + c**6), (a, b, c, d)) - sum_comb4((a**4 + b**4)/(a**3*b**3), (a, b, c, d))
     # too slow
@@ -145,7 +145,7 @@ def main():
     # ISBN 9787560349800, p314, ex 13.4
     a, b, c = y + z, x + z, x + y
     f = (a + b + c)*(1/a + 1/b + 1/c) - 9 - (a - c)**2/b**2
-    u, v = symbols('u, v', positive = True)
+    u, v = symbols('u, v', negative = False)
     # x <= y <= z <-> c <= b <= a, x and z are symmetric 
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(xzy) =', factor(f.subs(z, x*(1 + u)).subs(y, x*(1 + u + v))))
