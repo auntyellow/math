@@ -6,7 +6,6 @@ def tsds(f, vars):
     deg = Poly(f).homogeneous_order()
     if deg == None:
         raise Exception(f'{f} is not homogeneous')
-    len_vars = len(vars)
     max_depth = 0
     for vars_permutation in permutations(vars):
         # TODO check if permutation is necessary
@@ -38,6 +37,7 @@ def tsds0(f, vars, deg, permute, depth):
             if term[1] < 0:
                 neg = True
                 # the polynomial is negative when a < 0 and m or n = deg
+                # FIXME try m or n = deg first
                 for exp in term[0]:
                     if exp > 0:
                         if exp == deg:
@@ -50,6 +50,7 @@ def tsds0(f, vars, deg, permute, depth):
         if neg: # there is negative term: recursive
             negative_when, positive_when, depth0 = tsds0(f1, vars, deg, True, depth + 1)
             max_depth = max(max_depth, depth0)
+            print(max_depth)
             if negative_when != None:
                 return negative_when, None, max_depth
         # TODO add positive_when
