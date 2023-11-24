@@ -1,6 +1,15 @@
 from itertools import permutations
 from sympy import *
 
+def cyc(f, vars):
+    x, y, z = vars
+    t = symbols('t', negative = False)
+    return f.subs(z, t).subs(y, z).subs(x, y).subs(t, x)
+
+def sum_cyc(f, vars):
+    f1 = cyc(f, vars)
+    return f + f1 + cyc(f1, vars)
+
 # successive difference substitution
 # return [negative_when], [[zero_when]], max_depth
 def sds(f, vars):
@@ -108,6 +117,24 @@ def main():
     f = fraction(cancel(f))[0]
     # depth = 1
     print(sds(f, [a1, a2, a3, a4, a5, a6]))
+
+    # https://math.stackexchange.com/a/2120874
+    # https://math.stackexchange.com/q/1775572
+    f = sum_cyc(x**4/(8*x**3 + 5*y**3), (x, y, z)) - (x + y + z)/13
+    # depth = 1
+    # https://math.stackexchange.com/q/1777075
+    f = sum_cyc(x**3/(13*x**2 + 5*y**2), (x, y, z)) - (x + y + z)/18
+    # depth = 4
+    # This is not always non-negative:
+    f = sum_cyc(x**3/(8*x**2 + 3*y**2), (x, y, z)) - (x + y + z)/11
+    # https://math.stackexchange.com/q/3526427
+    f = 3 - sum_cyc((x + y)**2*x**2/(x**2 + y**2)**2, (x, y, z))
+    # depth = 1
+    # https://math.stackexchange.com/q/3757790
+    f = sum_cyc((y + z)/x, (x, y, z)) + 1728*x**3*y**3*z**3/((x + y)**2*(y + z)**2*(z + x)**2*(x + y + z)**3) - 4*sum_cyc(x/(y + z), (x, y, z)) - 1
+    # depth = 1
+    f = fraction(cancel(f))[0]
+    print(sds(f, [x, y, z]))
 
 if __name__ == '__main__':
     main()
