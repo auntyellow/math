@@ -1,3 +1,4 @@
+import logging
 from itertools import permutations
 from sympy import *
 
@@ -10,63 +11,94 @@ def sum_cyc(f, vars):
     f1 = cyc(f, vars)
     return f + f1 + cyc(f1, vars)
 
+# return f's permutation and trans_mat
+def perm_poly_trans(f, vars, t_vars, perm):
+    vars_l = len(vars)
+    f1 = f
+    for i in range(vars_l):
+        f1 = f1.subs(vars[i], t_vars[i])
+    trans = zeros(vars_l)
+    eye_mat = eye(vars_l)
+    for i in range(vars_l):
+        j = perm[i]
+        f1 = f1.subs(t_vars[i], vars[j])
+        trans[i,:] = eye_mat[j,:]
+    return f1, trans
+
 # successive difference substitution
-# return [negative_when], [[zero_when]], max_depth
+# return (if non_negative, zero_when or negative_when)
 def sds(f, vars):
     deg = Poly(f).homogeneous_order()
     if deg == None:
         raise Exception(f'{f} is not homogeneous')
-    max_depth = 0
-    for vars_permutation in permutations(vars):
-        # TODO check if permutation is necessary
-        negative_when, positive_when, depth = sds0(f, vars_permutation, deg, False, 0)
-        max_depth = max(max_depth, depth)
-        if negative_when != None:
-            return negative_when, None, max_depth
-        # TODO add positive_when
-    return None, None, max_depth
-
-def sds0(f, vars, deg, permute, depth):
-    vars_len = len(vars)
-    if permute:
-        vars_permutations = permutations(vars)
-    else:
-        vars_permutations = [vars]
-    max_depth = depth
-    for vars_permutation in vars_permutations:
-        f1 = f
-        x = vars_permutation[0]
-        for i in range(1, vars_len):
-            y = vars_permutation[i]
-            # much faster than f1 = f1.subs(...) ... expand(...)
-            f1 = expand(f1.subs(x, x + y))
-            x = y
-        p = Poly(f1, vars)
-        neg = False
-        for coeff in p.coeffs():
-            if coeff < 0:
-                neg = True
-                break
-        # TODO add zero_when
-        # for term in p.terms():
-        #     for exp in term[0]:
-        if not neg:
-            continue
-        # there is negative term
-        # if a*x**deg < 0: the polynomial is negative
-        for x in vars_permutation:
-            if p.coeff_monomial(x**deg) < 0:
-                # TODO set negative_when
-                return True, None, max_depth
-        # else: recursive
-        negative_when, positive_when, depth0 = sds0(f1, vars, deg, True, depth + 1)
-        max_depth = max(max_depth, depth0)
-        if negative_when != None:
-            return negative_when, None, max_depth
-        # TODO add positive_when
-    return None, None, max_depth
+    vars_l = len(vars)
+    vars_p = list(permutations(range(vars_l)))
+    t_vars = []
+    for i in range(vars_l):
+        t_vars.append(Symbol('sds_t' + str(i)))
+    lower_mat = ones(vars_l).lower_triangular()
+    poly_trans = {}
+    for perm in vars_p:
+        f1, trans1 = perm_poly_trans(f, vars, t_vars, perm)
+        trans_matrices = poly_trans.get(f1)
+        if trans_matrices == None:
+            trans_matrices = []
+            poly_trans[f1] = trans_matrices
+        trans_matrices.append(trans1)
+    depth = 0
+    while len(poly_trans) > 0:
+        logging.info('depth = {}, polynomials = {}'.format(depth, len(poly_trans)))
+        poly_trans2 = {}
+        for f0 in poly_trans:
+            x = vars[0]
+            f1 = f0
+            for i in range(1, vars_l):
+                y = vars[i]
+                # much faster than f1 = f1.subs(...) ... expand(...)
+                f1 = expand(f1.subs(x, x + y))
+                x = y
+            p = Poly(f1, vars)
+            neg_coeff = False
+            for coeff in p.coeffs():
+                if coeff < 0:
+                    neg_coeff = True
+                    break
+            # TODO append zero_when
+            # for term in p.terms():
+            #     for exp in term[0]:
+            if not neg_coeff:
+                continue
+            # there is negative term
+            # if a*x**deg < 0: the polynomial is negative
+            trans1 = []
+            for trans in poly_trans[f0]:
+                trans1.append(lower_mat@trans)
+            for i in range(vars_l):
+                if p.coeff_monomial(vars[i]**deg) < 0:
+                    row = [0]*vars_l
+                    row[i] = 1
+                    row = Matrix([row])
+                    negative_when = set()
+                    for trans in trans1:
+                        negative_when.add(tuple((row@trans).tolist()[0]))
+                    return False, negative_when
+            # else: iterate
+            for perm in vars_p:
+                f2, trans2 = perm_poly_trans(f1, vars, t_vars, perm)
+                trans_matrices = poly_trans2.get(f2)
+                if trans_matrices == None:
+                    trans_matrices = []
+                    poly_trans2[f2] = trans_matrices
+                for trans in trans1:
+                    trans_matrices.append(trans@trans2)
+        poly_trans = poly_trans2
+        depth += 1
+    # TODO return zero_when
+    return True, None
 
 def main():
+    logging.basicConfig(level = 'INFO')
+
     x, y, z = symbols('x, y, z', negative = False)
     print(sds(x**2 - 3*x*y + y**2, [x, y]))
 
@@ -86,6 +118,7 @@ def main():
     # p171, problem 8
     f = x**4*y**2 - 2*x**4*y*z + x**4*z**2 + 3*x**3*y**2*z - 2*x**3*y*z**2 - 2*x**2*y**4 - 2*x**2*y**3*z + x**2*y**2*z**2 + 2*x*y**4*z + y**6
     # depth = 4
+    # print(sds(f, [x, y, z]))
 
     # p171, problem 9
     f = 8*x**7 + (8*z + 6*y)*x**6 + 2*y*(31*y - 77*z)*x**5 - y*(69*y**2 - 2*z**2 - 202*y*z)*x**4 \
@@ -115,8 +148,8 @@ def main():
     f = (a1 - a2)/(a2 + a3) + (a2 - a3)/(a3 + a4) + (a3 - a4)/(a4 + a5) + \
         (a4 - a5)/(a5 + a6) + (a5 - a6)/(a6 + a1) + (a6 - a1)/(a1 + a2)
     f = fraction(cancel(f))[0]
-    # depth = 1
-    print(sds(f, [a1, a2, a3, a4, a5, a6]))
+    # TODO test if depth = 1
+    # print(sds(f, [a1, a2, a3, a4, a5, a6]))
 
     # https://math.stackexchange.com/a/2120874
     # https://math.stackexchange.com/q/1775572
@@ -127,6 +160,10 @@ def main():
     # depth = 4
     # This is not always non-negative:
     f = sum_cyc(x**3/(8*x**2 + 3*y**2), (x, y, z)) - (x + y + z)/11
+    f = fraction(cancel(f))[0] # DEBUG
+    print(sds(f, [x, y, z]))   # DEBUG
+    # FIXME negative_when is wrong
+    print('f(3,1,0) =', f.subs(x, 3).subs(y, 1).subs(z, 0))
     # https://math.stackexchange.com/q/3526427
     f = 3 - sum_cyc((x + y)**2*x**2/(x**2 + y**2)**2, (x, y, z))
     # depth = 1
