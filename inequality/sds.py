@@ -13,6 +13,7 @@ def sds(f, vars):
     vars_r_1 = range(1, vars_l)
     vars_p = list(itertools.permutations(vars_r))
     vars_p01 = list(itertools.product([0, 1], repeat = vars_l))
+    # all-zero is trivial
     vars_p01.pop(0)
     t_vars = []
     for i in vars_r:
@@ -36,6 +37,7 @@ def sds(f, vars):
             trans_list = poly_trans_list[f0]
             if not neg:
                 # find zero: try 0/1 for each var
+                # so this approach can't find all non-trivial general solutions
                 for perm in vars_p01:
                     f1 = f0
                     for i in vars_r:
@@ -107,7 +109,7 @@ def main():
     logging.basicConfig(level = 'INFO')
 
     x, y, z = symbols('x, y, z', negative = False)
-    # no non-trival zeros
+    # only a trivial zero
     print(sds(x**2 + x*y + y**2, [x, y]))
     # zero at (0, 0, 1)
     print(sds(x**2 + x*y + y**2, [x, y, z]))
@@ -115,44 +117,65 @@ def main():
     print(sds(x**2 - 2*x*y + y**2, [x, y]))
     # negative
     print(sds(x**2 - 3*x*y + y**2, [x, y]))
-    f = x/y + y/z + z/x - 3
-    f = fraction(cancel(f))[0]
-    # zero at (0, 0, 1) and (1, 1, 1)
-    # print(sds(f, [x, y, z]))
+    f = x**2*y + y**2*z + z**2*x - 3*x*y*z
+    # zero at (1, 0, 0) and (1, 1, 1)
+    print(sds(f, [x, y, z]))
+    m, n = 4660046610375530309, 7540113804746346429 # fibonacci 91, 92
+    f = (m*x - n*y)**2
+    # zero at (n, m)
+    print(sds(f, [x, y]))
 
     # ISBN 9787030207210, p169, §7.3.2, problem 5
     a1, a2, a3, a4, a5, a6 = symbols('a1, a2, a3, a4, a5, a6', negative = False)
+    '''
     f = a1/(a2 + a3) + a2/(a3 + a4) + a3/(a4 + a5) + a4/(a5 + a1) + a5/(a1 + a2) - S(5)/2
-    f = fraction(cancel(f))[0]
+    fn, fd = fraction(cancel(f))
     # depth = 1
-    # print(sds(f, [a1, a2, a3, a4, a5]))
+    non_neg, zero_ats = sds(fn, [a1, a2, a3, a4, a5])
+    print('f =', f)
+    print('Is f non-negative?', non_neg)
+    print('f\'s numerator is zero at:', zero_ats)
+    # remove extraneous solutions
+    for zero_at in zero_ats:
+        z1, z2, z3, z4, z5 = zero_at
+        if fd.subs({a1: z1, a2: z2, a3: z3, a4: z4, a5: z5}) != 0:
+            print('f is zero at:', zero_at)
 
     # p170, §7.3.3
     f = a1/(a2 + a3) + a2/(a3 + a4) + a3/(a4 + a1) + a4/(a1 + a2) - 2
-    f = fraction(cancel(f))[0]
-    # depth = 2
-    # print(sds(f, [a1, a2, a3, a4]))
+    fn, fd = fraction(cancel(f))
+    # depth = 1
+    non_neg, zero_ats = sds(fn, [a1, a2, a3, a4])
+    print('f =', f)
+    print('Is f non-negative?', non_neg)
+    print('f\'s numerator is zero at:', zero_ats)
+    # remove extraneous solutions
+    for zero_at in zero_ats:
+        z1, z2, z3, z4 = zero_at
+        if fd.subs({a1: z1, a2: z2, a3: z3, a4: z4}) != 0:
+            print('f is zero at:', zero_at)
+    # can't find general solution (u, v, u, v)
 
     # p171, problem 8
     f = x**4*y**2 - 2*x**4*y*z + x**4*z**2 + 3*x**3*y**2*z - 2*x**3*y*z**2 - 2*x**2*y**4 - 2*x**2*y**3*z + x**2*y**2*z**2 + 2*x*y**4*z + y**6
     # depth = 5
-    # print(sds(f, [x, y, z]))
+    print(sds(f, [x, y, z]))
 
     # p171, problem 9
     f = 8*x**7 + (8*z + 6*y)*x**6 + 2*y*(31*y - 77*z)*x**5 - y*(69*y**2 - 2*z**2 - 202*y*z)*x**4 \
         + 2*y*(9*y**3 + 57*y*z**2 - 85*y**2*z + 9*z**3)*x**3 + 2*y**2*z*(-13*z**2 - 62*y*z + 27*y**2)*x**2 \
         + 2*y**3*z**2*(-11*z + 27*y)*x + y**3*z**3*(z + 18*y)
     # depth = 18
-    # print(sds(f, [x, y, z]))
+    print(sds(f, [x, y, z]))
 
     # p172, problem 10
     a, b, c = symbols('a, b, c', negative = False)
+    # only a trivial zero
     f = a*(a + b)**5 + b*(c + b)**5 + c*(a + c)**5
-    # TODO really non-zero?
     # depth = 4
-    # print(sds(f.subs(c, -c), [a, b, c]))
+    print(sds(f.subs(c, -c), [a, b, c]))
     # depth = 4
-    # print(sds(f.subs(c, -c).subs(b, -b), [a, b, c]))
+    print(sds(f.subs(c, -c).subs(b, -b), [a, b, c]))
 
     # p172, problem 11
     f = 2572755344*x**4 - 20000000*x**3*y - 6426888360*x**3*z + 30000000*x**2*y**2 \
@@ -160,7 +183,7 @@ def main():
         - 1301377672*y**3*z + 3553788598*y**2*z**2 - 3864133016*y*z**3 \
         + 1611722090*z**4
     # depth = 46
-    # print(sds(f, [x, y, z]))
+    print(sds(f, [x, y, z]))
 
     # p174, 6-var Vasc's conjuction
     # see also: https://math.stackexchange.com/a/4693459
@@ -168,18 +191,17 @@ def main():
         (a4 - a5)/(a5 + a6) + (a5 - a6)/(a6 + a1) + (a6 - a1)/(a1 + a2)
     f = fraction(cancel(f))[0]
     # TODO test if depth = 2
-    # print(sds(f, [a1, a2, a3, a4, a5, a6]))
+    print(sds(f, [a1, a2, a3, a4, a5, a6]))
 
     # https://math.stackexchange.com/a/2120874
     # https://math.stackexchange.com/q/1775572
     f = sum_cyc(x**4/(8*x**3 + 5*y**3), (x, y, z)) - (x + y + z)/13
-    # TODO zero at (1, 0, 0)?
     # depth = 2
     # https://math.stackexchange.com/q/1777075
     f = sum_cyc(x**3/(13*x**2 + 5*y**2), (x, y, z)) - (x + y + z)/18
     # depth = 5
     # This is not always non-negative:
-    # f = sum_cyc(x**3/(8*x**2 + 3*y**2), (x, y, z)) - (x + y + z)/11
+    f = sum_cyc(x**3/(8*x**2 + 3*y**2), (x, y, z)) - (x + y + z)/11
     f = fraction(cancel(f))[0]
     # depth = 3, negative
     print(sds(f, [x, y, z]))
@@ -191,6 +213,12 @@ def main():
     f = sum_cyc((y + z)/x, (x, y, z)) + 1728*x**3*y**3*z**3/((x + y)**2*(y + z)**2*(z + x)**2*(x + y + z)**3) - 4*sum_cyc(x/(y + z), (x, y, z)) - 1
     # depth = 2
     f = fraction(cancel(f))[0]
+    print(sds(f, [x, y, z]))
+    '''
+
+    # https://artofproblemsolving.com/community/c6h124116
+    f = 220420308492342014250620007*x**8 + 881771706131270506700660856*x**7*y + 881771706131270506700660856*x**7*z + 3096138123320744208128844996*x**6*y**2 - 5398368991135052102868689208*x**6*y*z + 3096138123320744208128844996*x**6*z**2 - 119918369019191401348647608*x**5*y**3 - 6317290613092581261875578024*x**5*y**2*z - 6317290613092581261875578024*x**5*y*z**2 - 119918369019191401348647608*x**5*z**3 - 3095840712538537114054903510*x**4*y**4 + 6167413358885797384485337960*x**4*y**3*z - 3302116036095801486494237060*x**4*y**2*z**2 + 6167413358885797384485337960*x**4*y*z**3 - 3095840712538537114054903510*x**4*z**4 - 119918369019191401348647608*x**3*y**5 + 6167413358885797384485337960*x**3*y**4*z + 4218636235748732497452371920*x**3*y**3*z**2 + 4218636235748732497452371920*x**3*y**2*z**3 + 6167413358885797384485337960*x**3*y*z**4 - 119918369019191401348647608*x**3*z**5 + 3096138123320744208128844996*x**2*y**6 - 6317290613092581261875578024*x**2*y**5*z - 3302116036095801486494237060*x**2*y**4*z**2 + 4218636235748732497452371920*x**2*y**3*z**3 - 3302116036095801486494237060*x**2*y**2*z**4 - 6317290613092581261875578024*x**2*y*z**5 + 3096138123320744208128844996*x**2*z**6 + 881771706131270506700660856*x*y**7 - 5398368991135052102868689208*x*y**6*z - 6317290613092581261875578024*x*y**5*z**2 + 6167413358885797384485337960*x*y**4*z**3 + 6167413358885797384485337960*x*y**3*z**4 - 6317290613092581261875578024*x*y**2*z**5 - 5398368991135052102868689208*x*y*z**6 + 881771706131270506700660856*x*z**7 + 220420308492342014250620007*y**8 + 881771706131270506700660856*y**7*z + 3096138123320744208128844996*y**6*z**2 - 119918369019191401348647608*y**5*z**3 - 3095840712538537114054903510*y**4*z**4 - 119918369019191401348647608*y**3*z**5 + 3096138123320744208128844996*y**2*z**6 + 881771706131270506700660856*y*z**7 + 220420308492342014250620007*z**8
+    # depth = ?, zero at (38, 51, 51)
     print(sds(f, [x, y, z]))
 
 if __name__ == '__main__':

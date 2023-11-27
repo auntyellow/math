@@ -11,6 +11,10 @@ def main():
     f2 = A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D)
     print('f2 =', factor(f2))
     f3 = (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D))**2 - 64*A*B*C*D
+    # cancel(f3) doesn't work here
+    print('f3 =', factor(f3))
+    # zero can be found by SDS?
+
     # result from c6h124116a.py
     m = S(51)/38
     print('f3(1mm) =', f3.subs(x, 1).subs(y, m).subs(z, m))
