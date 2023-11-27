@@ -124,6 +124,10 @@ def main():
     f = (m*x - n*y)**2
     # zero at (n, m)
     print(sds(f, [x, y]))
+    # TODO why doesn't work?
+    f = (3*x - y)**2 + (x - z)**2
+    # zero at (3, 1, 3)
+    print(sds(f, [x, y, z]))
 
     # ISBN 9787030207210, p169, §7.3.2, problem 5
     a1, a2, a3, a4, a5, a6 = symbols('a1, a2, a3, a4, a5, a6', negative = False)
