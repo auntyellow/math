@@ -27,7 +27,7 @@ def sds(f, vars):
     poly_trans_list = {f: [eye_mat]}
     zero_at = set()
 
-    for depth in range(1000):
+    for depth in range(100):
         logging.info('depth = {}, polynomials = {}'.format(depth, len(poly_trans_list)))
         poly_trans_list_1 = {}
         for f0 in poly_trans_list:
@@ -125,11 +125,12 @@ def main():
     # zero at (1, 0, 0) and (1, 1, 1)
     print(sds(f, [x, y, z]))
     m, n = 4660046610375530309, 7540113804746346429 # fibonacci 91, 92
-    f = (m*x - n*y)**2
+    # 1e-22, can be proved positive by Tn within 99 iterations
+    f = (m*x - n*y)**2 + (x**2 + y**2)/10000000000000000000000
     # zero at (n, m)
     print(sds(f, [x, y]))
-    # TODO why doesn't work?
-    f = (3*x - y)**2 + (x - z)**2
+    # 1e-8, can be proved positive by Tn within 16 iterations; An doesn't work
+    f = (3*x - y)**2 + (x - z)**2 + (x**2 + y**2 + z**2)/100000000
     # zero at (3, 1, 3)
     print(sds(f, [x, y, z]))
 
