@@ -6,7 +6,7 @@ from sympy import *
 def sds(f, vars):
     deg = Poly(f).homogeneous_order()
     if deg == None:
-        raise Exception(f'{f} is not homogeneous')
+        raise Exception('{} is not homogeneous'.format(f))
 
     vars_l = len(vars)
     vars_r = range(vars_l)
@@ -20,11 +20,14 @@ def sds(f, vars):
         t_vars.append(Symbol('sds_t' + str(i)))
 
     eye_mat = eye(vars_l)
-    upper_mat = ones(vars_l).upper_triangular()
+    upper_mat = zeros(vars_l)
+    for i in vars_r:
+        for j in range(i, vars_l):
+            upper_mat[i, j] = S(1)/(j + 1)
     poly_trans_list = {f: [eye_mat]}
     zero_at = set()
 
-    for depth in range(100):
+    for depth in range(1000):
         logging.info('depth = {}, polynomials = {}'.format(depth, len(poly_trans_list)))
         poly_trans_list_1 = {}
         for f0 in poly_trans_list:
@@ -48,7 +51,7 @@ def sds(f, vars):
                             col.append([i])
                         col = Matrix(col)
                         for trans in trans_list:
-                            zero_at.add(tuple(trans@col))
+                            zero_at.add(tuple(trans*col))
                 continue
 
             # there is negative term
@@ -61,7 +64,7 @@ def sds(f, vars):
                     col[i][0] = 1
                     col = Matrix(col)
                     for trans in trans_list:
-                        negative_at.add(tuple(trans@col))
+                        negative_at.add(tuple(trans*col))
                     return False, negative_at
 
             # else: iterate
@@ -78,9 +81,10 @@ def sds(f, vars):
                 for i in vars_r_1:
                     y = vars[i]
                     # much faster than f1 = f1.subs(...) ... expand(...)
-                    f1 = expand(f1.subs(x, x + y))
+                    f1 = expand(f1.subs(x, x/i + y))
                     x = y
-                trans_1 = trans_1@upper_mat
+                f1 = expand(f1.subs(x, x/vars_l))
+                trans_1 *= upper_mat
 
                 # update next poly_trans_list
                 trans_list_1 = poly_trans_list_1.get(f1)
@@ -88,7 +92,7 @@ def sds(f, vars):
                     trans_list_1 = []
                     poly_trans_list_1[f1] = trans_list_1
                 for trans_0 in trans_list:
-                    trans_list_1.append(trans_0@trans_1)
+                    trans_list_1.append(trans_0*trans_1)
 
         poly_trans_list = poly_trans_list_1
         if len(poly_trans_list) == 0:
