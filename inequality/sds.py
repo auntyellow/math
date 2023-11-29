@@ -6,11 +6,13 @@ from sympy import *
 # tsds = False (default): Use upper triangular matrix (A_n)
 # tsds = True: Use column stochastic matrix (T_n)
 # See https://arxiv.org/pdf/0904.4030v3.pdf
-def sds(f, vars, tsds = False):
+def sds(f, tsds = False):
     deg = Poly(f).homogeneous_order()
     if deg == None:
         raise Exception('{} is not homogeneous'.format(f))
 
+    # TODO sort vars
+    vars = list(f.free_symbols)
     vars_l = len(vars)
     vars_r = range(vars_l)
     vars_r_1 = range(1, vars_l)
@@ -18,9 +20,7 @@ def sds(f, vars, tsds = False):
     vars_p01 = list(itertools.product([0, 1], repeat = vars_l))
     # all-zero is trivial
     vars_p01.pop(0)
-    t_vars = []
-    for i in vars_r:
-        t_vars.append(Symbol('sds_t' + str(i)))
+    temp_vars = [Symbol('sds_temp_' + str(i)) for i in vars_r]
 
     eye_mat = eye(vars_l)
     upper_mat = zeros(vars_l)
@@ -35,54 +35,43 @@ def sds(f, vars, tsds = False):
         poly_list_1 = []
         poly_trans_list_1 = {}
         for f0 in poly_trans_list:
-            p = Poly(f0, vars)
+            trans_list = poly_trans_list[f0]
+            # find negative or zero: try 0/1 for each var
+            for perm in vars_p01:
+                f1 = f0
+                for i in vars_r:
+                    f1 = f1.subs(vars[i], perm[i])
+                if f1 <= 0:
+                    col = []
+                    for i in perm:
+                        col.append([i])
+                    col = Matrix(col)
+                    non_positive_at = set()
+                    for trans in trans_list:
+                        non_positive_at.add(tuple(trans*col))
+                    if f1 < 0:
+                        return False, non_positive_at
+                    zero_at.update(non_positive_at)
+
+            # substitute and iterate if there is negative terms
             neg = False
-            for coeff in p.coeffs():
+            for coeff in Poly(f0, vars).coeffs():
                 if coeff < 0:
                     neg = True
                     break
-            trans_list = poly_trans_list[f0]
-            if not neg:
-                # find zero: try 0/1 for each var
-                # so this approach can't find all non-trivial general solutions
-                for perm in vars_p01:
-                    f1 = f0
-                    for i in vars_r:
-                        f1 = f1.subs(vars[i], perm[i])
-                    if f1 == 0:
-                        col = []
-                        for i in perm:
-                            col.append([i])
-                        col = Matrix(col)
-                        for trans in trans_list:
-                            zero_at.add(tuple(trans*col))
-                continue
-
-            # there is negative term
-            # if a*x**deg < 0: the polynomial is negative
-            for i in vars_r:
-                if p.coeff_monomial(vars[i]**deg) < 0:
-                    negative_at = set()
-                    # [[0]]*vars_l doesn't work ([0] is a shallow copy)
-                    col = [[0] for _ in vars_r]
-                    col[i][0] = 1
-                    col = Matrix(col)
-                    for trans in trans_list:
-                        negative_at.add(tuple(trans*col))
-                    return False, negative_at
-            # else: substitute and iterate
-            poly_list_1.append(f0)
+            if neg:
+                poly_list_1.append(f0)
 
         # substitution takes much time, so do it after negative check
         for f0 in poly_list_1:
             for perm in vars_p:
                 f1 = f0
                 for i in vars_r:
-                    f1 = f1.subs(vars[i], t_vars[i])
+                    f1 = f1.subs(vars[i], temp_vars[i])
                 trans_1 = zeros(vars_l)
                 for i in vars_r:
                     j = perm[i]
-                    f1 = f1.subs(t_vars[i], vars[j])
+                    f1 = f1.subs(temp_vars[i], vars[j])
                     trans_1[i,:] = eye_mat[j,:]
                 x = vars[0]
                 for i in vars_r_1:
@@ -122,16 +111,13 @@ def main():
 
     x, y, z = symbols('x, y, z', negative = False)
     # only a trivial zero
-    print(sds(x**2 + x*y + y**2, [x, y]))
-    # zero at (0, 0, 1)
-    print(sds(x**2 + x*y + y**2, [x, y, z]))
+    print(sds(x**2 + x*y + y**2))
     # zero at (1, 1)
-    print(sds(x**2 - 2*x*y + y**2, [x, y]))
+    print(sds(x**2 - 2*x*y + y**2))
     # negative
-    print(sds(x**2 - 3*x*y + y**2, [x, y]))
-    f = x**2*y + y**2*z + z**2*x - 3*x*y*z
+    print(sds(x**2 - 3*x*y + y**2))
     # zero at (1, 0, 0) and (1, 1, 1)
-    print(sds(f, [x, y, z]))
+    print(sds(x**2*y + y**2*z + z**2*x - 3*x*y*z))
     print()
 
     '''
@@ -140,19 +126,19 @@ def main():
     m, n = 4660046610375530309, 7540113804746346429 # fibonacci 91, 92
     f = (m*x - n*y)**2
     # zero at (n, m), on sds's boundary but not on tsds's boundary
-    print(sds(f, [x, y]))
+    print(sds(f))
     # 1e-22, can be proved positive by tsds within 99 iterations
     f = (m*x - n*y)**2 + (x**2 + y**2)/10000000000000000000000
-    print(sds(f, [x, y], tsds = True))
+    print(sds(f, tsds = True))
     # example 2:
     # zero at (3, 1, 3), not on sds or tsds's boundary
     # f = (3*x - y)**2 + (x - z)**2
     # 1e-8, can be proved positive by tsds within 16 iterations
     f = (3*x - y)**2 + (x - z)**2 + (x**2 + y**2 + z**2)/100000000
-    # print(sds(f, [x, y, z], tsds = True))
+    # print(sds(f, tsds = True))
     # sds works for 1/6 but doesn't seem to work for 1/7
     f = (3*x - y)**2 + (x - z)**2 + (x**2 + y**2 + z**2)/6
-    print(sds(f, [x, y, z]))
+    print(sds(f))
     print()
     '''
 
@@ -162,7 +148,7 @@ def main():
     f = a1/(a2 + a3) + a2/(a3 + a4) + a3/(a4 + a5) + a4/(a5 + a1) + a5/(a1 + a2) - S(5)/2
     fn, fd = fraction(cancel(f))
     # depth = 1
-    non_neg, zero_ats = sds(fn, [a1, a2, a3, a4, a5])
+    non_neg, zero_ats = sds(fn)
     print('f =', f)
     print('Is f non-negative?', non_neg)
     print('f\'s numerator is zero at:', zero_ats)
@@ -177,7 +163,7 @@ def main():
     f = a1/(a2 + a3) + a2/(a3 + a4) + a3/(a4 + a1) + a4/(a1 + a2) - 2
     fn, fd = fraction(cancel(f))
     # depth = 1
-    non_neg, zero_ats = sds(fn, [a1, a2, a3, a4])
+    non_neg, zero_ats = sds(fn)
     print('f =', f)
     print('Is f non-negative?', non_neg)
     print('f\'s numerator is zero at:', zero_ats)
@@ -192,7 +178,7 @@ def main():
     # p171, problem 8
     f = x**4*y**2 - 2*x**4*y*z + x**4*z**2 + 3*x**3*y**2*z - 2*x**3*y*z**2 - 2*x**2*y**4 - 2*x**2*y**3*z + x**2*y**2*z**2 + 2*x*y**4*z + y**6
     # depth = 5
-    print(sds(f, [x, y, z]))
+    print(sds(f))
     print()
 
     # p171, problem 9
@@ -200,7 +186,7 @@ def main():
         + 2*y*(9*y**3 + 57*y*z**2 - 85*y**2*z + 9*z**3)*x**3 + 2*y**2*z*(-13*z**2 - 62*y*z + 27*y**2)*x**2 \
         + 2*y**3*z**2*(-11*z + 27*y)*x + y**3*z**3*(z + 18*y)
     # depth = 18
-    print(sds(f, [x, y, z]))
+    print(sds(f))
     print()
 
     # p172, problem 10
@@ -208,9 +194,9 @@ def main():
     # only a trivial zero
     f = a*(a + b)**5 + b*(c + b)**5 + c*(a + c)**5
     # depth = 4
-    print(sds(f.subs(c, -c), [a, b, c]))
+    print(sds(f.subs(c, -c)))
     # depth = 4
-    print(sds(f.subs(c, -c).subs(b, -b), [a, b, c]))
+    print(sds(f.subs(c, -c).subs(b, -b)))
     print()
 
     # p172, problem 11
@@ -219,9 +205,8 @@ def main():
         - 1301377672*y**3*z + 3553788598*y**2*z**2 - 3864133016*y*z**3 \
         + 1611722090*z**4
     # depth = 46
-    print(sds(f, [x, y, z]))
+    print(sds(f))
     print()
-    '''
 
     # p174, 6-var Vasc's conjuction
     # see also: https://math.stackexchange.com/a/4693459
@@ -229,9 +214,8 @@ def main():
         (a4 - a5)/(a5 + a6) + (a5 - a6)/(a6 + a1) + (a6 - a1)/(a1 + a2)
     f = fraction(cancel(f))[0]
     # TODO test if depth = 2 by tsds; sds may not work
-    print(sds(f, [a1, a2, a3, a4, a5, a6], tsds = True))
+    print(sds(f, tsds = True))
 
-    '''
     # https://math.stackexchange.com/a/2120874
     # https://math.stackexchange.com/q/1775572
     f = sum_cyc(x**4/(8*x**3 + 5*y**3), (x, y, z)) - (x + y + z)/13
@@ -243,7 +227,7 @@ def main():
     f = sum_cyc(x**3/(8*x**2 + 3*y**2), (x, y, z)) - (x + y + z)/11
     f = fraction(cancel(f))[0]
     # depth = 3, negative
-    print(sds(f, [x, y, z]))
+    print(sds(f))
     print('f(2,3,5) =', f.subs(x, 2).subs(y, 3).subs(z, 5))
     # https://math.stackexchange.com/q/3526427
     f = 3 - sum_cyc((x + y)**2*x**2/(x**2 + y**2)**2, (x, y, z))
@@ -252,13 +236,22 @@ def main():
     f = sum_cyc((y + z)/x, (x, y, z)) + 1728*x**3*y**3*z**3/((x + y)**2*(y + z)**2*(z + x)**2*(x + y + z)**3) - 4*sum_cyc(x/(y + z), (x, y, z)) - 1
     # depth = 2
     f = fraction(cancel(f))[0]
-    print(sds(f, [x, y, z]))
+    print(sds(f))
 
     # https://artofproblemsolving.com/community/c6h124116
     f = 220420308492342014250620007*x**8 + 881771706131270506700660856*x**7*y + 881771706131270506700660856*x**7*z + 3096138123320744208128844996*x**6*y**2 - 5398368991135052102868689208*x**6*y*z + 3096138123320744208128844996*x**6*z**2 - 119918369019191401348647608*x**5*y**3 - 6317290613092581261875578024*x**5*y**2*z - 6317290613092581261875578024*x**5*y*z**2 - 119918369019191401348647608*x**5*z**3 - 3095840712538537114054903510*x**4*y**4 + 6167413358885797384485337960*x**4*y**3*z - 3302116036095801486494237060*x**4*y**2*z**2 + 6167413358885797384485337960*x**4*y*z**3 - 3095840712538537114054903510*x**4*z**4 - 119918369019191401348647608*x**3*y**5 + 6167413358885797384485337960*x**3*y**4*z + 4218636235748732497452371920*x**3*y**3*z**2 + 4218636235748732497452371920*x**3*y**2*z**3 + 6167413358885797384485337960*x**3*y*z**4 - 119918369019191401348647608*x**3*z**5 + 3096138123320744208128844996*x**2*y**6 - 6317290613092581261875578024*x**2*y**5*z - 3302116036095801486494237060*x**2*y**4*z**2 + 4218636235748732497452371920*x**2*y**3*z**3 - 3302116036095801486494237060*x**2*y**2*z**4 - 6317290613092581261875578024*x**2*y*z**5 + 3096138123320744208128844996*x**2*z**6 + 881771706131270506700660856*x*y**7 - 5398368991135052102868689208*x*y**6*z - 6317290613092581261875578024*x*y**5*z**2 + 6167413358885797384485337960*x*y**4*z**3 + 6167413358885797384485337960*x*y**3*z**4 - 6317290613092581261875578024*x*y**2*z**5 - 5398368991135052102868689208*x*y*z**6 + 881771706131270506700660856*x*z**7 + 220420308492342014250620007*y**8 + 881771706131270506700660856*y**7*z + 3096138123320744208128844996*y**6*z**2 - 119918369019191401348647608*y**5*z**3 - 3095840712538537114054903510*y**4*z**4 - 119918369019191401348647608*y**3*z**5 + 3096138123320744208128844996*y**2*z**6 + 881771706131270506700660856*y*z**7 + 220420308492342014250620007*z**8
     # zero at (38, 51, 51), not on sds or tsds's boundary
-    # print(sds(f, [x, y, z]))
+    # print(sds(f))
+    # ISBN 9787542878021, p112, §7.2, ex6
     '''
+
+    abcd = (a1 + a2 + a3 + a4)/4
+    a, b, c, d = a1/abcd, a2/abcd, a3/abcd, a4/abcd
+    f = a/(b**3 + 4) + b/(c**3 + 4) + c/(d**3 + 4) + d/(a**3 + 4) - S(2)/3
+    # cancel(f) is too slow, why?
+    f = fraction(factor(f))[0]
+    # depth = 1, show zero_at more clearly than xiong23_p112.py
+    print(sds(f))
 
 if __name__ == '__main__':
     main()
