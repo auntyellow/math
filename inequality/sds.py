@@ -32,6 +32,7 @@ def sds(f, vars, tsds = False):
 
     for depth in range(100):
         logging.info('depth = {}, polynomials = {}'.format(depth, len(poly_trans_list)))
+        poly_list_1 = []
         poly_trans_list_1 = {}
         for f0 in poly_trans_list:
             p = Poly(f0, vars)
@@ -69,8 +70,11 @@ def sds(f, vars, tsds = False):
                     for trans in trans_list:
                         negative_at.add(tuple(trans*col))
                     return False, negative_at
+            # else: substitute and iterate
+            poly_list_1.append(f0)
 
-            # else: iterate
+        # substitution takes much time, so do it after negative check
+        for f0 in poly_list_1:
             for perm in vars_p:
                 f1 = f0
                 for i in vars_r:
