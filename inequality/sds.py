@@ -11,8 +11,7 @@ def sds(f, tsds = False):
     if deg == None:
         raise Exception('{} is not homogeneous'.format(f))
 
-    # TODO sort vars
-    vars = list(f.free_symbols)
+    vars = sorted(f.free_symbols, key = str)
     vars_l = len(vars)
     vars_r = range(vars_l)
     vars_r_1 = range(1, vars_l)
