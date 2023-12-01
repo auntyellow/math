@@ -1,7 +1,5 @@
 from sympy import *
 
-def dist2(A, B):
-    return (A[0] - B[0])**2 + (A[1] - B[1])**2 + (A[2] - B[2])**2
 
 def main():
     # ISBN 9787030655189, p224, ex 8.5.2
