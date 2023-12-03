@@ -5,7 +5,7 @@ from sympy import nsimplify
 def fun(X):
     u, v = X[0], X[1]
     bounds = 0
-    for w in [u, v]:
+    for w in X:
         if w < 0:
             bounds += (1 + w**2)*1e10
     if bounds > 0:

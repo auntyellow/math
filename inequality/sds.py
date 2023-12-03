@@ -7,8 +7,7 @@ from sympy import *
 # tsds = True: Use column stochastic matrix (T_n)
 # See https://arxiv.org/pdf/0904.4030v3.pdf
 def sds(f, tsds = False):
-    deg = Poly(f).homogeneous_order()
-    if deg == None:
+    if not Poly(f).is_homogeneous:
         raise Exception('{} is not homogeneous'.format(f))
 
     vars = sorted(f.free_symbols, key = str)
@@ -302,7 +301,12 @@ def main():
     f = x**3 + y**3 + z**3 - 3*x*y*z
     print(sds(f))
     # ex 4.4
-    f = (x**2 + y**2 + z**2)**2 - 3*(x**3*y + y**3*z + z**3*x)
+    a, b, c = symbols('a, b, c', negative = False)
+    f = (a**2 + b**2 + c**2)**2 - 3*(a**3*b + b**3*c + c**3*a)
+    # sds and tsds don't work
+    # ex 4.5
+    x1, x2, x3, x4, x5 = symbols('x1, x2, x3, x4, x5', negative = False)
+    f = (x1**2 + 3*x5**2)*(x2**2 + 3*x5**2)*(x3**2 + 3*x5**2)*(x4**2 + 3*x5**2) - 16*(x1 + x2 + x3 + x4)**2*x5**6
     # sds and tsds don't work
     '''
 
