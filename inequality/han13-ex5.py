@@ -5,6 +5,13 @@ from sympy import *
 def main():
     a, b, c, d = symbols('a, b, c, d', negative = False)
     p, q, r, s = symbols('p, q, r, s', negative = False)
+    # (0, 0, 0, 0)
+    f = (a**2 + 3)*(b**2 + 3)*(c**2 + 3)*(d**2 + 3) - 16*a**2 - 81
+    # (sqrt(5)/3, sqrt(5)/3, 0, 0)
+    f = (a**2 + 3)*(b**2 + 3)*(c**2 + 3)*(d**2 + 3) - 16*(a + b)**2 - S(704)/9
+    # (1, 1, 1, 0)
+    f = (a**2 + 3)*(b**2 + 3)*(c**2 + 3)*(d**2 + 3) - 16*(a + b + c)**2 - 48
+    # (1, 1, 1, 1)
     f = (a**2 + 3)*(b**2 + 3)*(c**2 + 3)*(d**2 + 3) - 16*(a + b + c + d)**2
     print('f(abcd1) =', factor(f.subs(d, 1/(1 + p)).subs(c, 1/(1 + p + q)).subs(b, 1/(1 + p + q + r)).subs(a, 1/(1 + p + q + r + s))))
     print('f(abc1d) =', factor(f.subs(d, 1 + p).subs(c, 1/(1 + q)).subs(b, 1/(1 + q + r)).subs(a, 1/(1 + q + r + s))))
