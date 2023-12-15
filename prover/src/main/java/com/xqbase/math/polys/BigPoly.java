@@ -2,6 +2,7 @@ package com.xqbase.math.polys;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
@@ -106,6 +107,7 @@ public class BigPoly extends HashMap<BigMono, BigInteger[]> {
 		return sb.toString();
 	}
 
+	/** @return this + n*p */
 	public BigPoly add(BigInteger n, BigPoly p) {
 		p.forEach((k, v) -> {
 			BigInteger[] coeff = computeIfAbsent(k, ZERO_COEFF);
@@ -117,6 +119,7 @@ public class BigPoly extends HashMap<BigMono, BigInteger[]> {
 		return this;
 	}
 
+	/** @return this + n*p1*p2 */
 	public BigPoly addMul(BigInteger n, BigPoly p1, BigPoly p2) {
 		p1.forEach((k1, v1) -> {
 			p2.forEach((k2, v2) -> {
@@ -147,6 +150,44 @@ public class BigPoly extends HashMap<BigMono, BigInteger[]> {
 					append(coeff[0], new BigMono(vars, expsCoeff));
 		});
 		return coeffs;
+	}
+
+	private BigPoly subs(char from, Function<BigPoly, BigPoly> toFunc) {
+		TreeMap<BigMono, BigPoly> ai = coeffsOf(String.valueOf(from));
+		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
+		Map.Entry<BigMono, BigPoly> lt = ai.firstEntry();
+		log.trace(lt.toString());
+		String vars = lt.getKey().getVars();
+		BigPoly p = lt.getValue();
+		short[] exps = new short[vars.length()];
+		int fromIndex = vars.indexOf(from);
+		for (int i = lt.getKey().getExps()[fromIndex] - 1; i >= 0; i --) {
+			exps[fromIndex] = (short) i;
+			BigPoly p1 = toFunc.apply(p);
+			BigPoly a = ai.get(new BigMono(vars, exps));
+			if (a != null) {
+				p1.add(_1, a);
+			}
+			p = p1;
+			log.trace(i + "," + p.size());
+		}
+		return p;
+	}
+
+	public BigPoly subs(char from, BigInteger to) {
+		return subs(from, p -> {
+			BigPoly p1 = new BigPoly();
+			p1.add(to, p);
+			return p1;
+		});
+	}
+
+	public BigPoly subs(char from, BigPoly to) {
+		return subs(from, p -> {
+			BigPoly p1 = new BigPoly();
+			p1.addMul(_1, p, to);
+			return p1;
+		});
 	}
 
 	public static BigPoly det(BigPoly p11, BigPoly p12, BigPoly p21, BigPoly p22) {

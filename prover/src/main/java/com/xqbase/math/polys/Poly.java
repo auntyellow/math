@@ -1,6 +1,7 @@
 package com.xqbase.math.polys;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
 
@@ -102,10 +103,11 @@ public class Poly extends HashMap<Mono, long[]> {
 		return sb.toString();
 	}
 
+	/** @return this + n*p */
 	public Poly add(long n, Poly p) {
 		p.forEach((k, v) -> {
 			long[] coeff = computeIfAbsent(k, ZERO_COEFF);
-			coeff[0] += n * v[0];
+			coeff[0] += n*v[0];
 			if (coeff[0] == 0) {
 				remove(k);
 			}
@@ -113,12 +115,13 @@ public class Poly extends HashMap<Mono, long[]> {
 		return this;
 	}
 
+	/** @return this + n*p1*p2 */
 	public Poly addMul(long n, Poly p1, Poly p2) {
 		p1.forEach((k1, v1) -> {
 			p2.forEach((k2, v2) -> {
 				Mono k = k1.mul(k2);
 				long[] coeff = computeIfAbsent(k, ZERO_COEFF);
-				coeff[0] += n * v1[0] * v2[0];
+				coeff[0] += n*v1[0]*v2[0];
 				if (coeff[0] == 0) {
 					remove(k);
 				}
@@ -143,6 +146,44 @@ public class Poly extends HashMap<Mono, long[]> {
 					append(coeff[0], new Mono(vars, expsCoeff));
 		});
 		return coeffs;
+	}
+
+	private Poly subs(char from, Function<Poly, Poly> toFunc) {
+		TreeMap<Mono, Poly> ai = coeffsOf(String.valueOf(from));
+		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
+		Map.Entry<Mono, Poly> lt = ai.firstEntry();
+		log.trace(lt.toString());
+		String vars = lt.getKey().getVars();
+		Poly p = lt.getValue();
+		byte[] exps = new byte[vars.length()];
+		int fromIndex = vars.indexOf(from);
+		for (int i = lt.getKey().getExps()[fromIndex] - 1; i >= 0; i --) {
+			exps[fromIndex] = (byte) i;
+			Poly p1 = toFunc.apply(p);
+			Poly a = ai.get(new Mono(vars, exps));
+			if (a != null) {
+				p1.add(1, a);
+			}
+			p = p1;
+			log.trace(i + "," + p.size());
+		}
+		return p;
+	}
+
+	public Poly subs(char from, long to) {
+		return subs(from, p -> {
+			Poly p1 = new Poly();
+			p1.add(to, p);
+			return p1;
+		});
+	}
+
+	public Poly subs(char from, Poly to) {
+		return subs(from, p -> {
+			Poly p1 = new Poly();
+			p1.addMul(1, p, to);
+			return p1;
+		});
 	}
 
 	public static Poly det(Poly p11, Poly p12, Poly p21, Poly p22) {
