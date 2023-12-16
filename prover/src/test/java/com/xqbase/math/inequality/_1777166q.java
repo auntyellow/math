@@ -1,7 +1,6 @@
 package com.xqbase.math.inequality;
 
 import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Properties;
 
 import com.xqbase.math.polys.Poly;
@@ -10,9 +9,9 @@ public class _1777166q {
 	private static final String VARS = "pqrsuv";
 
 	/** @param nonPos for Java */
-	private static void genCode(PrintStream out, String p, boolean nonPos) {
+	private static void genCode(String p, boolean nonPos) {
 		for (Poly coeff : new Poly(VARS, p).coeffsOf("uv").values()) {
-			out.println("        " + coeff + ", \\");
+			System.out.println("        " + coeff + ", \\");
 			// Generate Java Code
 			/*
 			String expr = coeff.toString();
@@ -33,11 +32,11 @@ public class _1777166q {
 					break;
 				}
 			}
-			out.println("    c = " + expr + ";");
-			out.println("v += c " + (nonPos ? ">" : "<") + " 0 ? c*c : 0;");
-			out.println("if (v >= u) {");
-			out.println("\treturn v;");
-			out.println("}");
+			System.out.println("c = " + expr + ";");
+			System.out.println("v += c " + (nonPos ? ">" : "<") + " 0 ? c*c : 0;");
+			System.out.println("if (v >= u) {");
+			System.out.println("\treturn v;");
+			System.out.println("}");
 			*/
 		}
 	}
@@ -49,14 +48,12 @@ public class _1777166q {
 		try (InputStream in = _1777166q.class.getResourceAsStream("1777166q.properties")) {
 			p.load(in);
 		}
-		try (PrintStream out = new PrintStream("1777166q.py")) {
-			out.println("    non_negative_coeffs = [ \\");
-			genCode(out, p.getProperty("k1"), false);
-			genCode(out, p.getProperty("k3"), false);
-			out.println("    ]");
-			out.println("    non_positive_coeffs = [ \\");
-			genCode(out, p.getProperty("k2"), true);
-			out.println("    ]");
-		}
+		System.out.println("    non_negative_coeffs = [ \\");
+		genCode(p.getProperty("k1"), false);
+		genCode(p.getProperty("k3"), false);
+		System.out.println("    ]");
+		System.out.println("    non_positive_coeffs = [ \\");
+		genCode(p.getProperty("k2"), true);
+		System.out.println("    ]");
 	}
 }

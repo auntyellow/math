@@ -1,10 +1,8 @@
 package com.xqbase.math.inequality;
 
-import java.io.PrintStream;
-
 import com.xqbase.math.polys.Poly;
 
-public class Yang2008p169Tiny {
+public class Yang08P169Tiny {
 	private static final String VARS = "abcduvw";
 	private static final String SUB_POLY = "-x3**2 - 2*x4*x1 + 6*x1**2 + 6*x2**2 + 4*x2*x1 - x4**2 - 2*x2*x3 - 2*x3*x1 - 2*x4*x2";
 
@@ -40,7 +38,6 @@ public class Yang2008p169Tiny {
 	public static void main(String[] args) throws Exception {
 		int n = 40;
 		Poly p = new Poly();
-		long t0 = System.currentTimeMillis();
 		p.addMul(1, pow("a - b", n), sym("abcd"));
 		p.addMul(1, pow("a - c", n), sym("acbd"));
 		p.addMul(1, pow("a - d", n), sym("adbc"));
@@ -48,10 +45,6 @@ public class Yang2008p169Tiny {
 		p.addMul(1, pow("b - d", n), sym("bdac"));
 		p.addMul(1, pow("c - d", n), sym("cdab"));
 		p = subsAll(p);
-		long t1 = System.currentTimeMillis();
-		System.out.println(t1 - t0);
-		try (PrintStream out = new PrintStream("Yang2008p169Tiny.py")) {
-			out.println(p);
-		}
+		System.out.println("f = " + p);
 	}
 }
