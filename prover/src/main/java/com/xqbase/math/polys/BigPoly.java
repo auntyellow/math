@@ -156,12 +156,12 @@ public class BigPoly extends HashMap<BigMono, BigInteger[]> {
 		TreeMap<BigMono, BigPoly> ai = coeffsOf(String.valueOf(from));
 		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
 		Map.Entry<BigMono, BigPoly> lt = ai.firstEntry();
-		log.trace(lt.toString());
-		String vars = lt.getKey().getVars();
+		BigMono lm = lt.getKey();
+		String vars = lm.getVars();
 		BigPoly p = lt.getValue();
 		short[] exps = new short[vars.length()];
 		int fromIndex = vars.indexOf(from);
-		for (int i = lt.getKey().getExps()[fromIndex] - 1; i >= 0; i --) {
+		for (int i = lm.getExps()[fromIndex] - 1; i >= 0; i --) {
 			exps[fromIndex] = (short) i;
 			BigPoly p1 = toFunc.apply(p);
 			BigPoly a = ai.get(new BigMono(vars, exps));
@@ -169,7 +169,6 @@ public class BigPoly extends HashMap<BigMono, BigInteger[]> {
 				p1.add(_1, a);
 			}
 			p = p1;
-			log.trace(i + "," + p.size());
 		}
 		return p;
 	}

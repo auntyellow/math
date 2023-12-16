@@ -152,12 +152,12 @@ public class Poly extends HashMap<Mono, long[]> {
 		TreeMap<Mono, Poly> ai = coeffsOf(String.valueOf(from));
 		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
 		Map.Entry<Mono, Poly> lt = ai.firstEntry();
-		log.trace(lt.toString());
-		String vars = lt.getKey().getVars();
+		Mono lm = lt.getKey();
+		String vars = lm.getVars();
 		Poly p = lt.getValue();
 		byte[] exps = new byte[vars.length()];
 		int fromIndex = vars.indexOf(from);
-		for (int i = lt.getKey().getExps()[fromIndex] - 1; i >= 0; i --) {
+		for (int i = lm.getExps()[fromIndex] - 1; i >= 0; i --) {
 			exps[fromIndex] = (byte) i;
 			Poly p1 = toFunc.apply(p);
 			Poly a = ai.get(new Mono(vars, exps));
@@ -165,7 +165,6 @@ public class Poly extends HashMap<Mono, long[]> {
 				p1.add(1, a);
 			}
 			p = p1;
-			log.trace(i + "," + p.size());
 		}
 		return p;
 	}
