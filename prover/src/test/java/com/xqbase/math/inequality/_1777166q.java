@@ -3,6 +3,8 @@ package com.xqbase.math.inequality;
 import java.io.InputStream;
 import java.util.Properties;
 
+import com.xqbase.math.polys.LongPoly;
+import com.xqbase.math.polys.MutableLong;
 import com.xqbase.math.polys.Poly;
 
 public class _1777166q {
@@ -10,7 +12,7 @@ public class _1777166q {
 
 	/** @param nonPos for Java */
 	private static void genCode(String p, boolean nonPos) {
-		for (Poly coeff : new Poly(VARS, p).coeffsOf("uv").values()) {
+		for (Poly<MutableLong> coeff : new LongPoly(VARS, p).coeffsOf("uv").values()) {
 			System.out.println("        " + coeff + ", \\");
 			// Generate Java Code
 			/*

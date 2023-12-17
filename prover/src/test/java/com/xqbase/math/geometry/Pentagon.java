@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import com.xqbase.math.polys.Poly;
+import com.xqbase.math.polys.LongPoly;
 
 public class Pentagon {
 	private static final String VARS = "abcdefg";
@@ -34,7 +34,7 @@ public class Pentagon {
 	}
 
 	private static Point P(String x, String y, String z) {
-		return new Point(new Poly(VARS, x), new Poly(VARS, y), new Poly(VARS, z));
+		return new Point(new LongPoly(VARS, x), new LongPoly(VARS, y), new LongPoly(VARS, z));
 	}
 
 	public static void main(String[] args) {

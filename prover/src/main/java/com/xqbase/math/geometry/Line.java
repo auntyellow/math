@@ -1,11 +1,16 @@
 package com.xqbase.math.geometry;
 
+import com.xqbase.math.polys.LongPoly;
+import com.xqbase.math.polys.MutableLong;
 import com.xqbase.math.polys.Poly;
 
 public class Line {
-	private Poly u, v, w;
+	private static final MutableLong _1 = new MutableLong(1);
+	private static final MutableLong __1 =new MutableLong(-1);
 
-	public Line(Poly u, Poly v, Poly w) {
+	private LongPoly u, v, w;
+
+	public Line(LongPoly u, LongPoly v, LongPoly w) {
 		this.u = u;
 		this.v = v;
 		this.w = w;
@@ -19,29 +24,29 @@ public class Line {
 	}
 
 	/** a line passing through p and parallel to direction (x, y) */
-	public Line(Point p, Poly x, Poly y) {
-		u = new Poly().addMul(1, p.getZ(), y);
-		v = new Poly().addMul(-1, p.getZ(), x);
-		w = new Poly().addMul(1, p.getY(), x).addMul(-1, p.getX(), y);
+	public Line(Point p, LongPoly x, LongPoly y) {
+		u = (LongPoly) new LongPoly().addMul(_1, p.getZ(), y);
+		v = (LongPoly) new LongPoly().addMul(__1, p.getZ(), x);
+		w = (LongPoly) new LongPoly().addMul(_1, p.getY(), x).addMul(__1, p.getX(), y);
 	}
 
-	public Poly getU() {
+	public LongPoly getU() {
 		return u;
 	}
 
-	public Poly getV() {
+	public LongPoly getV() {
 		return v;
 	}
 
-	public Poly getW() {
+	public LongPoly getW() {
 		return w;
 	}
 
 	public boolean passesThrough(Point p) {
-		Poly g = new Poly();
-		g.addMul(1, u, p.getX());
-		g.addMul(1, v, p.getY());
-		g.addMul(1, w, p.getZ());
+		LongPoly g = new LongPoly();
+		g.addMul(_1, u, p.getX());
+		g.addMul(_1, v, p.getY());
+		g.addMul(_1, w, p.getZ());
 		return g.isEmpty();
 	}
 

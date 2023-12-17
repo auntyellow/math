@@ -4,20 +4,20 @@ import java.util.Arrays;
 
 public class Mono implements Comparable<Mono> {
 	private transient String vars;
-	private byte[] exps;
+	private short[] exps;
 
 	private Mono(String vars) {
 		this.vars = vars;
 	}
 
-	public Mono(String vars, byte[] exps) {
+	public Mono(String vars, short[] exps) {
 		this(vars);
 		this.exps = exps;
 	}
 
 	public Mono(String vars, String expr) {
 		this(vars);
-		exps = new byte[vars.length()];
+		exps = new short[vars.length()];
 		if (!expr.isEmpty()) {
 			for (String s : expr.replace("**", "^").split("\\*")) {
 				exps[vars.indexOf(s.charAt(0))] = (s.length() == 1 ? 1 : Byte.parseByte(s.substring(2)));
@@ -29,15 +29,15 @@ public class Mono implements Comparable<Mono> {
 		return vars;
 	}
 
-	public byte[] getExps() {
+	public short[] getExps() {
 		return exps;
 	}
 
 	public Mono mul(Mono o) {
 		Mono o2 = new Mono(vars);
-		o2.exps = new byte[exps.length];
+		o2.exps = new short[exps.length];
 		for (int i = 0; i < exps.length; i ++) {
-			o2.exps[i] = (byte) (exps[i] + o.exps[i]);
+			o2.exps[i] = (short) (exps[i] + o.exps[i]);
 		}
 		return o2;
 	}

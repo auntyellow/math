@@ -1,12 +1,12 @@
 package com.xqbase.math.geometry;
 
-import com.xqbase.math.polys.Poly;
+import com.xqbase.math.polys.LongPoly;
 
 public class Pascal {
 	private static final String VARS = "abcdef";
 
 	private static Point P(String x, String y, String z) {
-		return new Point(new Poly(VARS, x), new Poly(VARS, y), new Poly(VARS, z));
+		return new Point(new LongPoly(VARS, x), new LongPoly(VARS, y), new LongPoly(VARS, z));
 	}
 
 	public static void main(String[] args) {
@@ -15,14 +15,14 @@ public class Pascal {
 		Point c = P("a", "b", "1");
 		Circle circle = new Circle(a, b, c);
 		System.out.println("Circle: " + circle);
-		Poly one = new Poly(VARS, "1");
-		Point d = circle.pickPoint(a, one, new Poly(VARS, "d"));
+		LongPoly one = new LongPoly(VARS, "1");
+		Point d = circle.pickPoint(a, one, new LongPoly(VARS, "d"));
 		System.out.println("D: " + d);
 		System.out.println("Is D on circle? " + circle.passesThrough(d));
-		Point e = circle.pickPoint(a, one, new Poly(VARS, "e"));
+		Point e = circle.pickPoint(a, one, new LongPoly(VARS, "e"));
 		System.out.println("E: " + e);
 		System.out.println("Is E on circle? " + circle.passesThrough(e));
-		Point f = circle.pickPoint(a, one, new Poly(VARS, "f"));
+		Point f = circle.pickPoint(a, one, new LongPoly(VARS, "f"));
 		System.out.println("F: " + f);
 		System.out.println("Is F on circle? " + circle.passesThrough(f));
 		Line ab = new Line(a, b);

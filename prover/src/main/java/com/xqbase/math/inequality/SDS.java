@@ -14,10 +14,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.xqbase.math.polys.Mono;
-import com.xqbase.math.polys.Poly;
+import com.xqbase.math.polys.MutableLong;
+import com.xqbase.math.polys.LongPoly;
 
 public class SDS {
-	private static Logger log = LoggerFactory.getLogger(Poly.class);
+	private static Logger log = LoggerFactory.getLogger(LongPoly.class);
 
 	public static class SDSResult {
 		private Set<List<Long>> zeroAt = new HashSet<>();
@@ -60,16 +61,16 @@ public class SDS {
 		return result;
 	}
 
-	public static SDSResult sds(Poly f) {
+	public static SDSResult sds(LongPoly f) {
 		return sds(f, false);
 	}
 
-	public static SDSResult tsds(Poly f) {
+	public static SDSResult tsds(LongPoly f) {
 		return sds(f, true);
 	}
 
 	/** @param tsds unused */
-	public static SDSResult sds(Poly f, boolean tsds) {
+	public static SDSResult sds(LongPoly f, boolean tsds) {
 		// check homogeneous
 		int deg = 0;
 		String vars = "";
@@ -92,22 +93,22 @@ public class SDS {
 		}
 		List<List<Integer>> perms = permutations(varSeq);
 
-		HashMap<Poly, List<int[][]>> polyTransList = new HashMap<>();
+		HashMap<LongPoly, List<int[][]>> polyTransList = new HashMap<>();
 		polyTransList.put(f, Collections.singletonList(new int[0][0]));
 
 		SDSResult result = new SDSResult();
 		for (int depth = 0; depth <= 100; depth ++) {
 			log.debug("depth = " + depth + ", polynomials = " + polyTransList.size());
-			Iterator<Map.Entry<Poly, List<int[][]>>> it = polyTransList.entrySet().iterator();
+			Iterator<Map.Entry<LongPoly, List<int[][]>>> it = polyTransList.entrySet().iterator();
 			while (it.hasNext()) {
-				Map.Entry<Poly, List<int[][]>> entry = it.next();
-				Poly f0 = entry.getKey();
+				Map.Entry<LongPoly, List<int[][]>> entry = it.next();
+				LongPoly f0 = entry.getKey();
 				// List<int[][]> transList = entry.getValue();
 				// TODO find negative or zero: try 0/1 for each var
 				// substitute and iterate if there are negative terms
 				boolean neg = false;
-				for (long[] coeff : f0.values()) {
-					if (coeff[0] < 0) {
+				for (MutableLong coeff : f0.values()) {
+					if (coeff.signum() < 0) {
 						neg = true;
 						break;
 					}
@@ -120,15 +121,15 @@ public class SDS {
 				return result;
 			}
 			// substitution takes much time, so do it after negative check
-			for (Map.Entry<Poly, List<int[][]>> entry : polyTransList.entrySet()) {
-				Poly f0 = entry.getKey();
+			for (Map.Entry<LongPoly, List<int[][]>> entry : polyTransList.entrySet()) {
+				LongPoly f0 = entry.getKey();
 				// List<int[][]> transList = entry.getValue();
 				for (List<Integer> perm : perms) {
 					// f1 = perm(f0)
-					Poly f1 = new Poly();
-					for (Map.Entry<Mono, long[]> term : f0.entrySet()) {
-						byte[] exps = term.getKey().getExps();
-						byte[] exps1 = new byte[vars.length()];
+					LongPoly f1 = new LongPoly();
+					for (Map.Entry<Mono, MutableLong> term : f0.entrySet()) {
+						short[] exps = term.getKey().getExps();
+						short[] exps1 = new short[vars.length()];
 						for (int i = 0; i < exps.length; i ++) {
 							exps1[perm.get(i).intValue()] = exps[i];
 						}
@@ -136,7 +137,7 @@ public class SDS {
 					}
 					// TODO trans
 					// TODO subs
-					// TODO update next poly_trans_list
+					// TODO update next polyTransList
 				}
 			}
 		}
