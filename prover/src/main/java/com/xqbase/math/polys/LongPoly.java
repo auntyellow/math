@@ -2,7 +2,6 @@ package com.xqbase.math.polys;
 
 public class LongPoly extends Poly<MutableLong> {
 	private static final long serialVersionUID = 1L;
-	private static final MutableLong ZERO = new MutableLong(0);
 	private static final MutableLong ONE = new MutableLong(1);
 	private static final MutableLong MINUS_ONE = ONE.negate();
 
@@ -10,11 +9,6 @@ public class LongPoly extends Poly<MutableLong> {
 
 	public LongPoly(String var, String expr) {
 		super(var, expr);
-	}
-
-	@Override
-	protected MutableLong zero() {
-		return ZERO;
 	}
 
 	@Override

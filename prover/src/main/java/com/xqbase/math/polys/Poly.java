@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> {
 	private static final long serialVersionUID = 1L;
 
-	protected abstract T zero();
 	protected abstract T one();
 	protected abstract T minusOne();
 	protected abstract T newZero();
