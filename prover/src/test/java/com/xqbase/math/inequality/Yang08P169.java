@@ -37,10 +37,11 @@ public class Yang08P169 {
 		for (int i = 0; i < 4; i ++) {
 			p = p.replace("x" + (i + 1), "" + vars.charAt(i));
 		}
-		return new BigPoly(VARS, p);
+		return subsAll(new BigPoly(VARS, p));
 	}
 
 	public static void main(String[] args) throws Exception {
+		long t0 = System.currentTimeMillis();
 		int n = 1000;
 		BigPoly p = new BigPoly();
 		p.addMul(_1, pow("a - b", n), sym("abcd"));
@@ -49,10 +50,10 @@ public class Yang08P169 {
 		p.addMul(_1, pow("b - c", n), sym("bcad"));
 		p.addMul(_1, pow("b - d", n), sym("bdac"));
 		p.addMul(_1, pow("c - d", n), sym("cdab"));
-		p = subsAll(p);
-		// avoid console crash in IDE
+		// avoid IDE console crash
 		try (PrintStream out = new PrintStream("Yang08P169.py")) {
 			out.println("f = " + p);
 		}
+		System.out.println(System.currentTimeMillis() - t0);
 	}
 }
