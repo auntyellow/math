@@ -1,5 +1,6 @@
 package com.xqbase.math.inequality;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 
 import com.xqbase.math.polys.BigPoly;
@@ -49,6 +50,9 @@ public class Yang08P169 {
 		p.addMul(_1, pow("b - d", n), sym("bdac"));
 		p.addMul(_1, pow("c - d", n), sym("cdab"));
 		p = subsAll(p);
-		System.out.println("f = " + p);
+		// avoid console crash in IDE
+		try (PrintStream out = new PrintStream("Yang08P169.py")) {
+			out.println("f = " + p);
+		}
 	}
 }

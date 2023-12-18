@@ -75,12 +75,12 @@ public class MutableLong extends MutableNumber<MutableLong> {
 	}
 
 	@Override
-	protected MutableLong multiply(MutableLong n1) {
-		return new MutableLong(n[0]*n1.n[0]);
+	protected void addMul(MutableLong n1, MutableLong n2) {
+		n[0] += n1.n[0]*n2.n[0];
 	}
 
 	@Override
-	protected MutableLong multiply(MutableLong n1, MutableLong n2) {
-		return new MutableLong(n[0]*n1.n[0]*n2.n[0]);
+	protected void addMul(MutableLong n1, MutableLong n2, MutableLong n3) {
+		n[0] += n1.n[0]*n2.n[0]*n3.n[0];
 	}
 }

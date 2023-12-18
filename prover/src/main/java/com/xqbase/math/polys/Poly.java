@@ -112,7 +112,7 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 	public Poly<T> add(T n, Poly<T> p) {
 		p.forEach((k, v) -> {
 			T coeff = computeIfAbsent(k, k_ -> newZero());
-			coeff.add(n.multiply(v));
+			coeff.addMul(n, v);
 			if (coeff.signum() == 0) {
 				remove(k);
 			}
@@ -126,7 +126,7 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 			p2.forEach((k2, v2) -> {
 				Mono k = k1.mul(k2);
 				T coeff = computeIfAbsent(k, k_ -> newZero());
-				coeff.add(n.multiply(v1, v2));
+				coeff.addMul(n, v1, v2);
 				if (coeff.signum() == 0) {
 					remove(k);
 				}
