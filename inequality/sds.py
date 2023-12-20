@@ -93,7 +93,6 @@ def sds(f, tsds = False):
                     trans_list_1.append(trans_0*trans_1)
 
         poly_trans_list = poly_trans_list_1
-        depth += 1
     return None, zero_at
 
 def cyc(f, vars):
