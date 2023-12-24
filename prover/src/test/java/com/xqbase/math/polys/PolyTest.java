@@ -1,11 +1,13 @@
 package com.xqbase.math.polys;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -43,19 +45,19 @@ public class PolyTest {
 
 	@Test
 	public void testParse() {
-		Assert.assertEquals("0", new LongPoly().toString());
-		Assert.assertTrue(new LongPoly("", "0").isEmpty());
+		assertEquals("0", new LongPoly().toString());
+		assertTrue(new LongPoly("", "0").isEmpty());
 		for (int i = -100; i <= 100; i ++) {
 			String expr = "" + i;
-			Assert.assertEquals(expr, "" + new LongPoly(VARS_7, expr));
+			assertEquals(expr, "" + new LongPoly(VARS_7, expr));
 		}
-		Assert.assertEquals(A, "" + new LongPoly(VARS_7, A));
-		Assert.assertEquals(D, "" + new LongPoly(VARS_7, D));
-		Assert.assertEquals(E, "" + new LongPoly(VARS_7, E));
-		Assert.assertEquals(F, "" + new LongPoly(VARS_7, F));
-		Assert.assertEquals(X, "" + new LongPoly(VARS_7, X));
-		Assert.assertEquals(Y, "" + new LongPoly(VARS_7, Y));
-		Assert.assertEquals(Z, "" + new LongPoly(VARS_7, Z));
+		assertEquals(A, "" + new LongPoly(VARS_7, A));
+		assertEquals(D, "" + new LongPoly(VARS_7, D));
+		assertEquals(E, "" + new LongPoly(VARS_7, E));
+		assertEquals(F, "" + new LongPoly(VARS_7, F));
+		assertEquals(X, "" + new LongPoly(VARS_7, X));
+		assertEquals(Y, "" + new LongPoly(VARS_7, Y));
+		assertEquals(Z, "" + new LongPoly(VARS_7, Z));
 	}
 
 	private static Point P(String x, String y, String z) {
@@ -66,7 +68,7 @@ public class PolyTest {
 	public void testOnCircle() {
 		Point p = P(X, Y, Z);
 		Circle c = new Circle(new LongPoly(VARS_7, A), new LongPoly(VARS_7, D), new LongPoly(VARS_7, E), new LongPoly(VARS_7, F));
-		Assert.assertTrue(c.passesThrough(p));
+		assertTrue(c.passesThrough(p));
 	}
 
 	@Test
@@ -79,7 +81,7 @@ public class PolyTest {
 				m[i][j] = new LongPoly(VARS_16, "" + (char) ('a' + i * 4 + j));
 			}
 		}
-		Assert.assertEquals(expected, Poly.det(
+		assertEquals(expected, Poly.det(
 				m[0][0], m[0][1], m[0][2], m[0][3],
 				m[1][0], m[1][1], m[1][2], m[1][3],
 				m[2][0], m[2][1], m[2][2], m[2][3],
@@ -94,23 +96,23 @@ public class PolyTest {
 		LongPoly x_J = new LongPoly(VARS_19, "a*d*h*n*r - a*d*j*m*r + a*e*j*k*r + a*e*k*n*s - a*f*h*k*r - a*f*k*m*s - b*d*g*n*r - b*d*k*n*s + b*f*g*k*r + b*f*k**2*s + c*d*g*m*r + c*d*k*m*s - c*e*g*k*r - c*e*k**2*s");
 		LongPoly y_J = new LongPoly(VARS_19, "a*e*h*n*r + a*e*m*n*s - a*f*h*m*r - a*f*m**2*s - b*d*j*m*r - b*d*m*n*s - b*e*g*n*r + b*e*j*k*r + b*f*g*m*r + b*f*k*m*s + c*d*h*m*r + c*d*m**2*s - c*e*h*k*r - c*e*k*m*s");
 		LongPoly z_J = new LongPoly(VARS_19, "a*e*j*n*r + a*e*n**2*s - a*f*j*m*r - a*f*m*n*s - b*d*j*n*r - b*d*n**2*s + b*f*j*k*r + b*f*k*n*s + c*d*h*n*r + c*d*m*n*s - c*e*g*n*r - c*e*k*n*s + c*f*g*m*r - c*f*h*k*r");
-		Assert.assertTrue(Poly.det(x_G, y_G, z_G, x_H, y_H, z_H, x_J, y_J, z_J).isEmpty());
+		assertTrue(Poly.det(x_G, y_G, z_G, x_H, y_H, z_H, x_J, y_J, z_J).isEmpty());
 		Point pg = new Point(x_G, y_G, z_G);
 		Point ph = new Point(x_H, y_H, z_H);
 		Point pj = new Point(x_J, y_J, z_J);
-		Assert.assertTrue(Point.collinear(pg, ph, pj));
-		Assert.assertTrue(new Line(pg, ph).passesThrough(pj));
+		assertTrue(Point.collinear(pg, ph, pj));
+		assertTrue(new Line(pg, ph).passesThrough(pj));
 		Line lg = new Line(x_G, y_G, z_G);
 		Line lh = new Line(x_H, y_H, z_H);
 		Line lj = new Line(x_J, y_J, z_J);
-		Assert.assertTrue(Line.concurrent(lg, lh, lj));
-		Assert.assertTrue(new Point(lg, lh).liesOn(lj));
+		assertTrue(Line.concurrent(lg, lh, lj));
+		assertTrue(new Point(lg, lh).liesOn(lj));
 		// Results from pentagon.py
 		Point c4 = P(X, Y, Z);
 		Point a4 = P("e - g", "-d + f", "d*g - e*f");
 		Point a3 = P("c - e", "-b + d", "b*e - c*d");
 		Point b1 = P("c - g", "-b + f", "b*g - c*f");
-		Assert.assertTrue(Circle.concyclic(c4, a4, a3, b1));
+		assertTrue(Circle.concyclic(c4, a4, a3, b1));
 	}
 
 	@Test
@@ -119,6 +121,6 @@ public class PolyTest {
 		new LongPoly(VARS_PQUV, K2).coeffsOf("uv").forEach((mono, coeff) -> {
 			sb.append("(" + coeff + ")*" + mono + " + ");
 		});
-		Assert.assertEquals(P2, sb.substring(0, sb.length() - 3));
+		assertEquals(P2, sb.substring(0, sb.length() - 3));
 	}
 }

@@ -72,17 +72,17 @@ public class MutableBigInteger extends MutableNumber<MutableBigInteger> {
 	}
 
 	@Override
-	protected void add(MutableBigInteger n1) {
+	public void add(MutableBigInteger n1) {
 		n[0] = n[0].add(n1.n[0]);
 	}
 
 	@Override
-	protected void addMul(MutableBigInteger n1, MutableBigInteger n2) {
+	public void addMul(MutableBigInteger n1, MutableBigInteger n2) {
 		n[0] = n[0].add(n1.n[0].multiply(n2.n[0]));
 	}
 
 	@Override
-	protected void addMul(MutableBigInteger n1, MutableBigInteger n2, MutableBigInteger n3) {
+	public void addMul(MutableBigInteger n1, MutableBigInteger n2, MutableBigInteger n3) {
 		n[0] = n[0].add(n1.n[0].multiply(n2.n[0]).multiply(n3.n[0]));
 	}
 }

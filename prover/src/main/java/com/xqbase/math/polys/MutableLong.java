@@ -70,17 +70,17 @@ public class MutableLong extends MutableNumber<MutableLong> {
 	}
 
 	@Override
-	protected void add(MutableLong n1) {
+	public void add(MutableLong n1) {
 		n[0] = Math.addExact(n[0], n1.n[0]);
 	}
 
 	@Override
-	protected void addMul(MutableLong n1, MutableLong n2) {
+	public void addMul(MutableLong n1, MutableLong n2) {
 		n[0] = Math.addExact(n[0], Math.multiplyExact(n1.n[0], n2.n[0]));
 	}
 
 	@Override
-	protected void addMul(MutableLong n1, MutableLong n2, MutableLong n3) {
+	public void addMul(MutableLong n1, MutableLong n2, MutableLong n3) {
 		n[0] = Math.addExact(n[0], Math.multiplyExact(Math.multiplyExact(n1.n[0], n2.n[0]), n3.n[0]));
 	}
 }

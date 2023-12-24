@@ -16,33 +16,37 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.xqbase.math.polys.Mono;
-import com.xqbase.math.polys.MutableLong;
-import com.xqbase.math.polys.LongPoly;
+import com.xqbase.math.polys.MutableNumber;
+import com.xqbase.math.polys.Poly;
 
 public class SDS {
-	private static Logger log = LoggerFactory.getLogger(LongPoly.class);
-	private static final MutableLong _1 = new MutableLong(1);
+	private static Logger log = LoggerFactory.getLogger(SDS.class);
 
-	public static class SDSResult {
-		private Set<List<Long>> zeroAt = new HashSet<>();
-		private List<Long> negativeAt = null;
+	public static class SDSResult<T extends MutableNumber<T>> {
+		Set<List<T>> zeroAt = new HashSet<>();
+		List<T> negativeAt = null;
+		int depth = 0;
 
 		public boolean isNonNegative() {
 			return negativeAt == null;
 		}
 
-		public Set<List<Long>> getZeroAt() {
+		public Set<List<T>> getZeroAt() {
 			return zeroAt;
 		}
 
-		public List<Long> getNegativeAt() {
+		public List<T> getNegativeAt() {
 			return negativeAt;
+		}
+
+		public int getDepth() {
+			return depth;
 		}
 
 		@Override
 		public String toString() {
-			return "SDSResult [nonNegative=" + isNonNegative() +
-					", zeroAt=" + zeroAt + ", negativeAt=" + negativeAt + "]";
+			return "SDSResult [nonNegative=" + isNonNegative() + ", zeroAt=" + zeroAt +
+					", negativeAt=" + negativeAt + ", depth = " + depth + "]";
 		}
 	}
 
@@ -70,14 +74,14 @@ public class SDS {
 		return result;
 	}
 
-	private static long[][] matMul(long[][] m1, long[][] m2) {
+	private static <T extends MutableNumber<T>> T[][] matMul(T[][] m1, T[][] m2, Poly<T> p) {
 		int n = m1.length;
-		long[][] m = new long[n][n];
+		T[][] m = p.newMatrix(n, n);
 		for (int i = 0; i < n; i ++) {
 			for (int j = 0; j < n; j ++) {
-				long m_ij = 0;
+				T m_ij = p.newZero();
 				for (int k = 0; k < n; k ++) {
-					m_ij += m1[i][k]*m2[k][j];
+					m_ij.addMul(m1[i][k], m2[k][j]);
 				}
 				m[i][j] = m_ij;
 			}
@@ -85,16 +89,16 @@ public class SDS {
 		return m;
 	}
 
-	public static SDSResult sds(LongPoly f) {
+	public static <T extends MutableNumber<T>> SDSResult<T> sds(Poly<T> f) {
 		return sds(f, false);
 	}
 
-	public static SDSResult tsds(LongPoly f) {
+	public static <T extends MutableNumber<T>> SDSResult<T> tsds(Poly<T> f) {
 		return sds(f, true);
 	}
 
 	/** @param tsds unused */
-	public static SDSResult sds(LongPoly f, boolean tsds) {
+	public static <T extends MutableNumber<T>> SDSResult<T> sds(Poly<T> f, boolean tsds) {
 		// check homogeneous
 		int deg = 0;
 		String vars = "";
@@ -112,19 +116,19 @@ public class SDS {
 		}
 
 		int len = vars.length();
-		long[][] oneMat = new long[len][len];
-		long[][] upperMat = new long[len][len];
+		T[][] oneMat = f.newMatrix(len, len);
+		T[][] upperMat = f.newMatrix(len, len);
 		for (int i = 0; i < len; i ++) {
 			for (int j = 0; j < len; j ++) {
-				oneMat[i][j] = (i <= j ? 1 : 0);
-				upperMat[i][j] = (i == j ? 1 : 0);
+				oneMat[i][j] = f.valueOf(i <= j ? 1 : 0);
+				upperMat[i][j] = f.valueOf(i == j ? 1 : 0);
 			}
 		}
 		Set<Integer> varSeq = new TreeSet<>();
 		for (int i = 0; i < len; i ++) {
 			varSeq.add(Integer.valueOf(i));
 		}
-		TreeMap<List<Integer>, long[][]> permMat = new TreeMap<>((p1, p2) -> {
+		TreeMap<List<Integer>, T[][]> permMat = new TreeMap<>((p1, p2) -> {
 			for (int i = 0; i < len; i ++) {
 				int c = p1.get(i).compareTo(p2.get(i));
 				if (c != 0) {
@@ -134,7 +138,7 @@ public class SDS {
 			return 0;
 		});
 		for (List<Integer> perm : permutations(varSeq)) {
-			long[][] m = new long[len][len];
+			T[][] m = f.newMatrix(len, len);
 			for (int i = 0; i < len; i ++) {
 				m[perm.get(i).intValue()] = upperMat[i].clone();
 			}
@@ -142,7 +146,8 @@ public class SDS {
 		}
 
 		// TODO tsds: subs[i] = subs[i]/len + subs[i + 1]
-		LongPoly[] subs = new LongPoly[len - 1];
+		@SuppressWarnings("unchecked")
+		Poly<T>[] subs = new Poly[len - 1];
 		Mono[] monos = new Mono[len];
 		for (int i = 0; i < len; i ++) {
 			short[] exps = new short[len];
@@ -151,27 +156,28 @@ public class SDS {
 			monos[i] = new Mono(vars, exps);
 		}
 		for (int i = 0; i < len - 1; i ++) {
-			LongPoly sub = new LongPoly();
-			sub.put(monos[i], _1);
-			sub.put(monos[i + 1], _1);
+			Poly<T> sub = f.newPoly();
+			sub.put(monos[i], f.valueOf(1));
+			sub.put(monos[i + 1], f.valueOf(1));
 			subs[i] = sub;
 		}
 
-		HashMap<LongPoly, List<long[][]>> polyTransList = new HashMap<>();
+		HashMap<Poly<T>, List<T[][]>> polyTransList = new HashMap<>();
 		polyTransList.put(f, Collections.singletonList(oneMat));
 
-		SDSResult result = new SDSResult();
+		SDSResult<T> result = new SDSResult<>();
 		for (int depth = 0; depth <= 100; depth ++) {
 			log.debug("depth = " + depth + ", polynomials = " + polyTransList.size());
-			Iterator<Map.Entry<LongPoly, List<long[][]>>> it = polyTransList.entrySet().iterator();
+			result.depth = depth;
+			Iterator<Map.Entry<Poly<T>, List<T[][]>>> it = polyTransList.entrySet().iterator();
 			while (it.hasNext()) {
-				Map.Entry<LongPoly, List<long[][]>> entry = it.next();
-				LongPoly f0 = entry.getKey();
+				Map.Entry<Poly<T>, List<T[][]>> entry = it.next();
+				Poly<T> f0 = entry.getKey();
 				// List<int[][]> transList = entry.getValue();
 				// TODO find negative or zero: try 0/1 for each var
 				// substitute and iterate if there are negative terms
 				boolean neg = false;
-				for (MutableLong coeff : f0.values()) {
+				for (T coeff : f0.values()) {
 					if (coeff.signum() < 0) {
 						neg = true;
 						break;
@@ -186,16 +192,16 @@ public class SDS {
 			}
 
 			// substitution takes much time, so do it after negative check
-			HashMap<LongPoly, List<long[][]>> polyTransList1 = new HashMap<>();
-			for (Map.Entry<LongPoly, List<long[][]>> transEntry : polyTransList.entrySet()) {
-				LongPoly f0 = transEntry.getKey();
-				List<long[][]> transList = transEntry.getValue();
+			HashMap<Poly<T>, List<T[][]>> polyTransList1 = new HashMap<>();
+			for (Map.Entry<Poly<T>, List<T[][]>> transEntry : polyTransList.entrySet()) {
+				Poly<T> f0 = transEntry.getKey();
+				List<T[][]> transList = transEntry.getValue();
 				// List<int[][]> transList = transEntry.getValue();
-				for (Map.Entry<List<Integer>, long[][]> permEntry : permMat.entrySet()) {
+				for (Map.Entry<List<Integer>, T[][]> permEntry : permMat.entrySet()) {
 					// f1 = perm(f0)
 					List<Integer> perm = permEntry.getKey();
-					LongPoly f1 = new LongPoly();
-					for (Map.Entry<Mono, MutableLong> term : f0.entrySet()) {
+					Poly<T> f1 = f.newPoly();
+					for (Map.Entry<Mono, T> term : f0.entrySet()) {
 						short[] exps = term.getKey().getExps();
 						short[] exps1 = new short[vars.length()];
 						for (int i = 0; i < exps.length; i ++) {
@@ -205,13 +211,13 @@ public class SDS {
 					}
 					// subs: x0 += x1; x1 += x2; ... ; x_n-2 += x_n-1
 					for (int i = 0; i < len - 1; i ++) {
-						f1 = (LongPoly) f1.subs(vars.charAt(i), subs[i]);
+						f1 = f1.subs(vars.charAt(i), subs[i]);
 					}
 					// TODO tsds: x_i = x_i/len + x_i+1
 					// update next polyTransList
-					List<long[][]> transList1 = polyTransList1.computeIfAbsent(f1, k -> new ArrayList<>());
-					for (long[][] transMat : transList) {
-						transList1.add(matMul(transMat, permEntry.getValue()));
+					List<T[][]> transList1 = polyTransList1.computeIfAbsent(f1, k -> new ArrayList<>());
+					for (T[][] transMat : transList) {
+						transList1.add(matMul(transMat, permEntry.getValue(), f));
 					}
 				}
 			}
