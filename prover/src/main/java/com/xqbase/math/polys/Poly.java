@@ -193,6 +193,9 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 	}
 
 	private Poly<T> subs(char from, Function<Poly<T>, Poly<T>> toFunc) {
+		if (isEmpty()) {
+			return this;
+		}
 		TreeMap<Mono, Poly<T>> ai = coeffsOf(String.valueOf(from));
 		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
 		Map.Entry<Mono, Poly<T>> lt = ai.firstEntry();
