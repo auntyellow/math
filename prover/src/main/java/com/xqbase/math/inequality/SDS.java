@@ -19,6 +19,12 @@ import com.xqbase.math.polys.Mono;
 import com.xqbase.math.polys.MutableNumber;
 import com.xqbase.math.polys.Poly;
 
+/**
+ * Successive Difference Substitution<p>
+ * {@link #sds(Poly f)} or sds(f, false) uses upper triangular matrix (A_n)<p>
+ * {@link #tsds(Poly f)} or sds(f, true) uses column stochastic matrix (T_n)<p> 
+ * @see https://arxiv.org/pdf/0904.4030v3.pdf
+ */
 public class SDS {
 	private static Logger log = LoggerFactory.getLogger(SDS.class);
 
@@ -195,6 +201,9 @@ public class SDS {
 			} else if (deg != exps) {
 				throw new IllegalArgumentException(f + " is not homogeneous");
 			}
+		}
+		if (deg == 0) {
+			return new SDSResult<>(0);
 		}
 
 		int len = vars.length();

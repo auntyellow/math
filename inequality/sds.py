@@ -285,7 +285,7 @@ def main():
     # cancel(f) is too slow, why?
     f = fraction(factor(f))[0]
     # depth = 1, show zero_at more clearly than xiong23_p112.py
-    print(sds(f, tsds = True))
+    print(sds(f))
 
     # http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545
     # ex 4.1
