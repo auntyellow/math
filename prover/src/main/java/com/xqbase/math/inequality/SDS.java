@@ -124,19 +124,7 @@ public class SDS {
 	// for debug only
 	/*
 	private static <T> String toString(T[][] m) {
-		int n = m.length;
-		StringBuilder sb = new StringBuilder("[");
-		for (int i = 0; i < n; i ++) {
-			sb.append('[');
-			for (int j = 0; j < n; j ++) {
-				sb.append(m[i][j]).append(", ");
-			}
-			sb.setLength(sb.length() - 2);
-			sb.append("], ");
-		}
-		sb.setLength(sb.length() - 2);
-		sb.append(']');
-		return sb.toString();
+		return Stream.of(m).map(Arrays::asList).collect(Collectors.toList()).toString();
 	}
 	*/
 
@@ -185,7 +173,11 @@ public class SDS {
 		return sds(f, true);
 	}
 
-	/** @param tsds unused */
+	/** 
+	 * @param tsds
+	 * <code>false</code> to uses upper triangular matrix (A_n) and
+	 * <code>true</code> to uses column stochastic matrix (T_n)
+	 */
 	public static <T extends MutableNumber<T>> SDSResult<T> sds(Poly<T> f, boolean tsds) {
 		// check homogeneous
 		int deg = 0;
@@ -207,12 +199,31 @@ public class SDS {
 		}
 
 		int len = vars.length();
+		// sds: [1, ..., 1], tsds: [lcm, lcm/2, ..., lcm/n]
+		T[] column = f.newVector(len);
+		if (tsds) {
+			T lcm = f.valueOf(1);
+			for (int i = 1; i <= len; i ++) {
+				T i_ = f.valueOf(i);
+				T t = f.newZero();
+				t.addMul(lcm, i_);
+				lcm = t.div(lcm.gcd(i_));
+			}
+			for (int i = 0; i < len; i ++) {
+				column[i] = lcm.div(f.valueOf(i + 1));
+			}
+		} else {
+			for (int i = 0; i < len; i ++) {
+				column[i] = f.valueOf(1);
+			}
+		}
+
 		T[][] oneMat = f.newMatrix(len, len);
 		T[][] upperMat = f.newMatrix(len, len);
 		for (int i = 0; i < len; i ++) {
 			for (int j = 0; j < len; j ++) {
 				oneMat[i][j] = f.valueOf(i == j ? 1 : 0);
-				upperMat[i][j] = f.valueOf(i <= j ? 1 : 0);
+				upperMat[i][j] = i <= j ? column[j] : f.valueOf(0);
 			}
 		}
 		Set<Integer> varSeq = new TreeSet<>();
@@ -230,9 +241,8 @@ public class SDS {
 			permMat.put(perm, m);
 		}
 
-		// TODO tsds: subs[i] = subs[i]/len + subs[i + 1]
 		@SuppressWarnings("unchecked")
-		Poly<T>[] subs = new Poly[len - 1];
+		Poly<T>[] subs = new Poly[tsds ? len : len - 1];
 		Mono[] monos = new Mono[len];
 		for (int i = 0; i < len; i ++) {
 			short[] exps = new short[len];
@@ -242,9 +252,14 @@ public class SDS {
 		}
 		for (int i = 0; i < len - 1; i ++) {
 			Poly<T> sub = f.newPoly();
-			sub.put(monos[i], f.valueOf(1));
+			sub.put(monos[i], column[i]);
 			sub.put(monos[i + 1], f.valueOf(1));
 			subs[i] = sub;
+		}
+		if (tsds) {
+			Poly<T> sub = f.newPoly();
+			sub.put(monos[len - 1], column[len - 1]);
+			subs[len - 1] = sub;
 		}
 
 		HashMap<Poly<T>, List<T[][]>> polyTransList = new HashMap<>();
@@ -277,7 +292,15 @@ public class SDS {
 						}
 						if (!zero) {
 							for (T[][] trans : transList) {
-								result.zeroAt.add(matMul(trans, subsEntry.getKey(), f));
+								List<T> values = matMul(trans, subsEntry.getKey(), f);
+								T gcd = f.valueOf(0);
+								for (T v : values) {
+									gcd = gcd.gcd(v);
+								}
+								for (int i = 0; i < len; i ++) {
+									values.set(i, values.get(i).div(gcd));
+								}
+								result.zeroAt.add(values);
 							}
 						}
 					}
@@ -318,11 +341,11 @@ public class SDS {
 						}
 						f1.put(new Mono(vars, exps1), term.getValue());
 					}
-					// subs: x0 += x1; x1 += x2; ... ; x_n-2 += x_n-1
-					for (int i = 0; i < len - 1; i ++) {
+					// sds: x0 += x1, x1 += x2, ... , x_n-2 += x_n-1
+					// tsds: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
+					for (int i = 0; i < subs.length; i ++) {
 						f1 = f1.subs(vars.charAt(i), subs[i]);
 					}
-					// TODO tsds: x_i = x_i/len + x_i+1
 					// update next polyTransList
 					List<T[][]> transList1 = polyTransList1.computeIfAbsent(f1, k -> new ArrayList<>());
 					T[][] permValue = permEntry.getValue();

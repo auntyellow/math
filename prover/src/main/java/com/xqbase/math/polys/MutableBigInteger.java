@@ -5,10 +5,10 @@ import java.math.BigInteger;
 public class MutableBigInteger extends MutableNumber<MutableBigInteger> {
 	private static final long serialVersionUID = 1L;
 
-	private BigInteger[] n;
+	private BigInteger n;
 
 	public MutableBigInteger(BigInteger n) {
-		this.n = new BigInteger[] {n};
+		this.n = n;
 	}
 
 	public MutableBigInteger(String s) {
@@ -17,32 +17,32 @@ public class MutableBigInteger extends MutableNumber<MutableBigInteger> {
 
 	@Override
 	public int intValue() {
-		return n[0].intValue();
+		return n.intValue();
 	}
 
 	@Override
 	public long longValue() {
-		return n[0].longValue();
+		return n.longValue();
 	}
 
 	@Override
 	public float floatValue() {
-		return n[0].floatValue();
+		return n.floatValue();
 	}
 
 	@Override
 	public double doubleValue() {
-		return n[0].doubleValue();
+		return n.doubleValue();
 	}
 
 	@Override
 	public String toString() {
-		return n[0].toString();
+		return n.toString();
 	}
 
 	@Override
 	public int hashCode() {
-		return n[0].hashCode();
+		return n.hashCode();
 	}
 
 	@Override
@@ -53,36 +53,46 @@ public class MutableBigInteger extends MutableNumber<MutableBigInteger> {
 		if (!(o instanceof MutableBigInteger)) {
 			return false;
 		}
-		return n[0].equals(((MutableBigInteger) o).n[0]);
+		return n.equals(((MutableBigInteger) o).n);
 	}
 
 	@Override
 	public int compareTo(MutableBigInteger o) {
-		return n[0].compareTo(o.n[0]);
+		return n.compareTo(o.n);
 	}
 
 	@Override
 	public MutableBigInteger negate() {
-		return new MutableBigInteger(n[0].negate());
+		return new MutableBigInteger(n.negate());
 	}
 
 	@Override
 	public int signum() {
-		return n[0].signum();
+		return n.signum();
 	}
 
 	@Override
 	public void add(MutableBigInteger n1) {
-		n[0] = n[0].add(n1.n[0]);
+		n = n.add(n1.n);
 	}
 
 	@Override
 	public void addMul(MutableBigInteger n1, MutableBigInteger n2) {
-		n[0] = n[0].add(n1.n[0].multiply(n2.n[0]));
+		n = n.add(n1.n.multiply(n2.n));
 	}
 
 	@Override
 	public void addMul(MutableBigInteger n1, MutableBigInteger n2, MutableBigInteger n3) {
-		n[0] = n[0].add(n1.n[0].multiply(n2.n[0]).multiply(n3.n[0]));
+		n = n.add(n1.n.multiply(n2.n).multiply(n3.n));
+	}
+
+	@Override
+	public MutableBigInteger div(MutableBigInteger n1) {
+		return new MutableBigInteger(n.divide(n1.n));
+	}
+
+	@Override
+	public MutableBigInteger gcd(MutableBigInteger n1) {
+		return new MutableBigInteger(n.gcd(n1.n));
 	}
 }

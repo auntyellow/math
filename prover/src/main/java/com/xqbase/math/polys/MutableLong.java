@@ -1,12 +1,14 @@
 package com.xqbase.math.polys;
 
+import java.math.BigInteger;
+
 public class MutableLong extends MutableNumber<MutableLong> {
 	private static final long serialVersionUID = 1L;
 
-	private long[] n;
+	private long n;
 
 	public MutableLong(long n) {
-		this.n = new long[] {n};
+		this.n = n;
 	}
 
 	public MutableLong(String s) {
@@ -15,32 +17,32 @@ public class MutableLong extends MutableNumber<MutableLong> {
 
 	@Override
 	public int intValue() {
-		return (int) n[0];
+		return (int) n;
 	}
 
 	@Override
 	public long longValue() {
-		return n[0];
+		return n;
 	}
 
 	@Override
 	public float floatValue() {
-		return n[0];
+		return n;
 	}
 
 	@Override
 	public double doubleValue() {
-		return n[0];
+		return n;
 	}
 
 	@Override
 	public String toString() {
-		return Long.toString(n[0]);
+		return Long.toString(n);
 	}
 
 	@Override
 	public int hashCode() {
-		return Long.hashCode(n[0]);
+		return Long.hashCode(n);
 	}
 
 	@Override
@@ -51,36 +53,46 @@ public class MutableLong extends MutableNumber<MutableLong> {
 		if (!(o instanceof MutableLong)) {
 			return false;
 		}
-		return n[0] == ((MutableLong) o).n[0];
+		return n == ((MutableLong) o).n;
 	}
 
 	@Override
 	public int compareTo(MutableLong o) {
-		return Long.compare(n[0], o.n[0]);
+		return Long.compare(n, o.n);
 	}
 
 	@Override
 	public MutableLong negate() {
-		return new MutableLong(-n[0]);
+		return new MutableLong(-n);
 	}
 
 	@Override
 	public int signum() {
-		return Long.signum(n[0]);
+		return Long.signum(n);
 	}
 
 	@Override
 	public void add(MutableLong n1) {
-		n[0] = Math.addExact(n[0], n1.n[0]);
+		n = Math.addExact(n, n1.n);
 	}
 
 	@Override
 	public void addMul(MutableLong n1, MutableLong n2) {
-		n[0] = Math.addExact(n[0], Math.multiplyExact(n1.n[0], n2.n[0]));
+		n = Math.addExact(n, Math.multiplyExact(n1.n, n2.n));
 	}
 
 	@Override
 	public void addMul(MutableLong n1, MutableLong n2, MutableLong n3) {
-		n[0] = Math.addExact(n[0], Math.multiplyExact(Math.multiplyExact(n1.n[0], n2.n[0]), n3.n[0]));
+		n = Math.addExact(n, Math.multiplyExact(Math.multiplyExact(n1.n, n2.n), n3.n));
+	}
+
+	@Override
+	public MutableLong div(MutableLong n1) {
+		return new MutableLong(n / n1.n);
+	}
+
+	@Override
+	public MutableLong gcd(MutableLong n1) {
+		return new MutableLong(BigInteger.valueOf(n).gcd(BigInteger.valueOf(n1.n)).longValue());
 	}
 }
