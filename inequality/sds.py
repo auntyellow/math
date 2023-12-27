@@ -45,6 +45,7 @@ def sds(f, tsds = False):
                     col = Matrix(col)
                     non_positive_at = set()
                     for trans in trans_list:
+                        # TODO reduce
                         non_positive_at.add(tuple(trans*col))
                     if f1 < 0:
                         return False, non_positive_at

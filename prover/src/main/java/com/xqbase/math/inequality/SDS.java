@@ -112,13 +112,22 @@ public class SDS {
 		return v1;
 	}
 
-	private static <T extends MutableNumber<T>> List<T> matMul(T[][] trans, List<T> key, Poly<T> p) {
+	private static <T extends MutableNumber<T>> List<T> matMulReduce(T[][] trans, List<T> key, Poly<T> p) {
 		int n = key.size();
 		T[] v = p.newVector(n);
 		for (int i = 0; i < n; i ++) {
 			v[i] = key.get(i);
 		}
-		return Arrays.asList(matMul(trans, v, p));
+		v = matMul(trans, v, p);
+		T gcd = p.valueOf(0);
+		for (int i = 0; i < n; i ++) {
+			gcd = gcd.gcd(v[i]);
+		}
+		List<T> value = new ArrayList<>();
+		for (int i = 0; i < n; i ++) {
+			value.add(v[i].div(gcd));
+		}
+		return value;
 	}
 
 	// for debug only
@@ -278,7 +287,7 @@ public class SDS {
 				for (Map.Entry<List<T>, T> subsEntry : subs(f0, vars).entrySet()) {
 					int c = subsEntry.getValue().compareTo(f.valueOf(0));
 					if (c < 0) {
-						result.negativeAt = matMul(transList.get(0), subsEntry.getKey(), f);
+						result.negativeAt = matMulReduce(transList.get(0), subsEntry.getKey(), f);
 						return result;
 					}
 					if (c == 0) {
@@ -292,15 +301,7 @@ public class SDS {
 						}
 						if (!zero) {
 							for (T[][] trans : transList) {
-								List<T> values = matMul(trans, subsEntry.getKey(), f);
-								T gcd = f.valueOf(0);
-								for (T v : values) {
-									gcd = gcd.gcd(v);
-								}
-								for (int i = 0; i < len; i ++) {
-									values.set(i, values.get(i).div(gcd));
-								}
-								result.zeroAt.add(values);
+								result.zeroAt.add(matMulReduce(trans, subsEntry.getKey(), f));
 							}
 						}
 					}
