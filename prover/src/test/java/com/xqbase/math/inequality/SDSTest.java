@@ -100,12 +100,12 @@ public class SDSTest {
 		assertEquals(91, result.getDepth());
 		// 1e22
 		f = new BigPoly().add(f.valueOf("10000000000000000000000"), f);
-		// can be proved positive by tsds within 99 iterations (sds 72)
+		// tsds works within 99 iterations (sds 72)
 		result = SDS.tsds(new BigPoly("xy", "x**2 + y**2").add(f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(99, result.getDepth());
-		// can be found negative by tsds within 98 iterations (sds 71)
+		// tsds finds negative within 98 iterations (sds 71)
 		f = new BigPoly("xy", "-x**2 - y**2").add(f);
 		result = SDS.tsds(f);
 		assertTrue(!result.isNonNegative());
@@ -114,34 +114,32 @@ public class SDSTest {
 
 		// example 2
 		// (3*x - y)**2 + (x - z)**2
-		BigPoly f0 = new BigPoly("xyz", "10*x**2 - 6*x*y - 2*x*z + y**2 + z**2");
+		f = new BigPoly("xyz", "10*x**2 - 6*x*y - 2*x*z + y**2 + z**2");
 		// zero at (1, 3, 1), not on sds or tsds's boundary
-		assertTrue(subs(f0, Arrays.asList(f.valueOf(1), f.valueOf(3), f.valueOf(1)), 'x').equals(f.valueOf(0)));
+		assertTrue(subs(f, Arrays.asList(f.valueOf(1), f.valueOf(3), f.valueOf(1)), 'x').equals(f.valueOf(0)));
+		// sds works for 6 but doesn't seem to work for 7
+		result = SDS.sds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(new BigPoly().add(6, f)));
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(9, result.getDepth());
+		// sds finds negative for 1e22 (maybe larger), why?
+		result = SDS.sds(new BigPoly("xyz", "-x**2 - y**2 - z**2").add(new BigPoly().add(f.valueOf("10000000000000000000000"), f)));
+		assertTrue(!result.isNonNegative());
+		assertEquals("[1, 3, 1]",result.getNegativeAt().toString());
+		assertEquals(2, result.getDepth());
 		// 1e8
-		f = new BigPoly().add(f.valueOf(100_000_000), f0);
-		// can be proved positive by tsds within 16 iterations (sds doesn't work)
+		f = new BigPoly().add(f.valueOf(100_000_000), f);
+		// tsds works within 16 iterations (sds doesn't work)
 		result = SDS.tsds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(16, result.getDepth());
-		// can be proved positive by tsds within 11 iterations
+		// tsds finds negative within 11 iterations
 		f = new BigPoly("xyz", "-x**2 - y**2 - z**2").add(f);
 		result = SDS.tsds(f);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').compareTo(f.valueOf(0)) < 0);
 		assertEquals(11, result.getDepth());
-		// sds works for 6 but doesn't seem to work for 7
-		result = SDS.sds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(new BigPoly().add(6, f0)));
-		assertTrue(result.isNonNegative());
-		assertTrue(result.getZeroAt().isEmpty());
-		assertEquals(9, result.getDepth());
-		// sds finds negative for 1e22 (maybe larger), why?
-		f = new BigPoly("xyz", "-x**2 - y**2 - z**2").add(new BigPoly().add(f.valueOf("10000000000000000000000"), f0));
-		result = SDS.sds(f);
-		assertTrue(!result.isNonNegative());
-		assertTrue(subs(f, result.getNegativeAt(), 'x').compareTo(f.valueOf(0)) < 0);
-		assertEquals("[1, 3, 1]",result.getNegativeAt().toString());
-		assertEquals(2, result.getDepth());
 	}
 
 	private static LongPoly replaceAn(String expr) {
@@ -284,8 +282,9 @@ public class SDSTest {
 	@Test
 	public void testHan13() {
 		// http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545
-		LongPoly f;
-		SDSResult<MutableLong> result;
+		// TODO ex 4.1
+		Poly<MutableBigInteger> f;
+		SDSResult<MutableBigInteger> result;
 		// ex 4.2
 		// too slow in making permMat
 		/*
@@ -296,10 +295,29 @@ public class SDSTest {
 		assertEquals(0, result.depth);
 		*/
 		// ex 4.3
-		f = new LongPoly("xyz", "x**3 + y**3 + z**3 - 3*x*y*z");
+		f = new BigPoly("xyz", "x**3 + y**3 + z**3 - 3*x*y*z");
 		result = SDS.sds(f);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[1, 1, 1]]", result.getZeroAt().toString());
 		assertEquals(1, result.depth);
+		// ex 4.4
+		f = new BigPoly("abc", "a**4 - 3*a**3*b + 2*a**2*b**2 + 2*a**2*c**2 - 3*a*c**3 + b**4 - 3*b**3*c + 2*b**2*c**2 + c**4");
+		// sds works for 1e9 but doesn't seem to work for 1e10
+		result = SDS.sds(new BigPoly("abc", "a**4 + b**4 + c**4").add(new BigPoly().add(f.valueOf(1_000_000_000), f)));
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(14, result.depth);
+		// 1e22
+		f = new BigPoly().add(f.valueOf("10000000000000000000000"), f);
+		// tsds works within 32 iterations
+		result = SDS.tsds(new BigPoly("abc", "a**4 + b**4 + c**4").add(f));
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(32, result.depth);
+		// both sds and tsds find negative without iteration
+		result = SDS.sds(new BigPoly("abc", "-a**4 - b**4 - c**4").add(f));
+		assertTrue(!result.isNonNegative());
+		assertEquals("[1, 1, 1]", result.getNegativeAt().toString());
+		assertEquals(0, result.depth);
 	}
 }

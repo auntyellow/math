@@ -125,10 +125,10 @@ def main():
     f = (m*x - n*y)**2
     # zero at (n, m), on sds's boundary but not on tsds's boundary
     print(sds(f))
-    # 1e-22, can be proved positive by tsds within 99 iterations (sds 72)
+    # 1e-22, tsds works within 99 iterations (sds 72)
     f = (m*x - n*y)**2 + (x**2 + y**2)/10000000000000000000000
     print(sds(f, tsds = True))
-    # 1e-22, can be found negative by tsds within 98 iterations (sds 71)
+    # 1e-22, tsds finds negative within 98 iterations (sds 71)
     f = (m*x - n*y)**2 - (x**2 + y**2)/10000000000000000000000
     non_negative, negative_ats = sds(f, tsds = True)
     print((non_negative, negative_ats))
@@ -138,10 +138,10 @@ def main():
     # example 2:
     # zero at (1, 3, 1), not on sds or tsds's boundary
     # f = (3*x - y)**2 + (x - z)**2
-    # 1e-8, can be proved positive by tsds within 16 iterations
+    # 1e-8, tsds works within 16 iterations
     f = (3*x - y)**2 + (x - z)**2 + (x**2 + y**2 + z**2)/100000000
     print(sds(f, tsds = True))
-    # 1e-8, can be found negative by tsds within 11 iterations
+    # 1e-8, tsds finds negative within 11 iterations
     f = (3*x - y)**2 + (x - z)**2 - (x**2 + y**2 + z**2)/100000000
     non_negative, negative_ats = sds(f, tsds = True)
     print((non_negative, negative_ats))
