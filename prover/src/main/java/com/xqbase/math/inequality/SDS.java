@@ -174,12 +174,21 @@ public class SDS {
 		};
 	}
 
+	private static <T extends MutableNumber<T>> boolean trivialNonNegative(Poly<T> f) {
+		for (T coeff : f.values()) {
+			if (coeff.signum() < 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public static <T extends MutableNumber<T>> SDSResult<T> sds(Poly<T> f) {
-		return sds(f, false);
+		return sds(f, false, false);
 	}
 
 	public static <T extends MutableNumber<T>> SDSResult<T> tsds(Poly<T> f) {
-		return sds(f, true);
+		return sds(f, true, false);
 	}
 
 	/** 
@@ -187,7 +196,7 @@ public class SDS {
 	 * <code>false</code> to uses upper triangular matrix (A_n) and
 	 * <code>true</code> to uses column stochastic matrix (T_n)
 	 */
-	public static <T extends MutableNumber<T>> SDSResult<T> sds(Poly<T> f, boolean tsds) {
+	public static <T extends MutableNumber<T>> SDSResult<T> sds(Poly<T> f, boolean tsds, boolean skipNegative) {
 		// check homogeneous
 		int deg = 0;
 		String vars = "";
@@ -281,6 +290,9 @@ public class SDS {
 			Iterator<Map.Entry<Poly<T>, List<T[][]>>> it = polyTransList.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<Poly<T>, List<T[][]>> transEntry = it.next();
+				if (skipNegative) {
+					continue;
+				}
 				Poly<T> f0 = transEntry.getKey();
 				List<T[][]> transList = transEntry.getValue();
 				// find negative or zero: try 0/1 for each var
@@ -307,14 +319,7 @@ public class SDS {
 					}
 				}
 				// substitute and iterate if there are negative terms
-				boolean neg = false;
-				for (T coeff : f0.values()) {
-					if (coeff.signum() < 0) {
-						neg = true;
-						break;
-					}
-				}
-				if (!neg) {
+				if (trivialNonNegative(f0)) {
 					it.remove();
 				}
 			}
@@ -347,6 +352,12 @@ public class SDS {
 					// tsds: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
 					for (int i = 0; i < subs.length; i ++) {
 						f1 = f1.subs(vars.charAt(i), subs[i]);
+					}
+					if (skipNegative) {
+						if (!trivialNonNegative(f1)) {
+							polyTransList1.computeIfAbsent(f1, k -> new ArrayList<>());
+						}
+						continue;
 					}
 					// update next polyTransList
 					List<T[][]> transList1 = polyTransList1.computeIfAbsent(f1, k -> new ArrayList<>());
