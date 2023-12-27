@@ -20,7 +20,7 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 	@SuppressWarnings("unchecked")
 	public Poly<T> newPoly() {
 		try {
-			return getClass().newInstance();
+			return getClass().getConstructor().newInstance();
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
