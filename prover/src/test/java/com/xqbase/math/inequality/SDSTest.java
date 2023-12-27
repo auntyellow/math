@@ -289,7 +289,7 @@ public class SDSTest {
 		// http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545
 		// ex 4.1
 		Poly<MutableBigInteger> f = new BigPoly("xyz", "9*x**2 + 6*x*y - 6*x*z + y**2 - 2*y*z + z**2");
-		// tsds works for 3e6 within 16 iterations, 3e7 within 18 iteration; sds doesn't work
+		// tsds works for 3e6 within 16 iterations (73801 polynomials in 13th iteration), 3e7 within 18 iteration; sds doesn't work
 		SDSResult<MutableBigInteger> result = SDS.tsds(new BigPoly("xyz", "z**2").add(3_000_000, f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
@@ -313,6 +313,8 @@ public class SDSTest {
 		f = new BigPoly("abc", "a**4 - 3*a**3*b + 2*a**2*b**2 + 2*a**2*c**2 - 3*a*c**3 + b**4 - 3*b**3*c + 2*b**2*c**2 + c**4");
 		// zero at (1, 1, 1)
 		assertTrue(subs(f, Arrays.asList(f.valueOf(1), f.valueOf(1), f.valueOf(1)), 'a').equals(f.valueOf(0)));
+		// tsds doesn't work (46455 polynomials in 50th iteration)
+		// result = SDS.tsds(f);
 		// sds works for 1e9 but doesn't seem to work for 1e10
 		result = SDS.sds(new BigPoly("abc", "a**4 + b**4 + c**4").add(new BigPoly().add(f.valueOf(1_000_000_000), f)));
 		assertTrue(result.isNonNegative());

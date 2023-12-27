@@ -321,6 +321,7 @@ public class SDS {
 			if (polyTransList.isEmpty()) {
 				return result;
 			}
+			log.debug("depth = " + depth + ", non-trivially-positive polynomials = " + polyTransList.size());
 
 			// substitution takes much time, so do it after negative check
 			HashMap<Poly<T>, List<T[][]>> polyTransList1 = new HashMap<>();
