@@ -240,7 +240,7 @@ def main():
         print('f({},{},{}) = {}'.format(x0, y0, z0, f.subs(x, x0).subs(y, y0).subs(z, z0)))
     print()
 
-    # p174, 6-var Vasc's conjuction
+    # p174, 6-var Vasc's conjecture
     # see also: https://math.stackexchange.com/a/4693459
     f = (a1 - a2)/(a2 + a3) + (a2 - a3)/(a3 + a4) + (a3 - a4)/(a4 + a5) + \
         (a4 - a5)/(a5 + a6) + (a5 - a6)/(a6 + a1) + (a6 - a1)/(a1 + a2)
