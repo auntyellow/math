@@ -136,7 +136,7 @@ def main():
         x0, y0 = negative_at
         print('f({},{}) = {}'.format(x0, y0, f.subs(x, x0).subs(y, y0)))
     # example 2:
-    # zero at (3, 1, 3), not on sds or tsds's boundary
+    # zero at (1, 3, 1), not on sds or tsds's boundary
     # f = (3*x - y)**2 + (x - z)**2
     # 1e-8, can be proved positive by tsds within 16 iterations
     f = (3*x - y)**2 + (x - z)**2 + (x**2 + y**2 + z**2)/100000000

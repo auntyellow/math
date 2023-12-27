@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -111,7 +112,36 @@ public class SDSTest {
 		assertTrue(subs(f, result.getNegativeAt(), 'x').compareTo(f.valueOf(0)) < 0);
 		assertEquals(98, result.getDepth());
 
-		// TODO example 2
+		// example 2
+		// (3*x - y)**2 + (x - z)**2
+		BigPoly f0 = new BigPoly("xyz", "10*x**2 - 6*x*y - 2*x*z + y**2 + z**2");
+		// zero at (1, 3, 1), not on sds or tsds's boundary
+		assertTrue(subs(f0, Arrays.asList(f.valueOf(1), f.valueOf(3), f.valueOf(1)), 'x').equals(f.valueOf(0)));
+		// 1e8
+		f = new BigPoly().add(f.valueOf(100_000_000), f0);
+		// can be proved positive by tsds within 16 iterations (sds doesn't work)
+		result = SDS.tsds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(f));
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(16, result.getDepth());
+		// can be proved positive by tsds within 11 iterations
+		f = new BigPoly("xyz", "-x**2 - y**2 - z**2").add(f);
+		result = SDS.tsds(f);
+		assertTrue(!result.isNonNegative());
+		assertTrue(subs(f, result.getNegativeAt(), 'x').compareTo(f.valueOf(0)) < 0);
+		assertEquals(11, result.getDepth());
+		// sds works for 6 but doesn't seem to work for 7
+		result = SDS.sds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(new BigPoly().add(6, f0)));
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(9, result.getDepth());
+		// sds finds negative for 1e22 (maybe larger), why?
+		f = new BigPoly("xyz", "-x**2 - y**2 - z**2").add(new BigPoly().add(f.valueOf("10000000000000000000000"), f0));
+		result = SDS.sds(f);
+		assertTrue(!result.isNonNegative());
+		assertTrue(subs(f, result.getNegativeAt(), 'x').compareTo(f.valueOf(0)) < 0);
+		assertEquals("[1, 3, 1]",result.getNegativeAt().toString());
+		assertEquals(2, result.getDepth());
 	}
 
 	private static LongPoly replaceAn(String expr) {
@@ -257,7 +287,7 @@ public class SDSTest {
 		LongPoly f;
 		SDSResult<MutableLong> result;
 		// ex 4.2
-		// Too slow in making permMat
+		// too slow in making permMat
 		/*
 		f = replaceAn("a1**2 + a2**2 + a3**2 + a4**2 + a5**2 + a6**2 + a7**2 + a8**2 + a9**2 + a10**2 - 4*a1*a2");
 		result = SDS.sds(f);
