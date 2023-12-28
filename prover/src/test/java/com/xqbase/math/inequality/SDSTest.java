@@ -184,7 +184,7 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertEquals(21, result.getZeroAt().size());
 		assertEquals("[[1, 1, 1, 1, 1]]", getZeroAt(fn, fd, result.getZeroAt()).toString());
-		assertEquals(1, result.depth);
+		assertEquals(1, result.getDepth());
 		// p170, §7.3.3
 		fn = replaceAn("a1**3*a3 + a1**3*a4 + a1**2*a2**2 - a1**2*a2*a4 - 2*a1**2*a3**2 - a1**2*a3*a4 + a1**2*a4**2 + a1*a2**3 - a1*a2**2*a3 - a1*a2**2*a4 - a1*a2*a3**2 + a1*a3**3 - a1*a3*a4**2 + a2**3*a4 + a2**2*a3**2 - 2*a2**2*a4**2 + a2*a3**3 - a2*a3**2*a4 - a2*a3*a4**2 + a2*a4**3 + a3**2*a4**2 + a3*a4**3"); 
 		for (Mono key : fn.keySet()) {
@@ -202,30 +202,30 @@ public class SDSTest {
 			assertEquals(zeroAt.get(0), zeroAt.get(2));
 			assertEquals(zeroAt.get(1), zeroAt.get(3));
 		}
-		assertEquals(2, result.depth);
+		assertEquals(2, result.getDepth());
 		// p171, problem 8
 		String f = "x**4*y**2 - 2*x**4*y*z + x**4*z**2 + 3*x**3*y**2*z - 2*x**3*y*z**2 - 2*x**2*y**4 - 2*x**2*y**3*z + x**2*y**2*z**2 + 2*x*y**4*z + y**6";
 		result = SDS.sds(new LongPoly("xyz", f));
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [1, 0, 0], [1, 1, 0], [4, 2, 3]]", result.getZeroAt().toString());
-		assertEquals(5, result.depth);
+		assertEquals(5, result.getDepth());
 		// p171, problem 9
 		f = "8*x**7 + 6*x**6*y + 8*x**6*z + 62*x**5*y**2 - 154*x**5*y*z - 69*x**4*y**3 + 202*x**4*y**2*z + 2*x**4*y*z**2 + 18*x**3*y**4 - 170*x**3*y**3*z + 114*x**3*y**2*z**2 + 18*x**3*y*z**3 + 54*x**2*y**4*z - 124*x**2*y**3*z**2 - 26*x**2*y**2*z**3 + 54*x*y**4*z**2 - 22*x*y**3*z**3 + 18*y**4*z**3 + y**3*z**4";
 		result = SDS.sds(new LongPoly("xyz", f));
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 1, 1], [1, 1, 5], [3, 1, 3]]", result.getZeroAt().toString());
-		assertEquals(18, result.depth);
+		assertEquals(18, result.getDepth());
 		// p172, problem 10
 		f = "a**6 + 5*a**5*b - a**5*c + 10*a**4*b**2 + 5*a**4*c**2 + 10*a**3*b**3 - 10*a**3*c**3 + 5*a**2*b**4 + 10*a**2*c**4 + a*b**5 - 5*a*c**5 + b**6 - 5*b**5*c + 10*b**4*c**2 - 10*b**3*c**3 + 5*b**2*c**4 - b*c**5 + c**6";
 		result = SDS.sds(new LongPoly("abc", f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
-		assertEquals(4, result.depth);
+		assertEquals(4, result.getDepth());
 		f = "a**6 - 5*a**5*b - a**5*c + 10*a**4*b**2 + 5*a**4*c**2 - 10*a**3*b**3 - 10*a**3*c**3 + 5*a**2*b**4 + 10*a**2*c**4 - a*b**5 - 5*a*c**5 + b**6 + 5*b**5*c + 10*b**4*c**2 + 10*b**3*c**3 + 5*b**2*c**4 + b*c**5 + c**6";
 		result = SDS.sds(new LongPoly("abc", f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
-		assertEquals(4, result.depth);
+		assertEquals(4, result.getDepth());
 		// p172, problem 11
 		f = "2572755344*x**4 - 20000000*x**3*y - 6426888360*x**3*z + 30000000*x**2*y**2" +
 				" + 5315682897*x**2*z**2 - 20000000*x*y**3 - 1621722090*x*z**3 + 170172209*y**4" +
@@ -235,8 +235,8 @@ public class SDSTest {
 		SDSResult<MutableBigInteger> bigResult = SDS.sds(new BigPoly("xyz", f));
 		assertTrue(bigResult.isNonNegative());
 		assertEquals("[[1, 1, 1]]", bigResult.getZeroAt().toString());
-		assertEquals(46, bigResult.depth);
-		// p174, 6-var Vasc's conjecture, too slow
+		assertEquals(46, bigResult.getDepth());
+		// p174, 6-var Vasc's conjecture, doesn't seem to work here
 		/*
 		fn = replaceAn("a1**3*a3*a4*a5 + a1**3*a3*a4*a6 + a1**3*a3*a5**2 + a1**3*a3*a5*a6 + a1**3*a4**2*a5 + a1**3*a4**2*a6 + a1**3*a4*a5**2 + a1**3*a4*a5*a6 + a1**2*a2**2*a4*a5 + a1**2*a2**2*a4*a6 + a1**2*a2**2*a5**2 + a1**2*a2**2*a5*a6 + a1**2*a2*a3**2*a5 + a1**2*a2*a3**2*a6 + a1**2*a2*a3*a4**2 - a1**2*a2*a3*a4*a5 - a1**2*a2*a3*a4*a6 - 2*a1**2*a2*a3*a5**2 - a1**2*a2*a3*a5*a6 + a1**2*a2*a4**3 - 2*a1**2*a2*a4**2*a5 - 2*a1**2*a2*a4**2*a6 - 2*a1**2*a2*a4*a5**2 - a1**2*a2*a4*a5*a6 + a1**2*a3**3*a5 + a1**2*a3**3*a6 + a1**2*a3**2*a4**2 - 2*a1**2*a3**2*a4*a5 - 2*a1**2*a3**2*a4*a6 - 3*a1**2*a3**2*a5**2 - 2*a1**2*a3**2*a5*a6 + a1**2*a3*a4**3 - 2*a1**2*a3*a4**2*a5 - 2*a1**2*a3*a4**2*a6 - 2*a1**2*a3*a4*a5**2 + a1**2*a3*a4*a6**2 + a1**2*a3*a5**2*a6 + a1**2*a3*a5*a6**2 + a1**2*a4**2*a5*a6 + a1**2*a4**2*a6**2 + a1**2*a4*a5**2*a6 + a1**2*a4*a5*a6**2 + a1*a2**3*a4*a5 + a1*a2**3*a4*a6 + a1*a2**3*a5**2 + a1*a2**3*a5*a6 + a1*a2**2*a3**2*a5 + a1*a2**2*a3**2*a6 + a1*a2**2*a3*a4**2 - a1*a2**2*a3*a4*a5 - a1*a2**2*a3*a4*a6 - 2*a1*a2**2*a3*a5**2 - a1*a2**2*a3*a5*a6 + a1*a2**2*a4**3 - 2*a1*a2**2*a4**2*a5 - 2*a1*a2**2*a4**2*a6 - 2*a1*a2**2*a4*a5**2 + a1*a2**2*a4*a6**2 + a1*a2**2*a5**2*a6 + a1*a2**2*a5*a6**2 + a1*a2*a3**3*a5 + a1*a2*a3**3*a6 + a1*a2*a3**2*a4**2 - a1*a2*a3**2*a4*a5 - a1*a2*a3**2*a4*a6 - 2*a1*a2*a3**2*a5**2 + a1*a2*a3**2*a6**2 + a1*a2*a3*a4**3 - a1*a2*a3*a4**2*a5 - a1*a2*a3*a4*a6**2 + a1*a2*a3*a5**3 - a1*a2*a3*a5**2*a6 - a1*a2*a3*a5*a6**2 + a1*a2*a4**3*a6 + a1*a2*a4**2*a5**2 - a1*a2*a4**2*a5*a6 - 2*a1*a2*a4**2*a6**2 + a1*a2*a4*a5**3 - a1*a2*a4*a5**2*a6 - a1*a2*a4*a5*a6**2 + a1*a3**3*a5*a6 + a1*a3**3*a6**2 + a1*a3**2*a4**2*a6 + a1*a3**2*a4*a5**2 - a1*a3**2*a4*a5*a6 - 2*a1*a3**2*a4*a6**2 + a1*a3**2*a5**3 - 2*a1*a3**2*a5**2*a6 - 2*a1*a3**2*a5*a6**2 + a1*a3*a4**3*a6 + a1*a3*a4**2*a5**2 - a1*a3*a4**2*a5*a6 - 2*a1*a3*a4**2*a6**2 + a1*a3*a4*a5**3 - a1*a3*a4*a5**2*a6 - a1*a3*a4*a5*a6**2 + a2**3*a4*a5*a6 + a2**3*a4*a6**2 + a2**3*a5**2*a6 + a2**3*a5*a6**2 + a2**2*a3**2*a5*a6 + a2**2*a3**2*a6**2 + a2**2*a3*a4**2*a6 + a2**2*a3*a4*a5**2 - a2**2*a3*a4*a5*a6 - 2*a2**2*a3*a4*a6**2 + a2**2*a3*a5**3 - 2*a2**2*a3*a5**2*a6 - 2*a2**2*a3*a5*a6**2 + a2**2*a4**3*a6 + a2**2*a4**2*a5**2 - 2*a2**2*a4**2*a5*a6 - 3*a2**2*a4**2*a6**2 + a2**2*a4*a5**3 - 2*a2**2*a4*a5**2*a6 - 2*a2**2*a4*a5*a6**2 + a2*a3**3*a5*a6 + a2*a3**3*a6**2 + a2*a3**2*a4**2*a6 + a2*a3**2*a4*a5**2 - a2*a3**2*a4*a5*a6 - 2*a2*a3**2*a4*a6**2 + a2*a3**2*a5**3 - 2*a2*a3**2*a5**2*a6 - 2*a2*a3**2*a5*a6**2 + a2*a3*a4**3*a6 + a2*a3*a4**2*a5**2 - a2*a3*a4**2*a5*a6 - 2*a2*a3*a4**2*a6**2 + a2*a3*a4*a5**3 - a2*a3*a4*a5**2*a6 + a2*a3*a4*a6**3 + a2*a3*a5**2*a6**2 + a2*a3*a5*a6**3 + a2*a4**2*a5*a6**2 + a2*a4**2*a6**3 + a2*a4*a5**2*a6**2 + a2*a4*a5*a6**3 + a3**2*a4*a5*a6**2 + a3**2*a4*a6**3 + a3**2*a5**2*a6**2 + a3**2*a5*a6**3 + a3*a4**2*a5*a6**2 + a3*a4**2*a6**3 + a3*a4*a5**2*a6**2 + a3*a4*a5*a6**3");
 		result = SDS.sds(fn);
@@ -247,7 +247,7 @@ public class SDSTest {
 		result = SDS.sds(fn);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[1, 1, 1, 1, 1]]", getZeroAt(fn, fd, result.getZeroAt()).toString());
-		assertEquals(2, result.depth);
+		assertEquals(2, result.getDepth());
 		// 7-var Vasc's inequality, too slow even if skip negative finding
 		/*
 		fn = replaceAn("a1**3*a3*a4*a5*a6 + a1**3*a3*a4*a5*a7 + a1**3*a3*a4*a6**2 + a1**3*a3*a4*a6*a7 + a1**3*a3*a5**2*a6 + a1**3*a3*a5**2*a7 + a1**3*a3*a5*a6**2 + a1**3*a3*a5*a6*a7 + a1**3*a4**2*a5*a6 + a1**3*a4**2*a5*a7 + a1**3*a4**2*a6**2 + a1**3*a4**2*a6*a7 + a1**3*a4*a5**2*a6 + a1**3*a4*a5**2*a7 + a1**3*a4*a5*a6**2 + a1**3*a4*a5*a6*a7 + a1**2*a2**2*a4*a5*a6 + a1**2*a2**2*a4*a5*a7 + a1**2*a2**2*a4*a6**2 + a1**2*a2**2*a4*a6*a7 + a1**2*a2**2*a5**2*a6 + a1**2*a2**2*a5**2*a7 + a1**2*a2**2*a5*a6**2 + a1**2*a2**2*a5*a6*a7 + a1**2*a2*a3**2*a5*a6 + a1**2*a2*a3**2*a5*a7 + a1**2*a2*a3**2*a6**2 + a1**2*a2*a3**2*a6*a7 + a1**2*a2*a3*a4**2*a6 + a1**2*a2*a3*a4**2*a7 + a1**2*a2*a3*a4*a5**2 - a1**2*a2*a3*a4*a5*a6 - a1**2*a2*a3*a4*a5*a7 - 2*a1**2*a2*a3*a4*a6**2 - a1**2*a2*a3*a4*a6*a7 + a1**2*a2*a3*a5**3 - 2*a1**2*a2*a3*a5**2*a6 - 2*a1**2*a2*a3*a5**2*a7 - 2*a1**2*a2*a3*a5*a6**2 - a1**2*a2*a3*a5*a6*a7 + a1**2*a2*a4**3*a6 + a1**2*a2*a4**3*a7 + a1**2*a2*a4**2*a5**2 - 2*a1**2*a2*a4**2*a5*a6 - 2*a1**2*a2*a4**2*a5*a7 - 3*a1**2*a2*a4**2*a6**2 - 2*a1**2*a2*a4**2*a6*a7 + a1**2*a2*a4*a5**3 - 2*a1**2*a2*a4*a5**2*a6 - 2*a1**2*a2*a4*a5**2*a7 - 2*a1**2*a2*a4*a5*a6**2 - a1**2*a2*a4*a5*a6*a7 + a1**2*a3**3*a5*a6 + a1**2*a3**3*a5*a7 + a1**2*a3**3*a6**2 + a1**2*a3**3*a6*a7 + a1**2*a3**2*a4**2*a6 + a1**2*a3**2*a4**2*a7 + a1**2*a3**2*a4*a5**2 - 2*a1**2*a3**2*a4*a5*a6 - 2*a1**2*a3**2*a4*a5*a7 - 3*a1**2*a3**2*a4*a6**2 - 2*a1**2*a3**2*a4*a6*a7 + a1**2*a3**2*a5**3 - 3*a1**2*a3**2*a5**2*a6 - 3*a1**2*a3**2*a5**2*a7 - 3*a1**2*a3**2*a5*a6**2 - 2*a1**2*a3**2*a5*a6*a7 + a1**2*a3*a4**3*a6 + a1**2*a3*a4**3*a7 + a1**2*a3*a4**2*a5**2 - 2*a1**2*a3*a4**2*a5*a6 - 2*a1**2*a3*a4**2*a5*a7 - 3*a1**2*a3*a4**2*a6**2 - 2*a1**2*a3*a4**2*a6*a7 + a1**2*a3*a4*a5**3 - 2*a1**2*a3*a4*a5**2*a6 - 2*a1**2*a3*a4*a5**2*a7 - 2*a1**2*a3*a4*a5*a6**2 + a1**2*a3*a4*a5*a7**2 + a1**2*a3*a4*a6**2*a7 + a1**2*a3*a4*a6*a7**2 + a1**2*a3*a5**2*a6*a7 + a1**2*a3*a5**2*a7**2 + a1**2*a3*a5*a6**2*a7 + a1**2*a3*a5*a6*a7**2 + a1**2*a4**2*a5*a6*a7 + a1**2*a4**2*a5*a7**2 + a1**2*a4**2*a6**2*a7 + a1**2*a4**2*a6*a7**2 + a1**2*a4*a5**2*a6*a7 + a1**2*a4*a5**2*a7**2 + a1**2*a4*a5*a6**2*a7 + a1**2*a4*a5*a6*a7**2 + a1*a2**3*a4*a5*a6 + a1*a2**3*a4*a5*a7 + a1*a2**3*a4*a6**2 + a1*a2**3*a4*a6*a7 + a1*a2**3*a5**2*a6 + a1*a2**3*a5**2*a7 + a1*a2**3*a5*a6**2 + a1*a2**3*a5*a6*a7 + a1*a2**2*a3**2*a5*a6 + a1*a2**2*a3**2*a5*a7 + a1*a2**2*a3**2*a6**2 + a1*a2**2*a3**2*a6*a7 + a1*a2**2*a3*a4**2*a6 + a1*a2**2*a3*a4**2*a7 + a1*a2**2*a3*a4*a5**2 - a1*a2**2*a3*a4*a5*a6 - a1*a2**2*a3*a4*a5*a7 - 2*a1*a2**2*a3*a4*a6**2 - a1*a2**2*a3*a4*a6*a7 + a1*a2**2*a3*a5**3 - 2*a1*a2**2*a3*a5**2*a6 - 2*a1*a2**2*a3*a5**2*a7 - 2*a1*a2**2*a3*a5*a6**2 - a1*a2**2*a3*a5*a6*a7 + a1*a2**2*a4**3*a6 + a1*a2**2*a4**3*a7 + a1*a2**2*a4**2*a5**2 - 2*a1*a2**2*a4**2*a5*a6 - 2*a1*a2**2*a4**2*a5*a7 - 3*a1*a2**2*a4**2*a6**2 - 2*a1*a2**2*a4**2*a6*a7 + a1*a2**2*a4*a5**3 - 2*a1*a2**2*a4*a5**2*a6 - 2*a1*a2**2*a4*a5**2*a7 - 2*a1*a2**2*a4*a5*a6**2 + a1*a2**2*a4*a5*a7**2 + a1*a2**2*a4*a6**2*a7 + a1*a2**2*a4*a6*a7**2 + a1*a2**2*a5**2*a6*a7 + a1*a2**2*a5**2*a7**2 + a1*a2**2*a5*a6**2*a7 + a1*a2**2*a5*a6*a7**2 + a1*a2*a3**3*a5*a6 + a1*a2*a3**3*a5*a7 + a1*a2*a3**3*a6**2 + a1*a2*a3**3*a6*a7 + a1*a2*a3**2*a4**2*a6 + a1*a2*a3**2*a4**2*a7 + a1*a2*a3**2*a4*a5**2 - a1*a2*a3**2*a4*a5*a6 - a1*a2*a3**2*a4*a5*a7 - 2*a1*a2*a3**2*a4*a6**2 - a1*a2*a3**2*a4*a6*a7 + a1*a2*a3**2*a5**3 - 2*a1*a2*a3**2*a5**2*a6 - 2*a1*a2*a3**2*a5**2*a7 - 2*a1*a2*a3**2*a5*a6**2 + a1*a2*a3**2*a5*a7**2 + a1*a2*a3**2*a6**2*a7 + a1*a2*a3**2*a6*a7**2 + a1*a2*a3*a4**3*a6 + a1*a2*a3*a4**3*a7 + a1*a2*a3*a4**2*a5**2 - a1*a2*a3*a4**2*a5*a6 - a1*a2*a3*a4**2*a5*a7 - 2*a1*a2*a3*a4**2*a6**2 + a1*a2*a3*a4**2*a7**2 + a1*a2*a3*a4*a5**3 - a1*a2*a3*a4*a5**2*a6 - a1*a2*a3*a4*a5*a7**2 + a1*a2*a3*a4*a6**3 - a1*a2*a3*a4*a6**2*a7 - a1*a2*a3*a4*a6*a7**2 + a1*a2*a3*a5**3*a7 + a1*a2*a3*a5**2*a6**2 - a1*a2*a3*a5**2*a6*a7 - 2*a1*a2*a3*a5**2*a7**2 + a1*a2*a3*a5*a6**3 - a1*a2*a3*a5*a6**2*a7 - a1*a2*a3*a5*a6*a7**2 + a1*a2*a4**3*a6*a7 + a1*a2*a4**3*a7**2 + a1*a2*a4**2*a5**2*a7 + a1*a2*a4**2*a5*a6**2 - a1*a2*a4**2*a5*a6*a7 - 2*a1*a2*a4**2*a5*a7**2 + a1*a2*a4**2*a6**3 - 2*a1*a2*a4**2*a6**2*a7 - 2*a1*a2*a4**2*a6*a7**2 + a1*a2*a4*a5**3*a7 + a1*a2*a4*a5**2*a6**2 - a1*a2*a4*a5**2*a6*a7 - 2*a1*a2*a4*a5**2*a7**2 + a1*a2*a4*a5*a6**3 - a1*a2*a4*a5*a6**2*a7 - a1*a2*a4*a5*a6*a7**2 + a1*a3**3*a5*a6*a7 + a1*a3**3*a5*a7**2 + a1*a3**3*a6**2*a7 + a1*a3**3*a6*a7**2 + a1*a3**2*a4**2*a6*a7 + a1*a3**2*a4**2*a7**2 + a1*a3**2*a4*a5**2*a7 + a1*a3**2*a4*a5*a6**2 - a1*a3**2*a4*a5*a6*a7 - 2*a1*a3**2*a4*a5*a7**2 + a1*a3**2*a4*a6**3 - 2*a1*a3**2*a4*a6**2*a7 - 2*a1*a3**2*a4*a6*a7**2 + a1*a3**2*a5**3*a7 + a1*a3**2*a5**2*a6**2 - 2*a1*a3**2*a5**2*a6*a7 - 3*a1*a3**2*a5**2*a7**2 + a1*a3**2*a5*a6**3 - 2*a1*a3**2*a5*a6**2*a7 - 2*a1*a3**2*a5*a6*a7**2 + a1*a3*a4**3*a6*a7 + a1*a3*a4**3*a7**2 + a1*a3*a4**2*a5**2*a7 + a1*a3*a4**2*a5*a6**2 - a1*a3*a4**2*a5*a6*a7 - 2*a1*a3*a4**2*a5*a7**2 + a1*a3*a4**2*a6**3 - 2*a1*a3*a4**2*a6**2*a7 - 2*a1*a3*a4**2*a6*a7**2 + a1*a3*a4*a5**3*a7 + a1*a3*a4*a5**2*a6**2 - a1*a3*a4*a5**2*a6*a7 - 2*a1*a3*a4*a5**2*a7**2 + a1*a3*a4*a5*a6**3 - a1*a3*a4*a5*a6**2*a7 - a1*a3*a4*a5*a6*a7**2 + a2**3*a4*a5*a6*a7 + a2**3*a4*a5*a7**2 + a2**3*a4*a6**2*a7 + a2**3*a4*a6*a7**2 + a2**3*a5**2*a6*a7 + a2**3*a5**2*a7**2 + a2**3*a5*a6**2*a7 + a2**3*a5*a6*a7**2 + a2**2*a3**2*a5*a6*a7 + a2**2*a3**2*a5*a7**2 + a2**2*a3**2*a6**2*a7 + a2**2*a3**2*a6*a7**2 + a2**2*a3*a4**2*a6*a7 + a2**2*a3*a4**2*a7**2 + a2**2*a3*a4*a5**2*a7 + a2**2*a3*a4*a5*a6**2 - a2**2*a3*a4*a5*a6*a7 - 2*a2**2*a3*a4*a5*a7**2 + a2**2*a3*a4*a6**3 - 2*a2**2*a3*a4*a6**2*a7 - 2*a2**2*a3*a4*a6*a7**2 + a2**2*a3*a5**3*a7 + a2**2*a3*a5**2*a6**2 - 2*a2**2*a3*a5**2*a6*a7 - 3*a2**2*a3*a5**2*a7**2 + a2**2*a3*a5*a6**3 - 2*a2**2*a3*a5*a6**2*a7 - 2*a2**2*a3*a5*a6*a7**2 + a2**2*a4**3*a6*a7 + a2**2*a4**3*a7**2 + a2**2*a4**2*a5**2*a7 + a2**2*a4**2*a5*a6**2 - 2*a2**2*a4**2*a5*a6*a7 - 3*a2**2*a4**2*a5*a7**2 + a2**2*a4**2*a6**3 - 3*a2**2*a4**2*a6**2*a7 - 3*a2**2*a4**2*a6*a7**2 + a2**2*a4*a5**3*a7 + a2**2*a4*a5**2*a6**2 - 2*a2**2*a4*a5**2*a6*a7 - 3*a2**2*a4*a5**2*a7**2 + a2**2*a4*a5*a6**3 - 2*a2**2*a4*a5*a6**2*a7 - 2*a2**2*a4*a5*a6*a7**2 + a2*a3**3*a5*a6*a7 + a2*a3**3*a5*a7**2 + a2*a3**3*a6**2*a7 + a2*a3**3*a6*a7**2 + a2*a3**2*a4**2*a6*a7 + a2*a3**2*a4**2*a7**2 + a2*a3**2*a4*a5**2*a7 + a2*a3**2*a4*a5*a6**2 - a2*a3**2*a4*a5*a6*a7 - 2*a2*a3**2*a4*a5*a7**2 + a2*a3**2*a4*a6**3 - 2*a2*a3**2*a4*a6**2*a7 - 2*a2*a3**2*a4*a6*a7**2 + a2*a3**2*a5**3*a7 + a2*a3**2*a5**2*a6**2 - 2*a2*a3**2*a5**2*a6*a7 - 3*a2*a3**2*a5**2*a7**2 + a2*a3**2*a5*a6**3 - 2*a2*a3**2*a5*a6**2*a7 - 2*a2*a3**2*a5*a6*a7**2 + a2*a3*a4**3*a6*a7 + a2*a3*a4**3*a7**2 + a2*a3*a4**2*a5**2*a7 + a2*a3*a4**2*a5*a6**2 - a2*a3*a4**2*a5*a6*a7 - 2*a2*a3*a4**2*a5*a7**2 + a2*a3*a4**2*a6**3 - 2*a2*a3*a4**2*a6**2*a7 - 2*a2*a3*a4**2*a6*a7**2 + a2*a3*a4*a5**3*a7 + a2*a3*a4*a5**2*a6**2 - a2*a3*a4*a5**2*a6*a7 - 2*a2*a3*a4*a5**2*a7**2 + a2*a3*a4*a5*a6**3 - a2*a3*a4*a5*a6**2*a7 + a2*a3*a4*a5*a7**3 + a2*a3*a4*a6**2*a7**2 + a2*a3*a4*a6*a7**3 + a2*a3*a5**2*a6*a7**2 + a2*a3*a5**2*a7**3 + a2*a3*a5*a6**2*a7**2 + a2*a3*a5*a6*a7**3 + a2*a4**2*a5*a6*a7**2 + a2*a4**2*a5*a7**3 + a2*a4**2*a6**2*a7**2 + a2*a4**2*a6*a7**3 + a2*a4*a5**2*a6*a7**2 + a2*a4*a5**2*a7**3 + a2*a4*a5*a6**2*a7**2 + a2*a4*a5*a6*a7**3 + a3**2*a4*a5*a6*a7**2 + a3**2*a4*a5*a7**3 + a3**2*a4*a6**2*a7**2 + a3**2*a4*a6*a7**3 + a3**2*a5**2*a6*a7**2 + a3**2*a5**2*a7**3 + a3**2*a5*a6**2*a7**2 + a3**2*a5*a6*a7**3 + a3*a4**2*a5*a6*a7**2 + a3*a4**2*a5*a7**3 + a3*a4**2*a6**2*a7**2 + a3*a4**2*a6*a7**3 + a3*a4*a5**2*a6*a7**2 + a3*a4*a5**2*a7**3 + a3*a4*a5*a6**2*a7**2 + a3*a4*a5*a6*a7**3");
@@ -255,7 +255,7 @@ public class SDSTest {
 		result = SDS.sds(fn, false, true);
 		assertTrue(result.isNonNegative());
 		// assertEquals("[[1, 1, 1, 1, 1]]", getZeroAt(fn, fd, result.getZeroAt()).toString());
-		assertEquals(2, result.depth);
+		assertEquals(2, result.getDepth());
 		*/
 	}
 
@@ -268,26 +268,26 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
 		// sds need 2
-		assertEquals(3, result.depth);
+		assertEquals(3, result.getDepth());
 		// https://math.stackexchange.com/q/1777075
 		f = new BigPoly("xyz", "325*x**5*y**2 + 125*x**5*z**2 + 325*x**4*y**3 - 845*x**4*y**2*z - 325*x**4*y*z**2 - 325*x**4*z**3 - 325*x**3*y**4 + 720*x**3*y**2*z**2 + 325*x**3*z**4 + 125*x**2*y**5 - 325*x**2*y**4*z + 720*x**2*y**3*z**2 + 720*x**2*y**2*z**3 - 845*x**2*y*z**4 + 325*x**2*z**5 - 845*x*y**4*z**2 - 325*x*y**2*z**4 + 325*y**5*z**2 + 325*y**4*z**3 - 325*y**3*z**4 + 125*y**2*z**5");
 		result = SDS.tsds(f);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
 		// sds needs 5
-		assertEquals(4, result.depth);
+		assertEquals(4, result.getDepth());
 		f = new BigPoly("xyz", "72*x**5*y**2 + 27*x**5*z**2 + 72*x**4*y**3 - 192*x**4*y**2*z - 72*x**4*y*z**2 - 72*x**4*z**3 - 72*x**3*y**4 + 165*x**3*y**2*z**2 + 72*x**3*z**4 + 27*x**2*y**5 - 72*x**2*y**4*z + 165*x**2*y**3*z**2 + 165*x**2*y**2*z**3 - 192*x**2*y*z**4 + 72*x**2*z**5 - 192*x*y**4*z**2 - 72*x*y**2*z**4 + 72*y**5*z**2 + 72*y**4*z**3 - 72*y**3*z**4 + 27*y**2*z**5");
 		result = SDS.tsds(f);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').compareTo(f.valueOf(0)) < 0);
-		assertEquals(2, result.depth);
+		assertEquals(2, result.getDepth());
 		// https://math.stackexchange.com/q/3526427
 		f = new BigPoly("xyz", "x**9*y**3 - x**9*y**2*z - x**9*y*z**2 + x**9*z**3 + 6*x**8*y**4 + x**8*y**3*z - 10*x**8*y**2*z**2 + x**8*y*z**3 + 6*x**8*z**4 + 15*x**7*y**5 + 19*x**7*y**4*z - 26*x**7*y**3*z**2 - 26*x**7*y**2*z**3 + 19*x**7*y*z**4 + 15*x**7*z**5 + 20*x**6*y**6 + 45*x**6*y**5*z - 30*x**6*y**4*z**2 - 110*x**6*y**3*z**3 - 30*x**6*y**2*z**4 + 45*x**6*y*z**5 + 20*x**6*z**6 + 15*x**5*y**7 + 45*x**5*y**6*z - 26*x**5*y**5*z**2 - 202*x**5*y**4*z**3 - 202*x**5*y**3*z**4 - 26*x**5*y**2*z**5 + 45*x**5*y*z**6 + 15*x**5*z**7 + 6*x**4*y**8 + 19*x**4*y**7*z - 30*x**4*y**6*z**2 - 202*x**4*y**5*z**3 + 1410*x**4*y**4*z**4 - 202*x**4*y**3*z**5 - 30*x**4*y**2*z**6 + 19*x**4*y*z**7 + 6*x**4*z**8 + x**3*y**9 + x**3*y**8*z - 26*x**3*y**7*z**2 - 110*x**3*y**6*z**3 - 202*x**3*y**5*z**4 - 202*x**3*y**4*z**5 - 110*x**3*y**3*z**6 - 26*x**3*y**2*z**7 + x**3*y*z**8 + x**3*z**9 - x**2*y**9*z - 10*x**2*y**8*z**2 - 26*x**2*y**7*z**3 - 30*x**2*y**6*z**4 - 26*x**2*y**5*z**5 - 30*x**2*y**4*z**6 - 26*x**2*y**3*z**7 - 10*x**2*y**2*z**8 - x**2*y*z**9 - x*y**9*z**2 + x*y**8*z**3 + 19*x*y**7*z**4 + 45*x*y**6*z**5 + 45*x*y**5*z**6 + 19*x*y**4*z**7 + x*y**3*z**8 - x*y**2*z**9 + y**9*z**3 + 6*y**8*z**4 + 15*y**7*z**5 + 20*y**6*z**6 + 15*y**5*z**7 + 6*y**4*z**8 + y**3*z**9");
 		result = SDS.tsds(f);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1], [1, 1, 2], [1, 2, 1], [2, 1, 1]]", result.getZeroAt().toString());
 		// sds needs 2
-		assertEquals(4, result.depth);
+		assertEquals(4, result.getDepth());
 	}
 
 	@Test
@@ -297,7 +297,7 @@ public class SDSTest {
 		SDSResult<MutableBigInteger> result = SDS.tsds(new BigPoly("abcd", f.toString()));
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1, 1], [0, 1, 1, 0], [1, 0, 0, 1], [1, 1, 0, 0]]", result.getZeroAt().toString());
-		assertEquals(1, result.depth);
+		assertEquals(1, result.getDepth());
 	}
 
 	@Test
@@ -309,7 +309,7 @@ public class SDSTest {
 		SDSResult<MutableBigInteger> result = SDS.tsds(new BigPoly("xyz", "z**2").add(3_000_000, f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
-		assertEquals(16, result.depth);
+		assertEquals(16, result.getDepth());
 		// ex 4.2
 		// too slow in making permMat
 		/*
@@ -317,14 +317,14 @@ public class SDSTest {
 		result = SDS.sds(f);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'a').compareTo(f.valueOf(0)) < 0);
-		assertEquals(0, result.depth);
+		assertEquals(0, result.getDepth());
 		*/
 		// ex 4.3
 		f = new BigPoly("xyz", "x**3 + y**3 + z**3 - 3*x*y*z");
 		result = SDS.sds(f);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[1, 1, 1]]", result.getZeroAt().toString());
-		assertEquals(1, result.depth);
+		assertEquals(1, result.getDepth());
 		// ex 4.4
 		f = new BigPoly("abc", "a**4 - 3*a**3*b + 2*a**2*b**2 + 2*a**2*c**2 - 3*a*c**3 + b**4 - 3*b**3*c + 2*b**2*c**2 + c**4");
 		// zero at (1, 1, 1)
@@ -335,18 +335,35 @@ public class SDSTest {
 		result = SDS.sds(new BigPoly("abc", "a**4 + b**4 + c**4").add(new BigPoly().add(f.valueOf(1_000_000_000), f)));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
-		assertEquals(14, result.depth);
+		assertEquals(14, result.getDepth());
 		// 1e22
 		f = new BigPoly().add(f.valueOf("10000000000000000000000"), f);
 		// tsds works within 32 iterations
 		result = SDS.tsds(new BigPoly("abc", "a**4 + b**4 + c**4").add(f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
-		assertEquals(32, result.depth);
+		assertEquals(32, result.getDepth());
 		// both sds and tsds find negative without iteration
 		result = SDS.sds(new BigPoly("abc", "-a**4 - b**4 - c**4").add(f));
 		assertTrue(!result.isNonNegative());
 		assertEquals("[1, 1, 1]", result.getNegativeAt().toString());
-		assertEquals(0, result.depth);
+		assertEquals(0, result.getDepth());
+		// ex 4.5
+		// result from han13-ex5.py
+		// g1, sds needs 4 iterations
+		f = new BigPoly("pqrst", "11*p**2*q**6 + 44*p**2*q**5*r + 22*p**2*q**5*s + 66*p**2*q**5*t + 66*p**2*q**4*r**2 + 66*p**2*q**4*r*s + 220*p**2*q**4*r*t + 11*p**2*q**4*s**2 + 110*p**2*q**4*s*t + 192*p**2*q**4*t**2 + 44*p**2*q**3*r**3 + 66*p**2*q**3*r**2*s + 264*p**2*q**3*r**2*t + 22*p**2*q**3*r*s**2 + 264*p**2*q**3*r*s*t + 512*p**2*q**3*r*t**2 + 44*p**2*q**3*s**2*t + 256*p**2*q**3*s*t**2 + 328*p**2*q**3*t**3 + 11*p**2*q**2*r**4 + 22*p**2*q**2*r**3*s + 132*p**2*q**2*r**3*t + 11*p**2*q**2*r**2*s**2 + 198*p**2*q**2*r**2*s*t + 468*p**2*q**2*r**2*t**2 + 66*p**2*q**2*r*s**2*t + 468*p**2*q**2*r*s*t**2 + 656*p**2*q**2*r*t**3 + 84*p**2*q**2*s**2*t**2 + 328*p**2*q**2*s*t**3 + 336*p**2*q**2*t**4 + 22*p**2*q*r**4*t + 44*p**2*q*r**3*s*t + 168*p**2*q*r**3*t**2 + 22*p**2*q*r**2*s**2*t + 252*p**2*q*r**2*s*t**2 + 408*p**2*q*r**2*t**3 + 84*p**2*q*r*s**2*t**2 + 408*p**2*q*r*s*t**3 + 448*p**2*q*r*t**4 + 80*p**2*q*s**2*t**3 + 224*p**2*q*s*t**4 + 192*p**2*q*t**5 + 20*p**2*r**4*t**2 + 40*p**2*r**3*s*t**2 + 80*p**2*r**3*t**3 + 20*p**2*r**2*s**2*t**2 + 120*p**2*r**2*s*t**3 + 144*p**2*r**2*t**4 + 40*p**2*r*s**2*t**3 + 144*p**2*r*s*t**4 + 128*p**2*r*t**5 + 32*p**2*s**2*t**4 + 64*p**2*s*t**5 + 48*p**2*t**6 + 22*p*q**6*t + 88*p*q**5*r*t + 44*p*q**5*s*t + 36*p*q**5*t**2 + 132*p*q**4*r**2*t + 132*p*q**4*r*s*t + 120*p*q**4*r*t**2 + 22*p*q**4*s**2*t + 60*p*q**4*s*t**2 - 96*p*q**4*t**3 + 88*p*q**3*r**3*t + 132*p*q**3*r**2*s*t + 144*p*q**3*r**2*t**2 + 44*p*q**3*r*s**2*t + 144*p*q**3*r*s*t**2 - 256*p*q**3*r*t**3 + 24*p*q**3*s**2*t**2 - 128*p*q**3*s*t**3 - 304*p*q**3*t**4 + 22*p*q**2*r**4*t + 44*p*q**2*r**3*s*t + 72*p*q**2*r**3*t**2 + 22*p*q**2*r**2*s**2*t + 108*p*q**2*r**2*s*t**2 - 216*p*q**2*r**2*t**3 + 36*p*q**2*r*s**2*t**2 - 216*p*q**2*r*s*t**3 - 608*p*q**2*r*t**4 - 24*p*q**2*s**2*t**3 - 304*p*q**2*s*t**4 - 288*p*q**2*t**5 + 12*p*q*r**4*t**2 + 24*p*q*r**3*s*t**2 - 48*p*q*r**3*t**3 + 12*p*q*r**2*s**2*t**2 - 72*p*q*r**2*s*t**3 - 336*p*q*r**2*t**4 - 24*p*q*r*s**2*t**3 - 336*p*q*r*s*t**4 - 384*p*q*r*t**5 - 32*p*q*s**2*t**4 - 192*p*q*s*t**5 - 96*p*q*t**6 + 8*p*r**4*t**3 + 16*p*r**3*s*t**3 - 32*p*r**3*t**4 + 8*p*r**2*s**2*t**3 - 48*p*r**2*s*t**4 - 96*p*r**2*t**5 - 16*p*r*s**2*t**4 - 96*p*r*s*t**5 - 64*p*r*t**6 - 32*p*s*t**6 + 92*q**6*t**2 + 368*q**5*r*t**2 + 184*q**5*s*t**2 + 456*q**5*t**3 + 552*q**4*r**2*t**2 + 552*q**4*r*s*t**2 + 1520*q**4*r*t**3 + 92*q**4*s**2*t**2 + 760*q**4*s*t**3 + 864*q**4*t**4 + 368*q**3*r**3*t**2 + 552*q**3*r**2*s*t**2 + 1824*q**3*r**2*t**3 + 184*q**3*r*s**2*t**2 + 1824*q**3*r*s*t**3 + 2304*q**3*r*t**4 + 304*q**3*s**2*t**3 + 1152*q**3*s*t**4 + 736*q**3*t**5 + 92*q**2*r**4*t**2 + 184*q**2*r**3*s*t**2 + 912*q**2*r**3*t**3 + 92*q**2*r**2*s**2*t**2 + 1368*q**2*r**2*s*t**3 + 2096*q**2*r**2*t**4 + 456*q**2*r*s**2*t**3 + 2096*q**2*r*s*t**4 + 1472*q**2*r*t**5 + 368*q**2*s**2*t**4 + 736*q**2*s*t**5 + 240*q**2*t**6 + 152*q*r**4*t**3 + 304*q*r**3*s*t**3 + 736*q*r**3*t**4 + 152*q*r**2*s**2*t**3 + 1104*q*r**2*s*t**4 + 928*q*r**2*t**5 + 368*q*r*s**2*t**4 + 928*q*r*s*t**5 + 320*q*r*t**6 + 192*q*s**2*t**5 + 160*q*s*t**6 + 80*r**4*t**4 + 160*r**3*s*t**4 + 192*r**3*t**5 + 80*r**2*s**2*t**4 + 288*r**2*s*t**5 + 128*r**2*t**6 + 96*r*s**2*t**5 + 128*r*s*t**6 + 48*s**2*t**6");
+		result = SDS.tsds(f);
+		assertTrue(result.isNonNegative());
+		assertEquals(2, result.getDepth());
+		// g2, sds can use LongPoly
+		f = new BigPoly("pqrst", "9*p**4*r**4 + 18*p**4*r**3*s + 36*p**4*r**3*t + 9*p**4*r**2*s**2 + 54*p**4*r**2*s*t + 60*p**4*r**2*t**2 + 18*p**4*r*s**2*t + 60*p**4*r*s*t**2 + 48*p**4*r*t**3 + 12*p**4*s**2*t**2 + 24*p**4*s*t**3 + 16*p**4*t**4 + 18*p**3*q*r**4 + 36*p**3*q*r**3*s + 72*p**3*q*r**3*t + 18*p**3*q*r**2*s**2 + 108*p**3*q*r**2*s*t + 120*p**3*q*r**2*t**2 + 36*p**3*q*r*s**2*t + 120*p**3*q*r*s*t**2 + 96*p**3*q*r*t**3 + 24*p**3*q*s**2*t**2 + 48*p**3*q*s*t**3 + 32*p**3*q*t**4 + 36*p**3*r**4*t + 72*p**3*r**3*s*t + 144*p**3*r**3*t**2 + 36*p**3*r**2*s**2*t + 216*p**3*r**2*s*t**2 + 240*p**3*r**2*t**3 + 72*p**3*r*s**2*t**2 + 240*p**3*r*s*t**3 + 192*p**3*r*t**4 + 48*p**3*s**2*t**3 + 96*p**3*s*t**4 + 64*p**3*t**5 + 9*p**2*q**2*r**4 + 18*p**2*q**2*r**3*s + 36*p**2*q**2*r**3*t + 9*p**2*q**2*r**2*s**2 + 54*p**2*q**2*r**2*s*t + 60*p**2*q**2*r**2*t**2 + 18*p**2*q**2*r*s**2*t + 60*p**2*q**2*r*s*t**2 + 48*p**2*q**2*r*t**3 + 12*p**2*q**2*s**2*t**2 + 24*p**2*q**2*s*t**3 + 16*p**2*q**2*t**4 + 54*p**2*q*r**4*t + 108*p**2*q*r**3*s*t + 216*p**2*q*r**3*t**2 + 54*p**2*q*r**2*s**2*t + 324*p**2*q*r**2*s*t**2 + 360*p**2*q*r**2*t**3 + 108*p**2*q*r*s**2*t**2 + 360*p**2*q*r*s*t**3 + 288*p**2*q*r*t**4 + 72*p**2*q*s**2*t**3 + 144*p**2*q*s*t**4 + 96*p**2*q*t**5 + 44*p**2*r**4*t**2 + 88*p**2*r**3*s*t**2 + 176*p**2*r**3*t**3 + 44*p**2*r**2*s**2*t**2 + 264*p**2*r**2*s*t**3 + 336*p**2*r**2*t**4 + 88*p**2*r*s**2*t**3 + 336*p**2*r*s*t**4 + 320*p**2*r*t**5 + 80*p**2*s**2*t**4 + 160*p**2*s*t**5 + 128*p**2*t**6 + 18*p*q**2*r**4*t + 36*p*q**2*r**3*s*t + 72*p*q**2*r**3*t**2 + 18*p*q**2*r**2*s**2*t + 108*p*q**2*r**2*s*t**2 + 120*p*q**2*r**2*t**3 + 36*p*q**2*r*s**2*t**2 + 120*p*q**2*r*s*t**3 + 96*p*q**2*r*t**4 + 24*p*q**2*s**2*t**3 + 48*p*q**2*s*t**4 + 32*p*q**2*t**5 + 44*p*q*r**4*t**2 + 88*p*q*r**3*s*t**2 + 176*p*q*r**3*t**3 + 44*p*q*r**2*s**2*t**2 + 264*p*q*r**2*s*t**3 + 336*p*q*r**2*t**4 + 88*p*q*r*s**2*t**3 + 336*p*q*r*s*t**4 + 320*p*q*r*t**5 + 80*p*q*s**2*t**4 + 160*p*q*s*t**5 + 128*p*q*t**6 + 16*p*r**4*t**3 + 32*p*r**3*s*t**3 - 64*p*r**3*t**4 + 16*p*r**2*s**2*t**3 - 96*p*r**2*s*t**4 - 192*p*r**2*t**5 - 32*p*r*s**2*t**4 - 192*p*r*s*t**5 - 128*p*r*t**6 - 64*p*s*t**6 + 20*q**2*r**4*t**2 + 40*q**2*r**3*s*t**2 + 80*q**2*r**3*t**3 + 20*q**2*r**2*s**2*t**2 + 120*q**2*r**2*s*t**3 + 144*q**2*r**2*t**4 + 40*q**2*r*s**2*t**3 + 144*q**2*r*s*t**4 + 128*q**2*r*t**5 + 32*q**2*s**2*t**4 + 64*q**2*s*t**5 + 48*q**2*t**6 + 8*q*r**4*t**3 + 16*q*r**3*s*t**3 - 32*q*r**3*t**4 + 8*q*r**2*s**2*t**3 - 48*q*r**2*s*t**4 - 96*q*r**2*t**5 - 16*q*r*s**2*t**4 - 96*q*r*s*t**5 - 64*q*r*t**6 - 32*q*s*t**6 + 80*r**4*t**4 + 160*r**3*s*t**4 + 192*r**3*t**5 + 80*r**2*s**2*t**4 + 288*r**2*s*t**5 + 128*r**2*t**6 + 96*r*s**2*t**5 + 128*r*s*t**6 + 48*s**2*t**6");
+		result = SDS.tsds(f);
+		assertTrue(result.isNonNegative());
+		assertEquals(1, result.getDepth());
+		// g3, sds needs 4 iterations
+		f = new BigPoly("pqrst", "3*p**6*s**2 + 6*p**6*s*t + 4*p**6*t**2 + 12*p**5*q*s**2 + 24*p**5*q*s*t + 16*p**5*q*t**2 + 6*p**5*r*s**2 + 12*p**5*r*s*t + 8*p**5*r*t**2 + 18*p**5*s**2*t + 36*p**5*s*t**2 + 24*p**5*t**3 + 18*p**4*q**2*s**2 + 36*p**4*q**2*s*t + 24*p**4*q**2*t**2 + 18*p**4*q*r*s**2 + 36*p**4*q*r*s*t + 24*p**4*q*r*t**2 + 60*p**4*q*s**2*t + 120*p**4*q*s*t**2 + 80*p**4*q*t**3 + 3*p**4*r**2*s**2 + 6*p**4*r**2*s*t + 4*p**4*r**2*t**2 + 30*p**4*r*s**2*t + 60*p**4*r*s*t**2 + 40*p**4*r*t**3 + 72*p**4*s**2*t**2 + 144*p**4*s*t**3 + 96*p**4*t**4 + 12*p**3*q**3*s**2 + 24*p**3*q**3*s*t + 16*p**3*q**3*t**2 + 18*p**3*q**2*r*s**2 + 36*p**3*q**2*r*s*t + 24*p**3*q**2*r*t**2 + 72*p**3*q**2*s**2*t + 144*p**3*q**2*s*t**2 + 96*p**3*q**2*t**3 + 6*p**3*q*r**2*s**2 + 12*p**3*q*r**2*s*t + 8*p**3*q*r**2*t**2 + 72*p**3*q*r*s**2*t + 144*p**3*q*r*s*t**2 + 96*p**3*q*r*t**3 + 192*p**3*q*s**2*t**2 + 384*p**3*q*s*t**3 + 256*p**3*q*t**4 + 12*p**3*r**2*s**2*t + 24*p**3*r**2*s*t**2 + 16*p**3*r**2*t**3 + 96*p**3*r*s**2*t**2 + 192*p**3*r*s*t**3 + 128*p**3*r*t**4 + 168*p**3*s**2*t**3 + 336*p**3*s*t**4 + 224*p**3*t**5 + 3*p**2*q**4*s**2 + 6*p**2*q**4*s*t + 4*p**2*q**4*t**2 + 6*p**2*q**3*r*s**2 + 12*p**2*q**3*r*s*t + 8*p**2*q**3*r*t**2 + 36*p**2*q**3*s**2*t + 72*p**2*q**3*s*t**2 + 48*p**2*q**3*t**3 + 3*p**2*q**2*r**2*s**2 + 6*p**2*q**2*r**2*s*t + 4*p**2*q**2*r**2*t**2 + 54*p**2*q**2*r*s**2*t + 108*p**2*q**2*r*s*t**2 + 72*p**2*q**2*r*t**3 + 180*p**2*q**2*s**2*t**2 + 360*p**2*q**2*s*t**3 + 240*p**2*q**2*t**4 + 18*p**2*q*r**2*s**2*t + 36*p**2*q*r**2*s*t**2 + 24*p**2*q*r**2*t**3 + 180*p**2*q*r*s**2*t**2 + 360*p**2*q*r*s*t**3 + 240*p**2*q*r*t**4 + 336*p**2*q*s**2*t**3 + 672*p**2*q*s*t**4 + 448*p**2*q*t**5 + 36*p**2*r**2*s**2*t**2 + 72*p**2*r**2*s*t**3 + 48*p**2*r**2*t**4 + 168*p**2*r*s**2*t**3 + 336*p**2*r*s*t**4 + 224*p**2*r*t**5 + 144*p**2*s**2*t**4 + 288*p**2*s*t**5 + 240*p**2*t**6 + 6*p*q**4*s**2*t + 12*p*q**4*s*t**2 + 8*p*q**4*t**3 + 12*p*q**3*r*s**2*t + 24*p*q**3*r*s*t**2 + 16*p*q**3*r*t**3 + 72*p*q**3*s**2*t**2 + 144*p*q**3*s*t**3 + 96*p*q**3*t**4 + 6*p*q**2*r**2*s**2*t + 12*p*q**2*r**2*s*t**2 + 8*p*q**2*r**2*t**3 + 108*p*q**2*r*s**2*t**2 + 216*p*q**2*r*s*t**3 + 144*p*q**2*r*t**4 + 216*p*q**2*s**2*t**3 + 432*p*q**2*s*t**4 + 288*p*q**2*t**5 + 36*p*q*r**2*s**2*t**2 + 72*p*q*r**2*s*t**3 + 48*p*q*r**2*t**4 + 216*p*q*r*s**2*t**3 + 432*p*q*r*s*t**4 + 288*p*q*r*t**5 + 192*p*q*s**2*t**4 + 384*p*q*s*t**5 + 320*p*q*t**6 + 48*p*r**2*s**2*t**3 + 96*p*r**2*s*t**4 + 64*p*r**2*t**5 + 96*p*r*s**2*t**4 + 192*p*r*s*t**5 + 160*p*r*t**6 - 96*p*s*t**6 + 12*q**4*s**2*t**2 + 24*q**4*s*t**3 + 16*q**4*t**4 + 24*q**3*r*s**2*t**2 + 48*q**3*r*s*t**3 + 32*q**3*r*t**4 + 48*q**3*s**2*t**3 + 96*q**3*s*t**4 + 64*q**3*t**5 + 12*q**2*r**2*s**2*t**2 + 24*q**2*r**2*s*t**3 + 16*q**2*r**2*t**4 + 72*q**2*r*s**2*t**3 + 144*q**2*r*s*t**4 + 96*q**2*r*t**5 + 80*q**2*s**2*t**4 + 160*q**2*s*t**5 + 128*q**2*t**6 + 24*q*r**2*s**2*t**3 + 48*q*r**2*s*t**4 + 32*q*r**2*t**5 + 80*q*r*s**2*t**4 + 160*q*r*s*t**5 + 128*q*r*t**6 - 64*q*s*t**6 + 32*r**2*s**2*t**4 + 64*r**2*s*t**5 + 48*r**2*t**6 - 32*r*s*t**6 + 48*s**2*t**6");
+		result = SDS.tsds(f);
+		assertTrue(result.isNonNegative());
+		assertEquals(2, result.getDepth());
 	}
 }
