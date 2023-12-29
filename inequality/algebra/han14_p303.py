@@ -1,6 +1,6 @@
 from sympy import *
 
-# ISBN 9787560349800, p303, ex 12.12
+# ISBN 9787560349800, p303, ex 12.12 (p339, ex 14.35)
 
 def cyc(f, vars):
     x, y, z = vars
