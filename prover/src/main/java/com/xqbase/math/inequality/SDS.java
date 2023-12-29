@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -174,7 +173,38 @@ public class SDS {
 		};
 	}
 
-	private static <T extends MutableNumber<T>> boolean trivialNonNegative(Poly<T> f) {
+	/**
+	 * find negative and zeros, then return if trivially non-negative
+	 *
+	 * @param transList skip finding negative if empty
+	 */
+	private static <T extends MutableNumber<T>> boolean trivial(Poly<T> f,
+			List<T[][]> transList, String vars, SDSResult<T> result) {
+		if (!transList.isEmpty()) {
+			// find negative and zeros: try 0/1 for each var
+			for (Map.Entry<List<T>, T> subsEntry : subs(f, vars).entrySet()) {
+				int c = subsEntry.getValue().compareTo(f.valueOf(0));
+				if (c < 0) {
+					result.negativeAt = matMulReduce(transList.get(0), subsEntry.getKey(), f);
+					return false;
+				}
+				if (c == 0) {
+					// remove trivial zero
+					boolean zero = true;
+					for (T v : subsEntry.getKey()) {
+						if (!v.equals(f.valueOf(0))) {
+							zero = false;
+							break;
+						}
+					}
+					if (!zero) {
+						for (T[][] trans : transList) {
+							result.zeroAt.add(matMulReduce(trans, subsEntry.getKey(), f));
+						}
+					}
+				}
+			}
+		}
 		for (T coeff : f.values()) {
 			if (coeff.signum() < 0) {
 				return false;
@@ -280,63 +310,30 @@ public class SDS {
 			subs[len - 1] = sub;
 		}
 
-		HashMap<Poly<T>, List<T[][]>> polyTransList = new HashMap<>();
-		polyTransList.put(f, Collections.singletonList(oneMat));
-
+		// depth = 0
 		SDSResult<T> result = new SDSResult<>(len);
-		for (int depth = 0; depth <= 100; depth ++) {
-			log.debug("depth = " + depth + ", polynomials = " + polyTransList.size());
-			result.depth = depth;
-			Iterator<Map.Entry<Poly<T>, List<T[][]>>> it = polyTransList.entrySet().iterator();
-			while (it.hasNext()) {
-				Map.Entry<Poly<T>, List<T[][]>> transEntry = it.next();
-				if (skipNegative) {
-					continue;
-				}
-				Poly<T> f0 = transEntry.getKey();
-				List<T[][]> transList = transEntry.getValue();
-				// find negative or zero: try 0/1 for each var
-				for (Map.Entry<List<T>, T> subsEntry : subs(f0, vars).entrySet()) {
-					int c = subsEntry.getValue().compareTo(f.valueOf(0));
-					if (c < 0) {
-						result.negativeAt = matMulReduce(transList.get(0), subsEntry.getKey(), f);
-						return result;
-					}
-					if (c == 0) {
-						// remove trivial zero
-						boolean zero = true;
-						for (T v : subsEntry.getKey()) {
-							if (!v.equals(f.valueOf(0))) {
-								zero = false;
-								break;
-							}
-						}
-						if (!zero) {
-							for (T[][] trans : transList) {
-								result.zeroAt.add(matMulReduce(trans, subsEntry.getKey(), f));
-							}
-						}
-					}
-				}
-				// substitute and iterate if there are negative terms
-				if (trivialNonNegative(f0)) {
-					it.remove();
-				}
-			}
-			if (polyTransList.isEmpty()) {
-				return result;
-			}
-			log.debug("depth = " + depth + ", non-trivially-positive polynomials = " + polyTransList.size());
+		// transList is always empty if skipNegative
+		List<T[][]> initTransList = skipNegative ? Collections.emptyList() : Collections.singletonList(oneMat);
+		if (trivial(f, initTransList, vars, result) || result.negativeAt != null) {
+			return result;
+		}
 
-			// substitution takes much time, so do it after negative check
+		Map<Poly<T>, List<T[][]>> polyTransList = Collections.singletonMap(f, initTransList);
+		while (!polyTransList.isEmpty()) {
+			result.depth ++;
+			log.debug("depth = " + result.depth + ", polynomials = " + polyTransList.size());
+			int traceCurr = 0, traceTrans = 0;
 			HashMap<Poly<T>, List<T[][]>> polyTransList1 = new HashMap<>();
 			for (Map.Entry<Poly<T>, List<T[][]>> transEntry : polyTransList.entrySet()) {
+				traceCurr ++;
+				log.trace("depth = " + result.depth + ", polynomial: " + traceCurr + "/" + polyTransList.size());
+
 				Poly<T> f0 = transEntry.getKey();
 				List<T[][]> transList = transEntry.getValue();
-				// List<int[][]> transList = transEntry.getValue();
 				for (Map.Entry<List<Integer>, T[][]> permEntry : permMat.entrySet()) {
-					// f1 = perm(f0)
+					// f1 = f0's permutation and substitution (transformation)
 					List<Integer> perm = permEntry.getKey();
+					T[][] permValue = permEntry.getValue();
 					Poly<T> f1 = f.newPoly();
 					for (Map.Entry<Mono, T> term : f0.entrySet()) {
 						short[] exps = term.getKey().getExps();
@@ -353,22 +350,28 @@ public class SDS {
 					for (int i = 0; i < subs.length; i ++) {
 						f1 = f1.subs(vars.charAt(i), subs[i]);
 					}
-					if (skipNegative) {
-						if (!trivialNonNegative(f1)) {
-							polyTransList1.computeIfAbsent(f1, k -> new ArrayList<>());
-						}
-						continue;
-					}
-					// update next polyTransList
-					List<T[][]> transList1 = polyTransList1.computeIfAbsent(f1, k -> new ArrayList<>());
-					T[][] permValue = permEntry.getValue();
+					List<T[][]> transList1 = new ArrayList<>();
 					for (T[][] transMat : transList) {
 						transList1.add(matMul(transMat, permValue, f));
 					}
+					// find negative and zeros, then skip trivial
+					if (trivial(f1, transList1, vars, result)) {
+						continue;
+					}
+					// terminate if find negative
+					if (result.negativeAt != null) {
+						return result;
+					}
+					// update next polyTransList
+					polyTransList1.computeIfAbsent(f1, k -> new ArrayList<>()).addAll(transList1);
+
+					traceTrans += transList1.size();
+					log.trace("after depth = " + result.depth + ": polynomials = " +
+							polyTransList1.size() + ", tranformations = " + traceTrans);
 				}
 			}
 			polyTransList = polyTransList1;
 		}
-		return null;
+		return result;
 	}
 }
