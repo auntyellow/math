@@ -27,12 +27,16 @@ import com.xqbase.math.polys.Poly;
 public class SDS {
 	private static Logger log = LoggerFactory.getLogger(SDS.class);
 
-	public static class SDSResult<T extends MutableNumber<T>> {
+	public static enum Find {
+		SKIP, FAST, FULL
+	}
+
+	public static class Result<T extends MutableNumber<T>> {
 		Set<List<T>> zeroAt;
 		List<T> negativeAt = null;
 		int depth = 0;
 
-		SDSResult(int len) {
+		Result(int len) {
 			zeroAt = new TreeSet<>(listComparator(len));
 		}
 
@@ -83,21 +87,6 @@ public class SDS {
 		return result;
 	}
 
-	private static <T extends MutableNumber<T>> T[][] matMul(T[][] m1, T[][] m2, Poly<T> p) {
-		int n = m1.length;
-		T[][] m = p.newMatrix(n, n);
-		for (int i = 0; i < n; i ++) {
-			for (int j = 0; j < n; j ++) {
-				T mij = p.newZero();
-				for (int k = 0; k < n; k ++) {
-					mij.addMul(m1[i][k], m2[k][j]);
-				}
-				m[i][j] = mij;
-			}
-		}
-		return m;
-	}
-
 	private static <T extends MutableNumber<T>> T[] matMul(T[][] m, T[] v, Poly<T> p) {
 		int n = m.length;
 		T[] v1 = p.newVector(n);
@@ -111,13 +100,16 @@ public class SDS {
 		return v1;
 	}
 
-	private static <T extends MutableNumber<T>> List<T> matMulReduce(T[][] trans, List<T> key, Poly<T> p) {
-		int n = key.size();
+	private static <T extends MutableNumber<T>> List<T> matMulReduce(List<Integer> trans,
+			List<T[][]> transMat, boolean[] key, Poly<T> p) {
+		int n = key.length;
 		T[] v = p.newVector(n);
 		for (int i = 0; i < n; i ++) {
-			v[i] = key.get(i);
+			v[i] = p.valueOf(key[i] ? 1 : 0);
 		}
-		v = matMul(trans, v, p);
+		for (int i = trans.size() - 1; i >= 0; i --) {
+			v = matMul(transMat.get(trans.get(i).intValue()), v, p);
+		}
 		T gcd = p.valueOf(0);
 		for (int i = 0; i < n; i ++) {
 			gcd = gcd.gcd(v[i]);
@@ -127,38 +119,6 @@ public class SDS {
 			value.add(v[i].div(gcd));
 		}
 		return value;
-	}
-
-	// for debug only
-	/*
-	private static <T> String toString(T[][] m) {
-		return Stream.of(m).map(Arrays::asList).collect(Collectors.toList()).toString();
-	}
-	*/
-
-	private static <T extends MutableNumber<T>> Map<List<T>, T> subs(Poly<T> f, String vars) {
-		int len = vars.length();
-		if (len == 0) {
-			T value = f.valueOf(0);
-			// at most one term, and must be a constant if there is
-			for (T t : f.values()) {
-				value = t;
-			}
-			return Collections.singletonMap(Collections.emptyList(), value);
-		}
-		String subVars = vars.substring(0, len - 1);
-		char from = vars.charAt(len - 1);
-		Map<List<T>, T> result = new HashMap<>();
-		for (long i = 0; i <= 1; i ++) {
-			// substitute the last variable with 0 and 1
-			T to = f.valueOf(i);
-			subs(f.subs(from, to), subVars).forEach((k, v) -> {
-				List<T> key = new ArrayList<>(k);
-				key.add(to);
-				result.put(key, v);
-			});
-		}
-		return result;
 	}
 
 	static <T extends Comparable<T>> Comparator<List<T>> listComparator(int len) {
@@ -179,28 +139,42 @@ public class SDS {
 	 * @param transList skip finding negative if empty
 	 */
 	private static <T extends MutableNumber<T>> boolean trivial(Poly<T> f,
-			List<T[][]> transList, String vars, SDSResult<T> result) {
+			List<List<Integer>> transList, List<T[][]> transMat, List<boolean[]> keys, Result<T> result) {
 		if (!transList.isEmpty()) {
-			// find negative and zeros: try 0/1 for each var
-			for (Map.Entry<List<T>, T> subsEntry : subs(f, vars).entrySet()) {
-				int c = subsEntry.getValue().compareTo(f.valueOf(0));
-				if (c < 0) {
-					result.negativeAt = matMulReduce(transList.get(0), subsEntry.getKey(), f);
-					return false;
-				}
-				if (c == 0) {
-					// remove trivial zero
-					boolean zero = true;
-					for (T v : subsEntry.getKey()) {
-						if (!v.equals(f.valueOf(0))) {
-							zero = false;
+			// find negative and zeros: try 0(false)/1(true)s in keys
+			int numKeys = keys.size();
+			List<T> values = new ArrayList<>();
+			for (int i = 0; i < numKeys; i ++) {
+				values.add(f.newZero());
+			}
+			for (Map.Entry<Mono, T> entry: f.entrySet()) {
+				short[] exps = entry.getKey().getExps();
+				T coeff = entry.getValue();
+				for (int i = 0; i < numKeys; i ++) {
+					T value = values.get(i);
+					boolean[] key = keys.get(i);
+					boolean zero = false;
+					for (int j = 0; j < key.length; j ++) {
+						if (!key[j] && exps[j] > 0) {
+							zero = true;
 							break;
 						}
 					}
 					if (!zero) {
-						for (T[][] trans : transList) {
-							result.zeroAt.add(matMulReduce(trans, subsEntry.getKey(), f));
-						}
+						value.add(coeff);
+					}
+				}
+			}
+			for (int i = 0; i < numKeys; i ++) {
+				T value = values.get(i);
+				int c = value.signum();
+				if (c < 0) {
+					result.negativeAt = matMulReduce(transList.get(0), transMat, keys.get(i), f);
+					return false;
+				}
+				if (c == 0) {
+					for (List<Integer> trans : transList) {
+						result.zeroAt.add(matMulReduce(trans, transMat, keys.get(i), f));
 					}
 				}
 			}
@@ -213,12 +187,12 @@ public class SDS {
 		return true;
 	}
 
-	public static <T extends MutableNumber<T>> SDSResult<T> sds(Poly<T> f) {
-		return sds(f, false, false);
+	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f) {
+		return sds(f, false, Find.FULL);
 	}
 
-	public static <T extends MutableNumber<T>> SDSResult<T> tsds(Poly<T> f) {
-		return sds(f, true, false);
+	public static <T extends MutableNumber<T>> Result<T> tsds(Poly<T> f) {
+		return sds(f, true, Find.FULL);
 	}
 
 	/** 
@@ -226,7 +200,7 @@ public class SDS {
 	 * <code>false</code> to uses upper triangular matrix (A_n) and
 	 * <code>true</code> to uses column stochastic matrix (T_n)
 	 */
-	public static <T extends MutableNumber<T>> SDSResult<T> sds(Poly<T> f, boolean tsds, boolean skipNegative) {
+	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f, boolean tsds, Find find) {
 		// check homogeneous
 		int deg = 0;
 		String vars = "";
@@ -243,7 +217,7 @@ public class SDS {
 			}
 		}
 		if (deg == 0) {
-			return new SDSResult<>(0);
+			return new Result<>(0);
 		}
 
 		int len = vars.length();
@@ -278,7 +252,8 @@ public class SDS {
 		for (int i = 0; i < len; i ++) {
 			varSeq.add(Integer.valueOf(i));
 		}
-		TreeMap<List<Integer>, T[][]> permMat = new TreeMap<>(listComparator(len));
+		TreeMap<List<Integer>, Integer> permIndex = new TreeMap<>(listComparator(len));
+		ArrayList<T[][]> transMat = new ArrayList<>();
 		for (List<Integer> perm : permutations(varSeq)) {
 			T[][] m = f.newMatrix(len, len);
 			for (int i = 0; i < len; i ++) {
@@ -286,7 +261,8 @@ public class SDS {
 				m[i] = upperMat[perm.get(i).intValue()].clone();
 				// m[perm.get(i).intValue()] = upperMat[i].clone();
 			}
-			permMat.put(perm, m);
+			permIndex.put(perm, Integer.valueOf(transMat.size()));
+			transMat.add(m);
 		}
 
 		@SuppressWarnings("unchecked")
@@ -310,30 +286,54 @@ public class SDS {
 			subs[len - 1] = sub;
 		}
 
+		// product([false, true], repeat = len)
+		List<boolean[]> keys = Collections.singletonList(new boolean[len]);
+		for (int i = 0; i < len; i ++) {
+			List<boolean[]> keys1 = new ArrayList<>();
+			if (find == Find.FULL) {
+				for (boolean[] key : keys) {
+					boolean[] key1 = key.clone();
+					key1[i] = false;
+					keys1.add(key1);
+				}
+			}
+			for (boolean[] key : keys) {
+				boolean[] key1 = key.clone();
+				key1[i] = true;
+				keys1.add(key1);
+			}
+			keys = keys1;
+		}
+		if (find == Find.FULL) {
+			// remove first trivial zeros
+			keys.remove(0);
+		}
+
 		// depth = 0
-		SDSResult<T> result = new SDSResult<>(len);
+		Result<T> result = new Result<>(len);
 		// transList is always empty if skipNegative
-		List<T[][]> initTransList = skipNegative ? Collections.emptyList() : Collections.singletonList(oneMat);
-		if (trivial(f, initTransList, vars, result) || result.negativeAt != null) {
+		List<List<Integer>> initTransList = find == Find.SKIP ? Collections.emptyList() :
+				Collections.singletonList(Collections.emptyList());
+		if (trivial(f, initTransList, transMat, keys, result) || result.negativeAt != null) {
 			return result;
 		}
 
-		Map<Poly<T>, List<T[][]>> polyTransList = Collections.singletonMap(f, initTransList);
+		Map<Poly<T>, List<List<Integer>>> polyTransList = Collections.singletonMap(f, initTransList);
 		while (!polyTransList.isEmpty()) {
 			result.depth ++;
 			log.debug("depth = " + result.depth + ", polynomials = " + polyTransList.size());
 			int traceCurr = 0, traceTrans = 0;
-			HashMap<Poly<T>, List<T[][]>> polyTransList1 = new HashMap<>();
-			for (Map.Entry<Poly<T>, List<T[][]>> transEntry : polyTransList.entrySet()) {
+			HashMap<Poly<T>, List<List<Integer>>> polyTransList1 = new HashMap<>();
+			for (Map.Entry<Poly<T>, List<List<Integer>>> transEntry : polyTransList.entrySet()) {
 				traceCurr ++;
 				log.trace("depth = " + result.depth + ", polynomial: " + traceCurr + "/" + polyTransList.size());
 
 				Poly<T> f0 = transEntry.getKey();
-				List<T[][]> transList = transEntry.getValue();
-				for (Map.Entry<List<Integer>, T[][]> permEntry : permMat.entrySet()) {
+				List<List<Integer>> transList = transEntry.getValue();
+				for (Map.Entry<List<Integer>, Integer> permEntry : permIndex.entrySet()) {
 					// f1 = f0's permutation and substitution (transformation)
 					List<Integer> perm = permEntry.getKey();
-					T[][] permValue = permEntry.getValue();
+					Integer index = permEntry.getValue();
 					Poly<T> f1 = f.newPoly();
 					for (Map.Entry<Mono, T> term : f0.entrySet()) {
 						short[] exps = term.getKey().getExps();
@@ -350,12 +350,14 @@ public class SDS {
 					for (int i = 0; i < subs.length; i ++) {
 						f1 = f1.subs(vars.charAt(i), subs[i]);
 					}
-					List<T[][]> transList1 = new ArrayList<>();
-					for (T[][] transMat : transList) {
-						transList1.add(matMul(transMat, permValue, f));
+					List<List<Integer>> transList1 = new ArrayList<>();
+					for (List<Integer> trans : transList) {
+						List<Integer> trans1 = new ArrayList<>(trans);
+						trans1.add(index);
+						transList1.add(trans1);
 					}
 					// find negative and zeros, then skip trivial
-					if (trivial(f1, transList1, vars, result)) {
+					if (trivial(f1, transList1, transMat, keys, result)) {
 						continue;
 					}
 					// terminate if find negative
