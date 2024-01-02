@@ -4,6 +4,7 @@ from sympy import *
 
 def main():
     a, b, c, u, v, w = symbols('a, b, c, u, v, w', negative = False)
+    # u, v = S(1001)/1000, S(1001)/1000
     f = 1/(a + u*b)/(a + v*b) + 1/(b + u*c)/(b + v*c) + 1/(c + u*a)/(c + v*a) - 9/(1 + u)/(1 + v)/(a*b + b*c + c*a)
     fn = fraction(cancel(f))[0]
     print('fn =', fn)
