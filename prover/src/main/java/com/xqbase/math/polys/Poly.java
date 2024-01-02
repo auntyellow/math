@@ -232,6 +232,44 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 		});
 	}
 
+	public Poly<T> homogenize(char newVar) {
+		boolean homogeneous = true;
+		int deg = 0;
+		String vars = "";
+		HashMap<Mono, Integer> expsMap = new HashMap<>();
+		for (Mono mono : keySet()) {
+			int exps = 0;
+			for (int exp : mono.getExps()) {
+				exps += exp;
+			}
+			if (deg == 0) {
+				deg = exps;
+				vars = mono.getVars();
+			} else if (exps != deg) {
+				homogeneous = false;
+				if (exps > deg) {
+					deg = exps;
+				}
+			}
+			expsMap.put(mono, Integer.valueOf(exps));
+		}
+		if (homogeneous) {
+			return this;
+		}
+		int numVars = vars.length();
+		int numNewVars = numVars + 1;
+		String newVars = vars + newVar;
+		Poly<T> p = newPoly();
+		for (Map.Entry<Mono, Integer> entry : expsMap.entrySet()) {
+			Mono m = entry.getKey();
+			short[] newExps = new short[numNewVars];
+			System.arraycopy(m.getExps(), 0, newExps, 0, numVars);
+			newExps[numVars] = (short) (deg - entry.getValue().intValue());
+			p.put(new Mono(newVars, newExps), get(m));
+		}
+		return p;
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T extends MutableNumber<T>, P extends Poly<T>> P
 			det(P p11, P p12, P p21, P p22) {
