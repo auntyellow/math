@@ -34,7 +34,7 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 		}
 		T c = valueOf(1);
 		String s = expr;
-		if (s.charAt(0) < 'a') {
+		if (vars.indexOf(s.charAt(0)) < 0) {
 			int i = s.indexOf('*');
 			if (i < 0) {
 				c = valueOf(s);

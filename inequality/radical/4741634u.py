@@ -7,7 +7,10 @@ def main():
     g = x**2 + y**2 + z**2 + x*y*z
     z = solve(Eq(g, 4), z)[1]
     print('z =', z)
-    # constraint: (x - 2)*(x + 2)*(y - 2)*(y + 2) - x**2*y**2 >= 0 -> y <= sqrt(4 - x**2)
+    # (x - 2)*(x + 2)*(y - 2)*(y + 2) >= 0 -> x, y <= 2
+    # A - B >= 0 and A + B >= 0 -> A**2 - B**2 >= 0
+    # z >= 0 -> sqrt((x - 2)*(x + 2)*(y - 2)*(y + 2)) - x*y >= 0 ->
+    # (x - 2)*(x + 2)*(y - 2)*(y + 2) - x**2*y**2 >= 0 -> y <= sqrt(4 - x**2)
     f = 4*(x*y + y*z + z*x - x*y*z) - (x**2*y + z)*(y**2*z + x)*(z**2*x + y)
     # U = sqrt(u*(u + 2))
     # x = 2/(1 + u)
