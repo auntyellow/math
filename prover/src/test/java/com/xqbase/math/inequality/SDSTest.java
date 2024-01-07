@@ -17,6 +17,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.xqbase.math.inequality.SDS.Find;
+import com.xqbase.math.inequality.SDS.Result;
 import com.xqbase.math.polys.BigPoly;
 import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Mono;
@@ -121,7 +123,7 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(9, result.getDepth());
-		// sds finds negative for 1e22 (maybe larger), why?
+		// sds finds negative for 1e22 (maybe larger)
 		result = SDS.sds(new BigPoly("xyz", "-x**2 - y**2 - z**2").add(new BigPoly().add(f.valueOf("1000000000000000000"), f)));
 		assertTrue(!result.isNonNegative());
 		assertEquals("[1, 3, 1]", result.getNegativeAt().toString());
@@ -133,12 +135,22 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(16, result.getDepth());
+		// sds with H_n works within 21 iterations (sds doesn't work)
+		result = SDS.sds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(f), SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(15, result.getDepth());
 		// tsds finds negative within 11 iterations
 		f = new BigPoly("xyz", "-x**2 - y**2 - z**2").add(f);
 		result = SDS.tsds(f);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
 		assertEquals(11, result.getDepth());
+		// sds with H_n finds negative within 12 iterations
+		result = SDS.sds(f, SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(!result.isNonNegative());
+		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
+		assertEquals(13, result.getDepth());
 	}
 
 	private static LongPoly replaceAn(String expr) {
@@ -235,6 +247,11 @@ public class SDSTest {
 		assertTrue(bigResult.isNonNegative());
 		assertEquals("[[1, 1, 1]]", bigResult.getZeroAt().toString());
 		assertEquals(46, bigResult.getDepth());
+		// tsds works within 4 iterations
+		bigResult = SDS.tsds(new BigPoly("xyz", f));
+		assertTrue(bigResult.isNonNegative());
+		assertEquals("[[1, 1, 1]]", bigResult.getZeroAt().toString());
+		assertEquals(4, bigResult.getDepth());
 		// p174, 6-var Vasc's conjecture, too slow
 		// tsds FULL terminates at depth = 3, 3/515 (Oracle JRE 1.8.0, depends on HashMap.hashCode()), negative at [317, 12, 317, 27, 287, 0]
 		// tsds FAST terminates at depth = 4, 8/19164, negative at [516881, 61742, 474011, 60290, 441548, 728]
@@ -289,6 +306,10 @@ public class SDSTest {
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
 		assertEquals(2, result.getDepth());
+		result = SDS.sds(f, SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(!result.isNonNegative());
+		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
+		assertEquals(3, result.getDepth());
 		// https://math.stackexchange.com/q/3526427
 		f = new BigPoly("xyz", "x**9*y**3 - x**9*y**2*z - x**9*y*z**2 + x**9*z**3 + 6*x**8*y**4 + x**8*y**3*z - 10*x**8*y**2*z**2 + x**8*y*z**3 + 6*x**8*z**4 + 15*x**7*y**5 + 19*x**7*y**4*z - 26*x**7*y**3*z**2 - 26*x**7*y**2*z**3 + 19*x**7*y*z**4 + 15*x**7*z**5 + 20*x**6*y**6 + 45*x**6*y**5*z - 30*x**6*y**4*z**2 - 110*x**6*y**3*z**3 - 30*x**6*y**2*z**4 + 45*x**6*y*z**5 + 20*x**6*z**6 + 15*x**5*y**7 + 45*x**5*y**6*z - 26*x**5*y**5*z**2 - 202*x**5*y**4*z**3 - 202*x**5*y**3*z**4 - 26*x**5*y**2*z**5 + 45*x**5*y*z**6 + 15*x**5*z**7 + 6*x**4*y**8 + 19*x**4*y**7*z - 30*x**4*y**6*z**2 - 202*x**4*y**5*z**3 + 1410*x**4*y**4*z**4 - 202*x**4*y**3*z**5 - 30*x**4*y**2*z**6 + 19*x**4*y*z**7 + 6*x**4*z**8 + x**3*y**9 + x**3*y**8*z - 26*x**3*y**7*z**2 - 110*x**3*y**6*z**3 - 202*x**3*y**5*z**4 - 202*x**3*y**4*z**5 - 110*x**3*y**3*z**6 - 26*x**3*y**2*z**7 + x**3*y*z**8 + x**3*z**9 - x**2*y**9*z - 10*x**2*y**8*z**2 - 26*x**2*y**7*z**3 - 30*x**2*y**6*z**4 - 26*x**2*y**5*z**5 - 30*x**2*y**4*z**6 - 26*x**2*y**3*z**7 - 10*x**2*y**2*z**8 - x**2*y*z**9 - x*y**9*z**2 + x*y**8*z**3 + 19*x*y**7*z**4 + 45*x*y**6*z**5 + 45*x*y**5*z**6 + 19*x*y**4*z**7 + x*y**3*z**8 - x*y**2*z**9 + y**9*z**3 + 6*y**8*z**4 + 15*y**7*z**5 + 20*y**6*z**6 + 15*y**5*z**7 + 6*y**4*z**8 + y**3*z**9");
 		result = SDS.tsds(f);
@@ -318,6 +339,15 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(16, result.getDepth());
+		// sds with H_n works for 3e6 within 13 iterations, 3e7 within 15 iteration
+		result = SDS.sds(new BigPoly("xyz", "z**2").add(3_000_000, f), SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(13, result.getDepth());
+		result = SDS.sds(new BigPoly("xyz", "z**2").add(30_000_000, f), SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(15, result.getDepth());
 		// ex 4.2
 		// too slow in making permMat
 		/*
@@ -333,6 +363,8 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertEquals("[[1, 1, 1]]", result.getZeroAt().toString());
 		assertEquals(1, result.getDepth());
+		// sds with H_n doesn't work
+		// result = SDS.sds(f, SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
 		// ex 4.4
 		f = new BigPoly("abc", "a**4 - 3*a**3*b + 2*a**2*b**2 + 2*a**2*c**2 - 3*a*c**3 + b**4 - 3*b**3*c + 2*b**2*c**2 + c**4");
 		// zero at (1, 1, 1)
@@ -351,8 +383,18 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(32, result.getDepth());
+		// sds with H_n works within 38 iterations
+		result = SDS.sds(new BigPoly("abc", "a**4 + b**4 + c**4").add(f), SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(38, result.getDepth());
 		// both sds and tsds find negative without iteration
 		result = SDS.sds(new BigPoly("abc", "-a**4 - b**4 - c**4").add(f));
+		assertTrue(!result.isNonNegative());
+		assertEquals("[1, 1, 1]", result.getNegativeAt().toString());
+		assertEquals(0, result.getDepth());
+		// sds with H_n finds negative without iterations
+		result = SDS.sds(new BigPoly("abc", "-a**4 - b**4 - c**4").add(f), SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
 		assertTrue(!result.isNonNegative());
 		assertEquals("[1, 1, 1]", result.getNegativeAt().toString());
 		assertEquals(0, result.getDepth());
@@ -392,7 +434,7 @@ public class SDSTest {
 	@Test
 	public void testHan23() {
 		// ISBN 9787312056185, p341, ex 11.7
-		// fn from han23-p341u.py, u = v = 1.001, tsds needs 11 iterations; sds needs 376
+		// fn from han23-p341u.py, u = v = 1.001, tsds needs 11 iterations; sds needs 376; sds with H_n doesn't work
 		BigPoly f = new BigPoly("abc", "445779222889000000000000*a**5*b + 445779222889000000000000*a**5*c - 109550995776222000000000*a**4*b**2 + 222891003112778000000000*a**4*b*c - 113338226001000000000000*a**4*c**2 - 668666551996999111000000*a**3*b**3 - 221999887997443111000000*a**3*b**2*c - 223782118227223111000000*a**3*b*c**2 - 668666551996999111000000*a**3*c**3 - 113338226001000000000000*a**2*b**4 - 223782118227223111000000*a**2*b**3*c + 668664993324327999000000*a**2*b**2*c**2 - 221999887997443111000000*a**2*b*c**3 - 109550995776222000000000*a**2*c**4 + 445779222889000000000000*a*b**5 + 222891003112778000000000*a*b**4*c - 221999887997443111000000*a*b**3*c**2 - 223782118227223111000000*a*b**2*c**3 + 222891003112778000000000*a*b*c**4 + 445779222889000000000000*a*c**5 + 445779222889000000000000*b**5*c - 109550995776222000000000*b**4*c**2 - 668666551996999111000000*b**3*c**3 - 113338226001000000000000*b**2*c**4 + 445779222889000000000000*b*c**5");
 		SDS.Result<MutableBigInteger> result = SDS.tsds(f);
 		assertTrue(result.isNonNegative());
@@ -416,5 +458,12 @@ public class SDSTest {
 		longResult = SDS.sds(fn.homogenize('q'));
 		System.out.println(longResult);
 		*/
+	}
+
+	public void dumpLattice() {
+		Result<MutableLong> result = SDS.sds(new LongPoly("abc", "a"), SDS.Transform.T_n, Find.DUMP_LATTICE, 5);
+		for (List<MutableLong> zeroAt : result.getZeroAt()) {
+			System.out.println("    " + zeroAt + ",");
+		}
 	}
 }

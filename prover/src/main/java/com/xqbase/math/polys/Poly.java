@@ -26,6 +26,15 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public Poly<T> newPoly(String vars, String expr) {
+		try {
+			return getClass().getConstructor(String.class, String.class).newInstance(vars, expr);
+		} catch (ReflectiveOperationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	private static Logger log = LoggerFactory.getLogger(Poly.class);
 
 	private void append(String vars, String expr, boolean minus) {

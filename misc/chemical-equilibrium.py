@@ -141,7 +141,7 @@ def main():
     print('Inequilibrium:', chem_eq(X0))
     print('Concentrations:', concentr(X0))
     # `niter` should be so large for H3PO4
-    result = basinhopping(chem_eq, X0, niter = 10000, \
+    result = basinhopping(chem_eq, X0, niter = 10000,
             minimizer_kwargs = {'method': 'Nelder-Mead', 'options': {'xatol': 1e-14, 'maxiter': 10000}})
     print(result)
     X = result.x

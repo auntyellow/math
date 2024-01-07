@@ -12,7 +12,7 @@ public class _1777166c {
 
 	private static void genCode(String p) {
 		for (Poly<MutableLong> coeff : new LongPoly(VARS, p).coeffsOf("uv").values()) {
-			System.out.println("        " + coeff + ", \\");
+			System.out.println("        " + coeff + ",");
 		}
 	}
 
@@ -23,10 +23,10 @@ public class _1777166c {
 				getResourceAsStream("1777166c.properties")) {
 			p.load(in);
 		}
-		System.out.println("    non_positive_coeffs = [ \\");
+		System.out.println("    non_positive_coeffs = [");
 		genCode(p.getProperty("k1"));
 		System.out.println("    ]");
-		System.out.println("    non_negative_coeffs = [ \\");
+		System.out.println("    non_negative_coeffs = [");
 		genCode(p.getProperty("k2"));
 		genCode(p.getProperty("k3"));
 		System.out.println("    ]");

@@ -3,13 +3,13 @@ package com.xqbase.math.inequality;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,15 +20,20 @@ import com.xqbase.math.polys.Poly;
 
 /**
  * Successive Difference Substitution<p>
- * {@link #sds(Poly f)} or sds(f, false) uses upper triangular matrix (A_n)<p>
- * {@link #tsds(Poly f)} or sds(f, true) uses column stochastic matrix (T_n)<p> 
+ * {@link #sds(Poly f)} or sds(f, {@link Transform#A_n}) uses upper triangular matrix (A_n)<p>
+ * {@link #tsds(Poly f)} or sds(f, {@link Transform#T_n}) uses column stochastic matrix (T_n)<p> 
  * @see https://arxiv.org/pdf/0904.4030v3.pdf
  */
 public class SDS {
 	private static Logger log = LoggerFactory.getLogger(SDS.class);
 
 	public static enum Find {
-		SKIP, FAST, FULL
+		SKIP, FAST, FULL, DUMP_LATTICE
+	}
+
+	/** @see http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545 */
+	public static enum Transform {
+		A_n, T_n, H_n, J_n, Z_n
 	}
 
 	public static class Result<T extends MutableNumber<T>> {
@@ -37,7 +42,15 @@ public class SDS {
 		int depth = 0;
 
 		Result(int len) {
-			zeroAt = new TreeSet<>(listComparator(len));
+			zeroAt = new TreeSet<>((p1, p2) -> {
+				for (int i = 0; i < len; i ++) {
+					int c = p1.get(i).compareTo(p2.get(i));
+					if (c != 0) {
+						return c;
+					}
+				}
+				return 0;
+			});
 		}
 
 		public boolean isNonNegative() {
@@ -61,6 +74,12 @@ public class SDS {
 			return "SDSResult [nonNegative=" + isNonNegative() + ", zeroAt=" + zeroAt +
 					", negativeAt=" + negativeAt + ", depth = " + depth + "]";
 		}
+	}
+
+	static class PermSubs<T extends MutableNumber<T>> {
+		List<Integer> perm;
+		Poly<T>[] subs;
+		int index;
 	}
 
 	private static final Integer[] EMPTY_INTS = new Integer[0];
@@ -121,25 +140,13 @@ public class SDS {
 		return value;
 	}
 
-	static <T extends Comparable<T>> Comparator<List<T>> listComparator(int len) {
-		return (Comparator<List<T>>) (p1, p2) -> {
-			for (int i = 0; i < len; i ++) {
-				int c = p1.get(i).compareTo(p2.get(i));
-				if (c != 0) {
-					return c;
-				}
-			}
-			return 0;
-		};
-	}
-
 	/**
 	 * find negative and zeros, then return if trivially non-negative
 	 *
 	 * @param transList skip finding negative if empty
 	 */
-	private static <T extends MutableNumber<T>> boolean trivial(Poly<T> f,
-			List<List<Integer>> transList, List<T[][]> transMat, List<boolean[]> keys, Result<T> result) {
+	private static <T extends MutableNumber<T>> boolean trivial(Poly<T> f, List<List<Integer>> transList,
+			List<T[][]> transMat, List<boolean[]> keys, Result<T> result, boolean dumpLattice) {
 		if (!transList.isEmpty()) {
 			// find negative and zeros: try 0(false)/1(true)s in keys
 			int numKeys = keys.size();
@@ -168,16 +175,19 @@ public class SDS {
 			for (int i = 0; i < numKeys; i ++) {
 				T value = values.get(i);
 				int c = value.signum();
-				if (c < 0) {
+				if (!dumpLattice && c < 0) {
 					result.negativeAt = matMulReduce(transList.get(0), transMat, keys.get(i), f);
 					return false;
 				}
-				if (c == 0) {
+				if (dumpLattice || c == 0) {
 					for (List<Integer> trans : transList) {
 						result.zeroAt.add(matMulReduce(trans, transMat, keys.get(i), f));
 					}
 				}
 			}
+		}
+		if (dumpLattice) {
+			return false;
 		}
 		for (T coeff : f.values()) {
 			if (coeff.signum() < 0) {
@@ -187,20 +197,26 @@ public class SDS {
 		return true;
 	}
 
+	private static List<Integer> makePerm(int... values) {
+		return IntStream.of(values).boxed().collect(Collectors.toList());
+	}
+
+	private static <T extends MutableNumber<T>> void copy(T[] src, long[] dst, Poly<T> p) {
+		for (int i = 0; i < src.length; i ++) {
+			src[i] = p.valueOf(dst[i]);
+		}
+	}
+
 	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f) {
-		return sds(f, false, Find.FULL);
+		return sds(f, Transform.A_n, Find.FULL, Integer.MAX_VALUE);
 	}
 
 	public static <T extends MutableNumber<T>> Result<T> tsds(Poly<T> f) {
-		return sds(f, true, Find.FULL);
+		return sds(f, Transform.T_n, Find.FULL, Integer.MAX_VALUE);
 	}
 
-	/** 
-	 * @param tsds
-	 * <code>false</code> to uses upper triangular matrix (A_n) and
-	 * <code>true</code> to uses column stochastic matrix (T_n)
-	 */
-	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f, boolean tsds, Find find) {
+	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f,
+			Transform transform, Find find, int maxDepth) {
 		// check homogeneous
 		int deg = 0;
 		String vars = "";
@@ -219,94 +235,41 @@ public class SDS {
 		if (deg == 0) {
 			return new Result<>(0);
 		}
-
 		int len = vars.length();
-		// sds: [1, ..., 1], tsds: [lcm, lcm/2, ..., lcm/n]
-		T[] column = f.newVector(len);
-		if (tsds) {
-			T lcm = f.valueOf(1);
-			for (int i = 1; i <= len; i ++) {
-				T i_ = f.valueOf(i);
-				T t = f.newZero();
-				t.addMul(lcm, i_);
-				lcm = t.div(lcm.gcd(i_));
-			}
-			for (int i = 0; i < len; i ++) {
-				column[i] = lcm.div(f.valueOf(i + 1));
-			}
-		} else {
-			for (int i = 0; i < len; i ++) {
-				column[i] = f.valueOf(1);
-			}
-		}
-
-		T[][] oneMat = f.newMatrix(len, len);
-		T[][] upperMat = f.newMatrix(len, len);
-		for (int i = 0; i < len; i ++) {
-			for (int j = 0; j < len; j ++) {
-				oneMat[i][j] = f.valueOf(i == j ? 1 : 0);
-				upperMat[i][j] = i <= j ? column[j] : f.valueOf(0);
-			}
-		}
-		Set<Integer> varSeq = new TreeSet<>();
-		for (int i = 0; i < len; i ++) {
-			varSeq.add(Integer.valueOf(i));
-		}
-		TreeMap<List<Integer>, Integer> permIndex = new TreeMap<>(listComparator(len));
-		ArrayList<T[][]> transMat = new ArrayList<>();
-		for (List<Integer> perm : permutations(varSeq)) {
-			T[][] m = f.newMatrix(len, len);
-			for (int i = 0; i < len; i ++) {
-				// permute
-				m[i] = upperMat[perm.get(i).intValue()].clone();
-				// m[perm.get(i).intValue()] = upperMat[i].clone();
-			}
-			permIndex.put(perm, Integer.valueOf(transMat.size()));
-			transMat.add(m);
-		}
-
-		@SuppressWarnings("unchecked")
-		Poly<T>[] subs = new Poly[tsds ? len : len - 1];
-		Mono[] monos = new Mono[len];
-		for (int i = 0; i < len; i ++) {
-			short[] exps = new short[len];
-			Arrays.fill(exps, (short) 0);
-			exps[i] = 1;
-			monos[i] = new Mono(vars, exps);
-		}
-		for (int i = 0; i < len - 1; i ++) {
-			Poly<T> sub = f.newPoly();
-			sub.put(monos[i], column[i]);
-			sub.put(monos[i + 1], f.valueOf(1));
-			subs[i] = sub;
-		}
-		if (tsds) {
-			Poly<T> sub = f.newPoly();
-			sub.put(monos[len - 1], column[len - 1]);
-			subs[len - 1] = sub;
-		}
 
 		// product([false, true], repeat = len)
-		List<boolean[]> keys = Collections.singletonList(new boolean[len]);
-		for (int i = 0; i < len; i ++) {
-			List<boolean[]> keys1 = new ArrayList<>();
-			if (find == Find.FULL) {
+		List<boolean[]> keys;
+		if (find == Find.DUMP_LATTICE) {
+			keys = new ArrayList<>();
+			for (int i = 0; i < len; i ++) {
+				boolean[] key = new boolean[len];
+				for (int j = 0; j < len; j ++) {
+					key[j] = i == j;
+				}
+				keys.add(key);
+			}
+		} else {
+			keys = Collections.singletonList(new boolean[len]);
+			for (int i = 0; i < len; i ++) {
+				List<boolean[]> keys1 = new ArrayList<>();
+				if (find == Find.FULL) {
+					for (boolean[] key : keys) {
+						boolean[] key1 = key.clone();
+						key1[i] = false;
+						keys1.add(key1);
+					}
+				}
 				for (boolean[] key : keys) {
 					boolean[] key1 = key.clone();
-					key1[i] = false;
+					key1[i] = true;
 					keys1.add(key1);
 				}
+				keys = keys1;
 			}
-			for (boolean[] key : keys) {
-				boolean[] key1 = key.clone();
-				key1[i] = true;
-				keys1.add(key1);
+			if (find == Find.FULL) {
+				// remove first trivial zeros
+				keys.remove(0);
 			}
-			keys = keys1;
-		}
-		if (find == Find.FULL) {
-			// remove first trivial zeros
-			keys.remove(0);
 		}
 
 		// depth = 0
@@ -314,13 +277,125 @@ public class SDS {
 		// transList is always empty if skipNegative
 		List<List<Integer>> initTransList = find == Find.SKIP ? Collections.emptyList() :
 				Collections.singletonList(Collections.emptyList());
-		if (trivial(f, initTransList, transMat, keys, result) || result.negativeAt != null) {
+		if (trivial(f, initTransList, Collections.emptyList(), keys, result,
+				find == Find.DUMP_LATTICE) || result.negativeAt != null) {
 			return result;
 		}
 
+		ArrayList<PermSubs<T>> permSubsList = new ArrayList<>();
+		ArrayList<T[][]> transMat = new ArrayList<>();
+		if (transform == Transform.H_n) {
+			if (len != 3) {
+				throw new IllegalArgumentException("H_n only works on 3-var polynomials");
+			}
+			// H1 = [[2,1,1],[0,1,0],[0,0,1]]
+			// H2 = [[1,0,0],[1,2,1],[0,0,1]]
+			// H3 = [[1,0,0],[0,1,0],[1,1,2]]
+			@SuppressWarnings("unchecked")
+			Poly<T>[] subsPoly = new Poly[] {f.newPoly("xyz", "2*x + y + z")};
+			long[][] h123 = {{2, 1, 1}, {0, 1, 0}, {0, 0, 1}};
+			for (int i = 0; i < 3; i ++) {
+				PermSubs<T> permSubs = new PermSubs<>();
+				permSubs.perm = makePerm(i, (i + 1)%3, (i + 2)%3);
+				permSubs.subs = subsPoly;
+				permSubs.index = transMat.size();
+				T[][] m = f.newMatrix(3, 3);
+				copy(m[0], h123[i], f);
+				copy(m[1], h123[(i + 1)%3], f);
+				copy(m[2], h123[(i + 2)%3], f);
+				transMat.add(m);
+				permSubsList.add(permSubs);
+			}
+			// H4 = [[1,1,0],[0,1,1],[1,0,1]]
+			PermSubs<T> permSubs = new PermSubs<>();
+			permSubs.perm = makePerm(0, 1, 2);
+			@SuppressWarnings("unchecked")
+			// x' = x + y, y' = y + z, z' = x + z
+			Poly<T>[] subsPoly3 = new Poly[] {
+				f.newPoly("xyz", "2*x + y - z"),
+				f.newPoly("xyz", "y + z - x"),
+				f.newPoly("xyz", "z + x"),
+			};
+			permSubs.subs = subsPoly3;
+			permSubs.index = transMat.size();
+			T[][] m = f.newMatrix(3, 3);
+			long[][] h4 = {{1, 1, 0}, {0, 1, 1}, {1, 0, 1}};
+			for (int i = 0; i < 3; i ++) {
+				copy(m[i], h4[i], f);
+			}
+			transMat.add(m);
+			permSubsList.add(permSubs);
+
+		} else {
+			// sds: [1, ..., 1], tsds: [lcm, lcm/2, ..., lcm/n]
+			T[] column = f.newVector(len);
+			if (transform == Transform.T_n) {
+				T lcm = f.valueOf(1);
+				for (int i = 1; i <= len; i ++) {
+					T i_ = f.valueOf(i);
+					T t = f.newZero();
+					t.addMul(lcm, i_);
+					lcm = t.div(lcm.gcd(i_));
+				}
+				for (int i = 0; i < len; i ++) {
+					column[i] = lcm.div(f.valueOf(i + 1));
+				}
+			} else {
+				for (int i = 0; i < len; i ++) {
+					column[i] = f.valueOf(1);
+				}
+			}
+
+			T[][] upperMat = f.newMatrix(len, len);
+			for (int i = 0; i < len; i ++) {
+				for (int j = 0; j < len; j ++) {
+					upperMat[i][j] = i <= j ? column[j] : f.valueOf(0);
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			Poly<T>[] subs = new Poly[transform == Transform.T_n ? len : len - 1];
+			Mono[] monos = new Mono[len];
+			for (int i = 0; i < len; i ++) {
+				short[] exps = new short[len];
+				Arrays.fill(exps, (short) 0);
+				exps[i] = 1;
+				monos[i] = new Mono(vars, exps);
+			}
+			for (int i = 0; i < len - 1; i ++) {
+				Poly<T> sub = f.newPoly();
+				sub.put(monos[i], column[i]);
+				sub.put(monos[i + 1], f.valueOf(1));
+				subs[i] = sub;
+			}
+			if (transform == Transform.T_n) {
+				Poly<T> sub = f.newPoly();
+				sub.put(monos[len - 1], column[len - 1]);
+				subs[len - 1] = sub;
+			}
+
+			Set<Integer> varSeq = new TreeSet<>();
+			for (int i = 0; i < len; i ++) {
+				varSeq.add(Integer.valueOf(i));
+			}
+			for (List<Integer> perm : permutations(varSeq)) {
+				T[][] m = f.newMatrix(len, len);
+				for (int i = 0; i < len; i ++) {
+					// permute
+					m[i] = upperMat[perm.get(i).intValue()].clone();
+					// m[perm.get(i).intValue()] = upperMat[i].clone();
+				}
+				PermSubs<T> permSubs = new PermSubs<>();
+				permSubs.perm = perm;
+				permSubs.subs = subs;
+				permSubs.index = transMat.size();
+				transMat.add(m);
+				permSubsList.add(permSubs);
+			}
+		}
+
 		Map<Poly<T>, List<List<Integer>>> polyTransList = Collections.singletonMap(f, initTransList);
-		while (!polyTransList.isEmpty()) {
-			result.depth ++;
+		for (result.depth = 1; result.depth < maxDepth; result.depth ++) {
 			log.debug("depth = " + result.depth + ", polynomials = " + polyTransList.size());
 			int traceCurr = 0, traceTrans = 0;
 			HashMap<Poly<T>, List<List<Integer>>> polyTransList1 = new HashMap<>();
@@ -330,34 +405,32 @@ public class SDS {
 
 				Poly<T> f0 = transEntry.getKey();
 				List<List<Integer>> transList = transEntry.getValue();
-				for (Map.Entry<List<Integer>, Integer> permEntry : permIndex.entrySet()) {
+				for (PermSubs<T> permSubs : permSubsList) {
 					// f1 = f0's permutation and substitution (transformation)
-					List<Integer> perm = permEntry.getKey();
-					Integer index = permEntry.getValue();
 					Poly<T> f1 = f.newPoly();
 					for (Map.Entry<Mono, T> term : f0.entrySet()) {
 						short[] exps = term.getKey().getExps();
 						short[] exps1 = new short[vars.length()];
 						for (int i = 0; i < exps.length; i ++) {
 							// permute
-							exps1[perm.get(i).intValue()] = exps[i];
-							// exps1[i] = exps[perm.get(i).intValue()];
+							exps1[permSubs.perm.get(i).intValue()] = exps[i];
+							// exps1[i] = exps[permSubs.perm.get(i).intValue()];
 						}
 						f1.put(new Mono(vars, exps1), term.getValue());
 					}
 					// sds: x0 += x1, x1 += x2, ... , x_n-2 += x_n-1
 					// tsds: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
-					for (int i = 0; i < subs.length; i ++) {
-						f1 = f1.subs(vars.charAt(i), subs[i]);
+					for (int i = 0; i < permSubs.subs.length; i ++) {
+						f1 = f1.subs(vars.charAt(i), permSubs.subs[i]);
 					}
 					List<List<Integer>> transList1 = new ArrayList<>();
 					for (List<Integer> trans : transList) {
 						List<Integer> trans1 = new ArrayList<>(trans);
-						trans1.add(index);
+						trans1.add(Integer.valueOf(permSubs.index));
 						transList1.add(trans1);
 					}
 					// find negative and zeros, then skip trivial
-					if (trivial(f1, transList1, transMat, keys, result)) {
+					if (trivial(f1, transList1, transMat, keys, result, find == Find.DUMP_LATTICE)) {
 						continue;
 					}
 					// terminate if find negative
@@ -371,6 +444,9 @@ public class SDS {
 					log.trace("after depth = " + result.depth + ": polynomials = " +
 							polyTransList1.size() + ", tranformations = " + traceTrans);
 				}
+			}
+			if (polyTransList1.isEmpty()) {
+				return result;
 			}
 			polyTransList = polyTransList1;
 		}

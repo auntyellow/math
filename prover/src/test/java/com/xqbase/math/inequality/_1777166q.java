@@ -13,7 +13,7 @@ public class _1777166q {
 	/** @param nonPos for Java */
 	private static void genCode(String p, boolean nonPos) {
 		for (Poly<MutableLong> coeff : new LongPoly(VARS, p).coeffsOf("uv").values()) {
-			System.out.println("        " + coeff + ", \\");
+			System.out.println("        " + coeff + ",");
 			// Generate Java Code
 			/*
 			String expr = coeff.toString();
@@ -50,11 +50,11 @@ public class _1777166q {
 		try (InputStream in = _1777166q.class.getResourceAsStream("1777166q.properties")) {
 			p.load(in);
 		}
-		System.out.println("    non_negative_coeffs = [ \\");
+		System.out.println("    non_negative_coeffs = [");
 		genCode(p.getProperty("k1"), false);
 		genCode(p.getProperty("k3"), false);
 		System.out.println("    ]");
-		System.out.println("    non_positive_coeffs = [ \\");
+		System.out.println("    non_positive_coeffs = [");
 		genCode(p.getProperty("k2"), true);
 		System.out.println("    ]");
 	}

@@ -78,7 +78,7 @@ public class Han23P341 {
 									entry.getValue());
 						}
 						if (!SDS.tsds(coeff1.homogenize('w')).isNonNegative()) {
-							System.out.println("        " + coeff1 + ", \\");
+							System.out.println("        " + coeff1 + ",");
 							trivial = false;
 							trivials ++;
 						}

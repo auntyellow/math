@@ -112,11 +112,11 @@ def main():
     # search possible p and q
     print()
     print('```python')
-    print('    non_negative_coeffs = [ \\')
+    print('    non_negative_coeffs = [')
     for coeff in p1.coeffs():
-        print('        ' + str(coeff) + ', \\')
+        print('        ' + str(coeff) + ',')
     for coeff in p2.coeffs():
-        print('        ' + str(coeff) + ', \\')
+        print('        ' + str(coeff) + ',')
     print('    ]')
     print('```')
     print()

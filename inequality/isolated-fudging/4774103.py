@@ -128,13 +128,13 @@ def main():
     # search possible s and t
     print()
     print('```python')
-    print('    non_negative_coeffs = [ \\')
+    print('    non_negative_coeffs = [')
     for coeff in p1.coeffs():
-        print('        ' + str(coeff) + ', \\')
+        print('        ' + str(coeff) + ',')
     print('    ]')
-    print('    non_positive_coeffs = [ \\')
+    print('    non_positive_coeffs = [')
     for coeff in p2.coeffs():
-        print('        ' + str(coeff) + ', \\')
+        print('        ' + str(coeff) + ',')
     print('    ]')
     print('```')
     print()
