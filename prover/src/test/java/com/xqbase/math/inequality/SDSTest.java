@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -84,14 +83,23 @@ public class SDSTest {
 		return f.valueOf(0);
 	}
 
+	private static <T extends MutableNumber<T>> List<T> asList(Poly<T> f, long... values) {
+		List<T> list = new ArrayList<>();
+		for (long value : values) {
+			list.add(f.valueOf(value));
+		}
+		return list;
+	}
+
 	@Test
 	public void testTsds() {
 		// sds vs tsds
 		// example 1:
 		// fibonacci 91, 92
+		String vars = "xy";
 		long m = 4660046610375530309L;
 		long n = 7540113804746346429L;
-		Poly<MutableBigInteger> f = new BigPoly("xy", m + "*x - " + n + "*y");
+		Poly<MutableBigInteger> f = new BigPoly(vars, m + "*x - " + n + "*y");
 		f = new BigPoly().addMul(f, f);
 		SDS.Result<MutableBigInteger> result = SDS.sds(f);
 		assertTrue(result.isNonNegative());
@@ -100,12 +108,12 @@ public class SDSTest {
 		// 1e22
 		f = new BigPoly().add(f.valueOf("10000000000000000000000"), f);
 		// tsds works within 99 iterations (sds 72)
-		result = SDS.tsds(new BigPoly("xy", "x**2 + y**2").add(f));
+		result = SDS.tsds(new BigPoly(vars, "x**2 + y**2").add(f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(99, result.getDepth());
 		// tsds finds negative within 98 iterations (sds 71)
-		f = new BigPoly("xy", "-x**2 - y**2").add(f);
+		f = new BigPoly(vars, "-x**2 - y**2").add(f);
 		result = SDS.tsds(f);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
@@ -113,42 +121,87 @@ public class SDSTest {
 
 		// example 2
 		// (3*x - y)**2 + (x - z)**2
-		f = new BigPoly("xyz", "10*x**2 - 6*x*y - 2*x*z + y**2 + z**2");
+		vars = "xyz";
+		f = new BigPoly(vars, "10*x**2 - 6*x*y - 2*x*z + y**2 + z**2");
 		// zero at (1, 3, 1), not on sds or tsds's boundary
-		assertTrue(subs(f, Arrays.asList(f.valueOf(1), f.valueOf(3), f.valueOf(1)), 'x').signum() == 0);
+		assertEquals(0, subs(f, asList(f, 1, 3, 1), 'x').signum());
 		// sds works for 6 but doesn't seem to work for 7
-		result = SDS.sds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(new BigPoly().add(6, f)));
+		String smallPos = "x**2 + y**2 + z**2";
+		result = SDS.sds(new BigPoly(vars, smallPos).add(new BigPoly().add(6, f)));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(9, result.getDepth());
 		// sds finds negative for 1e22 (maybe larger)
-		result = SDS.sds(new BigPoly("xyz", "-x**2 - y**2 - z**2").add(new BigPoly().add(f.valueOf("1000000000000000000"), f)));
+		String smallNeg = "-x**2 - y**2 - z**2";
+		result = SDS.sds(new BigPoly(vars, smallNeg).add(new BigPoly().add(f.valueOf("1000000000000000000"), f)));
 		assertTrue(!result.isNonNegative());
 		assertEquals("[1, 3, 1]", result.getNegativeAt().toString());
 		assertEquals(2, result.getDepth());
 		// 1e8
 		f = new BigPoly().add(f.valueOf(100_000_000), f);
 		// tsds works within 16 iterations (sds doesn't work)
-		result = SDS.tsds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(f));
+		result = SDS.tsds(new BigPoly(vars, smallPos).add(f));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(16, result.getDepth());
-		// sds with H_n works within 21 iterations (sds doesn't work)
-		result = SDS.sds(new BigPoly("xyz", "x**2 + y**2 + z**2").add(f), SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		// sds with H_n works within 15 iterations
+		result = SDS.sds(new BigPoly(vars, smallPos).add(f), SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(15, result.getDepth());
 		// tsds finds negative within 11 iterations
-		f = new BigPoly("xyz", "-x**2 - y**2 - z**2").add(f);
+		f = new BigPoly(vars, smallNeg).add(f);
 		result = SDS.tsds(f);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
 		assertEquals(11, result.getDepth());
-		// sds with H_n finds negative within 12 iterations
+		// sds with H_n finds negative within 13 iterations
 		result = SDS.sds(f, SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
 		assertEquals(13, result.getDepth());
+
+		// example 3
+		// (2*w - x)**2 + (w - y)**2 + (w - z)**2
+		vars = "wxyz";
+		f = new BigPoly(vars, "6*w**2 - 4*w*x - 2*w*y - 2*w*z + x**2 + y**2 + z**2");
+		// zero at (1, 2, 1, 1), not on sds or tsds's boundary
+		assertEquals(0, subs(f, asList(f, 1, 2, 1, 1), 'w').signum());
+		// sds works for 8 but doesn't seem to work for 9
+		smallPos = "w**2 + x**2 + y**2 + z**2";
+		result = SDS.sds(new BigPoly(vars, smallPos).add(new BigPoly().add(8, f)));
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(6, result.getDepth());
+		// sds finds negative for 1e22 (maybe larger)
+		smallNeg = "-w**2 - x**2 - y**2 - z**2";
+		result = SDS.sds(new BigPoly(vars, smallNeg).add(new BigPoly().add(f.valueOf("1000000000000000000"), f)));
+		assertTrue(!result.isNonNegative());
+		assertEquals("[1, 2, 1, 1]", result.getNegativeAt().toString());
+		assertEquals(1, result.getDepth());
+		// 1e5
+		f = new BigPoly().add(f.valueOf(100_000L), f);
+		// tsds works within 12 iterations (sds doesn't work)
+		result = SDS.tsds(new BigPoly(vars, smallPos).add(f));
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(12, result.getDepth());
+		// sds with J_n works within 16 iterations, within 24 iterations for 1e8
+		result = SDS.sds(new BigPoly(vars, smallPos).add(f), SDS.Transform.J_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(result.isNonNegative());
+		assertTrue(result.getZeroAt().isEmpty());
+		assertEquals(16, result.getDepth());
+		// tsds finds negative within 11 iterations
+		f = new BigPoly(vars, smallNeg).add(f);
+		result = SDS.tsds(f);
+		assertTrue(!result.isNonNegative());
+		assertTrue(subs(f, result.getNegativeAt(), 'w').signum() < 0);
+		assertEquals(7, result.getDepth());
+		// sds with T_n finds negative within 9 iterations
+		result = SDS.sds(f, SDS.Transform.J_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(!result.isNonNegative());
+		assertTrue(subs(f, result.getNegativeAt(), 'w').signum() < 0);
+		assertEquals(9, result.getDepth());
 	}
 
 	private static LongPoly replaceAn(String expr) {
@@ -380,7 +433,7 @@ public class SDSTest {
 		// ex 4.4
 		f = new BigPoly("abc", "a**4 - 3*a**3*b + 2*a**2*b**2 + 2*a**2*c**2 - 3*a*c**3 + b**4 - 3*b**3*c + 2*b**2*c**2 + c**4");
 		// zero at (1, 1, 1)
-		assertEquals(0, subs(f, Arrays.asList(f.valueOf(1), f.valueOf(1), f.valueOf(1)), 'a').signum());
+		assertEquals(0, subs(f, asList(f, 1, 1, 1), 'a').signum());
 		// tsds doesn't work (46455 polynomials after 50th iteration)
 		// result = SDS.tsds(f);
 		// sds works for 1e9 but doesn't seem to work for 1e10
@@ -463,7 +516,7 @@ public class SDSTest {
 		assertEquals("[[0, 1, 1, 2], [1, 0, 1, 2], [1, 1, 0, 2], [1, 1, 1, 0], [1, 1, 1, 1], [1, 1, 1, 2], [1, 1, 1, 3], [2, 2, 2, 1], [2, 2, 2, 3]]", getZeroAt(fn, fd, longResult.getZeroAt()).toString());
 		assertEquals(2, longResult.getDepth());
 
-		// p354, ex 11.20, too slow
+		// p354, ex 11.20, too slow, unable to prove
 		/*
 		// f from han23-p354u.py
 		fn = new LongPoly("RStUVw", "4*R**4*S**4*U**2*V**2*t**2*w + 8*R**4*S**4*U**2*V**2*t*w + 4*R**4*S**4*U**2*V**2*w + R**4*S**2*U**2*V**4*t**2*w**2 + 2*R**4*S**2*U**2*V**4*t**2*w + R**4*S**2*U**2*V**4*t**2 + 2*R**4*S**2*U**2*V**4*t*w**2 + 4*R**4*S**2*U**2*V**4*t*w + 2*R**4*S**2*U**2*V**4*t + R**4*S**2*U**2*V**4*w**2 + 2*R**4*S**2*U**2*V**4*w + R**4*S**2*U**2*V**4 + 2*R**4*S**2*U**2*V**2*t**2*w**2 - 4*R**4*S**2*U**2*V**2*t**2*w + 2*R**4*S**2*U**2*V**2*t**2 + 4*R**4*S**2*U**2*V**2*t*w**2 - 8*R**4*S**2*U**2*V**2*t*w + 4*R**4*S**2*U**2*V**2*t + 2*R**4*S**2*U**2*V**2*w**2 - 4*R**4*S**2*U**2*V**2*w + 2*R**4*S**2*U**2*V**2 + R**4*S**2*U**2*t**2*w**2 + 2*R**4*S**2*U**2*t**2*w + R**4*S**2*U**2*t**2 + 2*R**4*S**2*U**2*t*w**2 + 4*R**4*S**2*U**2*t*w + 2*R**4*S**2*U**2*t + R**4*S**2*U**2*w**2 + 2*R**4*S**2*U**2*w + R**4*S**2*U**2 + 4*R**4*U**2*V**2*t**2*w + 8*R**4*U**2*V**2*t*w + 4*R**4*U**2*V**2*w - 2*R**3*S**3*U**3*V**3*t**2*w**2 + 2*R**3*S**3*U**3*V**3*t**2 + 2*R**3*S**3*U**3*V**3*w**2 - 2*R**3*S**3*U**3*V**3 + 2*R**3*S**3*U**3*V*t**2*w**2 - 2*R**3*S**3*U**3*V*t**2 - 2*R**3*S**3*U**3*V*w**2 + 2*R**3*S**3*U**3*V + 8*R**3*S**3*U**2*V**2*t**2*w**2 - 16*R**3*S**3*U**2*V**2*t**2*w + 8*R**3*S**3*U**2*V**2*t**2 - 8*R**3*S**3*U**2*V**2*w**2 + 16*R**3*S**3*U**2*V**2*w - 8*R**3*S**3*U**2*V**2 + 2*R**3*S**3*U*V**3*t**2*w**2 - 2*R**3*S**3*U*V**3*t**2 - 2*R**3*S**3*U*V**3*w**2 + 2*R**3*S**3*U*V**3 - 2*R**3*S**3*U*V*t**2*w**2 + 2*R**3*S**3*U*V*t**2 + 2*R**3*S**3*U*V*w**2 - 2*R**3*S**3*U*V + 2*R**3*S*U**3*V**3*t**2*w**2 - 2*R**3*S*U**3*V**3*t**2 - 2*R**3*S*U**3*V**3*w**2 + 2*R**3*S*U**3*V**3 - 2*R**3*S*U**3*V*t**2*w**2 + 2*R**3*S*U**3*V*t**2 + 2*R**3*S*U**3*V*w**2 - 2*R**3*S*U**3*V - 8*R**3*S*U**2*V**2*t**2*w**2 + 16*R**3*S*U**2*V**2*t**2*w - 8*R**3*S*U**2*V**2*t**2 + 8*R**3*S*U**2*V**2*w**2 - 16*R**3*S*U**2*V**2*w + 8*R**3*S*U**2*V**2 - 2*R**3*S*U*V**3*t**2*w**2 + 2*R**3*S*U*V**3*t**2 + 2*R**3*S*U*V**3*w**2 - 2*R**3*S*U*V**3 + 2*R**3*S*U*V*t**2*w**2 - 2*R**3*S*U*V*t**2 - 2*R**3*S*U*V*w**2 + 2*R**3*S*U*V + R**2*S**4*U**4*V**2*t**2*w**2 + 2*R**2*S**4*U**4*V**2*t**2*w + R**2*S**4*U**4*V**2*t**2 + 2*R**2*S**4*U**4*V**2*t*w**2 + 4*R**2*S**4*U**4*V**2*t*w + 2*R**2*S**4*U**4*V**2*t + R**2*S**4*U**4*V**2*w**2 + 2*R**2*S**4*U**4*V**2*w + R**2*S**4*U**4*V**2 + 2*R**2*S**4*U**2*V**2*t**2*w**2 - 4*R**2*S**4*U**2*V**2*t**2*w + 2*R**2*S**4*U**2*V**2*t**2 + 4*R**2*S**4*U**2*V**2*t*w**2 - 8*R**2*S**4*U**2*V**2*t*w + 4*R**2*S**4*U**2*V**2*t + 2*R**2*S**4*U**2*V**2*w**2 - 4*R**2*S**4*U**2*V**2*w + 2*R**2*S**4*U**2*V**2 + R**2*S**4*V**2*t**2*w**2 + 2*R**2*S**4*V**2*t**2*w + R**2*S**4*V**2*t**2 + 2*R**2*S**4*V**2*t*w**2 + 4*R**2*S**4*V**2*t*w + 2*R**2*S**4*V**2*t + R**2*S**4*V**2*w**2 + 2*R**2*S**4*V**2*w + R**2*S**4*V**2 + 4*R**2*S**2*U**4*V**4*t*w**2 + 8*R**2*S**2*U**4*V**4*t*w + 4*R**2*S**2*U**4*V**4*t + 2*R**2*S**2*U**4*V**2*t**2*w**2 + 4*R**2*S**2*U**4*V**2*t**2*w + 2*R**2*S**2*U**4*V**2*t**2 - 4*R**2*S**2*U**4*V**2*t*w**2 - 8*R**2*S**2*U**4*V**2*t*w - 4*R**2*S**2*U**4*V**2*t + 2*R**2*S**2*U**4*V**2*w**2 + 4*R**2*S**2*U**4*V**2*w + 2*R**2*S**2*U**4*V**2 + 4*R**2*S**2*U**4*t*w**2 + 8*R**2*S**2*U**4*t*w + 4*R**2*S**2*U**4*t + 8*R**2*S**2*U**3*V**3*t**2*w**2 - 8*R**2*S**2*U**3*V**3*t**2 - 16*R**2*S**2*U**3*V**3*t*w**2 + 16*R**2*S**2*U**3*V**3*t + 8*R**2*S**2*U**3*V**3*w**2 - 8*R**2*S**2*U**3*V**3 - 8*R**2*S**2*U**3*V*t**2*w**2 + 8*R**2*S**2*U**3*V*t**2 + 16*R**2*S**2*U**3*V*t*w**2 - 16*R**2*S**2*U**3*V*t - 8*R**2*S**2*U**3*V*w**2 + 8*R**2*S**2*U**3*V + 2*R**2*S**2*U**2*V**4*t**2*w**2 + 4*R**2*S**2*U**2*V**4*t**2*w + 2*R**2*S**2*U**2*V**4*t**2 - 4*R**2*S**2*U**2*V**4*t*w**2 - 8*R**2*S**2*U**2*V**4*t*w - 4*R**2*S**2*U**2*V**4*t + 2*R**2*S**2*U**2*V**4*w**2 + 4*R**2*S**2*U**2*V**4*w + 2*R**2*S**2*U**2*V**4 - 24*R**2*S**2*U**2*V**2*t**2*w**2 + 32*R**2*S**2*U**2*V**2*t**2*w - 24*R**2*S**2*U**2*V**2*t**2 + 32*R**2*S**2*U**2*V**2*t*w**2 - 32*R**2*S**2*U**2*V**2*t*w + 32*R**2*S**2*U**2*V**2*t - 24*R**2*S**2*U**2*V**2*w**2 + 32*R**2*S**2*U**2*V**2*w - 24*R**2*S**2*U**2*V**2 + 2*R**2*S**2*U**2*t**2*w**2 + 4*R**2*S**2*U**2*t**2*w + 2*R**2*S**2*U**2*t**2 - 4*R**2*S**2*U**2*t*w**2 - 8*R**2*S**2*U**2*t*w - 4*R**2*S**2*U**2*t + 2*R**2*S**2*U**2*w**2 + 4*R**2*S**2*U**2*w + 2*R**2*S**2*U**2 - 8*R**2*S**2*U*V**3*t**2*w**2 + 8*R**2*S**2*U*V**3*t**2 + 16*R**2*S**2*U*V**3*t*w**2 - 16*R**2*S**2*U*V**3*t - 8*R**2*S**2*U*V**3*w**2 + 8*R**2*S**2*U*V**3 + 8*R**2*S**2*U*V*t**2*w**2 - 8*R**2*S**2*U*V*t**2 - 16*R**2*S**2*U*V*t*w**2 + 16*R**2*S**2*U*V*t + 8*R**2*S**2*U*V*w**2 - 8*R**2*S**2*U*V + 4*R**2*S**2*V**4*t*w**2 + 8*R**2*S**2*V**4*t*w + 4*R**2*S**2*V**4*t + 2*R**2*S**2*V**2*t**2*w**2 + 4*R**2*S**2*V**2*t**2*w + 2*R**2*S**2*V**2*t**2 - 4*R**2*S**2*V**2*t*w**2 - 8*R**2*S**2*V**2*t*w - 4*R**2*S**2*V**2*t + 2*R**2*S**2*V**2*w**2 + 4*R**2*S**2*V**2*w + 2*R**2*S**2*V**2 + 4*R**2*S**2*t*w**2 + 8*R**2*S**2*t*w + 4*R**2*S**2*t + R**2*U**4*V**2*t**2*w**2 + 2*R**2*U**4*V**2*t**2*w + R**2*U**4*V**2*t**2 + 2*R**2*U**4*V**2*t*w**2 + 4*R**2*U**4*V**2*t*w + 2*R**2*U**4*V**2*t + R**2*U**4*V**2*w**2 + 2*R**2*U**4*V**2*w + R**2*U**4*V**2 + 2*R**2*U**2*V**2*t**2*w**2 - 4*R**2*U**2*V**2*t**2*w + 2*R**2*U**2*V**2*t**2 + 4*R**2*U**2*V**2*t*w**2 - 8*R**2*U**2*V**2*t*w + 4*R**2*U**2*V**2*t + 2*R**2*U**2*V**2*w**2 - 4*R**2*U**2*V**2*w + 2*R**2*U**2*V**2 + R**2*V**2*t**2*w**2 + 2*R**2*V**2*t**2*w + R**2*V**2*t**2 + 2*R**2*V**2*t*w**2 + 4*R**2*V**2*t*w + 2*R**2*V**2*t + R**2*V**2*w**2 + 2*R**2*V**2*w + R**2*V**2 + 2*R*S**3*U**3*V**3*t**2*w**2 - 2*R*S**3*U**3*V**3*t**2 - 2*R*S**3*U**3*V**3*w**2 + 2*R*S**3*U**3*V**3 - 2*R*S**3*U**3*V*t**2*w**2 + 2*R*S**3*U**3*V*t**2 + 2*R*S**3*U**3*V*w**2 - 2*R*S**3*U**3*V - 8*R*S**3*U**2*V**2*t**2*w**2 + 16*R*S**3*U**2*V**2*t**2*w - 8*R*S**3*U**2*V**2*t**2 + 8*R*S**3*U**2*V**2*w**2 - 16*R*S**3*U**2*V**2*w + 8*R*S**3*U**2*V**2 - 2*R*S**3*U*V**3*t**2*w**2 + 2*R*S**3*U*V**3*t**2 + 2*R*S**3*U*V**3*w**2 - 2*R*S**3*U*V**3 + 2*R*S**3*U*V*t**2*w**2 - 2*R*S**3*U*V*t**2 - 2*R*S**3*U*V*w**2 + 2*R*S**3*U*V - 2*R*S*U**3*V**3*t**2*w**2 + 2*R*S*U**3*V**3*t**2 + 2*R*S*U**3*V**3*w**2 - 2*R*S*U**3*V**3 + 2*R*S*U**3*V*t**2*w**2 - 2*R*S*U**3*V*t**2 - 2*R*S*U**3*V*w**2 + 2*R*S*U**3*V + 8*R*S*U**2*V**2*t**2*w**2 - 16*R*S*U**2*V**2*t**2*w + 8*R*S*U**2*V**2*t**2 - 8*R*S*U**2*V**2*w**2 + 16*R*S*U**2*V**2*w - 8*R*S*U**2*V**2 + 2*R*S*U*V**3*t**2*w**2 - 2*R*S*U*V**3*t**2 - 2*R*S*U*V**3*w**2 + 2*R*S*U*V**3 - 2*R*S*U*V*t**2*w**2 + 2*R*S*U*V*t**2 + 2*R*S*U*V*w**2 - 2*R*S*U*V + 4*S**4*U**2*V**2*t**2*w + 8*S**4*U**2*V**2*t*w + 4*S**4*U**2*V**2*w + S**2*U**2*V**4*t**2*w**2 + 2*S**2*U**2*V**4*t**2*w + S**2*U**2*V**4*t**2 + 2*S**2*U**2*V**4*t*w**2 + 4*S**2*U**2*V**4*t*w + 2*S**2*U**2*V**4*t + S**2*U**2*V**4*w**2 + 2*S**2*U**2*V**4*w + S**2*U**2*V**4 + 2*S**2*U**2*V**2*t**2*w**2 - 4*S**2*U**2*V**2*t**2*w + 2*S**2*U**2*V**2*t**2 + 4*S**2*U**2*V**2*t*w**2 - 8*S**2*U**2*V**2*t*w + 4*S**2*U**2*V**2*t + 2*S**2*U**2*V**2*w**2 - 4*S**2*U**2*V**2*w + 2*S**2*U**2*V**2 + S**2*U**2*t**2*w**2 + 2*S**2*U**2*t**2*w + S**2*U**2*t**2 + 2*S**2*U**2*t*w**2 + 4*S**2*U**2*t*w + 2*S**2*U**2*t + S**2*U**2*w**2 + 2*S**2*U**2*w + S**2*U**2 + 4*U**2*V**2*t**2*w + 8*U**2*V**2*t*w + 4*U**2*V**2*w");
