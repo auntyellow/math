@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +75,7 @@ public class SDS {
 	}
 
 	static class PermSubs<T extends MutableNumber<T>> {
-		List<Integer> perm;
+		int[] perm;
 		Poly<T>[] subs;
 		int index;
 	}
@@ -197,10 +195,6 @@ public class SDS {
 		return true;
 	}
 
-	private static List<Integer> makePerm(int... values) {
-		return IntStream.of(values).boxed().collect(Collectors.toList());
-	}
-
 	private static <T extends MutableNumber<T>> void copy(T[] src, long[] dst, Poly<T> p) {
 		for (int i = 0; i < src.length; i ++) {
 			src[i] = p.valueOf(dst[i]);
@@ -296,19 +290,19 @@ public class SDS {
 			long[][] h123 = {{2, 1, 1}, {0, 1, 0}, {0, 0, 1}};
 			for (int i = 0; i < 3; i ++) {
 				PermSubs<T> permSubs = new PermSubs<>();
-				permSubs.perm = makePerm(i, (i + 1)%3, (i + 2)%3);
+				permSubs.perm = new int[] {i, (i + 1)%3, (i + 2)%3};
 				permSubs.subs = subsPoly;
 				permSubs.index = transMat.size();
 				T[][] m = f.newMatrix(3, 3);
-				copy(m[0], h123[i], f);
-				copy(m[1], h123[(i + 1)%3], f);
-				copy(m[2], h123[(i + 2)%3], f);
+				for (int j = 0; j < 3; j ++) {
+					copy(m[j], h123[(i + j)%3], f);
+				}
 				transMat.add(m);
 				permSubsList.add(permSubs);
 			}
 			// H4 = [[1,1,0],[0,1,1],[1,0,1]]
 			PermSubs<T> permSubs = new PermSubs<>();
-			permSubs.perm = makePerm(0, 1, 2);
+			permSubs.perm = new int[] {0, 1, 2};
 			@SuppressWarnings("unchecked")
 			// x' = x + y, y' = y + z, z' = x + z
 			Poly<T>[] subsPoly3 = new Poly[] {
@@ -386,7 +380,7 @@ public class SDS {
 					// m[perm.get(i).intValue()] = upperMat[i].clone();
 				}
 				PermSubs<T> permSubs = new PermSubs<>();
-				permSubs.perm = perm;
+				permSubs.perm = perm.stream().mapToInt(Integer::intValue).toArray();
 				permSubs.subs = subs;
 				permSubs.index = transMat.size();
 				transMat.add(m);
@@ -413,8 +407,8 @@ public class SDS {
 						short[] exps1 = new short[vars.length()];
 						for (int i = 0; i < exps.length; i ++) {
 							// permute
-							exps1[permSubs.perm.get(i).intValue()] = exps[i];
-							// exps1[i] = exps[permSubs.perm.get(i).intValue()];
+							exps1[permSubs.perm[i]] = exps[i];
+							// exps1[i] = exps[permSubs.perm[i]];
 						}
 						f1.put(new Mono(vars, exps1), term.getValue());
 					}
