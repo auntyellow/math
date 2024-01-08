@@ -17,8 +17,6 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.xqbase.math.inequality.SDS.Find;
-import com.xqbase.math.inequality.SDS.Result;
 import com.xqbase.math.polys.BigPoly;
 import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Mono;
@@ -50,7 +48,7 @@ public class SDSTest {
 		}
 		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("xy", "x**2 + x*y + y**2"));
 		assertTrue(result.isNonNegative());
-		assertEquals("[]", result.getZeroAt().toString());
+		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(0, result.getDepth());
 
 		result = SDS.sds(new LongPoly("xy", "x**2 - 2*x*y + y**2"));
@@ -205,6 +203,9 @@ public class SDSTest {
 		fd = replaceAn("a1**2*a2*a3 + a1**2*a2*a4 + a1**2*a3**2 + a1**2*a3*a4 + a1*a2**2*a3 + a1*a2**2*a4 + a1*a2*a3**2 + 2*a1*a2*a3*a4 + a1*a2*a4**2 + a1*a3**2*a4 + a1*a3*a4**2 + a2**2*a3*a4 + a2**2*a4**2 + a2*a3**2*a4 + a2*a3*a4**2"); 
 		result = SDS.sds(fn);
 		assertTrue(result.isNonNegative());
+		// tsds got 17 zeros, 13 verified, within 3 iterations
+		// sds with J_n doesn't work
+		// result = SDS.sds(fn, SDS.Transform.J_n, SDS.Find.FULL, Integer.MAX_VALUE);
 		assertEquals(13, result.getZeroAt().size());
 		List<List<MutableLong>> zeroAts = getZeroAt(fn, fd, result.getZeroAt());
 		assertEquals(9, zeroAts.size());
@@ -327,6 +328,10 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1, 1], [0, 1, 1, 0], [1, 0, 0, 1], [1, 1, 0, 0]]", result.getZeroAt().toString());
 		assertEquals(1, result.getDepth());
+		result = SDS.sds(new BigPoly("abcd", f.toString()), SDS.Transform.J_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		assertTrue(result.isNonNegative());
+		assertEquals("[[0, 0, 1, 1], [0, 1, 1, 0], [1, 0, 0, 1], [1, 1, 0, 0]]", result.getZeroAt().toString());
+		assertEquals(1, result.getDepth());
 	}
 
 	@Test
@@ -365,6 +370,13 @@ public class SDSTest {
 		assertEquals(1, result.getDepth());
 		// sds with H_n doesn't work
 		// result = SDS.sds(f, SDS.Transform.H_n, SDS.Find.FULL, Integer.MAX_VALUE);
+		f = new BigPoly("xyzw", "x**4 + y**4 + z**4 + w**4 - 4*x*y*z*w");
+		result = SDS.sds(f);
+		assertTrue(result.isNonNegative());
+		assertEquals("[[1, 1, 1, 1]]", result.getZeroAt().toString());
+		assertEquals(1, result.getDepth());
+		// sds with J_n doesn't work
+		// result = SDS.sds(f, SDS.Transform.J_n, SDS.Find.FULL, Integer.MAX_VALUE);
 		// ex 4.4
 		f = new BigPoly("abc", "a**4 - 3*a**3*b + 2*a**2*b**2 + 2*a**2*c**2 - 3*a*c**3 + b**4 - 3*b**3*c + 2*b**2*c**2 + c**4");
 		// zero at (1, 1, 1)
@@ -461,7 +473,7 @@ public class SDSTest {
 	}
 
 	public void dumpLattice() {
-		Result<MutableLong> result = SDS.sds(new LongPoly("abc", "a"), SDS.Transform.T_n, Find.DUMP_LATTICE, 5);
+		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("abcd", "a"), SDS.Transform.J_n, SDS.Find.DUMP_LATTICE, 5);
 		for (List<MutableLong> zeroAt : result.getZeroAt()) {
 			System.out.println("    " + zeroAt + ",");
 		}

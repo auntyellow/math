@@ -25,6 +25,13 @@ import com.xqbase.math.polys.Poly;
 public class SDS {
 	private static Logger log = LoggerFactory.getLogger(SDS.class);
 
+	private static final long[][] MATRIX_H = {{2, 1, 1}, {0, 1, 0}, {0, 0, 1}};
+	private static final long[][] MATRIX_H4 = {{1, 1, 0}, {0, 1, 1}, {1, 0, 1}};
+	private static final long[][][] MATRIX_J = {
+		{{2, 1, 1, 1}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}},
+		{{1, 1, 1, 0}, {1, 0, 0, 1}, {0, 1, 0, 1}, {0, 0, 1, 0}},
+	};
+
 	public static enum Find {
 		SKIP, FAST, FULL, DUMP_LATTICE
 	}
@@ -77,6 +84,7 @@ public class SDS {
 	static class PermSubs<T extends MutableNumber<T>> {
 		int[] perm;
 		Poly<T>[] subs;
+		String tempVars = null;
 		int index;
 	}
 
@@ -278,49 +286,10 @@ public class SDS {
 
 		ArrayList<PermSubs<T>> permSubsList = new ArrayList<>();
 		ArrayList<T[][]> transMat = new ArrayList<>();
-		if (transform == Transform.H_n) {
-			if (len != 3) {
-				throw new IllegalArgumentException("H_n only works on 3-var polynomials");
-			}
-			// H1 = [[2,1,1],[0,1,0],[0,0,1]]
-			// H2 = [[1,0,0],[1,2,1],[0,0,1]]
-			// H3 = [[1,0,0],[0,1,0],[1,1,2]]
-			@SuppressWarnings("unchecked")
-			Poly<T>[] subsPoly = new Poly[] {f.newPoly("xyz", "2*x + y + z")};
-			long[][] h123 = {{2, 1, 1}, {0, 1, 0}, {0, 0, 1}};
-			for (int i = 0; i < 3; i ++) {
-				PermSubs<T> permSubs = new PermSubs<>();
-				permSubs.perm = new int[] {i, (i + 1)%3, (i + 2)%3};
-				permSubs.subs = subsPoly;
-				permSubs.index = transMat.size();
-				T[][] m = f.newMatrix(3, 3);
-				for (int j = 0; j < 3; j ++) {
-					copy(m[j], h123[(i + j)%3], f);
-				}
-				transMat.add(m);
-				permSubsList.add(permSubs);
-			}
-			// H4 = [[1,1,0],[0,1,1],[1,0,1]]
-			PermSubs<T> permSubs = new PermSubs<>();
-			permSubs.perm = new int[] {0, 1, 2};
-			@SuppressWarnings("unchecked")
-			// x' = x + y, y' = y + z, z' = x + z
-			Poly<T>[] subsPoly3 = new Poly[] {
-				f.newPoly("xyz", "2*x + y - z"),
-				f.newPoly("xyz", "y + z - x"),
-				f.newPoly("xyz", "z + x"),
-			};
-			permSubs.subs = subsPoly3;
-			permSubs.index = transMat.size();
-			T[][] m = f.newMatrix(3, 3);
-			long[][] h4 = {{1, 1, 0}, {0, 1, 1}, {1, 0, 1}};
-			for (int i = 0; i < 3; i ++) {
-				copy(m[i], h4[i], f);
-			}
-			transMat.add(m);
-			permSubsList.add(permSubs);
-
-		} else {
+		switch (transform) {
+		case A_n:
+		case T_n:
+		default:
 			// sds: [1, ..., 1], tsds: [lcm, lcm/2, ..., lcm/n]
 			T[] column = f.newVector(len);
 			if (transform == Transform.T_n) {
@@ -386,6 +355,90 @@ public class SDS {
 				transMat.add(m);
 				permSubsList.add(permSubs);
 			}
+			break;
+
+		case H_n:
+			if (len != 3) {
+				throw new IllegalArgumentException("H_n only works on 3-var polynomials");
+			}
+			@SuppressWarnings("unchecked")
+			Poly<T>[] subsPolyH = new Poly[] {f.newPoly("xyz", "2*x + y + z")};
+			for (int i = 0; i < 3; i ++) {
+				PermSubs<T> permSubs = new PermSubs<>();
+				permSubs.perm = new int[] {i, (i + 1)%3, (i + 2)%3};
+				permSubs.subs = subsPolyH;
+				permSubs.index = transMat.size();
+				T[][] m = f.newMatrix(3, 3);
+				for (int j = 0; j < 3; j ++) {
+					copy(m[j], MATRIX_H[(i + j)%3], f);
+				}
+				transMat.add(m);
+				permSubsList.add(permSubs);
+			}
+			PermSubs<T> permSubs = new PermSubs<>();
+			permSubs.perm = new int[] {0, 1, 2};
+			// x' = x + y, y' = y + z, z' = x + z
+			@SuppressWarnings("unchecked")
+			Poly<T>[] subsPolyH4 = new Poly[] {
+				f.newPoly("xyz", "2*x + y - z"),
+				f.newPoly("xyz", "y + z - x"),
+				f.newPoly("xyz", "z + x"),
+			};
+			permSubs.subs = subsPolyH4;
+			permSubs.index = transMat.size();
+			T[][] m = f.newMatrix(3, 3);
+			for (int i = 0; i < 3; i ++) {
+				copy(m[i], MATRIX_H4[i], f);
+			}
+			transMat.add(m);
+			permSubsList.add(permSubs);
+			break;
+
+		case J_n:
+			if (len != 4) {
+				throw new IllegalArgumentException("J_n only works on 4-var polynomials");
+			}
+			// find first 4 chars not in vars as tempVars
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0; i < 4; i ++) {
+				for (int j = 0; j < 8; j ++) {
+					char c = (char) ('a' + j);
+					if (vars.indexOf(c) < 0 && sb.indexOf(Character.toString(c)) < 0) {
+						sb.append(c);
+						break;
+					}
+				}
+			}
+			String tempVars = sb.toString();
+			String xyzwTempVars = "xyzw" + tempVars;
+			// J1 = [[2,1,1,1],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+			// J2 = [[1,1,1,0],[1,0,0,1],[0,1,0,1],[0,0,1,0]]
+			@SuppressWarnings("unchecked")
+			Poly<T>[][] subsPolyJ = new Poly[][] {{
+				f.newPoly("xyzw", "2*x + y + z + w"),
+			}, {
+				// Unable to substitute by x_i = p1(x_i, y_i, z_i, w), y = p2(x, y, z, w) ..., so use tempVars
+				f.newPoly(xyzwTempVars, "x + y + z"),
+				f.newPoly(xyzwTempVars, "x + w"),
+				f.newPoly(xyzwTempVars, "y + w"),
+				f.newPoly(xyzwTempVars, "z"),
+			}};
+			for (int i = 0; i < 2; i ++) {
+				for (int j = 0; j < 4; j ++) {
+					permSubs = new PermSubs<>();
+					permSubs.perm = new int[] {j, (j + 1)%4, (j + 2)%4, (j + 3)%4};
+					permSubs.subs = subsPolyJ[i];
+					permSubs.tempVars = i == 0 ? null : tempVars;
+					permSubs.index = transMat.size();
+					m = f.newMatrix(4, 4);
+					for (int k = 0; k < 4; k ++) {
+						copy(m[k], MATRIX_J[i][(j + k)%4], f);
+					}
+					transMat.add(m);
+					permSubsList.add(permSubs);
+				}
+			}
+			break;
 		}
 
 		Map<Poly<T>, List<List<Integer>>> polyTransList = Collections.singletonMap(f, initTransList);
@@ -402,20 +455,47 @@ public class SDS {
 				for (PermSubs<T> permSubs : permSubsList) {
 					// f1 = f0's permutation and substitution (transformation)
 					Poly<T> f1 = f.newPoly();
-					for (Map.Entry<Mono, T> term : f0.entrySet()) {
-						short[] exps = term.getKey().getExps();
-						short[] exps1 = new short[vars.length()];
-						for (int i = 0; i < exps.length; i ++) {
-							// permute
-							exps1[permSubs.perm[i]] = exps[i];
-							// exps1[i] = exps[permSubs.perm[i]];
+					if (permSubs.tempVars == null) {
+						f1 = f.newPoly();
+						for (Map.Entry<Mono, T> term : f0.entrySet()) {
+							short[] exps = term.getKey().getExps();
+							short[] exps1 = new short[vars.length()];
+							for (int i = 0; i < len; i ++) {
+								// permute
+								exps1[permSubs.perm[i]] = exps[i];
+								// exps1[i] = exps[permSubs.perm[i]];
+							}
+							f1.put(new Mono(vars, exps1), term.getValue());
 						}
-						f1.put(new Mono(vars, exps1), term.getValue());
-					}
-					// sds: x0 += x1, x1 += x2, ... , x_n-2 += x_n-1
-					// tsds: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
-					for (int i = 0; i < permSubs.subs.length; i ++) {
-						f1 = f1.subs(vars.charAt(i), permSubs.subs[i]);
+						// sds: x0 += x1, x1 += x2, ... , x_n-2 += x_n-1
+						// tsds: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
+						for (int i = 0; i < permSubs.subs.length; i ++) {
+							f1 = f1.subs(vars.charAt(i), permSubs.subs[i]);
+						}
+					} else {
+						// temp poly about (vars, tempVars)
+						Poly<T> f2 = f.newPoly();
+						String varsTempVars = vars + permSubs.tempVars;
+						for (Map.Entry<Mono, T> term : f0.entrySet()) {
+							short[] exps = term.getKey().getExps();
+							// assert vars.length() == permSubs.tempVars.length();
+							short[] exps1 = new short[len*2];
+							for (int i = 0; i < len; i ++) {
+								// permute
+								exps1[i] = 0;
+								exps1[len + permSubs.perm[i]] = exps[i];
+								// exps1[len + i] = exps[permSubs.perm[i]];
+							}
+							f2.put(new Mono(varsTempVars, exps1), term.getValue());
+						}
+						for (int i = 0; i < permSubs.subs.length; i ++) {
+							f2 = f2.subs(permSubs.tempVars.charAt(i), permSubs.subs[i]);
+						}
+						// remove tempVars
+						for (Map.Entry<Mono, T> term : f2.entrySet()) {
+							f1.put(new Mono(vars, Arrays.copyOfRange(term.getKey().getExps(), 0, len)),
+									term.getValue());
+						}
 					}
 					List<List<Integer>> transList1 = new ArrayList<>();
 					for (List<Integer> trans : transList) {
