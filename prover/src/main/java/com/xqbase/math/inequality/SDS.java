@@ -18,8 +18,6 @@ import com.xqbase.math.polys.Poly;
 
 /**
  * Successive Difference Substitution<p>
- * {@link #sds(Poly f)} or sds(f, {@link Transform#A_n}) uses upper triangular matrix (A_n)<p>
- * {@link #tsds(Poly f)} or sds(f, {@link Transform#T_n}) uses column stochastic matrix (T_n)<p> 
  * @see https://arxiv.org/pdf/0904.4030v3.pdf
  */
 public class SDS {
@@ -38,7 +36,7 @@ public class SDS {
 
 	/** @see http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545 */
 	public static enum Transform {
-		A_n, T_n, H_n, J_n, Z_n
+		A_n, T_n, H_3, J_4, Z_n
 	}
 
 	public static class Result<T extends MutableNumber<T>> {
@@ -85,6 +83,7 @@ public class SDS {
 		int[] perm;
 		Poly<T>[] subs;
 		String tempVars = null;
+		boolean reverse = false;
 		int index;
 	}
 
@@ -210,11 +209,15 @@ public class SDS {
 	}
 
 	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f) {
-		return sds(f, Transform.A_n, Find.FULL, Integer.MAX_VALUE);
+		return sds(f, Transform.A_n);
 	}
 
-	public static <T extends MutableNumber<T>> Result<T> tsds(Poly<T> f) {
-		return sds(f, Transform.T_n, Find.FULL, Integer.MAX_VALUE);
+	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f, Transform transform) {
+		return sds(f, transform, Find.FULL);
+	}
+
+	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f, Transform transform, Find find) {
+		return sds(f, transform, find, Integer.MAX_VALUE);
 	}
 
 	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f,
@@ -286,14 +289,16 @@ public class SDS {
 
 		ArrayList<PermSubs<T>> permSubsList = new ArrayList<>();
 		ArrayList<T[][]> transMat = new ArrayList<>();
+		T zero = f.valueOf(0);
+		T one = f.valueOf(1);
 		switch (transform) {
 		case A_n:
 		case T_n:
 		default:
-			// sds: [1, ..., 1], tsds: [lcm, lcm/2, ..., lcm/n]
+			// A_n: [1, ..., 1], T_n: [lcm, lcm/2, ..., lcm/n]
 			T[] column = f.newVector(len);
 			if (transform == Transform.T_n) {
-				T lcm = f.valueOf(1);
+				T lcm = one;
 				for (int i = 1; i <= len; i ++) {
 					T i_ = f.valueOf(i);
 					T t = f.newZero();
@@ -305,14 +310,14 @@ public class SDS {
 				}
 			} else {
 				for (int i = 0; i < len; i ++) {
-					column[i] = f.valueOf(1);
+					column[i] = one;
 				}
 			}
 
 			T[][] upperMat = f.newMatrix(len, len);
 			for (int i = 0; i < len; i ++) {
 				for (int j = 0; j < len; j ++) {
-					upperMat[i][j] = i <= j ? column[j] : f.valueOf(0);
+					upperMat[i][j] = i <= j ? column[j] : zero;
 				}
 			}
 
@@ -328,7 +333,7 @@ public class SDS {
 			for (int i = 0; i < len - 1; i ++) {
 				Poly<T> sub = f.newPoly();
 				sub.put(monos[i], column[i]);
-				sub.put(monos[i + 1], f.valueOf(1));
+				sub.put(monos[i + 1], one);
 				subs[i] = sub;
 			}
 			if (transform == Transform.T_n) {
@@ -357,20 +362,22 @@ public class SDS {
 			}
 			break;
 
-		case H_n:
+		case H_3:
 			if (len != 3) {
-				throw new IllegalArgumentException("H_n only works on 3-var polynomials");
+				throw new IllegalArgumentException("H_3 only works on 3-var polynomials");
 			}
 			@SuppressWarnings("unchecked")
-			Poly<T>[] subsPolyH = new Poly[] {f.newPoly("xyz", "2*x + y + z")};
+			Poly<T>[] subsH = new Poly[] {f.newPoly("xyz", "2*x + y + z")};
 			for (int i = 0; i < 3; i ++) {
 				PermSubs<T> permSubs = new PermSubs<>();
 				permSubs.perm = new int[] {i, (i + 1)%3, (i + 2)%3};
-				permSubs.subs = subsPolyH;
+				permSubs.subs = subsH;
 				permSubs.index = transMat.size();
 				T[][] m = f.newMatrix(3, 3);
 				for (int j = 0; j < 3; j ++) {
+					// permute
 					copy(m[j], MATRIX_H[(i + j)%3], f);
+					// copy(m[(i + j)%3], MATRIX_H[j], f);
 				}
 				transMat.add(m);
 				permSubsList.add(permSubs);
@@ -394,9 +401,9 @@ public class SDS {
 			permSubsList.add(permSubs);
 			break;
 
-		case J_n:
+		case J_4:
 			if (len != 4) {
-				throw new IllegalArgumentException("J_n only works on 4-var polynomials");
+				throw new IllegalArgumentException("J_4 only works on 4-var polynomials");
 			}
 			// find first 4 chars not in vars as tempVars
 			StringBuilder sb = new StringBuilder();
@@ -414,7 +421,7 @@ public class SDS {
 			// J1 = [[2,1,1,1],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
 			// J2 = [[1,1,1,0],[1,0,0,1],[0,1,0,1],[0,0,1,0]]
 			@SuppressWarnings("unchecked")
-			Poly<T>[][] subsPolyJ = new Poly[][] {{
+			Poly<T>[][] subsJ = new Poly[][] {{
 				f.newPoly("xyzw", "2*x + y + z + w"),
 			}, {
 				// Unable to substitute by x_i = p1(x_i, y_i, z_i, w), y = p2(x, y, z, w) ..., so use tempVars
@@ -427,16 +434,78 @@ public class SDS {
 				for (int j = 0; j < 4; j ++) {
 					permSubs = new PermSubs<>();
 					permSubs.perm = new int[] {j, (j + 1)%4, (j + 2)%4, (j + 3)%4};
-					permSubs.subs = subsPolyJ[i];
+					permSubs.subs = subsJ[i];
 					permSubs.tempVars = i == 0 ? null : tempVars;
 					permSubs.index = transMat.size();
 					m = f.newMatrix(4, 4);
 					for (int k = 0; k < 4; k ++) {
+						// permute
 						copy(m[k], MATRIX_J[i][(j + k)%4], f);
+						// copy(m[(j + k)%4], MATRIX_J[i][k], f);
 					}
 					transMat.add(m);
 					permSubsList.add(permSubs);
 				}
+			}
+			break;
+
+		case Z_n:
+			/*
+			int[][] MATRIX_Z = {
+				{n,   1,   1, ...,   1},
+				{0, n-1,   0, ...,   0},
+				{0,   0, n-1, ...,   0},
+				...
+				{0,   0,   0, ..., n-1},
+			};
+			*/
+			T[][] zMat = f.newMatrix(len, len);
+			T n = f.valueOf(len);
+			T n1 = f.valueOf(len - 1);
+			zMat[0][0] = n;
+			for (int i = 1; i < len; i ++) {
+				zMat[0][i] = one;
+				for (int j = 0; j < len; j ++) {
+					zMat[i][j] = i == j ? n1 : zero;
+				}
+			}
+
+			monos = new Mono[len];
+			for (int i = 0; i < len; i ++) {
+				short[] exps = new short[len];
+				Arrays.fill(exps, (short) 0);
+				exps[i] = 1;
+				monos[i] = new Mono(vars, exps);
+			}
+			@SuppressWarnings("unchecked")
+			Poly<T>[] subsZ = new Poly[len];
+			Poly<T> sub0 = f.newPoly();
+			sub0.put(monos[0], n);
+			for (int i = 1; i < len; i ++) {
+				sub0.put(monos[i], one);
+				Poly<T> sub = f.newPoly();
+				sub.put(monos[i], n1);
+				subsZ[i] = sub;
+			}
+			subsZ[0] = sub0;
+
+			for (int i = 0; i < len; i ++) {
+				permSubs = new PermSubs<>();
+				permSubs.perm = new int[len];
+				for (int j = 0; j < len; j ++) {
+					permSubs.perm[j] = (i + j)%len;
+				}
+				permSubs.subs = subsZ;
+				permSubs.reverse = true;
+				permSubs.index = transMat.size();
+				m = f.newMatrix(len, len);
+				for (int j = 0; j < len; j ++) {
+					// permute
+					m[j] = zMat[(i + j)%len].clone();
+					// m[(i + j)%len] = zMat[j].clone();
+				}
+				transMat.add(m);
+				permSubsList.add(permSubs);
 			}
 			break;
 		}
@@ -467,10 +536,17 @@ public class SDS {
 							}
 							f1.put(new Mono(vars, exps1), term.getValue());
 						}
-						// sds: x0 += x1, x1 += x2, ... , x_n-2 += x_n-1
-						// tsds: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
-						for (int i = 0; i < permSubs.subs.length; i ++) {
-							f1 = f1.subs(vars.charAt(i), permSubs.subs[i]);
+						if (permSubs.reverse) {
+							// Z_n
+							for (int i = permSubs.subs.length - 1; i >= 0; i --) {
+								f1 = f1.subs(vars.charAt(i), permSubs.subs[i]);
+							}
+						} else {
+							// A_n: x0 += x1, x1 += x2, ... , x_n-2 += x_n-1
+							// T_n: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
+							for (int i = 0; i < permSubs.subs.length; i ++) {
+								f1 = f1.subs(vars.charAt(i), permSubs.subs[i]);
+							}
 						}
 					} else {
 						// temp poly about (vars, tempVars)
