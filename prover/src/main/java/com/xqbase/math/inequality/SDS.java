@@ -96,8 +96,8 @@ public class SDS {
 
 		@Override
 		public String toString() {
-			return "SDSResult [nonNegative=" + isNonNegative() + ", zeroAt=" + zeroAt +
-					", negativeAt=" + negativeAt + ", depth = " + depth + "]";
+			return "SDSResult [nonNegative=" + isNonNegative() + ", negativeAt=" + negativeAt +
+					", zeroAt=" + zeroAt + ", simplices=" + simplices + ", depth=" + depth + "]";
 		}
 	}
 
