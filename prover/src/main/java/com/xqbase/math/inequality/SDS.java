@@ -2,11 +2,14 @@ package com.xqbase.math.inequality;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.slf4j.Logger;
@@ -30,42 +33,61 @@ public class SDS {
 		{{1, 1, 1, 0}, {1, 0, 0, 1}, {0, 1, 0, 1}, {0, 0, 1, 0}},
 	};
 
-	public static enum Find {
-		SKIP, FAST, FULL, DUMP_LATTICE
-	}
-
 	/** @see http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545 */
 	public static enum Transform {
 		A_n, T_n, H_3, J_4, Z_n
 	}
 
+	public static enum Find {
+		SKIP, FAST, FULL, DUMP_LATTICE
+	}
+
+	private static <T> List<T> asList(Collection<T> c) {
+		return c instanceof List ? (List<T>) c : new ArrayList<>(c);
+	}
+
+	static final <T> Comparator<? extends Collection<T>> listComparator(Comparator<T> comparator) {
+		return (o1, o2) -> {
+			int len1 = o1.size();
+			int len2 = o2.size();
+			int len = Integer.min(len1, len2);
+			List<T> list1 = asList(o1);
+			List<T> list2 = asList(o2);
+			for (int i = 0; i < len; i ++) {
+				int c = comparator.compare(list1.get(i), list2.get(i));
+				if (c != 0) {
+					return c;
+				}
+			}
+			return Integer.compare(len1, len2);
+		};
+	}
+
 	public static class Result<T extends MutableNumber<T>> {
-		Set<List<T>> zeroAt;
 		List<T> negativeAt = null;
+		Set<List<T>> zeroAt;
+		Map<Integer, Set<Set<List<T>>>> simplices;
 		int depth = 0;
 
-		Result(int len) {
-			zeroAt = new TreeSet<>((p1, p2) -> {
-				for (int i = 0; i < len; i ++) {
-					int c = p1.get(i).compareTo(p2.get(i));
-					if (c != 0) {
-						return c;
-					}
-				}
-				return 0;
-			});
+		Result() {
+			zeroAt = new TreeSet<>(listComparator(Comparator.<T>naturalOrder()));
+			simplices = new TreeMap<>();
 		}
 
 		public boolean isNonNegative() {
 			return negativeAt == null;
 		}
 
+		public List<T> getNegativeAt() {
+			return negativeAt;
+		}
+
 		public Set<List<T>> getZeroAt() {
 			return zeroAt;
 		}
 
-		public List<T> getNegativeAt() {
-			return negativeAt;
+		public Map<Integer, Set<Set<List<T>>>> getSimplices() {
+			return simplices;
 		}
 
 		public int getDepth() {
@@ -153,46 +175,59 @@ public class SDS {
 	private static <T extends MutableNumber<T>> boolean trivial(Poly<T> f, List<List<Integer>> transList,
 			List<T[][]> transMat, List<boolean[]> keys, Result<T> result, boolean dumpLattice) {
 		if (!transList.isEmpty()) {
-			// find negative and zeros: try 0(false)/1(true)s in keys
 			int numKeys = keys.size();
-			List<T> values = new ArrayList<>();
-			for (int i = 0; i < numKeys; i ++) {
-				values.add(f.newZero());
-			}
-			for (Map.Entry<Mono, T> entry: f.entrySet()) {
-				short[] exps = entry.getKey().getExps();
-				T coeff = entry.getValue();
+			if (dumpLattice) {
+				@SuppressWarnings("unchecked")
+				Comparator<List<T>> comparator = (Comparator<List<T>>) listComparator(Comparator.<T>naturalOrder());
+				Set<Set<List<T>>> simplices = result.simplices.computeIfAbsent(Integer.valueOf(result.depth),
+						k -> new TreeSet<>(listComparator(comparator)));
+				for (List<Integer> trans : transList) {
+					Set<List<T>> simplex = new TreeSet<>(comparator);
+					for (int i = 0; i < numKeys; i ++) {
+						List<T> lattice = matMulReduce(trans, transMat, keys.get(i), f);
+						result.zeroAt.add(lattice);
+						simplex.add(lattice);
+					}
+					simplices.add(simplex);
+				}
+			} else {
+				// find negative and zeros: try 0(false)/1(true)s in keys
+				List<T> values = new ArrayList<>();
 				for (int i = 0; i < numKeys; i ++) {
-					T value = values.get(i);
-					boolean[] key = keys.get(i);
-					boolean zero = false;
-					for (int j = 0; j < key.length; j ++) {
-						if (!key[j] && exps[j] > 0) {
-							zero = true;
-							break;
+					values.add(f.newZero());
+				}
+				for (Map.Entry<Mono, T> entry: f.entrySet()) {
+					short[] exps = entry.getKey().getExps();
+					T coeff = entry.getValue();
+					for (int i = 0; i < numKeys; i ++) {
+						T value = values.get(i);
+						boolean[] key = keys.get(i);
+						boolean zero = false;
+						for (int j = 0; j < key.length; j ++) {
+							if (!key[j] && exps[j] > 0) {
+								zero = true;
+								break;
+							}
+						}
+						if (!zero) {
+							value.add(coeff);
 						}
 					}
-					if (!zero) {
-						value.add(coeff);
+				}
+				for (int i = 0; i < numKeys; i ++) {
+					T value = values.get(i);
+					int c = value.signum();
+					if (c < 0) {
+						result.negativeAt = matMulReduce(transList.get(0), transMat, keys.get(i), f);
+						return false;
+					}
+					if (c == 0) {
+						for (List<Integer> trans : transList) {
+							result.zeroAt.add(matMulReduce(trans, transMat, keys.get(i), f));
+						}
 					}
 				}
 			}
-			for (int i = 0; i < numKeys; i ++) {
-				T value = values.get(i);
-				int c = value.signum();
-				if (!dumpLattice && c < 0) {
-					result.negativeAt = matMulReduce(transList.get(0), transMat, keys.get(i), f);
-					return false;
-				}
-				if (dumpLattice || c == 0) {
-					for (List<Integer> trans : transList) {
-						result.zeroAt.add(matMulReduce(trans, transMat, keys.get(i), f));
-					}
-				}
-			}
-		}
-		if (dumpLattice) {
-			return false;
 		}
 		for (T coeff : f.values()) {
 			if (coeff.signum() < 0) {
@@ -238,7 +273,7 @@ public class SDS {
 			}
 		}
 		if (deg == 0) {
-			return new Result<>(0);
+			return new Result<>();
 		}
 		int len = vars.length();
 
@@ -278,7 +313,7 @@ public class SDS {
 		}
 
 		// depth = 0
-		Result<T> result = new Result<>(len);
+		Result<T> result = new Result<>();
 		// transList is always empty if skipNegative
 		List<List<Integer>> initTransList = find == Find.SKIP ? Collections.emptyList() :
 				Collections.singletonList(Collections.emptyList());
