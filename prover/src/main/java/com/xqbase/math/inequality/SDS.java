@@ -27,18 +27,20 @@ import com.xqbase.math.polys.Poly;
 public class SDS {
 	private static Logger log = LoggerFactory.getLogger(SDS.class);
 
-	private static final long[][] MATRIX_H = {{2, 1, 1}, {0, 1, 0}, {0, 0, 1}};
-	private static final long[][] MATRIX_H4 = {{1, 1, 0}, {0, 1, 1}, {1, 0, 1}};
+	private static final int[][] MATRIX_H = {{2, 1, 1}, {0, 1, 0}, {0, 0, 1}};
+	private static final int[][] MATRIX_H4 = {{1, 1, 0}, {0, 1, 1}, {1, 0, 1}};
 	// this also works with tempVars
-	// private static final long[][] MATRIX_H4 = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
-	private static final long[][][] MATRIX_J = {
+	// private static final int[][] MATRIX_H4 = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}};
+	private static final int[][][] MATRIX_J = {
 		{{2, 1, 1, 1}, {0, 1, 0, 0}, {0, 0, 1, 0}, {0, 0, 0, 1}},
 		{{1, 1, 1, 0}, {1, 0, 0, 1}, {0, 1, 0, 1}, {0, 0, 1, 0}},
 	};
 
 	/** @see http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545 */
 	public static enum Transform {
-		A_n, T_n, H_3, J_4, Z_n
+		A_n, T_n, H_3, J_4, Z_n,
+		/** n vertex + 1 center, less overlapped than {@link #Z_n} */
+		Y_n
 	}
 
 	public static enum Find {
@@ -149,17 +151,17 @@ public class SDS {
 		return v1;
 	}
 
-	private static <T extends MutableNumber<T>, U extends Poly<T, U>> List<T>
-			matMulReduce(List<Integer> trans, List<T[][]> transMat, boolean[] key, U p) {
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> List<T>
+			matMulReduce(List<Integer> trans, List<T[][]> transMat, boolean[] key, P f) {
 		int n = key.length;
-		T[] v = p.newVector(n);
+		T[] v = f.newVector(n);
 		for (int i = 0; i < n; i ++) {
-			v[i] = p.valueOf(key[i] ? 1 : 0);
+			v[i] = f.valueOf(key[i] ? 1 : 0);
 		}
 		for (int i = trans.size() - 1; i >= 0; i --) {
-			v = matMul(transMat.get(trans.get(i).intValue()), v, p);
+			v = matMul(transMat.get(trans.get(i).intValue()), v, f);
 		}
-		T gcd = p.valueOf(0);
+		T gcd = f.valueOf(0);
 		for (int i = 0; i < n; i ++) {
 			gcd = gcd.gcd(v[i]);
 		}
@@ -240,9 +242,9 @@ public class SDS {
 		return true;
 	}
 
-	private static <T extends MutableNumber<T>, P extends Poly<T, P>> void copy(T[] src, long[] dst, P p) {
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> void copy(int[] src, T[] dst, P f) {
 		for (int i = 0; i < src.length; i ++) {
-			src[i] = p.valueOf(dst[i]);
+			dst[i] = f.valueOf(src[i]);
 		}
 	}
 
@@ -261,8 +263,8 @@ public class SDS {
 
 	private static final String VARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-	private static <T extends MutableNumber<T>, P extends Poly<T, P>> P[] getSubsPoly(P f,
-			String vars, long[][] mat, Consumer<String> tempVarsSetter) {
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> P[]
+			getSubsPoly(String vars, int[][] mat, P f, Consumer<String> tempVarsSetter) {
 		int len = vars.length();
 		// find first n chars not in vars as tempVars
 		String unusedVars = VARS;
@@ -326,6 +328,10 @@ public class SDS {
 			return new Result<>();
 		}
 		int len = vars.length();
+		Mono[] monos = new Mono[len];
+		for (int i = 0; i < len; i ++) {
+			monos[i] = getMono(vars, i);
+		}
 
 		// product([false, true], repeat = len)
 		List<boolean[]> keys;
@@ -407,10 +413,6 @@ public class SDS {
 			}
 
 			P[] subs = unchecked(new Poly[transform == Transform.T_n ? len : len - 1]);
-			Mono[] monos = new Mono[len];
-			for (int i = 0; i < len; i ++) {
-				monos[i] = getMono(vars, i);
-			}
 			for (int i = 0; i < len - 1; i ++) {
 				P sub = f.newPoly();
 				sub.put(monos[i], column[i]);
@@ -456,8 +458,8 @@ public class SDS {
 				T[][] m = f.newMatrix(3, 3);
 				for (int j = 0; j < 3; j ++) {
 					// permute
-					copy(m[j], MATRIX_H[(i + j)%3], f);
-					// copy(m[(i + j)%3], MATRIX_H[j], f);
+					copy(MATRIX_H[(i + j)%3], m[j], f);
+					// copy(MATRIX_H[j], m[(i + j)%3], f);
 				}
 				transMat.add(m);
 				permSubsList.add(permSubs);
@@ -476,7 +478,7 @@ public class SDS {
 			permSubsH.index = transMat.size();
 			T[][] m = f.newMatrix(3, 3);
 			for (int i = 0; i < 3; i ++) {
-				copy(m[i], MATRIX_H4[i], f);
+				copy(MATRIX_H4[i], m[i], f);
 			}
 			transMat.add(m);
 			permSubsList.add(permSubsH);
@@ -492,7 +494,7 @@ public class SDS {
 				{ f.newPoly("xyzw", "2*x + y + z + w") },
 				// Unable to substitute by x_i = p1(x_i, y_i, z_i, w), y = p2(x, y, z, w) ...
 				// so use tempVars for J[1]
-				getSubsPoly(f, vars, MATRIX_J[1], s -> tempVars[1] = s),
+				getSubsPoly(vars, MATRIX_J[1], f, s -> tempVars[1] = s),
 			};
 			for (int i = 0; i < 2; i ++) {
 				for (int j = 0; j < 4; j ++) {
@@ -504,8 +506,8 @@ public class SDS {
 					m = f.newMatrix(4, 4);
 					for (int k = 0; k < 4; k ++) {
 						// permute
-						copy(m[k], MATRIX_J[i][(j + k)%4], f);
-						// copy(m[(j + k)%4], MATRIX_J[i][k], f);
+						copy(MATRIX_J[i][(j + k)%4], m[k], f);
+						// copy(MATRIX_J[i][k], m[(j + k)%4], f);
 					}
 					transMat.add(m);
 					permSubsList.add(permSubs);
@@ -514,6 +516,7 @@ public class SDS {
 			break;
 
 		case Z_n:
+		case Y_n:
 			/*
 			int[][] MATRIX_Z = {
 				{n,   1,   1, ...,   1},
@@ -522,29 +525,34 @@ public class SDS {
 				...
 				{0,   0,   0, ..., n-1},
 			};
+
+			int[][] MATRIX_Y = {
+				{n-1, 1, 1, ..., 1},
+				{0, n-2, 0, ..., 0},
+				{0, 0, n-2, ..., 0},
+				...
+				{0, 0, 0, ..., n-2},
+			};
 			*/
 			T[][] zMat = f.newMatrix(len, len);
-			T n = f.valueOf(len);
-			T n1 = f.valueOf(len - 1);
-			zMat[0][0] = n;
+			int lead_ = transform == Transform.Z_n ? len : len - 1;
+			T lead = f.valueOf(lead_);
+			T diag = f.valueOf(lead_ - 1);
+			zMat[0][0] = lead;
 			for (int i = 1; i < len; i ++) {
 				zMat[0][i] = one;
 				for (int j = 0; j < len; j ++) {
-					zMat[i][j] = i == j ? n1 : zero;
+					zMat[i][j] = i == j ? diag : zero;
 				}
 			}
 
-			monos = new Mono[len];
-			for (int i = 0; i < len; i ++) {
-				monos[i] = getMono(vars, i);
-			}
 			subs = unchecked(new Poly[len]);
 			P sub0 = f.newPoly();
-			sub0.put(monos[0], n);
+			sub0.put(monos[0], lead);
 			for (int i = 1; i < len; i ++) {
 				sub0.put(monos[i], one);
 				P sub = f.newPoly();
-				sub.put(monos[i], n1);
+				sub.put(monos[i], diag);
 				subs[i] = sub;
 			}
 			subs[0] = sub0;
@@ -567,6 +575,38 @@ public class SDS {
 				transMat.add(m);
 				permSubsList.add(permSubs);
 			}
+			if (transform == Transform.Z_n) {
+				break;
+			}
+
+			/*
+			int[][] MATRIX_Y2 = {
+				{0, 1, 1, ..., 1},
+				{1, 0, 1, ..., 1},
+				{1, 1, 0, ..., 1},
+				...
+				{1, 1, 1, ..., 0},
+			};
+			*/
+			int[][] yMat = new int[len][len];
+			for (int i = 0; i < len; i ++) {
+				for (int j = 0; j < len; j ++) {
+					yMat[i][j] = i == j ? 0 : 1;
+				}
+			}
+			PermSubs<T, P> permSubs = new PermSubs<>();
+			permSubs.perm = new int[len];
+			for (int i = 0; i < len; i ++) {
+				permSubs.perm[i] = i;
+			}
+			permSubs.subs = getSubsPoly(vars, yMat, f, s -> permSubs.tempVars = s);
+			permSubs.index = transMat.size();
+			m = f.newMatrix(len, len);
+			for (int i = 0; i < len; i ++) {
+				copy(yMat[i], m[i], f);
+			}
+			transMat.add(m);
+			permSubsList.add(permSubs);
 			break;
 		}
 
