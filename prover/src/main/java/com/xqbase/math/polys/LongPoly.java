@@ -1,6 +1,6 @@
 package com.xqbase.math.polys;
 
-public class LongPoly extends Poly<MutableLong> {
+public class LongPoly extends Poly<MutableLong, LongPoly> {
 	private static final long serialVersionUID = 1L;
 	private static final MutableLong[] cache =
 			new MutableLong[Byte.MAX_VALUE - Byte.MIN_VALUE + 1];

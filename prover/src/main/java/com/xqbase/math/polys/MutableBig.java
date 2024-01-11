@@ -2,16 +2,16 @@ package com.xqbase.math.polys;
 
 import java.math.BigInteger;
 
-public class MutableBigInteger extends MutableNumber<MutableBigInteger> {
+public class MutableBig extends MutableNumber<MutableBig> {
 	private static final long serialVersionUID = 1L;
 
 	private BigInteger n;
 
-	public MutableBigInteger(BigInteger n) {
+	public MutableBig(BigInteger n) {
 		this.n = n;
 	}
 
-	public MutableBigInteger(String s) {
+	public MutableBig(String s) {
 		this(new BigInteger(s));
 	}
 
@@ -50,20 +50,20 @@ public class MutableBigInteger extends MutableNumber<MutableBigInteger> {
 		if (o == this) {
 			return true;
 		}
-		if (!(o instanceof MutableBigInteger)) {
+		if (!(o instanceof MutableBig)) {
 			return false;
 		}
-		return n.equals(((MutableBigInteger) o).n);
+		return n.equals(((MutableBig) o).n);
 	}
 
 	@Override
-	public int compareTo(MutableBigInteger o) {
+	public int compareTo(MutableBig o) {
 		return n.compareTo(o.n);
 	}
 
 	@Override
-	public MutableBigInteger negate() {
-		return new MutableBigInteger(n.negate());
+	public MutableBig negate() {
+		return new MutableBig(n.negate());
 	}
 
 	@Override
@@ -72,27 +72,27 @@ public class MutableBigInteger extends MutableNumber<MutableBigInteger> {
 	}
 
 	@Override
-	public void add(MutableBigInteger n1) {
+	public void add(MutableBig n1) {
 		n = n.add(n1.n);
 	}
 
 	@Override
-	public void addMul(MutableBigInteger n1, MutableBigInteger n2) {
+	public void addMul(MutableBig n1, MutableBig n2) {
 		n = n.add(n1.n.multiply(n2.n));
 	}
 
 	@Override
-	public void addMul(MutableBigInteger n1, MutableBigInteger n2, MutableBigInteger n3) {
+	public void addMul(MutableBig n1, MutableBig n2, MutableBig n3) {
 		n = n.add(n1.n.multiply(n2.n).multiply(n3.n));
 	}
 
 	@Override
-	public MutableBigInteger div(MutableBigInteger n1) {
-		return new MutableBigInteger(n.divide(n1.n));
+	public MutableBig div(MutableBig n1) {
+		return new MutableBig(n.divide(n1.n));
 	}
 
 	@Override
-	public MutableBigInteger gcd(MutableBigInteger n1) {
-		return new MutableBigInteger(n.gcd(n1.n));
+	public MutableBig gcd(MutableBig n1) {
+		return new MutableBig(n.gcd(n1.n));
 	}
 }

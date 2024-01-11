@@ -15,7 +15,7 @@ public class Yang08P169 {
 				subs('b', new BigPoly(VARS, "a + u + v + w"));
 		*/
 		// much faster
-		return (BigPoly) p.subs('d', new BigPoly(VARS, "c + w")).
+		return p.subs('d', new BigPoly(VARS, "c + w")).
 				subs('c', new BigPoly(VARS, "b + v")).
 				subs('b', new BigPoly(VARS, "a + u"));
 	}
@@ -24,7 +24,7 @@ public class Yang08P169 {
 		BigPoly p = subsAll(new BigPoly(VARS, expr));
 		BigPoly t = new BigPoly(VARS, "1");
 		for (int i = 0; i < exp; i ++) {
-			t = (BigPoly) new BigPoly().addMul(t, p);
+			t = new BigPoly().addMul(t, p);
 		}
 		return t;
 	}

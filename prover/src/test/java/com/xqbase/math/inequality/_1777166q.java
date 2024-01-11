@@ -4,15 +4,13 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import com.xqbase.math.polys.LongPoly;
-import com.xqbase.math.polys.MutableLong;
-import com.xqbase.math.polys.Poly;
 
 public class _1777166q {
 	private static final String VARS = "pqrsuv";
 
 	/** @param nonPos for Java */
 	private static void genCode(String p, boolean nonPos) {
-		for (Poly<MutableLong> coeff : new LongPoly(VARS, p).coeffsOf("uv").values()) {
+		for (LongPoly coeff : new LongPoly(VARS, p).coeffsOf("uv").values()) {
 			System.out.println("        " + coeff + ",");
 			// Generate Java Code
 			/*

@@ -8,7 +8,7 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> {
+public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> extends HashMap<Mono, T> {
 	private static final long serialVersionUID = 1L;
 
 	public abstract T valueOf(long n);
@@ -17,19 +17,18 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 	public abstract T[] newVector(int n);
 	public abstract T[][] newMatrix(int n1, int n2);
 
-	@SuppressWarnings("unchecked")
-	public Poly<T> newPoly() {
+	public P newPoly() {
 		try {
-			return getClass().getConstructor().newInstance();
+			return unchecked(getClass().getConstructor().newInstance());
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public Poly<T> newPoly(String vars, String expr) {
+	public P newPoly(String vars, String expr) {
 		try {
-			return getClass().getConstructor(String.class, String.class).newInstance(vars, expr);
+			return unchecked(getClass().
+					getConstructor(String.class, String.class).newInstance(vars, expr));
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
@@ -126,23 +125,28 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
+	private P unchecked(Poly<?, ?> p) {
+		return (P) p;
+	}
+
 	/** @return this + p */
-	public Poly<T> add(Poly<T> p) {
+	public P add(P p) {
 		return add(1, p);
 	}
 
 	/** @return this - p */
-	public Poly<T> sub(Poly<T> p) {
+	public P sub(P p) {
 		return add(-1, p);
 	}
 
 	/** @return this + n*p */
-	public Poly<T> add(long n, Poly<T> p) {
+	public P add(long n, P p) {
 		return add(valueOf(n), p);
 	}
 
 	/** @return this + n*p */
-	public Poly<T> add(T n, Poly<T> p) {
+	public P add(T n, P p) {
 		p.forEach((k, v) -> {
 			T coeff = computeIfAbsent(k, k_ -> newZero());
 			coeff.addMul(n, v);
@@ -150,26 +154,26 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 				remove(k);
 			}
 		});
-		return this;
+		return unchecked(this);
 	}
 
 	/** @return this + p1*p2 */
-	public Poly<T> addMul(Poly<T> p1, Poly<T> p2) {
+	public P addMul(P p1, P p2) {
 		return addMul(1, p1, p2);
 	}
 
 	/** @return this - p1*p2 */
-	public Poly<T> subMul(Poly<T> p1, Poly<T> p2) {
+	public P subMul(P p1, P p2) {
 		return addMul(-1, p1, p2);
 	}
 
 	/** @return this + n*p1*p2 */
-	public Poly<T> addMul(long n, Poly<T> p1, Poly<T> p2) {
+	public P addMul(long n, P p1, P p2) {
 		return addMul(valueOf(n), p1, p2);
 	}
 
 	/** @return this + n*p1*p2 */
-	public Poly<T> addMul(T n, Poly<T> p1, Poly<T> p2) {
+	public P addMul(T n, P p1, P p2) {
 		p1.forEach((k1, v1) -> {
 			p2.forEach((k2, v2) -> {
 				Mono k = k1.mul(k2);
@@ -180,11 +184,11 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 				}
 			});
 		});
-		return this;
+		return unchecked(this);
 	}
 
-	public TreeMap<Mono, Poly<T>> coeffsOf(String gen) {
-		TreeMap<Mono, Poly<T>> coeffs = new TreeMap<>();
+	public TreeMap<Mono, P> coeffsOf(String gen) {
+		TreeMap<Mono, P> coeffs = new TreeMap<>();
 		forEach((mono, coeff) -> {
 			String vars = mono.getVars();
 			short[] exps = mono.getExps();
@@ -201,22 +205,22 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 		return coeffs;
 	}
 
-	private Poly<T> subs(char from, Function<Poly<T>, Poly<T>> toFunc) {
+	private P subs(char from, Function<P, P> toFunc) {
 		if (isEmpty()) {
-			return this;
+			return unchecked(this);
 		}
-		TreeMap<Mono, Poly<T>> ai = coeffsOf(String.valueOf(from));
+		TreeMap<Mono, P> ai = coeffsOf(String.valueOf(from));
 		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
-		Map.Entry<Mono, Poly<T>> lt = ai.firstEntry();
+		Map.Entry<Mono, P> lt = ai.firstEntry();
 		Mono lm = lt.getKey();
 		String vars = lm.getVars();
-		Poly<T> p = lt.getValue();
+		P p = lt.getValue();
 		short[] exps = new short[vars.length()];
 		int fromIndex = vars.indexOf(from);
 		for (int i = lm.getExps()[fromIndex] - 1; i >= 0; i --) {
 			exps[fromIndex] = (short) i;
-			Poly<T> p1 = toFunc.apply(p);
-			Poly<T> a = ai.get(new Mono(vars, exps));
+			P p1 = toFunc.apply(p);
+			P a = ai.get(new Mono(vars, exps));
 			if (a != null) {
 				p1.add(a);
 			}
@@ -225,23 +229,23 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 		return p;
 	}
 
-	public Poly<T> subs(char from, T to) {
+	public P subs(char from, T to) {
 		return subs(from, p -> {
-			Poly<T> p1 = newPoly();
+			P p1 = newPoly();
 			p1.add(to, p);
 			return p1;
 		});
 	}
 
-	public Poly<T> subs(char from, Poly<T> to) {
+	public P subs(char from, P to) {
 		return subs(from, p -> {
-			Poly<T> p1 = newPoly();
+			P p1 = newPoly();
 			p1.addMul(p, to);
 			return p1;
 		});
 	}
 
-	public Poly<T> homogenize(char newVar) {
+	public P homogenize(char newVar) {
 		boolean homogeneous = true;
 		int deg = 0;
 		String vars = "";
@@ -263,12 +267,12 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 			expsMap.put(mono, Integer.valueOf(exps));
 		}
 		if (homogeneous) {
-			return this;
+			return unchecked(this);
 		}
 		int numVars = vars.length();
 		int numNewVars = numVars + 1;
 		String newVars = vars + newVar;
-		Poly<T> p = newPoly();
+		P p = newPoly();
 		for (Map.Entry<Mono, Integer> entry : expsMap.entrySet()) {
 			Mono m = entry.getKey();
 			short[] newExps = new short[numNewVars];
@@ -279,16 +283,14 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 		return p;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T extends MutableNumber<T>, P extends Poly<T>> P
+	public static <T extends MutableNumber<T>, P extends Poly<T, P>> P
 			det(P p11, P p12, P p21, P p22) {
-		return (P) p11.newPoly().addMul(p11, p22).subMul(p21, p12);
+		return p11.newPoly().addMul(p11, p22).subMul(p21, p12);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T extends MutableNumber<T>, P extends Poly<T>> P
+	public static <T extends MutableNumber<T>, P extends Poly<T, P>> P
 			det(P p11, P p12, P p13, P p21, P p22, P p23, P p31, P p32, P p33) {
-		P p = (P) p11.newPoly().addMul(p11, det(p22, p23, p32, p33));
+		P p = p11.newPoly().addMul(p11, det(p22, p23, p32, p33));
 		log.trace("Det(1x3) Terms: " + p.size());
 		p.subMul(p21, det(p12, p13, p32, p33));
 		log.trace("Det(2x3) Terms: " + p.size());
@@ -297,11 +299,10 @@ public abstract class Poly<T extends MutableNumber<T>> extends HashMap<Mono, T> 
 		return p;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T extends MutableNumber<T>, P extends Poly<T>> P
+	public static <T extends MutableNumber<T>, P extends Poly<T, P>> P
 			det(P p11, P p12, P p13, P p14, P p21, P p22, P p23, P p24,
 			P p31, P p32, P p33, P p34, P p41, P p42, P p43, P p44) {
-		P p = (P) p11.newPoly().addMul(p11, det(p22, p23, p24, p32, p33, p34, p42, p43, p44));
+		P p = p11.newPoly().addMul(p11, det(p22, p23, p24, p32, p33, p34, p42, p43, p44));
 		log.debug("Det(1x4) Terms: " + p.size());
 		p.subMul(p21, det(p12, p13, p14, p32, p33, p34, p42, p43, p44));
 		log.debug("Det(2x4) Terms: " + p.size());

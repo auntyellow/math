@@ -19,12 +19,16 @@ import org.junit.Test;
 import com.xqbase.math.polys.BigPoly;
 import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Mono;
-import com.xqbase.math.polys.MutableBigInteger;
+import com.xqbase.math.polys.MutableBig;
 import com.xqbase.math.polys.MutableLong;
 import com.xqbase.math.polys.MutableNumber;
 import com.xqbase.math.polys.Poly;
 
 public class SDSTest {
+	private static BigPoly __() {
+		return new BigPoly();
+	}
+
 	@BeforeClass
 	public static void startup() {
 		// https://stackoverflow.com/a/6308286/4260959
@@ -66,9 +70,9 @@ public class SDSTest {
 		assertEquals(1, result.getDepth());
 	}
 
-	private static <T extends MutableNumber<T>> T
-			subs(Poly<T> f, List<T> values, char startsWith) {
-		Poly<T> f1 = f;
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> T
+			subs(P f, List<T> values, char startsWith) {
+		P f1 = f;
 		StringBuilder vars = new StringBuilder();
 		for (int i = 0; i < values.size(); i ++) {
 			char from = (char) (startsWith + i);
@@ -83,7 +87,7 @@ public class SDSTest {
 		return f.valueOf(0);
 	}
 
-	private static <T extends MutableNumber<T>> List<T> asList(Poly<T> f, long... values) {
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> List<T> asList(P f, long... values) {
 		List<T> list = new ArrayList<>();
 		for (long value : values) {
 			list.add(f.valueOf(value));
@@ -104,14 +108,14 @@ public class SDSTest {
 		String vars = "xy";
 		long m = 4660046610375530309L;
 		long n = 7540113804746346429L;
-		Poly<MutableBigInteger> f = new BigPoly(vars, m + "*x - " + n + "*y");
-		f = new BigPoly().addMul(f, f);
-		SDS.Result<MutableBigInteger> result = SDS.sds(f);
+		BigPoly f = new BigPoly(vars, m + "*x - " + n + "*y");
+		f = __().addMul(f, f);
+		SDS.Result<MutableBig> result = SDS.sds(f);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[" + n + ", " + m + "]]", result.getZeroAt().toString());
 		assertEquals(91, result.getDepth());
 		// 1e22
-		f = new BigPoly().add(f.valueOf("10000000000000000000000"), f);
+		f = __().add(f.valueOf("10000000000000000000000"), f);
 		// T_2 works within 99 iterations (A_2 72)
 		result = SDS.sds(new BigPoly(vars, "x**2 + y**2").add(f), T_n);
 		assertTrue(result.isNonNegative());
@@ -142,18 +146,18 @@ public class SDSTest {
 		assertEquals(0, subs(f, asList(f, 1, 3, 1), 'x').signum());
 		// A_3 works for 6 but doesn't seem to work for 7
 		String smallPos = "x**2 + y**2 + z**2";
-		result = SDS.sds(new BigPoly(vars, smallPos).add(new BigPoly().add(6, f)));
+		result = SDS.sds(new BigPoly(vars, smallPos).add(__().add(6, f)));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(9, result.getDepth());
 		// A_3 finds negative for 1e22 (maybe larger)
 		String smallNeg = "-x**2 - y**2 - z**2";
-		result = SDS.sds(new BigPoly(vars, smallNeg).add(new BigPoly().add(f.valueOf("1000000000000000000"), f)));
+		result = SDS.sds(new BigPoly(vars, smallNeg).add(__().add(f.valueOf("1000000000000000000"), f)));
 		assertTrue(!result.isNonNegative());
 		assertEquals("[1, 3, 1]", result.getNegativeAt().toString());
 		assertEquals(2, result.getDepth());
 		// 1e8
-		f = new BigPoly().add(f.valueOf(100_000_000), f);
+		f = __().add(f.valueOf(100_000_000), f);
 		// T_3 works within 16 iterations (A_3 doesn't work)
 		result = SDS.sds(new BigPoly(vars, smallPos).add(f), T_n);
 		assertTrue(result.isNonNegative());
@@ -194,23 +198,23 @@ public class SDSTest {
 		assertEquals(0, subs(f, asList(f, 1, 2, 1, 1), 'w').signum());
 		// A_4 works for 8 but doesn't seem to work for 9
 		smallPos = "w**2 + x**2 + y**2 + z**2";
-		result = SDS.sds(new BigPoly(vars, smallPos).add(new BigPoly().add(8, f)));
+		result = SDS.sds(new BigPoly(vars, smallPos).add(__().add(8, f)));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(6, result.getDepth());
 		// A_4 finds negative for 1e22 (maybe larger)
 		smallNeg = "-w**2 - x**2 - y**2 - z**2";
-		result = SDS.sds(new BigPoly(vars, smallNeg).add(new BigPoly().add(f.valueOf("1000000000000000000"), f)));
+		result = SDS.sds(new BigPoly(vars, smallNeg).add(__().add(f.valueOf("1000000000000000000"), f)));
 		assertTrue(!result.isNonNegative());
 		assertEquals("[1, 2, 1, 1]", result.getNegativeAt().toString());
 		assertEquals(1, result.getDepth());
 		// Z_4 works within 16 iterations for 1e3, within 20 iterations for 1e4 (374376 polynomials at 19th iteration)
-		result = SDS.sds(new BigPoly(vars, smallPos).add(new BigPoly().add(f.valueOf(1_000L), f)), Z_n);
+		result = SDS.sds(new BigPoly(vars, smallPos).add(__().add(f.valueOf(1_000L), f)), Z_n);
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(16, result.getDepth());
 		// 1e5
-		f = new BigPoly().add(f.valueOf(100_000L), f);
+		f = __().add(f.valueOf(100_000L), f);
 		// T_4 works within 12 iterations (A_4 doesn't work)
 		result = SDS.sds(new BigPoly(vars, smallPos).add(f), T_n);
 		assertTrue(result.isNonNegative());
@@ -337,7 +341,7 @@ public class SDSTest {
 				" - 1301377672*y**3*z + 3553788598*y**2*z**2 - 3864133016*y*z**3" +
 				" + 1611722090*z**4";
 		// LongPoly: long overflow at depth = 12
-		SDS.Result<MutableBigInteger> bigResult = SDS.sds(new BigPoly("xyz", f));
+		SDS.Result<MutableBig> bigResult = SDS.sds(new BigPoly("xyz", f));
 		assertTrue(bigResult.isNonNegative());
 		assertEquals("[[1, 1, 1]]", bigResult.getZeroAt().toString());
 		assertEquals(46, bigResult.getDepth());
@@ -384,7 +388,7 @@ public class SDSTest {
 		// https://math.stackexchange.com/a/2120874
 		// https://math.stackexchange.com/q/1775572
 		BigPoly f = new BigPoly("xyz", "200*x**7*y**3 + 125*x**7*z**3 + 200*x**6*y**4 - 320*x**6*y**3*z - 200*x**6*y*z**3 - 200*x**6*z**4 - 200*x**4*y**6 + 195*x**4*y**3*z**3 + 200*x**4*z**6 + 125*x**3*y**7 - 200*x**3*y**6*z + 195*x**3*y**4*z**3 + 195*x**3*y**3*z**4 - 320*x**3*y*z**6 + 200*x**3*z**7 - 320*x*y**6*z**3 - 200*x*y**3*z**6 + 200*y**7*z**3 + 200*y**6*z**4 - 200*y**4*z**6 + 125*y**3*z**7");
-		SDS.Result<MutableBigInteger> result = SDS.sds(f, T_n);
+		SDS.Result<MutableBig> result = SDS.sds(f, T_n);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
 		// A_3 needs 2; H_3 and Z_3 don't work
@@ -422,7 +426,7 @@ public class SDSTest {
 	public void testXiong23() {
 		// ISBN 9787542878021, p112, §7.2, ex6
 		LongPoly f = replaceAn("17*a1**12 + 156*a1**11*a2 + 156*a1**11*a3 + 108*a1**11*a4 + 642*a1**10*a2**2 + 1284*a1**10*a2*a3 + 900*a1**10*a2*a4 + 642*a1**10*a3**2 + 900*a1**10*a3*a4 + 258*a1**10*a4**2 + 1020*a1**9*a2**3 + 4692*a1**9*a2**2*a3 + 3348*a1**9*a2**2*a4 + 4692*a1**9*a2*a3**2 + 6696*a1**9*a2*a3*a4 + 2004*a1**9*a2*a4**2 + 1836*a1**9*a3**3 + 3348*a1**9*a3**2*a4 + 2004*a1**9*a3*a4**2 + 492*a1**9*a4**3 - 33*a1**8*a2**4 + 7500*a1**8*a2**3*a3 + 4044*a1**8*a2**3*a4 + 15066*a1**8*a2**2*a3**2 + 22068*a1**8*a2**2*a3*a4 + 7002*a1**8*a2**2*a4**2 + 10908*a1**8*a2*a3**3 + 22068*a1**8*a2*a3**2*a4 + 14004*a1**8*a2*a3*a4**2 + 3660*a1**8*a2*a4**3 + 4191*a1**8*a3**4 + 8268*a1**8*a3**3*a4 + 7002*a1**8*a3**2*a4**2 + 2844*a1**8*a3*a4**3 + 735*a1**8*a4**4 - 1800*a1**7*a2**5 + 4824*a1**7*a2**4*a3 - 2376*a1**7*a2**4*a4 + 23472*a1**7*a2**3*a3**2 + 29664*a1**7*a2**3*a3*a4 + 6192*a1**7*a2**3*a4**2 + 28272*a1**7*a2**2*a3**3 + 64080*a1**7*a2**2*a3**2*a4 + 43920*a1**7*a2**2*a3*a4**2 + 12336*a1**7*a2**2*a4**3 + 18648*a1**7*a2*a3**4 + 43488*a1**7*a2*a3**3*a4 + 43920*a1**7*a2*a3**2*a4**2 + 20448*a1**7*a2*a3*a4**3 + 5592*a1**7*a2*a4**4 + 7224*a1**7*a3**5 + 15672*a1**7*a3**4*a4 + 15216*a1**7*a3**3*a4**2 + 8112*a1**7*a3**2*a4**3 + 1368*a1**7*a3*a4**4 + 24*a1**7*a4**5 - 1636*a1**6*a2**6 + 1896*a1**6*a2**5*a3 - 8472*a1**6*a2**5*a4 + 22308*a1**6*a2**4*a3**2 + 15816*a1**6*a2**4*a3*a4 - 6492*a1**6*a2**4*a4**2 + 30192*a1**6*a2**3*a3**3 + 89808*a1**6*a2**3*a3**2*a4 + 55248*a1**6*a2**3*a3*a4**2 + 4656*a1**6*a2**3*a4**3 + 35364*a1**6*a2**2*a3**4 + 102864*a1**6*a2**2*a3**3*a4 + 123480*a1**6*a2**2*a3**2*a4**2 + 65808*a1**6*a2**2*a3*a4**3 + 18852*a1**6*a2**2*a4**4 + 23976*a1**6*a2*a3**5 + 59976*a1**6*a2*a3**4*a4 + 77328*a1**6*a2*a3**3*a4**2 + 56784*a1**6*a2*a3**2*a4**3 + 19656*a1**6*a2*a3*a4**4 + 4200*a1**6*a2*a4**5 + 8732*a1**6*a3**6 + 22632*a1**6*a3**5*a4 + 24612*a1**6*a3**4*a4**2 + 19056*a1**6*a3**3*a4**3 + 804*a1**6*a3**2*a4**4 - 4824*a1**6*a3*a4**5 - 1636*a1**6*a4**6 + 24*a1**5*a2**7 + 4200*a1**5*a2**6*a3 - 4824*a1**5*a2**6*a4 + 20664*a1**5*a2**5*a3**2 + 10224*a1**5*a2**5*a3*a4 - 10440*a1**5*a2**5*a4**2 + 10344*a1**5*a2**4*a3**3 + 84312*a1**5*a2**4*a3**2*a4 + 41112*a1**5*a2**4*a3*a4**2 - 9432*a1**5*a2**4*a4**3 + 24264*a1**5*a2**3*a3**4 + 109344*a1**5*a2**3*a3**3*a4 + 175536*a1**5*a2**3*a3**2*a4**2 + 67872*a1**5*a2**3*a3*a4**3 + 840*a1**5*a2**3*a4**4 + 32760*a1**5*a2**2*a3**5 + 108504*a1**5*a2**2*a3**4*a4 + 187632*a1**5*a2**2*a3**3*a4**2 + 170352*a1**5*a2**2*a3**2*a4**3 + 79128*a1**5*a2**2*a3*a4**4 + 20664*a1**5*a2**2*a4**5 + 22632*a1**5*a2*a3**6 + 65520*a1**5*a2*a3**5*a4 + 96408*a1**5*a2*a3**4*a4**2 + 93984*a1**5*a2*a3**3*a4**3 + 48024*a1**5*a2*a3**2*a4**4 + 10224*a1**5*a2*a3*a4**5 + 1896*a1**5*a2*a4**6 + 7224*a1**5*a3**7 + 23976*a1**5*a3**6*a4 + 32760*a1**5*a3**5*a4**2 + 24360*a1**5*a3**4*a4**3 + 5352*a1**5*a3**3*a4**4 - 10440*a1**5*a3**2*a4**5 - 8472*a1**5*a3*a4**6 - 1800*a1**5*a4**7 + 735*a1**4*a2**8 + 5592*a1**4*a2**7*a3 + 1368*a1**4*a2**7*a4 + 18852*a1**4*a2**6*a3**2 + 19656*a1**4*a2**6*a3*a4 + 804*a1**4*a2**6*a4**2 + 840*a1**4*a2**5*a3**3 + 79128*a1**4*a2**5*a3**2*a4 + 48024*a1**4*a2**5*a3*a4**2 + 5352*a1**4*a2**5*a4**3 - 1926*a1**4*a2**4*a3**4 + 76488*a1**4*a2**4*a3**3*a4 + 184860*a1**4*a2**4*a3**2*a4**2 + 68904*a1**4*a2**4*a3*a4**3 - 1926*a1**4*a2**4*a4**4 + 24360*a1**4*a2**3*a3**5 + 99144*a1**4*a2**3*a3**4*a4 + 238224*a1**4*a2**3*a3**3*a4**2 + 229584*a1**4*a2**3*a3**2*a4**3 + 76488*a1**4*a2**3*a3*a4**4 + 10344*a1**4*a2**3*a4**5 + 24612*a1**4*a2**2*a3**6 + 96408*a1**4*a2**2*a3**5*a4 + 202140*a1**4*a2**2*a3**4*a4**2 + 240912*a1**4*a2**2*a3**3*a4**3 + 184860*a1**4*a2**2*a3**2*a4**4 + 84312*a1**4*a2**2*a3*a4**5 + 22308*a1**4*a2**2*a4**6 + 15672*a1**4*a2*a3**7 + 59976*a1**4*a2*a3**6*a4 + 108504*a1**4*a2*a3**5*a4**2 + 99144*a1**4*a2*a3**4*a4**3 + 68904*a1**4*a2*a3**3*a4**4 + 41112*a1**4*a2*a3**2*a4**5 + 15816*a1**4*a2*a3*a4**6 + 4824*a1**4*a2*a4**7 + 4191*a1**4*a3**8 + 18648*a1**4*a3**7*a4 + 35364*a1**4*a3**6*a4**2 + 24264*a1**4*a3**5*a4**3 - 1926*a1**4*a3**4*a4**4 - 9432*a1**4*a3**3*a4**5 - 6492*a1**4*a3**2*a4**6 - 2376*a1**4*a3*a4**7 - 33*a1**4*a4**8 + 492*a1**3*a2**9 + 3660*a1**3*a2**8*a3 + 2844*a1**3*a2**8*a4 + 12336*a1**3*a2**7*a3**2 + 20448*a1**3*a2**7*a3*a4 + 8112*a1**3*a2**7*a4**2 + 4656*a1**3*a2**6*a3**3 + 65808*a1**3*a2**6*a3**2*a4 + 56784*a1**3*a2**6*a3*a4**2 + 19056*a1**3*a2**6*a4**3 - 9432*a1**3*a2**5*a3**4 + 67872*a1**3*a2**5*a3**3*a4 + 170352*a1**3*a2**5*a3**2*a4**2 + 93984*a1**3*a2**5*a3*a4**3 + 24360*a1**3*a2**5*a4**4 + 5352*a1**3*a2**4*a3**5 + 68904*a1**3*a2**4*a3**4*a4 + 229584*a1**3*a2**4*a3**3*a4**2 + 240912*a1**3*a2**4*a3**2*a4**3 + 99144*a1**3*a2**4*a3*a4**4 + 24264*a1**3*a2**4*a4**5 + 19056*a1**3*a2**3*a3**6 + 93984*a1**3*a2**3*a3**5*a4 + 240912*a1**3*a2**3*a3**4*a4**2 + 175040*a1**3*a2**3*a3**3*a4**3 + 238224*a1**3*a2**3*a3**2*a4**4 + 109344*a1**3*a2**3*a3*a4**5 + 30192*a1**3*a2**3*a4**6 + 15216*a1**3*a2**2*a3**7 + 77328*a1**3*a2**2*a3**6*a4 + 187632*a1**3*a2**2*a3**5*a4**2 + 238224*a1**3*a2**2*a3**4*a4**3 + 229584*a1**3*a2**2*a3**3*a4**4 + 175536*a1**3*a2**2*a3**2*a4**5 + 89808*a1**3*a2**2*a3*a4**6 + 23472*a1**3*a2**2*a4**7 + 8268*a1**3*a2*a3**8 + 43488*a1**3*a2*a3**7*a4 + 102864*a1**3*a2*a3**6*a4**2 + 109344*a1**3*a2*a3**5*a4**3 + 76488*a1**3*a2*a3**4*a4**4 + 67872*a1**3*a2*a3**3*a4**5 + 55248*a1**3*a2*a3**2*a4**6 + 29664*a1**3*a2*a3*a4**7 + 7500*a1**3*a2*a4**8 + 1836*a1**3*a3**9 + 10908*a1**3*a3**8*a4 + 28272*a1**3*a3**7*a4**2 + 30192*a1**3*a3**6*a4**3 + 10344*a1**3*a3**5*a4**4 + 840*a1**3*a3**4*a4**5 + 4656*a1**3*a3**3*a4**6 + 6192*a1**3*a3**2*a4**7 + 4044*a1**3*a3*a4**8 + 1020*a1**3*a4**9 + 258*a1**2*a2**10 + 2004*a1**2*a2**9*a3 + 2004*a1**2*a2**9*a4 + 7002*a1**2*a2**8*a3**2 + 14004*a1**2*a2**8*a3*a4 + 7002*a1**2*a2**8*a4**2 + 6192*a1**2*a2**7*a3**3 + 43920*a1**2*a2**7*a3**2*a4 + 43920*a1**2*a2**7*a3*a4**2 + 15216*a1**2*a2**7*a4**3 - 6492*a1**2*a2**6*a3**4 + 55248*a1**2*a2**6*a3**3*a4 + 123480*a1**2*a2**6*a3**2*a4**2 + 77328*a1**2*a2**6*a3*a4**3 + 24612*a1**2*a2**6*a4**4 - 10440*a1**2*a2**5*a3**5 + 41112*a1**2*a2**5*a3**4*a4 + 175536*a1**2*a2**5*a3**3*a4**2 + 187632*a1**2*a2**5*a3**2*a4**3 + 96408*a1**2*a2**5*a3*a4**4 + 32760*a1**2*a2**5*a4**5 + 804*a1**2*a2**4*a3**6 + 48024*a1**2*a2**4*a3**5*a4 + 184860*a1**2*a2**4*a3**4*a4**2 + 238224*a1**2*a2**4*a3**3*a4**3 + 202140*a1**2*a2**4*a3**2*a4**4 + 108504*a1**2*a2**4*a3*a4**5 + 35364*a1**2*a2**4*a4**6 + 8112*a1**2*a2**3*a3**7 + 56784*a1**2*a2**3*a3**6*a4 + 170352*a1**2*a2**3*a3**5*a4**2 + 229584*a1**2*a2**3*a3**4*a4**3 + 240912*a1**2*a2**3*a3**3*a4**4 + 187632*a1**2*a2**3*a3**2*a4**5 + 102864*a1**2*a2**3*a3*a4**6 + 28272*a1**2*a2**3*a4**7 + 7002*a1**2*a2**2*a3**8 + 43920*a1**2*a2**2*a3**7*a4 + 123480*a1**2*a2**2*a3**6*a4**2 + 175536*a1**2*a2**2*a3**5*a4**3 + 184860*a1**2*a2**2*a3**4*a4**4 + 170352*a1**2*a2**2*a3**3*a4**5 + 123480*a1**2*a2**2*a3**2*a4**6 + 64080*a1**2*a2**2*a3*a4**7 + 15066*a1**2*a2**2*a4**8 + 3348*a1**2*a2*a3**9 + 22068*a1**2*a2*a3**8*a4 + 64080*a1**2*a2*a3**7*a4**2 + 89808*a1**2*a2*a3**6*a4**3 + 84312*a1**2*a2*a3**5*a4**4 + 79128*a1**2*a2*a3**4*a4**5 + 65808*a1**2*a2*a3**3*a4**6 + 43920*a1**2*a2*a3**2*a4**7 + 22068*a1**2*a2*a3*a4**8 + 4692*a1**2*a2*a4**9 + 642*a1**2*a3**10 + 4692*a1**2*a3**9*a4 + 15066*a1**2*a3**8*a4**2 + 23472*a1**2*a3**7*a4**3 + 22308*a1**2*a3**6*a4**4 + 20664*a1**2*a3**5*a4**5 + 18852*a1**2*a3**4*a4**6 + 12336*a1**2*a3**3*a4**7 + 7002*a1**2*a3**2*a4**8 + 3348*a1**2*a3*a4**9 + 642*a1**2*a4**10 + 108*a1*a2**11 + 900*a1*a2**10*a3 + 900*a1*a2**10*a4 + 3348*a1*a2**9*a3**2 + 6696*a1*a2**9*a3*a4 + 3348*a1*a2**9*a4**2 + 4044*a1*a2**8*a3**3 + 22068*a1*a2**8*a3**2*a4 + 22068*a1*a2**8*a3*a4**2 + 8268*a1*a2**8*a4**3 - 2376*a1*a2**7*a3**4 + 29664*a1*a2**7*a3**3*a4 + 64080*a1*a2**7*a3**2*a4**2 + 43488*a1*a2**7*a3*a4**3 + 15672*a1*a2**7*a4**4 - 8472*a1*a2**6*a3**5 + 15816*a1*a2**6*a3**4*a4 + 89808*a1*a2**6*a3**3*a4**2 + 102864*a1*a2**6*a3**2*a4**3 + 59976*a1*a2**6*a3*a4**4 + 22632*a1*a2**6*a4**5 - 4824*a1*a2**5*a3**6 + 10224*a1*a2**5*a3**5*a4 + 84312*a1*a2**5*a3**4*a4**2 + 109344*a1*a2**5*a3**3*a4**3 + 108504*a1*a2**5*a3**2*a4**4 + 65520*a1*a2**5*a3*a4**5 + 23976*a1*a2**5*a4**6 + 1368*a1*a2**4*a3**7 + 19656*a1*a2**4*a3**6*a4 + 79128*a1*a2**4*a3**5*a4**2 + 76488*a1*a2**4*a3**4*a4**3 + 99144*a1*a2**4*a3**3*a4**4 + 96408*a1*a2**4*a3**2*a4**5 + 59976*a1*a2**4*a3*a4**6 + 18648*a1*a2**4*a4**7 + 2844*a1*a2**3*a3**8 + 20448*a1*a2**3*a3**7*a4 + 65808*a1*a2**3*a3**6*a4**2 + 67872*a1*a2**3*a3**5*a4**3 + 68904*a1*a2**3*a3**4*a4**4 + 93984*a1*a2**3*a3**3*a4**5 + 77328*a1*a2**3*a3**2*a4**6 + 43488*a1*a2**3*a3*a4**7 + 10908*a1*a2**3*a4**8 + 2004*a1*a2**2*a3**9 + 14004*a1*a2**2*a3**8*a4 + 43920*a1*a2**2*a3**7*a4**2 + 55248*a1*a2**2*a3**6*a4**3 + 41112*a1*a2**2*a3**5*a4**4 + 48024*a1*a2**2*a3**4*a4**5 + 56784*a1*a2**2*a3**3*a4**6 + 43920*a1*a2**2*a3**2*a4**7 + 22068*a1*a2**2*a3*a4**8 + 4692*a1*a2**2*a4**9 + 900*a1*a2*a3**10 + 6696*a1*a2*a3**9*a4 + 22068*a1*a2*a3**8*a4**2 + 29664*a1*a2*a3**7*a4**3 + 15816*a1*a2*a3**6*a4**4 + 10224*a1*a2*a3**5*a4**5 + 19656*a1*a2*a3**4*a4**6 + 20448*a1*a2*a3**3*a4**7 + 14004*a1*a2*a3**2*a4**8 + 6696*a1*a2*a3*a4**9 + 1284*a1*a2*a4**10 + 156*a1*a3**11 + 1284*a1*a3**10*a4 + 4692*a1*a3**9*a4**2 + 7500*a1*a3**8*a4**3 + 4824*a1*a3**7*a4**4 + 1896*a1*a3**6*a4**5 + 4200*a1*a3**5*a4**6 + 5592*a1*a3**4*a4**7 + 3660*a1*a3**3*a4**8 + 2004*a1*a3**2*a4**9 + 900*a1*a3*a4**10 + 156*a1*a4**11 + 17*a2**12 + 156*a2**11*a3 + 156*a2**11*a4 + 642*a2**10*a3**2 + 1284*a2**10*a3*a4 + 642*a2**10*a4**2 + 1020*a2**9*a3**3 + 4692*a2**9*a3**2*a4 + 4692*a2**9*a3*a4**2 + 1836*a2**9*a4**3 - 33*a2**8*a3**4 + 7500*a2**8*a3**3*a4 + 15066*a2**8*a3**2*a4**2 + 10908*a2**8*a3*a4**3 + 4191*a2**8*a4**4 - 1800*a2**7*a3**5 + 4824*a2**7*a3**4*a4 + 23472*a2**7*a3**3*a4**2 + 28272*a2**7*a3**2*a4**3 + 18648*a2**7*a3*a4**4 + 7224*a2**7*a4**5 - 1636*a2**6*a3**6 + 1896*a2**6*a3**5*a4 + 22308*a2**6*a3**4*a4**2 + 30192*a2**6*a3**3*a4**3 + 35364*a2**6*a3**2*a4**4 + 23976*a2**6*a3*a4**5 + 8732*a2**6*a4**6 + 24*a2**5*a3**7 + 4200*a2**5*a3**6*a4 + 20664*a2**5*a3**5*a4**2 + 10344*a2**5*a3**4*a4**3 + 24264*a2**5*a3**3*a4**4 + 32760*a2**5*a3**2*a4**5 + 22632*a2**5*a3*a4**6 + 7224*a2**5*a4**7 + 735*a2**4*a3**8 + 5592*a2**4*a3**7*a4 + 18852*a2**4*a3**6*a4**2 + 840*a2**4*a3**5*a4**3 - 1926*a2**4*a3**4*a4**4 + 24360*a2**4*a3**3*a4**5 + 24612*a2**4*a3**2*a4**6 + 15672*a2**4*a3*a4**7 + 4191*a2**4*a4**8 + 492*a2**3*a3**9 + 3660*a2**3*a3**8*a4 + 12336*a2**3*a3**7*a4**2 + 4656*a2**3*a3**6*a4**3 - 9432*a2**3*a3**5*a4**4 + 5352*a2**3*a3**4*a4**5 + 19056*a2**3*a3**3*a4**6 + 15216*a2**3*a3**2*a4**7 + 8268*a2**3*a3*a4**8 + 1836*a2**3*a4**9 + 258*a2**2*a3**10 + 2004*a2**2*a3**9*a4 + 7002*a2**2*a3**8*a4**2 + 6192*a2**2*a3**7*a4**3 - 6492*a2**2*a3**6*a4**4 - 10440*a2**2*a3**5*a4**5 + 804*a2**2*a3**4*a4**6 + 8112*a2**2*a3**3*a4**7 + 7002*a2**2*a3**2*a4**8 + 3348*a2**2*a3*a4**9 + 642*a2**2*a4**10 + 108*a2*a3**11 + 900*a2*a3**10*a4 + 3348*a2*a3**9*a4**2 + 4044*a2*a3**8*a4**3 - 2376*a2*a3**7*a4**4 - 8472*a2*a3**6*a4**5 - 4824*a2*a3**5*a4**6 + 1368*a2*a3**4*a4**7 + 2844*a2*a3**3*a4**8 + 2004*a2*a3**2*a4**9 + 900*a2*a3*a4**10 + 156*a2*a4**11 + 17*a3**12 + 156*a3**11*a4 + 642*a3**10*a4**2 + 1020*a3**9*a4**3 - 33*a3**8*a4**4 - 1800*a3**7*a4**5 - 1636*a3**6*a4**6 + 24*a3**5*a4**7 + 735*a3**4*a4**8 + 492*a3**3*a4**9 + 258*a3**2*a4**10 + 108*a3*a4**11 + 17*a4**12");
-		SDS.Result<MutableBigInteger> result = SDS.sds(new BigPoly("abcd", f.toString()), T_n);
+		SDS.Result<MutableBig> result = SDS.sds(new BigPoly("abcd", f.toString()), T_n);
 		// A_4 works; Z_4 doesn't seem to work
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1, 1], [0, 1, 1, 0], [1, 0, 0, 1], [1, 1, 0, 0]]", result.getZeroAt().toString());
@@ -437,9 +441,9 @@ public class SDSTest {
 	public void testHan13() {
 		// http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545
 		// ex 4.1
-		Poly<MutableBigInteger> f = new BigPoly("xyz", "9*x**2 + 6*x*y - 6*x*z + y**2 - 2*y*z + z**2");
+		BigPoly f = new BigPoly("xyz", "9*x**2 + 6*x*y - 6*x*z + y**2 - 2*y*z + z**2");
 		// T_3 works for 3e6 within 16 iterations, 3e7 within 18 iterations (73801 polynomials after 13th iteration); A_3 doesn't work
-		SDS.Result<MutableBigInteger> result = SDS.sds(new BigPoly("xyz", "z**2").add(3_000_000, f), T_n);
+		SDS.Result<MutableBig> result = SDS.sds(new BigPoly("xyz", "z**2").add(3_000_000, f), T_n);
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(16, result.getDepth());
@@ -489,17 +493,17 @@ public class SDSTest {
 		// result = SDS.sds(f, T_n);
 		// A_3 works for 1e9 but doesn't seem to work for 1e10
 		String smallPos = "a**4 + b**4 + c**4";
-		result = SDS.sds(new BigPoly("abc", smallPos).add(new BigPoly().add(f.valueOf(1_000_000_000), f)));
+		result = SDS.sds(new BigPoly("abc", smallPos).add(__().add(f.valueOf(1_000_000_000), f)));
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(14, result.getDepth());
 		// Z_3 needs 30 for 1e10, 33 for 1e11
-		result = SDS.sds(new BigPoly("abc", smallPos).add(new BigPoly().add(f.valueOf(10_000_000_000L), f)), Z_n);
+		result = SDS.sds(new BigPoly("abc", smallPos).add(__().add(f.valueOf(10_000_000_000L), f)), Z_n);
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(30, result.getDepth());
 		// 1e22
-		f = new BigPoly().add(f.valueOf("10000000000000000000000"), f);
+		f = __().add(f.valueOf("10000000000000000000000"), f);
 		// T_3 needs 32
 		result = SDS.sds(new BigPoly("abc", smallPos).add(f), T_n);
 		assertTrue(result.isNonNegative());
@@ -541,7 +545,7 @@ public class SDSTest {
 		// ISBN 9787560349800, p301, ex 12.9
 		// f2 from han14-p301.py
 		BigPoly f = new BigPoly("abc", "81*a**6*b**2 + 162*a**6*b*c + 81*a**6*c**2 - 412*a**5*b**3 + 1100*a**5*b**2*c + 2124*a**5*b*c**2 + 612*a**5*c**3 + 294*a**4*b**4 + 4314*a**4*b**3*c + 9320*a**4*b**2*c**2 + 5338*a**4*b*c**3 + 294*a**4*c**4 + 612*a**3*b**5 + 5338*a**3*b**4*c + 16090*a**3*b**3*c**2 + 16090*a**3*b**2*c**3 + 4314*a**3*b*c**4 - 412*a**3*c**5 + 81*a**2*b**6 + 2124*a**2*b**5*c + 9320*a**2*b**4*c**2 + 16090*a**2*b**3*c**3 + 9320*a**2*b**2*c**4 + 1100*a**2*b*c**5 + 81*a**2*c**6 + 162*a*b**6*c + 1100*a*b**5*c**2 + 4314*a*b**4*c**3 + 5338*a*b**3*c**4 + 2124*a*b**2*c**5 + 162*a*b*c**6 + 81*b**6*c**2 - 412*b**5*c**3 + 294*b**4*c**4 + 612*b**3*c**5 + 81*b**2*c**6");
-		SDS.Result<MutableBigInteger> result = SDS.sds(f);
+		SDS.Result<MutableBig> result = SDS.sds(f);
 		assertTrue(result.isNonNegative());
 		String zeroAt = "[[0, 0, 1], [0, 1, 0], [0, 3, 1], [1, 0, 0], [1, 0, 3], [3, 1, 0]]";
 		assertEquals(zeroAt, result.getZeroAt().toString());
@@ -569,7 +573,7 @@ public class SDSTest {
 		// ISBN 9787312056185, p341, ex 11.7
 		// fn from han23-p341u.py, u = v = 1.001, T_3 needs 11 iterations; A_3 needs 376; H_3 and Z_3 don't work
 		BigPoly f = new BigPoly("abc", "445779222889000000000000*a**5*b + 445779222889000000000000*a**5*c - 109550995776222000000000*a**4*b**2 + 222891003112778000000000*a**4*b*c - 113338226001000000000000*a**4*c**2 - 668666551996999111000000*a**3*b**3 - 221999887997443111000000*a**3*b**2*c - 223782118227223111000000*a**3*b*c**2 - 668666551996999111000000*a**3*c**3 - 113338226001000000000000*a**2*b**4 - 223782118227223111000000*a**2*b**3*c + 668664993324327999000000*a**2*b**2*c**2 - 221999887997443111000000*a**2*b*c**3 - 109550995776222000000000*a**2*c**4 + 445779222889000000000000*a*b**5 + 222891003112778000000000*a*b**4*c - 221999887997443111000000*a*b**3*c**2 - 223782118227223111000000*a*b**2*c**3 + 222891003112778000000000*a*b*c**4 + 445779222889000000000000*a*c**5 + 445779222889000000000000*b**5*c - 109550995776222000000000*b**4*c**2 - 668666551996999111000000*b**3*c**3 - 113338226001000000000000*b**2*c**4 + 445779222889000000000000*b*c**5");
-		SDS.Result<MutableBigInteger> result = SDS.sds(f, T_n);
+		SDS.Result<MutableBig> result = SDS.sds(f, T_n);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
 		assertEquals(11, result.getDepth());

@@ -14,8 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import com.xqbase.math.polys.BigPoly;
 import com.xqbase.math.polys.Mono;
-import com.xqbase.math.polys.MutableBigInteger;
-import com.xqbase.math.polys.Poly;
+import com.xqbase.math.polys.MutableBig;
 
 public class Han23P341 {
 	private static Logger log = LoggerFactory.getLogger(Han23P341.class);
@@ -56,7 +55,7 @@ public class Han23P341 {
 				for (int[] perm : perms) {
 					// f1 = f0's permutation and substitution
 					BigPoly f1 = new BigPoly();
-					for (Map.Entry<Mono, MutableBigInteger> term : f0.entrySet()) {
+					for (Map.Entry<Mono, MutableBig> term : f0.entrySet()) {
 						short[] exps = term.getKey().getExps();
 						short[] exps1 = exps.clone();
 						for (int i = 0; i < 3; i ++) {
@@ -66,14 +65,12 @@ public class Han23P341 {
 						f1.put(new Mono(vars, exps1), term.getValue());
 					}
 					// substitute
-					f1 = (BigPoly) f1.subs('a', ab);
-					f1 = (BigPoly) f1.subs('b', bc);
-					// f1 = (BigPoly) f1.subs('c', c);
+					f1 = f1.subs('a', ab).subs('b', bc); // .subs('c', c);
 					boolean trivial = true;
-					for (Poly<MutableBigInteger> coeff : f1.coeffsOf("abc").values()) {
+					for (BigPoly coeff : f1.coeffsOf("abc").values()) {
 						// vars = "abcuv" -> vars = "uv"
 						BigPoly coeff1 = new BigPoly();
-						for (Map.Entry<Mono, MutableBigInteger> entry : coeff.entrySet()) {
+						for (Map.Entry<Mono, MutableBig> entry : coeff.entrySet()) {
 							coeff1.put(new Mono("uv", Arrays.copyOfRange(entry.getKey().getExps(), 3, 5)),
 									entry.getValue());
 						}

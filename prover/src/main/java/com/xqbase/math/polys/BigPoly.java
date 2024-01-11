@@ -2,14 +2,14 @@ package com.xqbase.math.polys;
 
 import java.math.BigInteger;
 
-public class BigPoly extends Poly<MutableBigInteger> {
+public class BigPoly extends Poly<MutableBig, BigPoly> {
 	private static final long serialVersionUID = 1L;
-	private static final MutableBigInteger[] cache =
-			new MutableBigInteger[Byte.MAX_VALUE - Byte.MIN_VALUE + 1];
+	private static final MutableBig[] cache =
+			new MutableBig[Byte.MAX_VALUE - Byte.MIN_VALUE + 1];
 
 	static {
 		for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i ++) {
-			cache[i - Byte.MIN_VALUE] = new MutableBigInteger(BigInteger.valueOf(i));
+			cache[i - Byte.MIN_VALUE] = new MutableBig(BigInteger.valueOf(i));
 		}
 	}
 
@@ -20,30 +20,30 @@ public class BigPoly extends Poly<MutableBigInteger> {
 	}
 
 	@Override
-	public MutableBigInteger valueOf(long n) {
+	public MutableBig valueOf(long n) {
 		if (n < Byte.MIN_VALUE || n > Byte.MAX_VALUE) {
-			return new MutableBigInteger(BigInteger.valueOf(n));
+			return new MutableBig(BigInteger.valueOf(n));
 		}
 		return cache[(int) n - Byte.MIN_VALUE];
 	}
 
 	@Override
-	public MutableBigInteger valueOf(String s) {
-		return new MutableBigInteger(s);
+	public MutableBig valueOf(String s) {
+		return new MutableBig(s);
 	}
 
 	@Override
-	public MutableBigInteger newZero() {
-		return new MutableBigInteger(BigInteger.ZERO);
+	public MutableBig newZero() {
+		return new MutableBig(BigInteger.ZERO);
 	}
 
 	@Override
-	public MutableBigInteger[] newVector(int n) {
-		return new MutableBigInteger[n];
+	public MutableBig[] newVector(int n) {
+		return new MutableBig[n];
 	}
 
 	@Override
-	public MutableBigInteger[][] newMatrix(int n1, int n2) {
-		return new MutableBigInteger[n1][n2];
+	public MutableBig[][] newMatrix(int n1, int n2) {
+		return new MutableBig[n1][n2];
 	}
 }

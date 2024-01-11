@@ -101,9 +101,9 @@ public class SDS {
 		}
 	}
 
-	static class PermSubs<T extends MutableNumber<T>> {
+	static class PermSubs<T extends MutableNumber<T>, U extends Poly<T, U>> {
 		int[] perm;
-		Poly<T>[] subs;
+		U[] subs;
 		String tempVars = null;
 		boolean reverse = false;
 		int index;
@@ -133,7 +133,7 @@ public class SDS {
 		return result;
 	}
 
-	private static <T extends MutableNumber<T>> T[] matMul(T[][] m, T[] v, Poly<T> p) {
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> T[] matMul(T[][] m, T[] v, P p) {
 		int n = m.length;
 		T[] v1 = p.newVector(n);
 		for (int i = 0; i < n; i ++) {
@@ -146,8 +146,8 @@ public class SDS {
 		return v1;
 	}
 
-	private static <T extends MutableNumber<T>> List<T> matMulReduce(List<Integer> trans,
-			List<T[][]> transMat, boolean[] key, Poly<T> p) {
+	private static <T extends MutableNumber<T>, U extends Poly<T, U>> List<T>
+			matMulReduce(List<Integer> trans, List<T[][]> transMat, boolean[] key, U p) {
 		int n = key.length;
 		T[] v = p.newVector(n);
 		for (int i = 0; i < n; i ++) {
@@ -172,8 +172,8 @@ public class SDS {
 	 *
 	 * @param transList skip finding negative if empty
 	 */
-	private static <T extends MutableNumber<T>> boolean trivial(Poly<T> f, List<List<Integer>> transList,
-			List<T[][]> transMat, List<boolean[]> keys, Result<T> result, boolean dumpLattice) {
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> boolean trivial(P f,
+			List<List<Integer>> transList, List<T[][]> transMat, List<boolean[]> keys, Result<T> result, boolean dumpLattice) {
 		if (!transList.isEmpty()) {
 			int numKeys = keys.size();
 			if (dumpLattice) {
@@ -237,25 +237,33 @@ public class SDS {
 		return true;
 	}
 
-	private static <T extends MutableNumber<T>> void copy(T[] src, long[] dst, Poly<T> p) {
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> void copy(T[] src, long[] dst, P p) {
 		for (int i = 0; i < src.length; i ++) {
 			src[i] = p.valueOf(dst[i]);
 		}
 	}
 
-	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f) {
+	@SuppressWarnings("unchecked")
+	private static <T extends MutableNumber<T>, P extends Poly<T, P>> P[]
+			unchecked(@SuppressWarnings("rawtypes") Poly[] polys) {
+		return (P[]) polys;
+	}
+
+	public static <T extends MutableNumber<T>, P extends Poly<T, P>> Result<T> sds(P f) {
 		return sds(f, Transform.A_n);
 	}
 
-	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f, Transform transform) {
+	public static <T extends MutableNumber<T>, P extends Poly<T, P>> Result<T> sds(P f,
+			Transform transform) {
 		return sds(f, transform, Find.FULL);
 	}
 
-	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f, Transform transform, Find find) {
+	public static <T extends MutableNumber<T>, P extends Poly<T, P>> Result<T> sds(P f,
+			Transform transform, Find find) {
 		return sds(f, transform, find, Integer.MAX_VALUE);
 	}
 
-	public static <T extends MutableNumber<T>> Result<T> sds(Poly<T> f,
+	public static <T extends MutableNumber<T>, P extends Poly<T, P>> Result<T> sds(P f,
 			Transform transform, Find find, int maxDepth) {
 		// check homogeneous
 		int deg = 0;
@@ -322,7 +330,7 @@ public class SDS {
 			return result;
 		}
 
-		ArrayList<PermSubs<T>> permSubsList = new ArrayList<>();
+		ArrayList<PermSubs<T, P>> permSubsList = new ArrayList<>();
 		ArrayList<T[][]> transMat = new ArrayList<>();
 		T zero = f.valueOf(0);
 		T one = f.valueOf(1);
@@ -356,8 +364,7 @@ public class SDS {
 				}
 			}
 
-			@SuppressWarnings("unchecked")
-			Poly<T>[] subs = new Poly[transform == Transform.T_n ? len : len - 1];
+			P[] subs = unchecked(new Poly[transform == Transform.T_n ? len : len - 1]);
 			Mono[] monos = new Mono[len];
 			for (int i = 0; i < len; i ++) {
 				short[] exps = new short[len];
@@ -366,13 +373,13 @@ public class SDS {
 				monos[i] = new Mono(vars, exps);
 			}
 			for (int i = 0; i < len - 1; i ++) {
-				Poly<T> sub = f.newPoly();
+				P sub = f.newPoly();
 				sub.put(monos[i], column[i]);
 				sub.put(monos[i + 1], one);
 				subs[i] = sub;
 			}
 			if (transform == Transform.T_n) {
-				Poly<T> sub = f.newPoly();
+				P sub = f.newPoly();
 				sub.put(monos[len - 1], column[len - 1]);
 				subs[len - 1] = sub;
 			}
@@ -388,7 +395,7 @@ public class SDS {
 					m[i] = upperMat[perm.get(i).intValue()].clone();
 					// m[perm.get(i).intValue()] = upperMat[i].clone();
 				}
-				PermSubs<T> permSubs = new PermSubs<>();
+				PermSubs<T, P> permSubs = new PermSubs<>();
 				permSubs.perm = perm.stream().mapToInt(Integer::intValue).toArray();
 				permSubs.subs = subs;
 				permSubs.index = transMat.size();
@@ -401,12 +408,11 @@ public class SDS {
 			if (len != 3) {
 				throw new IllegalArgumentException("H_3 only works on 3-var polynomials");
 			}
-			@SuppressWarnings("unchecked")
-			Poly<T>[] subsH = new Poly[] {f.newPoly("xyz", "2*x + y + z")};
+			subs = unchecked(new Poly[] {f.newPoly("xyz", "2*x + y + z")});
 			for (int i = 0; i < 3; i ++) {
-				PermSubs<T> permSubs = new PermSubs<>();
+				PermSubs<T, P> permSubs = new PermSubs<>();
 				permSubs.perm = new int[] {i, (i + 1)%3, (i + 2)%3};
-				permSubs.subs = subsH;
+				permSubs.subs = subs;
 				permSubs.index = transMat.size();
 				T[][] m = f.newMatrix(3, 3);
 				for (int j = 0; j < 3; j ++) {
@@ -417,16 +423,14 @@ public class SDS {
 				transMat.add(m);
 				permSubsList.add(permSubs);
 			}
-			PermSubs<T> permSubs = new PermSubs<>();
+			PermSubs<T, P> permSubs = new PermSubs<>();
 			permSubs.perm = new int[] {0, 1, 2};
 			// x' = x + y, y' = y + z, z' = x + z
-			@SuppressWarnings("unchecked")
-			Poly<T>[] subsPolyH4 = new Poly[] {
+			permSubs.subs = unchecked(new Poly[] {
 				f.newPoly("xyz", "2*x + y - z"),
 				f.newPoly("xyz", "y + z - x"),
 				f.newPoly("xyz", "z + x"),
-			};
-			permSubs.subs = subsPolyH4;
+			});
 			permSubs.index = transMat.size();
 			T[][] m = f.newMatrix(3, 3);
 			for (int i = 0; i < 3; i ++) {
@@ -456,7 +460,7 @@ public class SDS {
 			// J1 = [[2,1,1,1],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
 			// J2 = [[1,1,1,0],[1,0,0,1],[0,1,0,1],[0,0,1,0]]
 			@SuppressWarnings("unchecked")
-			Poly<T>[][] subsJ = new Poly[][] {{
+			P[][] subsJ = (P[][]) new Poly[][] {{
 				f.newPoly("xyzw", "2*x + y + z + w"),
 			}, {
 				// Unable to substitute by x_i = p1(x_i, y_i, z_i, w), y = p2(x, y, z, w) ..., so use tempVars
@@ -512,17 +516,16 @@ public class SDS {
 				exps[i] = 1;
 				monos[i] = new Mono(vars, exps);
 			}
-			@SuppressWarnings("unchecked")
-			Poly<T>[] subsZ = new Poly[len];
-			Poly<T> sub0 = f.newPoly();
+			subs = unchecked(new Poly[len]);
+			P sub0 = f.newPoly();
 			sub0.put(monos[0], n);
 			for (int i = 1; i < len; i ++) {
 				sub0.put(monos[i], one);
-				Poly<T> sub = f.newPoly();
+				P sub = f.newPoly();
 				sub.put(monos[i], n1);
-				subsZ[i] = sub;
+				subs[i] = sub;
 			}
-			subsZ[0] = sub0;
+			subs[0] = sub0;
 
 			for (int i = 0; i < len; i ++) {
 				permSubs = new PermSubs<>();
@@ -530,7 +533,7 @@ public class SDS {
 				for (int j = 0; j < len; j ++) {
 					permSubs.perm[j] = (i + j)%len;
 				}
-				permSubs.subs = subsZ;
+				permSubs.subs = subs;
 				permSubs.reverse = true;
 				permSubs.index = transMat.size();
 				m = f.newMatrix(len, len);
@@ -545,20 +548,20 @@ public class SDS {
 			break;
 		}
 
-		Map<Poly<T>, List<List<Integer>>> polyTransList = Collections.singletonMap(f, initTransList);
+		Map<P, List<List<Integer>>> polyTransList = Collections.singletonMap(f, initTransList);
 		for (result.depth = 1; result.depth < maxDepth; result.depth ++) {
 			log.debug("depth = " + result.depth + ", polynomials = " + polyTransList.size());
 			int traceCurr = 0, traceTrans = 0;
-			HashMap<Poly<T>, List<List<Integer>>> polyTransList1 = new HashMap<>();
-			for (Map.Entry<Poly<T>, List<List<Integer>>> transEntry : polyTransList.entrySet()) {
+			HashMap<P, List<List<Integer>>> polyTransList1 = new HashMap<>();
+			for (Map.Entry<P, List<List<Integer>>> transEntry : polyTransList.entrySet()) {
 				traceCurr ++;
 				log.trace("depth = " + result.depth + ", polynomial: " + traceCurr + "/" + polyTransList.size());
 
-				Poly<T> f0 = transEntry.getKey();
+				P f0 = transEntry.getKey();
 				List<List<Integer>> transList = transEntry.getValue();
-				for (PermSubs<T> permSubs : permSubsList) {
+				for (PermSubs<T, P> permSubs : permSubsList) {
 					// f1 = f0's permutation and substitution (transformation)
-					Poly<T> f1 = f.newPoly();
+					P f1 = f.newPoly();
 					if (permSubs.tempVars == null) {
 						f1 = f.newPoly();
 						for (Map.Entry<Mono, T> term : f0.entrySet()) {
@@ -585,7 +588,7 @@ public class SDS {
 						}
 					} else {
 						// temp poly about (vars, tempVars)
-						Poly<T> f2 = f.newPoly();
+						P f2 = f.newPoly();
 						String varsTempVars = vars + permSubs.tempVars;
 						for (Map.Entry<Mono, T> term : f0.entrySet()) {
 							short[] exps = term.getKey().getExps();

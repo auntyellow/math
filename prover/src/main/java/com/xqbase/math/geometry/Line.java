@@ -4,6 +4,10 @@ import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Poly;
 
 public class Line {
+	private static LongPoly __() {
+		return new LongPoly();
+	}
+
 	private LongPoly u, v, w;
 
 	public Line(LongPoly u, LongPoly v, LongPoly w) {
@@ -21,9 +25,9 @@ public class Line {
 
 	/** a line passing through p and parallel to direction (x, y) */
 	public Line(Point p, LongPoly x, LongPoly y) {
-		u = (LongPoly) new LongPoly().addMul(p.getZ(), y);
-		v = (LongPoly) new LongPoly().subMul(p.getZ(), x);
-		w = (LongPoly) new LongPoly().addMul(p.getY(), x).subMul(p.getX(), y);
+		u = __().addMul(p.getZ(), y);
+		v = __().subMul(p.getZ(), x);
+		w = __().addMul(p.getY(), x).subMul(p.getX(), y);
 	}
 
 	public LongPoly getU() {
@@ -39,7 +43,7 @@ public class Line {
 	}
 
 	public boolean passesThrough(Point p) {
-		LongPoly g = new LongPoly();
+		LongPoly g = __();
 		g.addMul(u, p.getX());
 		g.addMul(v, p.getY());
 		g.addMul(w, p.getZ());
