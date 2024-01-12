@@ -14,7 +14,7 @@ def gen_vasc(a, n):
 def main():
     a = symbols('a1, a2, a3, a4, a5, a6, a7, a8, a9, a10', negative = False)
     a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 = a
-    '''
+
     print('5-var Vasc\'s conjecture')
     fn, fd = fraction(cancel(gen_vasc(a, 5)))
     print('fn =', fn)
@@ -45,7 +45,7 @@ def main():
     print('fn =', fn)
     print('fd =', fd)
     print()
-    '''
+
     print('6-var Vasc\'s conjecture')
     # result from vasc-bh.py
     a0 = (0, S(929380)/864801, S(74402)/705831, S(366165)/383132, S(4529)/375041, 1)
