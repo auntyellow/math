@@ -1,7 +1,7 @@
 from math import *
 from matplotlib import pyplot
 
-# results from dumpLattice4() in SDSTest.java
+# results from DumpLattice.main3d() in SDSTest.java
 LATTICE_A4 = [
     [0, 0, 0, 1],
     [0, 0, 1, 0],

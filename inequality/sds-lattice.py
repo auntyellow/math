@@ -1,7 +1,7 @@
 from math import *
 from matplotlib import pyplot
 
-# results from dumpLattice() in SDSTest.java
+# results from DumpLattice.main() in SDSTest.java
 SIMPLICES_A3 = [[
     [[0, 0, 1], [0, 1, 0], [1, 0, 0]],
 ], [
@@ -3611,7 +3611,6 @@ def transform(vertex):
     return x + y*SIN_30, y*COS_30
 
 def main():
-    xx, yy = [], []
     colors = ['black', 'blue', 'red', 'green', 'orange']
     for i in range(4, -1, -1):
         for simplex in SIMPLICES_H3[i]:

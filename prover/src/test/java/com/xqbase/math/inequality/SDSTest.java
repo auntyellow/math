@@ -620,27 +620,4 @@ public class SDSTest {
 		System.out.println(longResult);
 		*/
 	}
-
-	public void dumpLattice() {
-		Logger rootLogger = LogManager.getLogManager().getLogger("");
-		rootLogger.setLevel(Level.INFO);
-		for (Handler h : rootLogger.getHandlers()) {
-			h.setLevel(Level.INFO);
-		}
-		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("xyz", "-x - y - z"), H_3, SDS.Find.DUMP_LATTICE, 5);
-		for (Set<Set<List<MutableLong>>> simplices : result.getSimplices().values()) {
-			for (Set<List<MutableLong>> simplex : simplices) {
-				String s = simplex.toString();
-				System.out.println("    [" + s.substring(1, s.length() - 1) + "],");
-			}
-			System.out.println("], [");
-		}
-	}
-
-	public void dumpLattice4() {
-		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("wxyz", "-w - x - y - z"), J_4, SDS.Find.DUMP_LATTICE, 5);
-		for (List<MutableLong> zeroAt : result.getZeroAt()) {
-			System.out.println("    " + zeroAt + ",");
-		}
-	}
 }
