@@ -138,7 +138,7 @@ def main():
     print('    ]')
     print('```')
     print()
-    # result from 4774103a.py
+    # result from 4774103-bh.py
     s0, t0 = S(365)/181, S(9437)/444
     # graph of g/h(b=c)
     print('y =', factor((g/h).subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
