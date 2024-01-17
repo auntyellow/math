@@ -32,6 +32,8 @@ def main():
     f3 = A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D)
     print('f3 =', factor(f3))
     f4 = 64*A*B*C*D - (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D))**2
+    # only one negative term so can prove positive obviously:
+    # 50031545098999707*u**14*v**12 + ... - 50031545098999707*u**13*v**13 + ... + 50031545098999707*u**12*v**14 + ...
     print('f4 =', factor(f4))
 
     # TODO prove inequality when u > 4/3 or v > 4/3

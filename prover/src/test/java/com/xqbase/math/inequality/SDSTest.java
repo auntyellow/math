@@ -485,14 +485,11 @@ public class SDSTest {
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(19, result.getDepth());
 		// ex 4.2
-		// too slow in making permMat
-		/*
-		f = replaceAn("a1**2 + a2**2 + a3**2 + a4**2 + a5**2 + a6**2 + a7**2 + a8**2 + a9**2 + a10**2 - 4*a1*a2");
+		f = new BigPoly("abcdefghij", replaceAn("a1**2 + a2**2 + a3**2 + a4**2 + a5**2 + a6**2 + a7**2 + a8**2 + a9**2 + a10**2 - 4*a1*a2").toString());
 		result = SDS.sds(f);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'a').signum() < 0);
 		assertEquals(0, result.getDepth());
-		*/
 		// ex 4.3
 		f = new BigPoly("xyz", "x**3 + y**3 + z**3 - 3*x*y*z");
 		result = SDS.sds(f);
@@ -560,7 +557,6 @@ public class SDSTest {
 		result = SDS.sds(f);
 		assertTrue(result.isNonNegative());
 		assertEquals(5, result.getDepth());
-		System.out.println(result);
 	}
 
 	@Test
