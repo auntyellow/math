@@ -42,7 +42,6 @@ public class _1777166q {
 	}
 
 	public static void main(String[] args) throws Exception {
-		_1777166c.class.toString();
 		// result from 1777166.py: k1, k3 >= 0; k2 <= 0
 		Properties p = new Properties();
 		try (InputStream in = _1777166q.class.getResourceAsStream("1777166q.properties")) {

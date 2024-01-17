@@ -4,8 +4,8 @@ from sympy import *
 
 def main():
     a, b, c = symbols('a, b, c', negative = False)
-    A, B, C, D = a**2/(a**2 + 5*b*c/4), a**2/(b**2 + 5*c*a/4), c**2/(c**2 + 5*a*b/4), 4
-    # prove a stronger form sqrt(A) + sqrt(B) + sqrt(C) <= 2
+    A, B, C, D = a**2/(4*a**2 + 5*b*c), a**2/(4*b**2 + 5*c*a), c**2/(4*c**2 + 5*a*b), 1
+    # prove a stronger form sqrt(A) + sqrt(B) + sqrt(C) <= 1
     # use conclusion from radical3.py
     f1 = D - A - B - C
     u, v = symbols('u, v', negative = False)

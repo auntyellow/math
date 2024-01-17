@@ -31,7 +31,7 @@ def main():
     # (IV) 64*A*B*C*D - (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D))**2 >= 0
     # when (I), (II) and (III) holds, equality occurs if and only if (IV)'s equality occurs
     # this doesn't always work, e.g. IMO 2001 problem 2:
-    # sum_cyc(a/sqrt(a**2 + 8*b*c)) >= 1 when a = 1 and b = c = 2
+    # sum_cyc(a/sqrt(a**2 + 8*b*c)) >= 1 when a = 1 and b = c = 4
  
 if __name__ == '__main__':
     main()
