@@ -49,7 +49,7 @@ def main():
     s = -x**2/2 + 3*x/2
     f = s.subs(x, A0) + s.subs(x, B0) + s.subs(x, C0) - 1
     print('f =', factor(f.subs(u, u + 12)))
-    # then prove when S(11)/6 <= u <= 12 and 0 <= v <= 12
+    # then prove when S(11)/6 <= u <= 12 and 0 <= v <= 12, by radical-prover
 
 if __name__ == '__main__':
     main()

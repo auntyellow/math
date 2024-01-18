@@ -3,9 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def s(x):
-    # return sqrt(x)
+    return sqrt(x)
     # result from sqrt-quadratic-a.py
-    return -x**2/2 + 3*x/2
+    # return -x**2/2 + 3*x/2
 
 def z(u, v):
     return s((u + 1)**2/(u**2 + 2*u + 8*v + 9)) + s((v + 1)**2/(8*u + v**2 + 2*v + 9)) + s(1/(8*u*v + 8*u + 8*v + 9)) - 1
