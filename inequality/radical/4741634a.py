@@ -10,8 +10,9 @@ def z(u, v):
     return -10 if f < 0 else np.log(1 + f)
 
 def main():
-    Z = [[z(i/100, j/100) for j in range(400)] for i in range(400)]
-    plt.imshow(Z, origin='lower', extent = [0, 4, 0, 4], cmap=plt.cm.hsv)
+    len = 4
+    Z = [[z(j/100, i/100) for j in range(len*100)] for i in range(len*100)]
+    plt.imshow(Z, origin = 'lower', extent = [0, len, 0, len], cmap = plt.cm.hsv)
     plt.colorbar()
     plt.show()
 

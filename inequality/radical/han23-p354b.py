@@ -9,8 +9,9 @@ def z(u, v):
     return x*y + UV
 
 def main():
-    Z = [[z(i/100, j/100) for j in range(1000)] for i in range(1000)]
-    plt.imshow(Z, origin='lower', extent = [0, 10, 0, 10], cmap=plt.cm.hsv)
+    len = 10
+    Z = [[z(j/100, i/100) for j in range(len*100)] for i in range(len*100)]
+    plt.imshow(Z, origin = 'lower', extent = [0, len, 0, len], cmap = plt.cm.hsv)
     plt.colorbar()
     plt.show()
 
