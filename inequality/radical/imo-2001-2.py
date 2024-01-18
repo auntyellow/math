@@ -41,7 +41,7 @@ def main():
     # U = 4/3: k = 50031545098999707
     # U = 11/6: k = 209847509734914867068928
 
-    # prove when u > U or v > U
+    # prove when u > U or v > U (u and v are symmetric)
     # first prove when u >= 12
     # result from sqrt-quadratic-a.py
     x = symbols('x', negative = False)

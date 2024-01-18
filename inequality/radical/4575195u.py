@@ -38,6 +38,10 @@ def main():
     f4 = 64*A*B*C*D - (A**2 + B**2 + C**2 + D**2 - 2*(A*B + A*C + A*D + B*C + B*D + C*D))**2
     # too slow
     print('f4 =', factor(f4))
+    # proved by SDS
+
+    # u and v are not symmetric
+    # TODO prove when u > U V v > U (i.e. prove when u > U, then prove when v > U)
 
 if __name__ == '__main__':
     main()
