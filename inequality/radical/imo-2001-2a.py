@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 def s(x):
     return sqrt(x)
-    # result from sqrt-quadratic-a.py
+    # result from sqrt-quadratic.py
     # return -x**2/2 + 3*x/2
 
 def z(u, v):

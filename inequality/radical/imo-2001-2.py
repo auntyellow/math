@@ -43,7 +43,7 @@ def main():
 
     # prove when u > U or v > U (u and v are symmetric)
     # first prove when u >= 12
-    # result from sqrt-quadratic-a.py
+    # result from sqrt-quadratic.py
     x = symbols('x', negative = False)
     # u >= 11 or smaller doesn't work, should use sqrt(x) >= cubic(x)
     s = -x**2/2 + 3*x/2
