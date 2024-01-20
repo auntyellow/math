@@ -3,7 +3,7 @@ from sympy import *
 
 def sign(f):
     # return 0 if sign is not determined
-    u, v, w = symbols('u, v, w', negative = False)
+    u, v = symbols('u, v', negative = False)
     if f.func == Pow:
         return sign(f.args[0])**f.args[1]
     if f.func == Mul:
@@ -14,7 +14,7 @@ def sign(f):
                 return 0
             s *= s0
         return s
-    p = Poly(f, u, v, w)
+    p = Poly(f, u, v)
     pos = false
     neg = false
     for coef in p.coeffs():
@@ -54,90 +54,67 @@ def subs2(f, x0, y0):
             logging.warning('{} = {} or {} at ({}, {})'.format(f, f0, f1, x0, y0))
     return min(f0, f1)
 
-def negative(f, x0, x1, y0, y1):
+# return '' if sum(sqrt(A_n)) - D >= 0, or the counterexample
+# param A_n: 2-var functions about x and y
+# param D: a positive constant
+def negative(A_n, D, x0, x1, y0, y1):
     x, y = symbols('x, y', negative = False)
 
     # try to find counterexample
-    f0 = subs2(f, x0, y0)
+    f0 = -D
+    for A_i in A_n:
+        f0 += subs2(sqrt(A_i), x0, y0)
     if f0 < 0:
-        return 'f({},{})={}'.format(x0, y0, f0)
+        return 'f({},{})={}'.format(x0, y0, N(f0))
 
-    if f.func != Add:
-        raise Exception('{} has no radicals'.format(f))
-    # replace power with linear
-    f1 = 0
-    for p in f.args:
-        if p.func != Pow or p.args[1] >= 1:
-            f1 += p
-            continue
-        exp = p.args[1]
-        t = p.args[0]
-        # find a linear function s = m*t + n <= t**exp (t**exp is concave when exp < 1)
-        t00, t01, t10, t11 = subs2(t, x0, y0), subs2(t, x0, y1), subs2(t, x1, y0), subs2(t, x1, y1)
-        s00, s01, s10, s11 = t00**exp, t01**exp, t10**exp, t11**exp
-        pairs = [(t00, s00), (t01, s01), (t10, s10), (t11, s11)]
-        pairs.sort(key = lambda pair : pair[0])
-        t0, s0 = pairs[0]
-        t1, s1 = pairs[3]
-        # | t0 s0 1 |
-        # | t1 s1 1 | = t0*s1 - s0*t1 + t1*s - s1*t + s0*t - t0*s = 0
-        # | t  s  1 |
-        f1 += (t0*s1 - s0*t1 - s1*t + s0*t)/(t0 - t1)
-
-    # try to prove by buffalo way
+    sum_min = 0
+    min_n = []
+    for A_i in A_n:
+        a00, a01, a10, a11 = subs2(A_i, x0, y0), subs2(A_i, x0, y1), subs2(A_i, x1, y0), subs2(A_i, x1, y1)
+        min_i = min(sqrt(a00), sqrt(a01), sqrt(a10), sqrt(a11))
+        sum_min += min_i
+        min_n.append(min_i)
+    # divide if sum_min - D < 0
+    f0 = sum_min - D
     dx, dy = x1 - x0, y1 - y0
-    u, v = symbols('u, v', negative = False)
-    f1 = f1.subs(x, x0 + dx/(1 + u)).subs(y, y0 + dy/(1 + v))
-    f1 = factor(f1)
-    s = sign(f1)
-    if s > 0:
-        logging.info('non_negative: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, f0))
-        return ''
-    elif s < 0:
-        return 'f={}<0'.format(f1)
-
-    logging.info('try_dividing: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, f0))
-
+    if f0 < 0:
+        logging.info('sum_min < D: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, N(f0)))
+    else:
+        u, v = symbols('u, v', negative = False)
+        non_negative = True
+        for i in range(len(A_n)):
+            # sqrt(A_i) >= D*m_i/sum_min (for all i) => sum(sqrt(A_i)) >= D
+            f = A_n[i] - (min_n[i]*D/sum_min)**2
+            f = factor(f.subs(x, x0 + dx/(1 + u)).subs(y, y0 + dy/(1 + v)))
+            if sign(f) <= 0:
+                logging.info('unable to prove sqrt({}) >= {}: [{},{},{},{}]'.format(A_n[i], min_n[i]*D/sum_min, x0, x1, y0, y1))
+                non_negative = False
+                break
+        if non_negative:
+            logging.info('non_negative: [{},{},{},{}], f={}'.format(x0, x1, y0, y1, N(f0)))
+            return ''
+    
     # divide
     xm = x0 + dx/S(2)
     ym = y0 + dy/S(2)
-    n = negative(f, xm, x1, ym, y1)
+    n = negative(A_n, D, xm, x1, ym, y1)
     if n != '':
         return n
-    n = negative(f, x0, xm, ym, y1)
+    n = negative(A_n, D, x0, xm, ym, y1)
     if n != '':
         return n
-    n = negative(f, xm, x1, y0, ym)
+    n = negative(A_n, D, xm, x1, y0, ym)
     if n != '':
         return n
-    return negative(f, x0, xm, y0, ym)
+    return negative(A_n, D, x0, xm, y0, ym)
 
 def main():
     logging.basicConfig(level = 'INFO')
     x, y = symbols('x, y', negative = False)
     u, v = x, y
-    '''
-    # results from imo-2001-2.py
-    # f(1/u,v)
-    f = sqrt(u/(8*u*v + 9*u + 8*v + 8)) + sqrt((u + 1)**2/(8*u**2*v + 9*u**2 + 2*u + 1)) + sqrt(u*(v + 1)**2/(u*v**2 + 2*u*v + 9*u + 8)) - 1
-    print('[' + negative(f, 0, 6/S(11), 0, S(11)/6) + ']')
-    # f(u,1/v)
-    f = sqrt(v/(8*u*v + 8*u + 9*v + 8)) + sqrt((v + 1)**2/(8*u*v**2 + 9*v**2 + 2*v + 1)) + sqrt(v*(u + 1)**2/(u**2*v + 2*u*v + 9*v + 8)) - 1
-    print('[' + negative(f, 0, S(11)/6, 0, 6/S(11)) + ']')
-    # f(1/u,1/v)
-    f = sqrt(u*v/(9*u*v + 8*u + 8*v + 8)) + sqrt(u*(v + 1)**2/(9*u*v**2 + 2*u*v + u + 8*v**2)) + sqrt(v*(u + 1)**2/(9*u**2*v + 8*u**2 + 2*u*v + v)) - 1
-    print('[' + negative(f, 0, 6/S(11), 0, 6/S(11)) + ']')
-    '''
-    # results from 4575195.py
-    # f(1/u,v)
-    f = sqrt((u**2*v**2 + 2*u**2*v + 5*u**2 + 8*u + 4)/(u**2*v + 4*u**2 + 6*u + 3)) + sqrt((5*u**2 + 2*u + 1)/(u*(u*v + 4*u + v + 1))) + sqrt(u*(4*v**2 + 8*v + 5)/(3*u*v**2 + 6*u*v + 4*u + 1)) - 3*sqrt(5)/2
-    # print('[' + negative(f, 0, S(1)/5, 0, 5) + ']')
-    # f(u,1/v)
-    f = sqrt((5*v**2 + 8*v + 4)/(u*v**2 + 4*v**2 + 6*v + 3)) + sqrt((4*u**2*v**2 + 8*u*v**2 + 5*v**2 + 2*v + 1)/(v*(3*u**2*v + 6*u*v + 4*v + 1))) + sqrt(v*(u**2 + 2*u + 5)/(u*v + u + 4*v + 1)) - 3*sqrt(5)/2
-    # print('[' + negative(f, 0, 5, 0, S(1)/5) + ']')
-    # f(1/u,1/v)
-    f = sqrt(u*(5*v**2 + 8*v + 4)/(4*u*v**2 + 6*u*v + 3*u + v**2)) + sqrt((5*u**2*v**2 + 2*u**2*v + u**2 + 8*u*v**2 + 4*v**2)/(v*(4*u**2*v + u**2 + 6*u*v + 3*v))) + sqrt(v*(5*u**2 + 2*u + 1)/(u*(4*u*v + u + v + 1))) - 3*sqrt(5)/2
-    print('[' + negative(f, 0, S(1)/5, 0, S(1)/5) + ']')
+    # imo-2001-2
+    A_n = [(u + 1)**2/(u**2 + 2*u + 8*v + 9), (v + 1)**2/(8*u + v**2 + 2*v + 9), 1/(8*u*v + 8*u + 8*v + 9)]
+    print('[' + negative(A_n, 1, S(11)/6, 12, 0, 12) + ']')
 
 if __name__ == '__main__':
     main()

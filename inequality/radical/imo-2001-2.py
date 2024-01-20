@@ -41,24 +41,21 @@ def main():
     # U = 4/3: k = 50031545098999707
     # U = 11/6: k = 209847509734914867068928
 
-    # prove when u > U or v > U (u and v are symmetric) by radical-prover
-    # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= U
+    # prove when u > U or v > U (u and v are symmetric)
+    # doesn't work: prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= U by radical-prover
+    '''
     # factor to avoid division by zero
     A, B, C = factor(A0.subs(u, 1/u)), factor(B0.subs(u, 1/u)), factor(C0.subs(u, 1/u))
     print('f(1/u,v) =', sqrt(A) + sqrt(B) + sqrt(C) - 1)
-    # prove when 0 <= u <= U and 0 <= 1/v <= 1/U (v >= U) (not necessary due to symmetric)
-    A, B, C = factor(A0.subs(v, 1/v)), factor(B0.subs(v, 1/v)), factor(C0.subs(v, 1/v))
-    print('f(u,1/v) =', sqrt(A) + sqrt(B) + sqrt(C) - 1)
-    # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= 1/v <= 1/U (v >= U)
-    A, B, C = factor(A0.subs(u, 1/u).subs(v, 1/v)), factor(B0.subs(u, 1/u).subs(v, 1/v)), factor(C0.subs(u, 1/u).subs(v, 1/v))
-    print('f(1/u,1/v) =', sqrt(A) + sqrt(B) + sqrt(C) - 1)
-    print('C =', C)
-    # division by zero when u = 0 and v = 0, so C(0,0) is ambiguous
-    print('C(0,0) =', C.subs(u, 0).subs(v, 0))
-    print('C(0,0) =', C.subs(v, 0).subs(u, 0))
-    C1 = factor(C.subs(u, v))
-    print('C(u=v) =', C1)
-    print('C(0,0) =', C1.subs(v, 0))
+    '''
+    # first prove when u >= 12
+    # result from sqrt-quadratic.py
+    x = symbols('x', negative = False)
+    # u >= 11 or smaller doesn't work, should use sqrt(x) >= cubic(x)
+    s = -x**2/2 + 3*x/2
+    f = s.subs(x, A0) + s.subs(x, B0) + s.subs(x, C0) - 1
+    print('f =', factor(f.subs(u, u + 12)))
+    # then prove when S(11)/6 <= u <= 12 and 0 <= v <= 12 by radical-prover
 
 if __name__ == '__main__':
     main()
