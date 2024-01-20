@@ -114,6 +114,7 @@ def main():
     u, v = x, y
     # imo-2001-2
     A_n = [(u + 1)**2/(u**2 + 2*u + 8*v + 9), (v + 1)**2/(8*u + v**2 + 2*v + 9), 1/(8*u*v + 8*u + 8*v + 9)]
+    # sqrt(A) + sqrt(B) + sqrt(C) >= 11/10 works; 10/9 doesn't work
     print('[' + negative(A_n, 1, S(11)/6, 12, 0, 12) + ']')
 
 if __name__ == '__main__':
