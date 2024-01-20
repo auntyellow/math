@@ -44,21 +44,21 @@ def main():
     # prove when u > U or v > U (u and v are symmetric) by radical-prover
     # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= U
     # factor to avoid division by zero
-    A1, B1, C1 = factor(A0.subs(u, 1/u)), factor(B0.subs(u, 1/u)), factor(C0.subs(u, 1/u))
-    print('f(1/u,v) =', sqrt(A1) + sqrt(B1) + sqrt(C1) - 1)
+    A, B, C = factor(A0.subs(u, 1/u)), factor(B0.subs(u, 1/u)), factor(C0.subs(u, 1/u))
+    print('f(1/u,v) =', sqrt(A) + sqrt(B) + sqrt(C) - 1)
     # prove when 0 <= u <= U and 0 <= 1/v <= 1/U (v >= U) (not necessary due to symmetric)
-    A1, B1, C1 = factor(A0.subs(v, 1/v)), factor(B0.subs(v, 1/v)), factor(C0.subs(v, 1/v))
-    print('f(u,1/v) =', sqrt(A1) + sqrt(B1) + sqrt(C1) - 1)
+    A, B, C = factor(A0.subs(v, 1/v)), factor(B0.subs(v, 1/v)), factor(C0.subs(v, 1/v))
+    print('f(u,1/v) =', sqrt(A) + sqrt(B) + sqrt(C) - 1)
     # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= 1/v <= 1/U (v >= U)
-    A1, B1, C1 = factor(A0.subs(u, 1/u).subs(v, 1/v)), factor(B0.subs(u, 1/u).subs(v, 1/v)), factor(C0.subs(u, 1/u).subs(v, 1/v))
-    print('f(1/u,1/v) =', sqrt(A1) + sqrt(B1) + sqrt(C1) - 1)
-    print('C1 =', C1)
-    # division by zero when u = 0 and v = 0, so C1(0,0) is ambiguous
-    print('C1(0,0) =', C1.subs(u, 0).subs(v, 0))
-    print('C1(0,0) =', C1.subs(v, 0).subs(u, 0))
-    C2 = factor(C1.subs(u, v))
-    print('C1(u=v) =', C2)
-    print('C1(0,0) =', C2.subs(v, 0))
+    A, B, C = factor(A0.subs(u, 1/u).subs(v, 1/v)), factor(B0.subs(u, 1/u).subs(v, 1/v)), factor(C0.subs(u, 1/u).subs(v, 1/v))
+    print('f(1/u,1/v) =', sqrt(A) + sqrt(B) + sqrt(C) - 1)
+    print('C =', C)
+    # division by zero when u = 0 and v = 0, so C(0,0) is ambiguous
+    print('C(0,0) =', C.subs(u, 0).subs(v, 0))
+    print('C(0,0) =', C.subs(v, 0).subs(u, 0))
+    C1 = factor(C.subs(u, v))
+    print('C(u=v) =', C1)
+    print('C(0,0) =', C1.subs(v, 0))
 
 if __name__ == '__main__':
     main()

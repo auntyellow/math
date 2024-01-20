@@ -28,21 +28,37 @@ def sign(f):
             neg = true
     return 1 if pos else (-1 if neg else 0)
 
+warning_set = set()
+warning_set2 = set()
+
+def warn(f, f0, x0, y0):
+    tuple = (f, f0, x0, y0)
+    if not tuple in warning_set:
+        warning_set.add(tuple)
+        logging.warning('{} = {} at ({}, {})'.format(f, f0, x0, y0))
+
 def subs2(f, x0, y0):
     x, y = symbols('x, y', negative = False)
-    f0 = f.subs(x, x0).subs(y, y0)
-    # ambiguous: y*(x + 1)**2/(9*x**2*y + 8*x**2 + 2*x*y + y)
-    if f.subs(y, y0).subs(x, x0) == f0:
-        return f0
-    if x0 == y0:
-        return factor(f.subs(y, x)).subs(x, x0)
-    raise Exception('{} is ambiguous at ({}, {})'.format(f, x0, y0))
+    f0, f1 = f.subs(x, x0).subs(y, y0), f.subs(y, y0).subs(x, x0)
+    # TODO what to return if nan or oo?
+    if f0 == nan or abs(f0) == oo:
+        warn(f, f0, x0, y0)
+        f0 = 0
+    if f1 == nan or abs(f1) == oo:
+        warn(f, f1, x0, y0)
+        f1 = 0
+    if f0 != f1:
+        tuple = (f, f0, f1, x0, y0)
+        if not tuple in warning_set2:
+            warning_set2.add(tuple)
+            logging.warning('{} = {} or {} at ({}, {})'.format(f, f0, f1, x0, y0))
+    return min(f0, f1)
 
 def negative(f, x0, x1, y0, y1):
     x, y = symbols('x, y', negative = False)
 
     # try to find counterexample
-    f0 = f.subs(x, x0).subs(y, y0)
+    f0 = subs2(f, x0, y0)
     if f0 < 0:
         return 'f({},{})={}'.format(x0, y0, f0)
 
@@ -56,12 +72,11 @@ def negative(f, x0, x1, y0, y1):
             continue
         exp = p.args[1]
         t = p.args[0]
-        # find a linear function s = m*t + n <= t**exp
-        t0, t1 = t.subs(x, x0), t.subs(x, x1)
+        # find a linear function s = m*t + n <= t**exp (t**exp is concave when exp < 1)
         t00, t01, t10, t11 = subs2(t, x0, y0), subs2(t, x0, y1), subs2(t, x1, y0), subs2(t, x1, y1)
         s00, s01, s10, s11 = t00**exp, t01**exp, t10**exp, t11**exp
         pairs = [(t00, s00), (t01, s01), (t10, s10), (t11, s11)]
-        pairs.sort(key = lambda pair : pair[1])
+        pairs.sort(key = lambda pair : pair[0])
         t0, s0 = pairs[0]
         t1, s1 = pairs[3]
         # | t0 s0 1 |
@@ -101,7 +116,8 @@ def main():
     logging.basicConfig(level = 'INFO')
     x, y = symbols('x, y', negative = False)
     u, v = x, y
-    # imo-2001-2
+    '''
+    # results from imo-2001-2.py
     # f(1/u,v)
     f = sqrt(u/(8*u*v + 9*u + 8*v + 8)) + sqrt((u + 1)**2/(8*u**2*v + 9*u**2 + 2*u + 1)) + sqrt(u*(v + 1)**2/(u*v**2 + 2*u*v + 9*u + 8)) - 1
     print('[' + negative(f, 0, 6/S(11), 0, S(11)/6) + ']')
@@ -111,6 +127,17 @@ def main():
     # f(1/u,1/v)
     f = sqrt(u*v/(9*u*v + 8*u + 8*v + 8)) + sqrt(u*(v + 1)**2/(9*u*v**2 + 2*u*v + u + 8*v**2)) + sqrt(v*(u + 1)**2/(9*u**2*v + 8*u**2 + 2*u*v + v)) - 1
     print('[' + negative(f, 0, 6/S(11), 0, 6/S(11)) + ']')
+    '''
+    # results from 4575195.py
+    # f(1/u,v)
+    f = sqrt((u**2*v**2 + 2*u**2*v + 5*u**2 + 8*u + 4)/(u**2*v + 4*u**2 + 6*u + 3)) + sqrt((5*u**2 + 2*u + 1)/(u*(u*v + 4*u + v + 1))) + sqrt(u*(4*v**2 + 8*v + 5)/(3*u*v**2 + 6*u*v + 4*u + 1)) - 3*sqrt(5)/2
+    # print('[' + negative(f, 0, S(1)/5, 0, 5) + ']')
+    # f(u,1/v)
+    f = sqrt((5*v**2 + 8*v + 4)/(u*v**2 + 4*v**2 + 6*v + 3)) + sqrt((4*u**2*v**2 + 8*u*v**2 + 5*v**2 + 2*v + 1)/(v*(3*u**2*v + 6*u*v + 4*v + 1))) + sqrt(v*(u**2 + 2*u + 5)/(u*v + u + 4*v + 1)) - 3*sqrt(5)/2
+    # print('[' + negative(f, 0, 5, 0, S(1)/5) + ']')
+    # f(1/u,1/v)
+    f = sqrt(u*(5*v**2 + 8*v + 4)/(4*u*v**2 + 6*u*v + 3*u + v**2)) + sqrt((5*u**2*v**2 + 2*u**2*v + u**2 + 8*u*v**2 + 4*v**2)/(v*(4*u**2*v + u**2 + 6*u*v + 3*v))) + sqrt(v*(5*u**2 + 2*u + 1)/(u*(4*u*v + u + v + 1))) - 3*sqrt(5)/2
+    print('[' + negative(f, 0, S(1)/5, 0, S(1)/5) + ']')
 
 if __name__ == '__main__':
     main()
