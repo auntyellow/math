@@ -41,15 +41,24 @@ def main():
     # U = 4/3: k = 50031545098999707
     # U = 11/6: k = 209847509734914867068928
 
-    # prove when u > U or v > U (u and v are symmetric)
-    # first prove when u >= 12
-    # result from sqrt-quadratic.py
-    x = symbols('x', negative = False)
-    # u >= 11 or smaller doesn't work, should use sqrt(x) >= cubic(x)
-    s = -x**2/2 + 3*x/2
-    f = s.subs(x, A0) + s.subs(x, B0) + s.subs(x, C0) - 1
-    print('f =', factor(f.subs(u, u + 12)))
-    # then prove when S(11)/6 <= u <= 12 and 0 <= v <= 12, by radical-prover
+    # prove when u > U or v > U (u and v are symmetric) by radical-prover
+    # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= U
+    # factor to avoid division by zero
+    A1, B1, C1 = factor(A0.subs(u, 1/u)), factor(B0.subs(u, 1/u)), factor(C0.subs(u, 1/u))
+    print('f(1/u,v) =', sqrt(A1) + sqrt(B1) + sqrt(C1) - 1)
+    # prove when 0 <= u <= U and 0 <= 1/v <= 1/U (v >= U) (not necessary due to symmetric)
+    A1, B1, C1 = factor(A0.subs(v, 1/v)), factor(B0.subs(v, 1/v)), factor(C0.subs(v, 1/v))
+    print('f(u,1/v) =', sqrt(A1) + sqrt(B1) + sqrt(C1) - 1)
+    # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= 1/v <= 1/U (v >= U)
+    A1, B1, C1 = factor(A0.subs(u, 1/u).subs(v, 1/v)), factor(B0.subs(u, 1/u).subs(v, 1/v)), factor(C0.subs(u, 1/u).subs(v, 1/v))
+    print('f(1/u,1/v) =', sqrt(A1) + sqrt(B1) + sqrt(C1) - 1)
+    print('C1 =', C1)
+    # division by zero when u = 0 and v = 0, so C1(0,0) is ambiguous
+    print('C1(0,0) =', C1.subs(u, 0).subs(v, 0))
+    print('C1(0,0) =', C1.subs(v, 0).subs(u, 0))
+    C2 = factor(C1.subs(u, v))
+    print('C1(u=v) =', C2)
+    print('C1(0,0) =', C2.subs(v, 0))
 
 if __name__ == '__main__':
     main()
