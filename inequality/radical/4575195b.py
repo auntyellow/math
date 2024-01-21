@@ -17,6 +17,9 @@ def w(u, v):
     m0, m2 = min(x, y, z), max(x, y, z)
     if m2 < 6*m0:
         return -w0
+    m1 = 1 - m0 - m2
+    if 25*m1 < m2:
+        return -w0
     return w0
 
 def main():
