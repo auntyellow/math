@@ -3,13 +3,14 @@ from numpy import array, linalg
 def main():
     # The Book of Why, Table 8.1
     # name, exp, edu, salary
-    data = \
-        ['Alice', 6, 0, 81000], \
-        ['Bert', 9, 1, 92500], \
-        ['Caroline', 9, 2, 97000], \
-        ['David', 8, 1, 91000], \
-        ['Ernest', 12, 1, 100000], \
-        ['Francis', 13, 0, 97000]
+    data = [
+        ['Alice', 6, 0, 81000],
+        ['Bert', 9, 1, 92500],
+        ['Caroline', 9, 2, 97000],
+        ['David', 8, 1, 91000],
+        ['Ernest', 12, 1, 100000],
+        ['Francis', 13, 0, 97000],
+    ]
 
     # Exp and Edu are independent: salary = x1*exp + x2*edu + x3 + error
     A, B = [], []

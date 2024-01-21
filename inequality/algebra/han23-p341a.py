@@ -1,4 +1,4 @@
-import numpy as np
+from math import log, nan
 import matplotlib.pyplot as plt
 
 def z(u, v):
@@ -14,13 +14,14 @@ def z(u, v):
     z1 = 0
     for z0 in zs:
         if z0 < 0:
-            return -10
+            return nan
         z1 += z0
-    return np.log(z1 + 1)
+    return log(z1 + 1)
 
 def main():
     len = 2
-    Z = [[z(j/100, i/100) for j in range(len*100)] for i in range(len*100)]
+    res = 300
+    Z = [[z(j/res, i/res) for j in range(len*res)] for i in range(len*res)]
     plt.imshow(Z, origin = 'lower', extent = [0, len, 0, len], cmap = plt.cm.hsv)
     plt.colorbar()
     plt.show()
