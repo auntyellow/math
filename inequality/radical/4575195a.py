@@ -2,8 +2,6 @@ from math import log, sqrt
 import matplotlib.pyplot as plt
 
 def z(u, v):
-    # f(x=min)
-    # z0 = sqrt((u**2 + 2*u + 5)/(u*v + u + v + 4)) + sqrt((4*v**2 + 8*v + 5)/(u + 3*v**2 + 6*v + 4)) + sqrt((4*u**2 + 8*u + v**2 + 2*v + 5)/(3*u**2 + 6*u + v + 4)) - 3*sqrt(5)/2
     # f(z=max)
     z0 = sqrt((u + 1)*(v**2 + 2*v + 5)/(3*u + v**2 + 2*v + 4)) + sqrt((u**2 + 2*u + 4*v**2 + 8*v + 5)/((v + 1)*(u**2 + 2*u + 3*v + 4))) + sqrt((v + 1)*(4*u**2 + 8*u + 5)/((u + 1)*(3*u*v + 3*u + 3*v + 4))) - 3*sqrt(5)/2
     # show value near 0 clearly

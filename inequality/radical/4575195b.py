@@ -15,10 +15,10 @@ def w(u, v):
     w0 = sqrt(log(1 + w0))
     # mark the case u < 5 in 4575195u.py
     m0, m2 = min(x, y, z), max(x, y, z)
-    if m2 < 6*m0:
-        return -w0
     m1 = 1 - m0 - m2
-    if 25*m1 < m2:
+    if m2 < 6*m0: # and m2 < 6*m1
+        return -w0
+    if 25*m1 < m2: # and 25*m0 < m2:
         return -w0
     return w0
 

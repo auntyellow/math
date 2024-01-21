@@ -111,18 +111,26 @@ def negative(A_n, D, x0, x1, y0, y1):
 def main():
     logging.basicConfig(level = 'INFO')
     x, y = symbols('x, y', negative = False)
+    '''
     u, v = x, y
-    # imo-2001-2
+    # imo-2001-2, slow
     A_n = [(u + 1)**2/(u**2 + 2*u + 8*v + 9), (v + 1)**2/(8*u + v**2 + 2*v + 9), 1/(8*u*v + 8*u + 8*v + 9)]
     # sqrt(A) + sqrt(B) + sqrt(C) >= 11/10 works; 10/9 doesn't work
-    # print('[' + negative(A_n, 1, S(11)/6, 12, 0, 12) + ']')
-    # result from 4575195.py
+    print('[' + negative(A_n, 1, S(11)/6, 12, 0, 12) + ']')
+    # result from 4575195.py, slow++
     # f(1/u,v)
     A_n = [(u + 1)*(v**2 + 2*v + 5)/(u*v**2 + 2*u*v + 4*u + 3), (4*u**2*v**2 + 8*u**2*v + 5*u**2 + 2*u + 1)/((v + 1)*(3*u**2*v + 4*u**2 + 2*u + 1)), (v + 1)*(5*u**2 + 8*u + 4)/((u + 1)*(3*u*v + 4*u + 3*v + 3))]
     print('[' + negative(A_n, 3*sqrt(5)/2, 0, S(1)/5, 0, 24) + ']')
     # f(u,1/v)
     A_n = [(u + 1)*(5*v**2 + 2*v + 1)/(3*u*v**2 + 4*v**2 + 2*v + 1), (u**2*v**2 + 2*u*v**2 + 5*v**2 + 8*v + 4)/((v + 1)*(u**2*v + 2*u*v + 4*v + 3)), (v + 1)*(4*u**2 + 8*u + 5)/((u + 1)*(3*u*v + 3*u + 4*v + 3))]
     print('[' + negative(A_n, 3*sqrt(5)/2, 0, 24, 0, S(1)/5) + ']')
+    '''
+    # find negative at (1, 1)
+    print('[' + negative([(x - 1)**2 + (y - 1)**2], sqrt(2), 0, 2, 0, 2) + ']')
+    # prove non-negative
+    print('[' + negative([(x - 1)**2 + (y - 1)**2 + 1], 1, 0, 2, 0, 2) + ']')
+    # unable to prove because zero point (1, 1) is not on the lattice
+    # print('[' + negative([(x - 1)**2 + (y - 1)**2 + 1], 1, 0, 3, 0, 3) + ']')
 
 if __name__ == '__main__':
     main()
