@@ -40,18 +40,31 @@ def main():
     # too slow
     # print('f4 =', factor(f4))
     # proved by SDS
+    print()
 
-    # prove when u > U V v > U (u and v are not symmetric, so prove when u > U, then prove when v > U) by radical-prover
-    # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= U
+    # TODO prove when u > U V v > U (u and v are not symmetric, so prove when u > U, then prove when v > U)
+    # TODO prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= U
     # factor to avoid division by zero
     A, B, C, D = factor(A0.subs(u, 1/u)), factor(B0.subs(u, 1/u)), factor(C0.subs(u, 1/u)), D0
-    print('f(1/u,v) =', sqrt(A) + sqrt(B) + sqrt(C) - sqrt(D0))
-    # prove when 0 <= u <= U and 0 <= 1/v <= 1/U (v >= U) (not necessary due to symmetric)
+    print('f(1/u,v) =', sqrt(A) + sqrt(B) + sqrt(C) - sqrt(D))
+    # TODO prove when 0 <= u <= U and 0 <= 1/v <= 1/U (v >= U) (not necessary due to symmetric)
     A, B, C = factor(A0.subs(v, 1/v)), factor(B0.subs(v, 1/v)), factor(C0.subs(v, 1/v))
-    print('f(u,1/v) =', sqrt(A) + sqrt(B) + sqrt(C) - sqrt(D0))
-    # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= 1/v <= 1/U (v >= U)
-    A, B, C = factor(A0.subs(u, 1/u).subs(v, 1/v)), factor(B0.subs(u, 1/u).subs(v, 1/v)), factor(C0.subs(u, 1/u).subs(v, 1/v))
-    print('f(1/u,1/v) =', sqrt(A) + sqrt(B) + sqrt(C) - sqrt(D0))
+    print('f(u,1/v) =', sqrt(A) + sqrt(B) + sqrt(C) - sqrt(D))
+    print()
+
+    # prove when x, y << z, plotted in 4575195c.py
+    A0 = (4*x**2 + y**2)/(3*x**2 + y*z)
+    B0 = cyc(A0, (x, y, z))
+    C0 = cyc(B0, (x, y, z))
+    # 12 doesn't work
+    V = 13
+    B = A0.subs(x, x/V).subs(y, y/V).subs(z, z + (V - 1)*x/V + (V - 1)*y/V)
+    C = B0.subs(x, x/V).subs(y, y/V).subs(z, z + (V - 1)*x/V + (V - 1)*y/V)
+    A = C0.subs(x, x/V).subs(y, y/V).subs(z, z + (V - 1)*x/V + (V - 1)*y/V)
+    f = B - D
+    print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + v))))
+    print('f(yzx) =', factor(f.subs(z, y*(1 + u)).subs(x, y*(1 + v))))
+    print('f(zxy) =', factor(f.subs(x, z*(1 + u)).subs(y, z*(1 + v))))
 
 if __name__ == '__main__':
     main()

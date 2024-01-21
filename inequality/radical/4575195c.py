@@ -11,12 +11,8 @@ def w(u, v):
     z = 1 - x - y
     if x < 0 or y < 0 or z < 0 or x*y + x*z + y*z == 0:
         return nan
-    w0 = sqrt((4*x**2 + y**2)/(3*x**2 + y*z)) + sqrt((4*y**2 + z**2)/(3*y**2 + x*z)) + sqrt((4*z**2 + x**2)/(3*z**2 + x*y)) - D
+    w0 = sqrt((x**2/100 + 4*(9*x/10 + 9*y/10 + z)**2)/(x*y/100 + 3*(9*x/10 + 9*y/10 + z)**2)) + sqrt((x**2/25 + y**2/100)/(3*x**2/100 + y*(9*x/10 + 9*y/10 + z)/10)) + sqrt((y**2/25 + (9*x/10 + 9*y/10 + z)**2)/(x*(9*x/10 + 9*y/10 + z)/10 + 3*y**2/100)) - 3*sqrt(5)/2
     w0 = sqrt(log(1 + w0))
-    # mark the case u < 5 in 4575195u.py
-    m0, m2 = min(x, y, z), max(x, y, z)
-    if m2 < 6*m0:
-        return -w0
     return w0
 
 def main():
