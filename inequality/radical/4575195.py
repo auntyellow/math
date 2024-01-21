@@ -43,11 +43,11 @@ def main():
     print()
 
     # prove when u > U V v > U (u and v are not symmetric, so prove when u > U, then prove when v > U)
-    # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= 24 by radical-prover
+    # prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= 23 by radical-prover
     # factor to avoid division by zero
     A, B, C, D = factor(A1.subs(u, 1/u)), factor(B1.subs(u, 1/u)), factor(C1.subs(u, 1/u)), D1
     print('f(1/u,v) =', sqrt(A) + sqrt(B) + sqrt(C) - sqrt(D))
-    # prove when 0 <= u <= 24 and 0 <= 1/v <= 1/U (v >= U) by radical-prover
+    # prove when 0 <= u <= 23 and 0 <= 1/v <= 1/U (v >= U) by radical-prover
     A, B, C, D = factor(A1.subs(v, 1/v)), factor(B1.subs(v, 1/v)), factor(C1.subs(v, 1/v)), D1
     print('f(u,1/v) =', sqrt(A) + sqrt(B) + sqrt(C) - sqrt(D))
     # hard to prove when u -> oo and v -> oo due to A -> oo and ambiguous B
@@ -58,7 +58,8 @@ def main():
     '''
     print()
 
-    # prove when x, y << z, plotted in 4575195c.py, which covers (TODO prove?) u >= 24 and v >= 24
+    # prove when x, y << z, plotted in 4575195c.py, which covers u >= 23 and v >= 23
+    # z >= m*x, z >= m*y, m >= 2*V - 2, see affine.py
     # 12 doesn't work
     V = 13
     subs1 = {x: x/V, y: y/V}
