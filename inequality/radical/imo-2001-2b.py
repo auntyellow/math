@@ -24,8 +24,9 @@ def z(x, y):
 def main():
     len = 1
     res = 500
-    Z = [[z(j/res, i/res) for j in range(len*res)] for i in range(len*res)]
-    plt.imshow(Z, origin = 'lower', extent = [0, len, 0, len], cmap = plt.cm.hsv)
+    aspect = .87
+    Z = [[z(j/res, i/res) for j in range(len*res)] for i in range(round(len*res*aspect))]
+    plt.imshow(Z, origin = 'lower', extent = [0, len, 0, len*aspect], cmap = plt.cm.hsv)
     plt.colorbar()
     plt.show()
 

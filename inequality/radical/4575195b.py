@@ -43,8 +43,9 @@ def plot(*P_n):
 def main():
     len = 1
     res = 500
-    W = [[w(j/res, i/res) for j in range(len*res)] for i in range(len*res)]
-    plt.imshow(W, origin = 'lower', extent = [0, len, 0, len], cmap = plt.cm.hsv)
+    aspect = .87
+    W = [[w(j/res, i/res) for j in range(len*res)] for i in range(round(len*res*aspect))]
+    plt.imshow(W, origin = 'lower', extent = [0, len, 0, len*aspect], cmap = plt.cm.hsv)
     oo = 1e+10
     P00, P0O = xyz(0, 0), xyz(0, oo)
     plot((P0O[1], P0O[2]), (P00[0], P00[1]), (P0O[0], P0O[1]))

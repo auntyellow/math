@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 S13 = 1/sqrt(3)
 S43 = 2/sqrt(3)
 D = 3*sqrt(5)/2
+m, n = 121, 315
+max = 1/n - 1/(n + m)
 
 def w(u, v):
     x = u - S13*v
@@ -11,8 +13,10 @@ def w(u, v):
     z = 1 - x - y
     if x < 0 or y < 0 or z < 0 or x*y + x*z + y*z == 0:
         return nan
-    w0 = sqrt((x**2/169 + 4*(12*x/13 + 12*y/13 + z)**2)/(x*y/169 + 3*(12*x/13 + 12*y/13 + z)**2)) + sqrt((4*x**2/169 + y**2/169)/(3*x**2/169 + y*(12*x/13 + 12*y/13 + z)/13)) + sqrt((4*y**2/169 + (12*x/13 + 12*y/13 + z)**2)/(x*(12*x/13 + 12*y/13 + z)/13 + 3*y**2/169)) - D
-    return sqrt(log(1 + w0))
+    w0 = x**3/(n*x**2 + m*y**2) + y**3/(n*y**2 + m*z**2) + z**3/(n*z**2 + m*x**2) - (x + y + z)/(n + m)
+    if w0 < 0:
+        return -.1 - sqrt(-w0/max)
+    return sqrt(w0/max)
 
 def main():
     len = 1

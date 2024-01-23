@@ -417,25 +417,39 @@ public class SDSTest {
 		// A_3 needs 2; H_3 and Z_3 don't work
 		assertEquals(3, result.getDepth());
 		// https://math.stackexchange.com/q/1777075
+		// from 1777075.py
+		// m, n = 5, 13, non-negative, original question
 		f = new BigPoly("xyz", "325*x**5*y**2 + 125*x**5*z**2 + 325*x**4*y**3 - 845*x**4*y**2*z - 325*x**4*y*z**2 - 325*x**4*z**3 - 325*x**3*y**4 + 720*x**3*y**2*z**2 + 325*x**3*z**4 + 125*x**2*y**5 - 325*x**2*y**4*z + 720*x**2*y**3*z**2 + 720*x**2*y**2*z**3 - 845*x**2*y*z**4 + 325*x**2*z**5 - 845*x*y**4*z**2 - 325*x*y**2*z**4 + 325*y**5*z**2 + 325*y**4*z**3 - 325*y**3*z**4 + 125*y**2*z**5");
 		result = SDS.sds(f, T_n);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
 		// A_3 needs 5; H_3 and Z_3 don't work
 		assertEquals(4, result.getDepth());
-		f = new BigPoly("xyz", "72*x**5*y**2 + 27*x**5*z**2 + 72*x**4*y**3 - 192*x**4*y**2*z - 72*x**4*y*z**2 - 72*x**4*z**3 - 72*x**3*y**4 + 165*x**3*y**2*z**2 + 72*x**3*z**4 + 27*x**2*y**5 - 72*x**2*y**4*z + 165*x**2*y**3*z**2 + 165*x**2*y**2*z**3 - 192*x**2*y*z**4 + 72*x**2*z**5 - 192*x*y**4*z**2 - 72*x*y**2*z**4 + 72*y**5*z**2 + 72*y**4*z**3 - 72*y**3*z**4 + 27*y**2*z**5");
+		// m, n = 63, 164, non-negative
+		f = new BigPoly("xyz", "650916*x**5*y**2 + 250047*x**5*z**2 + 650916*x**4*y**3 - 1694448*x**4*y**2*z - 650916*x**4*y*z**2 - 650916*x**4*z**3 - 650916*x**3*y**4 + 1444401*x**3*y**2*z**2 + 650916*x**3*z**4 + 250047*x**2*y**5 - 650916*x**2*y**4*z + 1444401*x**2*y**3*z**2 + 1444401*x**2*y**2*z**3 - 1694448*x**2*y*z**4 + 650916*x**2*z**5 - 1694448*x*y**4*z**2 - 650916*x*y**2*z**4 + 650916*y**5*z**2 + 650916*y**4*z**3 - 650916*y**3*z**4 + 250047*y**2*z**5");
+		result = SDS.sds(f, T_n);
+		assertTrue(result.isNonNegative());
+		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
+		// A_3 needs 9; H_3 and Z_3 don't work
+		assertEquals(7, result.getDepth());
+		// m, n = 121, 315, negative
+		f = new BigPoly("xyz", "4611915*x**5*y**2 + 1771561*x**5*z**2 + 4611915*x**4*y**3 - 12006225*x**4*y**2*z - 4611915*x**4*y*z**2 - 4611915*x**4*z**3 - 4611915*x**3*y**4 + 10234664*x**3*y**2*z**2 + 4611915*x**3*z**4 + 1771561*x**2*y**5 - 4611915*x**2*y**4*z + 10234664*x**2*y**3*z**2 + 10234664*x**2*y**2*z**3 - 12006225*x**2*y*z**4 + 4611915*x**2*z**5 - 12006225*x*y**4*z**2 - 4611915*x*y**2*z**4 + 4611915*y**5*z**2 + 4611915*y**4*z**3 - 4611915*y**3*z**4 + 1771561*y**2*z**5");
+		result = SDS.sds(f);
+		assertTrue(!result.isNonNegative());
+		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
+		assertEquals(4, result.getDepth());
 		result = SDS.sds(f, T_n);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
-		assertEquals(2, result.getDepth());
+		assertEquals(7, result.getDepth());
 		result = SDS.sds(f, H_3); // Y_3 == H_3
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
-		assertEquals(3, result.getDepth());
+		assertEquals(8, result.getDepth());
 		result = SDS.sds(f, Z_n);
 		assertTrue(!result.isNonNegative());
 		assertTrue(subs(f, result.getNegativeAt(), 'x').signum() < 0);
-		assertEquals(2, result.getDepth());
+		assertEquals(10, result.getDepth());
 		// https://math.stackexchange.com/q/3526427
 		f = new BigPoly("xyz", "x**9*y**3 - x**9*y**2*z - x**9*y*z**2 + x**9*z**3 + 6*x**8*y**4 + x**8*y**3*z - 10*x**8*y**2*z**2 + x**8*y*z**3 + 6*x**8*z**4 + 15*x**7*y**5 + 19*x**7*y**4*z - 26*x**7*y**3*z**2 - 26*x**7*y**2*z**3 + 19*x**7*y*z**4 + 15*x**7*z**5 + 20*x**6*y**6 + 45*x**6*y**5*z - 30*x**6*y**4*z**2 - 110*x**6*y**3*z**3 - 30*x**6*y**2*z**4 + 45*x**6*y*z**5 + 20*x**6*z**6 + 15*x**5*y**7 + 45*x**5*y**6*z - 26*x**5*y**5*z**2 - 202*x**5*y**4*z**3 - 202*x**5*y**3*z**4 - 26*x**5*y**2*z**5 + 45*x**5*y*z**6 + 15*x**5*z**7 + 6*x**4*y**8 + 19*x**4*y**7*z - 30*x**4*y**6*z**2 - 202*x**4*y**5*z**3 + 1410*x**4*y**4*z**4 - 202*x**4*y**3*z**5 - 30*x**4*y**2*z**6 + 19*x**4*y*z**7 + 6*x**4*z**8 + x**3*y**9 + x**3*y**8*z - 26*x**3*y**7*z**2 - 110*x**3*y**6*z**3 - 202*x**3*y**5*z**4 - 202*x**3*y**4*z**5 - 110*x**3*y**3*z**6 - 26*x**3*y**2*z**7 + x**3*y*z**8 + x**3*z**9 - x**2*y**9*z - 10*x**2*y**8*z**2 - 26*x**2*y**7*z**3 - 30*x**2*y**6*z**4 - 26*x**2*y**5*z**5 - 30*x**2*y**4*z**6 - 26*x**2*y**3*z**7 - 10*x**2*y**2*z**8 - x**2*y*z**9 - x*y**9*z**2 + x*y**8*z**3 + 19*x*y**7*z**4 + 45*x*y**6*z**5 + 45*x*y**5*z**6 + 19*x*y**4*z**7 + x*y**3*z**8 - x*y**2*z**9 + y**9*z**3 + 6*y**8*z**4 + 15*y**7*z**5 + 20*y**6*z**6 + 15*y**5*z**7 + 6*y**4*z**8 + y**3*z**9");
 		result = SDS.sds(f, T_n);
