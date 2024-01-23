@@ -40,7 +40,7 @@ def warn(f, f0, x0, y0):
 def subs2(f, x0, y0):
     x, y = symbols('x, y', negative = False)
     f0, f1 = f.subs(x, x0).subs(y, y0), f.subs(y, y0).subs(x, x0)
-    # TODO what to return if nan or oo?
+    # safe to return 0
     if f0 == nan or abs(f0) == oo:
         warn(f, f0, x0, y0)
         f0 = 0
@@ -95,42 +95,39 @@ def negative(A_n, D, x0, x1, y0, y1):
             return ''
     
     # divide
+    if dx < dy:
+        ym = y0 + dy/S(2)
+        n = negative(A_n, D, x0, x1, ym, y1)
+        if n != '':
+            return n
+        return negative(A_n, D, x0, x1, y0, ym)
     xm = x0 + dx/S(2)
-    ym = y0 + dy/S(2)
-    n = negative(A_n, D, xm, x1, ym, y1)
+    n = negative(A_n, D, xm, x1, y0, y1)
     if n != '':
         return n
-    n = negative(A_n, D, x0, xm, ym, y1)
-    if n != '':
-        return n
-    n = negative(A_n, D, xm, x1, y0, ym)
-    if n != '':
-        return n
-    return negative(A_n, D, x0, xm, y0, ym)
+    return negative(A_n, D, x0, xm, y0, y1)
 
 def main():
     logging.basicConfig(level = 'INFO')
     x, y = symbols('x, y', negative = False)
-    '''
+    # find negative at (1, 1)
+    print('[' + negative([(x - 1)**2 + (y - 1)**2], sqrt(2), 0, 2, 0, 2) + ']')
+    # prove non-negative
+    print('[' + negative([(x - 1)**2 + (y - 1)**2 + 1], 1, 0, 2, 0, 2) + ']')
+    # non-termination due to zero point (1, 1) not at the lattice
+    # print('[' + negative([(x - 1)**2 + (y - 1)**2 + 1], 1, 0, 3, 0, 3) + ']')
     u, v = x, y
-    # imo-2001-2, slow
+    # result from imo-2001-2.py
     A_n = [(u + 1)**2/(u**2 + 2*u + 8*v + 9), (v + 1)**2/(8*u + v**2 + 2*v + 9), 1/(8*u*v + 8*u + 8*v + 9)]
-    # sqrt(A) + sqrt(B) + sqrt(C) >= 11/10 works; 10/9 doesn't work
+    # sqrt(A) + sqrt(B) + sqrt(C) >= 11/10 works, too slow; 10/9 doesn't work
     print('[' + negative(A_n, 1, S(11)/6, 12, 0, 12) + ']')
-    # result from 4575195.py, slow++
-    # f(1/u,v)
+    # result from 4575195.py
+    # f(1/u,v), too slow
     A_n = [(u + 1)*(v**2 + 2*v + 5)/(u*v**2 + 2*u*v + 4*u + 3), (4*u**2*v**2 + 8*u**2*v + 5*u**2 + 2*u + 1)/((v + 1)*(3*u**2*v + 4*u**2 + 2*u + 1)), (v + 1)*(5*u**2 + 8*u + 4)/((u + 1)*(3*u*v + 4*u + 3*v + 3))]
     print('[' + negative(A_n, 3*sqrt(5)/2, 0, S(1)/5, 0, 23) + ']')
     # f(u,1/v)
     A_n = [(u + 1)*(5*v**2 + 2*v + 1)/(3*u*v**2 + 4*v**2 + 2*v + 1), (u**2*v**2 + 2*u*v**2 + 5*v**2 + 8*v + 4)/((v + 1)*(u**2*v + 2*u*v + 4*v + 3)), (v + 1)*(4*u**2 + 8*u + 5)/((u + 1)*(3*u*v + 3*u + 4*v + 3))]
     print('[' + negative(A_n, 3*sqrt(5)/2, 0, 23, 0, S(1)/5) + ']')
-    '''
-    # find negative at (1, 1)
-    print('[' + negative([(x - 1)**2 + (y - 1)**2], sqrt(2), 0, 2, 0, 2) + ']')
-    # prove non-negative
-    print('[' + negative([(x - 1)**2 + (y - 1)**2 + 1], 1, 0, 2, 0, 2) + ']')
-    # unable to prove because zero point (1, 1) is not on the lattice
-    # print('[' + negative([(x - 1)**2 + (y - 1)**2 + 1], 1, 0, 3, 0, 3) + ']')
 
 if __name__ == '__main__':
     main()
