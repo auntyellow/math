@@ -12,10 +12,10 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    u, v, x, y, z = symbols('u, v, x, y, z', negative = False)
-    m, n = 5, 13    # non-negative, original question
-    m, n = 63, 164  # non-negative
-    m, n = 121, 315 # negative
+    m, n, u, v, x, y, z = symbols('m, n, u, v, x, y, z', negative = False)
+    # m, n = 5, 13    # non-negative, original question
+    # m, n = 63, 164  # non-negative
+    # m, n = 121, 315 # negative
     f = sum_cyc(x**3/(n*x**2 + m*y**2) - x/(n + m), (x, y, z))
     print('f =', f)
     fn, fd = fraction(cancel(f))

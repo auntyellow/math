@@ -47,7 +47,7 @@ public class Han23P341 {
 			log.info("depth = " + depth + ", polynomials = " + polys.size());
 			int traceCurr = 0;
 			Set<BigPoly> polys1 = new HashSet<>();
-			int trivials = 0;
+			int nonTrivials = 0;
 			for (BigPoly f0 : polys) {
 				traceCurr ++;
 				log.info("depth = " + depth + ", polynomial: " + traceCurr + "/" + polys.size());
@@ -77,12 +77,12 @@ public class Han23P341 {
 						if (!SDS.sds(coeff1.homogenize('w'), SDS.Transform.T_n).isNonNegative()) {
 							System.out.println("        " + coeff1 + ",");
 							trivial = false;
-							trivials ++;
+							nonTrivials ++;
 						}
 					}
 					if (!trivial) {
 						polys1.add(f1);
-						log.info("after depth = " + depth + ": polynomials = " + polys1.size() + ", trivials = " + trivials);
+						log.info("after depth = " + depth + ": polynomials = " + polys1.size() + ", non_trivials = " + nonTrivials);
 					}
 				}
 			}
