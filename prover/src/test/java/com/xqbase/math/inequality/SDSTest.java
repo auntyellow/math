@@ -416,9 +416,9 @@ public class SDSTest {
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
 		// A_3 needs 2; H_3 and Z_3 don't work
 		assertEquals(3, result.getDepth());
-		// https://math.stackexchange.com/q/1777075
-		// from 1777075.py
-		// m, n = 5, 13, non-negative, original question
+		// https://math.stackexchange.com/q/4850712
+		// from 4850712u.py
+		// m, n = 5, 13, non-negative, https://math.stackexchange.com/q/1777075
 		f = new BigPoly("xyz", "325*x**5*y**2 + 125*x**5*z**2 + 325*x**4*y**3 - 845*x**4*y**2*z - 325*x**4*y*z**2 - 325*x**4*z**3 - 325*x**3*y**4 + 720*x**3*y**2*z**2 + 325*x**3*z**4 + 125*x**2*y**5 - 325*x**2*y**4*z + 720*x**2*y**3*z**2 + 720*x**2*y**2*z**3 - 845*x**2*y*z**4 + 325*x**2*z**5 - 845*x*y**4*z**2 - 325*x*y**2*z**4 + 325*y**5*z**2 + 325*y**4*z**3 - 325*y**3*z**4 + 125*y**2*z**5");
 		result = SDS.sds(f, T_n);
 		assertTrue(result.isNonNegative());
