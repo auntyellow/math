@@ -16,8 +16,8 @@ import com.xqbase.math.polys.BigPoly;
 import com.xqbase.math.polys.Mono;
 import com.xqbase.math.polys.MutableBig;
 
-public class _1777075 {
-	private static Logger log = LoggerFactory.getLogger(_1777075.class);
+public class _4850712 {
+	private static Logger log = LoggerFactory.getLogger(_4850712.class);
 
 	static {
 		java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
@@ -34,7 +34,7 @@ public class _1777075 {
 
 	public static void main(String[] args) throws Exception {
 		String vars = "nxyz";
-		// fn from 1777075.py
+		// fn from 4850712u.py
 		BigPoly fn = new BigPoly(vars, "x**5*z**2 - x**3*y**2*z**2 + x**2*y**5 - x**2*y**3*z**2 - x**2*y**2*z**3 + y**2*z**5 + n*x**5*y**2 + n*x**4*y**3 - n*x**4*y*z**2 - n*x**4*z**3 - n*x**3*y**4 + n*x**3*z**4 - n*x**2*y**4*z + n*x**2*z**5 - n*x*y**2*z**4 + n*y**5*z**2 + n*y**4*z**3 - n*y**3*z**4 - n**2*x**4*y**2*z + n**2*x**3*y**2*z**2 + n**2*x**2*y**3*z**2 + n**2*x**2*y**2*z**3 - n**2*x**2*y*z**4 - n**2*x*y**4*z**2");
 		Mono n2 = new Mono("n", new short[] {2});
 		Mono n1 = new Mono("n", new short[] {1});

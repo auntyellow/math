@@ -10,7 +10,8 @@ def z(u, v):
 
 def main():
     len = 1
-    Z = [[z(j/100, i/100) for j in range(len*100)] for i in range(len*100)]
+    res = 500
+    Z = [[z(j/res, i/res) for j in range(len*res)] for i in range(len*res)]
     plt.imshow(Z, origin = 'lower', extent = [0, len, 0, len], cmap = plt.cm.hsv)
     plt.colorbar()
     plt.show()
