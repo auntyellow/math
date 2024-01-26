@@ -28,15 +28,6 @@ def sign(f):
             neg = true
     return 1 if pos else (-1 if neg else 0)
 
-warning_set = set()
-warning_set2 = set()
-
-def warn(f, f0, x0, y0):
-    tuple = (f, f0, x0, y0)
-    if not tuple in warning_set:
-        warning_set.add(tuple)
-        logging.warning('{} = {} at ({}, {})'.format(f, f0, x0, y0))
-
 # May not work if:
 # 1. zero on x or y != m/2^n, e.g. (x-1/3)^2+y^2
 # 2. critical point near x = y or x = 1/y (why?)
@@ -48,21 +39,9 @@ def negative(f, x0, x1, y0, y1):
     x, y = symbols('x, y', negative = False)
 
     # try to find counterexample
-    f0, f1 = f.subs(x, x1).subs(y, y1), f.subs(y, y1).subs(x, x1)
-    if f0 == nan or abs(f0) == oo:
-        warn(f, f0, x1, y1)
-        f0 = 0
-    if f1 == nan or abs(f1) == oo:
-        warn(f, f1, x1, y1)
-        f1 = 0
-    if f0 != f1:
-        tuple = (f, f0, f1, x1, y1)
-        if not tuple in warning_set2:
-            warning_set2.add(tuple)
-            logging.warning('{} = {} or {} at ({}, {})'.format(f, f0, f1, x1, y1))
-    f0 = min(f0, f1)
+    f0 = f.subs(x, x0).subs(y, y0)
     if f0 < 0:
-        return x1, y1, f0
+        return x0, y0, f0
 
     # try to prove by buffalo way
     dx, dy = x1 - x0, y1 - y0
@@ -81,15 +60,23 @@ def negative(f, x0, x1, y0, y1):
     # divide
     if dx < dy:
         ym = y0 + dy/S(2)
-        n = negative(f, x0, x1, y0, ym)
+        n = negative(f, x0, x1, ym, y1)
         if n != None:
             return n
-        return negative(f, x0, x1, ym, y1)
+        return negative(f, x0, x1, y0, ym)
     xm = x0 + dx/S(2)
-    n = negative(f, x0, xm, y0, y1)
+    n = negative(f, xm, x1, y0, y1)
     if n != None:
         return n
-    return negative(f, xm, x1, y0, y1)
+    return negative(f, x0, xm, y0, y1)
+
+def inverse(f, *vars):
+    f1 = f
+    logging.info('before inverse: {}'.format(f1))
+    for var in vars:
+        f1 = factor(f1.subs(var, 1/var))*var**Poly(f1, var).degree()
+        logging.info('after inverse about {}: {}'.format(var, f1))
+    return f1
 
 # return '' if f >= 0, or the counterexample
 # param f: 2-var function about x and y
@@ -99,15 +86,15 @@ def negative_oo(f):
     if n != None:
         x0, y0, f0 = n
         return 'f({},{})={}'.format(x0, y0, f0)
-    n = negative(f.subs(x, 1/x), 0, 1, 0, 1)
+    n = negative(inverse(f, x), 0, 1, 0, 1)
     if n != None:
         x0, y0, f0 = n
         return 'f({},{})={}'.format(1/x0, y0, f0)
-    n = negative(f.subs(y, 1/y), 0, 1, 0, 1)
+    n = negative(inverse(f, y), 0, 1, 0, 1)
     if n != None:
         x0, y0, f0 = n
         return 'f({},{})={}'.format(y0, 1/y0, f0)
-    n = negative(f.subs(x, 1/x).subs(y, 1/y), 0, 1, 0, 1)
+    n = negative(inverse(f, x, y), 0, 1, 0, 1)
     if n != None:
         x0, y0, f0 = n
         return 'f({},{})={}'.format(1/x0, 1/y0, f0)
