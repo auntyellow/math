@@ -86,7 +86,7 @@ public class Rational extends MutableNumber<Rational> {
 	@Override
 	public String toString() {
 		Rational r = reduced();
-		return r.p + "/" + r.q;
+		return r.p + (r.q.equals(_1) ? "" : "/" + r.q);
 	}
 
 	@Override
