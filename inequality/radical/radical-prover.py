@@ -28,31 +28,12 @@ def sign(f):
             neg = true
     return 1 if pos else (-1 if neg else 0)
 
-warning_set = set()
-warning_set2 = set()
-
-def warn(f, f0, x0, y0):
-    tuple = (f, f0, x0, y0)
-    if not tuple in warning_set:
-        warning_set.add(tuple)
-        logging.warning('{} = {} at ({}, {})'.format(f, f0, x0, y0))
-
 def subs2(f, x0, y0):
     x, y = symbols('x, y', negative = False)
     f0, f1 = f.subs(x, x0).subs(y, y0), f.subs(y, y0).subs(x, x0)
-    # safe to return 0
-    if f0 == nan or abs(f0) == oo:
-        warn(f, f0, x0, y0)
-        f0 = 0
-    if f1 == nan or abs(f1) == oo:
-        warn(f, f1, x0, y0)
-        f1 = 0
     if f0 != f1:
-        tuple = (f, f0, f1, x0, y0)
-        if not tuple in warning_set2:
-            warning_set2.add(tuple)
-            logging.warning('{} = {} or {} at ({}, {})'.format(f, f0, f1, x0, y0))
-    return min(f0, f1)
+        raise Exception('{} has ambiguous values {} and {} at ({}, {})'.format(f, f0, f1, x0, y0))
+    return f0
 
 # return '' if sum(sqrt(A_n)) - D >= 0, or the counterexample
 # param A_n: 2-var functions about x and y
