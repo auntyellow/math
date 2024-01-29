@@ -6,10 +6,11 @@ public class Rational extends MutableNumber<Rational> {
 	private static final long serialVersionUID = 1L;
 	private static final BigInteger _0 = BigInteger.ZERO;
 	private static final BigInteger _1 = BigInteger.ONE;
-	private static final Rational __0 = new Rational(_0);
 	private static final Rational __1 = new Rational(_1);
 
-	private BigInteger p, q;
+	private BigInteger p;
+	/** q > 0 */
+	private BigInteger q;
 
 	public BigInteger getP() {
 		return p;
@@ -19,48 +20,53 @@ public class Rational extends MutableNumber<Rational> {
 		return q;
 	}
 
+	private void reduce() {
+		if (p.equals(_0)) {
+			q = _1;
+			return;
+		}
+		BigInteger gcd = p.gcd(q);
+		if (gcd.equals(_1)) {
+			return;
+		}
+		p = p.divide(gcd);
+		q = q.divide(gcd);
+	}
+
+	private void posQ() {
+		int sign = q.signum();
+		if (sign == 0) {
+			throw new ArithmeticException("/ by zero");
+		}
+		if (sign < 0) {
+			this.p = p.negate();
+			this.q = q.negate();
+		}
+	}
+
 	public Rational(BigInteger p) {
 		this.p = p;
 		q = _1;
 	}
 
 	public Rational(BigInteger p, BigInteger q) {
-		if (q.equals(_0)) {
-			throw new ArithmeticException("/ by zero");
-		}
 		this.p = p;
 		this.q = q;
+		posQ();
+		reduce();
 	}
 
 	public Rational(String s) {
-		int slash = s.indexOf(s);
+		int slash = s.indexOf('/');
 		if (slash < 0) {
 			p = new BigInteger(s);
 			q = _1;
 		} else {
 			p = new BigInteger(s.substring(0, slash));
 			q = new BigInteger(s.substring(slash + 1));
-			if (q.equals(_0)) {
-				throw new ArithmeticException("/ by zero");
-			}
+			posQ();
+			reduce();
 		}
-	}
-
-	public Rational reduced() {
-		if (p.equals(_0)) {
-			return __0;
-		}
-		BigInteger gcd = p.gcd(q);
-		if (gcd.equals(_1)) {
-			if (q.signum() > 0) {
-				return this;
-			}
-			return new Rational(p.negate(), q.negate());
-		}
-		if (q.signum() > 0) {
-			return new Rational(p.divide(gcd), q.divide(gcd));
-		}
-		return new Rational(p.divide(gcd).negate(), q.divide(gcd).negate());
 	}
 
 	@Override
@@ -85,14 +91,12 @@ public class Rational extends MutableNumber<Rational> {
 
 	@Override
 	public String toString() {
-		Rational r = reduced();
-		return r.p + (r.q.equals(_1) ? "" : "/" + r.q);
+		return p + (q.equals(_1) ? "" : "/" + q);
 	}
 
 	@Override
 	public int hashCode() {
-		Rational r = reduced();
-		return r.p.hashCode()*31 + r.q.hashCode();
+		return p.hashCode()*31 + q.hashCode();
 	}
 
 	@Override
@@ -119,7 +123,7 @@ public class Rational extends MutableNumber<Rational> {
 
 	@Override
 	public int signum() {
-		return p.signum()*q.signum();
+		return p.signum();
 	}
 
 	@Override
@@ -128,6 +132,7 @@ public class Rational extends MutableNumber<Rational> {
 		BigInteger q0 = q;
 		p = p0.multiply(n1.q).add(q0.multiply(n1.p));
 		q = q0.multiply(n1.q);
+		reduce();
 	}
 
 	@Override
@@ -138,6 +143,7 @@ public class Rational extends MutableNumber<Rational> {
 		BigInteger q1 = n1.q.multiply(n2.q);
 		p = p0.multiply(q1).add(q0.multiply(p1));
 		q = q0.multiply(q1);
+		reduce();
 	}
 
 	@Override
@@ -148,6 +154,7 @@ public class Rational extends MutableNumber<Rational> {
 		BigInteger q1 = n1.q.multiply(n2.q).multiply(n3.q);
 		p = p0.multiply(q1).add(q0.multiply(p1));
 		q = q0.multiply(q1);
+		reduce();
 	}
 
 	@Override

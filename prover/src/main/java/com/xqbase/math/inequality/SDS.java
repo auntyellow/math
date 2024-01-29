@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.xqbase.math.polys.Mono;
 import com.xqbase.math.polys.MutableNumber;
 import com.xqbase.math.polys.Poly;
+import com.xqbase.math.polys.Rational;
 
 /**
  * Successive Difference Substitution<p>
@@ -390,11 +391,14 @@ public class SDS {
 			T[] column = f.newVector(len);
 			if (transform == Transform.T_n) {
 				T lcm = one;
-				for (int i = 1; i <= len; i ++) {
-					T i_ = f.valueOf(i);
-					T t = f.newZero();
-					t.addMul(lcm, i_);
-					lcm = t.div(lcm.gcd(i_));
+				if (!(one instanceof Rational)) {
+					// gcd doesn't work for Rational
+					for (int i = 1; i <= len; i ++) {
+						T i_ = f.valueOf(i);
+						T t = f.newZero();
+						t.addMul(lcm, i_);
+						lcm = t.div(lcm.gcd(i_));
+					}
 				}
 				for (int i = 0; i < len; i ++) {
 					column[i] = lcm.div(f.valueOf(i + 1));
