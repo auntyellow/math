@@ -5,6 +5,22 @@ import java.math.BigInteger;
 public class MutableBig extends MutableNumber<MutableBig> {
 	private static final long serialVersionUID = 1L;
 
+	private static final MutableBig[] cache =
+			new MutableBig[Byte.MAX_VALUE - Byte.MIN_VALUE + 1];
+
+	static {
+		for (int i = Byte.MIN_VALUE; i <= Byte.MAX_VALUE; i ++) {
+			cache[i - Byte.MIN_VALUE] = new MutableBig(BigInteger.valueOf(i));
+		}
+	}
+
+	public static MutableBig valueOf(long n) {
+		if (n < Byte.MIN_VALUE || n > Byte.MAX_VALUE) {
+			return new MutableBig(BigInteger.valueOf(n));
+		}
+		return cache[(int) n - Byte.MIN_VALUE];
+	}
+
 	private BigInteger n;
 
 	public MutableBig(BigInteger n) {

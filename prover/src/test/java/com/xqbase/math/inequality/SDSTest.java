@@ -493,14 +493,14 @@ public class SDSTest {
 		// http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545
 		// ex 4.1
 		RationalPoly f = new RationalPoly("xyz", "9*x**2 + 6*x*y - 6*x*z + y**2 - 2*y*z + z**2");
-		// T_3 works for 3e-6 within 16 iterations, 3e-7 within 18 iterations (73801 polynomials after 13th iteration); A_3 doesn't work
+		// T_3 works for 1/3e6 within 16 iterations, 1/3e7 within 18 iterations (73801 polynomials after 13th iteration); A_3 doesn't work
 		RationalPoly pos = new RationalPoly("xyz", "z**2");
 		RationalPoly f1 = addMul(f, f.valueOf("1/3000000"), pos);
 		SDS.Result<Rational> result = SDS.sds(f1, T_n);
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(16, result.getDepth());
-		// H_3 works for 3e-6 within 13 iterations, 3e-7 within 15 iterations, Y_3 == H_3
+		// H_3 works for 1/3e6 within 13 iterations, 1/3e7 within 15 iterations, Y_3 == H_3
 		result = SDS.sds(f1, H_3);
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
@@ -509,7 +509,7 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
 		assertEquals(15, result.getDepth());
-		// Z_3 works for 3e-5 within 19 iterations, 3e-6 within 22 iterations
+		// Z_3 works for 1/3e5 within 19 iterations, 1/3e6 within 22 iterations
 		result = SDS.sds(addMul(f, f.valueOf("1/300000"), pos), Z_n);
 		assertTrue(result.isNonNegative());
 		assertTrue(result.getZeroAt().isEmpty());
