@@ -13,9 +13,10 @@ import com.xqbase.math.polys.RationalPoly;
 public class BinarySearch {
 	private static Logger log = LoggerFactory.getLogger(BinarySearch.class);
 
+	private static final BigInteger __1 = BigInteger.ONE;
 	private static final Rational _0 = Rational.valueOf(0);
 	private static final Rational _1 = Rational.valueOf(1);
-	private static final Rational HALF = new Rational(BigInteger.ONE, BigInteger.valueOf(2));
+	private static final Rational HALF = new Rational(__1, BigInteger.valueOf(2));
 	private static final Rational[] EMPTY_RESULT = new Rational[0];
 	private static final RationalPoly[] EMPTY_POLYS = new RationalPoly[0];
 
@@ -23,15 +24,32 @@ public class BinarySearch {
 		return new Rational(BigInteger.ZERO);
 	}
 
+	/**
+	 * @param n a positive number
+	 * @return s that s^2 >= n
+	 */
 	private static Rational sqrt(Rational n) {
-		if (n.compareTo(_1) < 0) {
-			// TODO set result >= sqrt(n)
-			return _1.div(sqrt(_1.div(n)));
+		Rational n1;
+		// initial estimate, see BigInteger.sqrt() (jdk 9+) for more accurate approach:
+		// https://github.com/openjdk/jdk/blob/jdk-11-ga/src/java.base/share/classes/java/math/MutableBigInteger.java#L1869
+		if (n.compareTo(_1) <= 0) {
+			// t = q/p
+			// quick estimate: 1-3:1; 4-15:2; 16-63:4; 64-255:8; ...
+			// e = (t.bit_length - 1)/2
+			// s = 2^e <= sqrt(t)
+			BigInteger t = n.getQ().divide(n.getP());
+			int e = (t.bitLength() - 1)/2;
+			n1 = new Rational(__1, __1.shiftLeft(e));
+		} else {
+			// t = (p + q - 1)/q >= p/q
+			// quick estimate: 2-4:2; 5-16:4; 17-64:8; 65-256:16; ...
+			// e = ((t - 1).bit_length + 1)/2
+			// s = 2^e >= sqrt(t)
+			BigInteger t = n.getP().add(n.getQ()).subtract(__1).divide(n.getQ());
+			int e = (t.subtract(__1).bitLength() + 1)/2;
+			n1 = new Rational(__1.shiftLeft(e));
 		}
-		// TODO initial estimate
-		BigInteger p = n.getP().divide(n.getQ());
-		Rational n1 = new Rational(p.shiftRight(p.bitLength()/2));
-		// TODO how many iterations?
+		// 3 iterations are enough
 		for (int i = 0; i < 3; i ++) {
 			// x1 = (x0 + a/x0)/2
 			n1.add(n.div(n1));
@@ -102,11 +120,26 @@ public class BinarySearch {
 	}
 
 	public static void main(String[] args) {
-		for (int i = 1; i <= 1000; i ++) {
-			Rational n = Rational.valueOf(i);
-			System.out.println(n + " -> " + sqrt(n));
-			Rational n1 = _1.div(n);
-			System.out.println(n1 + " -> " + sqrt(n1));
+		BigInteger maxQ = BigInteger.valueOf(1000000000);
+		Rational a = new Rational(BigInteger.valueOf(100), BigInteger.valueOf(101));
+		Rational b = _1;
+		Rational minus = new Rational("-1");
+		for (int i = 0; i < 2000; i ++) {
+			Rational s = sqrt(b);
+			Rational t = newZero();
+			t.addMul(s, s);
+			t.addMul(minus, b);
+			System.out.println(s + "^2 - " + b + " = " + t.doubleValue());
+			Rational b1 = newZero();
+			b1.addMul(b, a);
+			BigInteger p = b1.getP();
+			BigInteger q = b1.getQ();
+			BigInteger divisor = q.divide(maxQ);
+			if (divisor.compareTo(__1) > 0) {
+				b = new Rational(p.divide(divisor), q.divide(divisor));
+			} else {
+				b = b1;
+			}
 		}
 	}
 }
