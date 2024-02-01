@@ -91,12 +91,12 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 				}
 			} else if (c.signum() < 0) { // c < 0
 				sb.append(" - ");
-				if (c.compareTo(valueOf(-1)) < 0) { // c < -1
+				if (!c.equals(valueOf(-1))) { // c != -1
 					sb.append(c.negate() + "*");
 				}
 			} else {
 				sb.append(" + ");
-				if (!c.equals(valueOf(1))) { // c != -1
+				if (!c.equals(valueOf(1))) { // c != 1
 					sb.append(c + "*");
 				}
 			}
