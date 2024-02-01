@@ -202,7 +202,7 @@ public class SDS {
 				for (int i = 0; i < numKeys; i ++) {
 					values.add(f.newZero());
 				}
-				for (Map.Entry<Mono, T> entry: f.entrySet()) {
+				for (Map.Entry<Mono, T> entry : f.entrySet()) {
 					short[] exps = entry.getKey().getExps();
 					T coeff = entry.getValue();
 					for (int i = 0; i < numKeys; i ++) {
@@ -629,10 +629,9 @@ public class SDS {
 					// f1 = f0's permutation and substitution (transformation)
 					P f1 = f.newPoly();
 					if (permSubs.tempVars == null) {
-						f1 = f.newPoly();
 						for (Map.Entry<Mono, T> term : f0.entrySet()) {
 							short[] exps = term.getKey().getExps();
-							short[] exps1 = new short[vars.length()];
+							short[] exps1 = new short[len];
 							for (int i = 0; i < len; i ++) {
 								// permute
 								exps1[permSubs.perm[i]] = exps[i];
@@ -659,7 +658,6 @@ public class SDS {
 						// copy 0..n-1
 						for (Map.Entry<Mono, T> term : f0.entrySet()) {
 							short[] exps = term.getKey().getExps();
-							// assert vars.length() == permSubs.tempVars.length();
 							short[] exps1 = new short[len2];
 							Arrays.fill(exps1, len, len2, (short) 0);
 							for (int i = 0; i < len; i ++) {

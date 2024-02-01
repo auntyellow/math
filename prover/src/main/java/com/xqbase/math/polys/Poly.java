@@ -82,8 +82,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		}
 		TreeMap<Mono, T> sorted = new TreeMap<>(this);
 		StringBuilder sb = new StringBuilder();
-		sorted.forEach((k, v) -> {
-			T c = v;
+		sorted.forEach((m, c) -> {
 			if (sb.length() == 0) {
 				if (c.equals(valueOf(-1))) { // c == -1
 					sb.append('-');
@@ -101,7 +100,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 					sb.append(c + "*");
 				}
 			}
-			String s = k.toString();
+			String s = m.toString();
 			int len = sb.length();
 			if (s.isEmpty()) {
 				if (len == 0) {
@@ -147,11 +146,11 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 
 	/** @return this + n*p */
 	public P add(T n, P p) {
-		p.forEach((k, v) -> {
-			T coeff = computeIfAbsent(k, k_ -> newZero());
-			coeff.addMul(n, v);
-			if (coeff.signum() == 0) {
-				remove(k);
+		p.forEach((m, c) -> {
+			T c1 = computeIfAbsent(m, k -> newZero());
+			c1.addMul(n, c);
+			if (c1.signum() == 0) {
+				remove(m);
 			}
 		});
 		return unchecked(this);
@@ -174,13 +173,19 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 
 	/** @return this + n*p1*p2 */
 	public P addMul(T n, P p1, P p2) {
-		p1.forEach((k1, v1) -> {
-			p2.forEach((k2, v2) -> {
-				Mono k = k1.mul(k2);
-				T coeff = computeIfAbsent(k, k_ -> newZero());
-				coeff.addMul(n, v1, v2);
+		p1.forEach((m1, c1) -> {
+			p2.forEach((m2, c2) -> {
+				short[] exps1 = m1.getExps();
+				short[] exps2 = m2.getExps();
+				short[] exps = new short[exps1.length];
+				for (int i = 0; i < exps1.length; i ++) {
+					exps[i] = (short) (exps1[i] + exps2[i]);
+				}
+				Mono m = new Mono(m1.getVars(), exps);
+				T coeff = computeIfAbsent(m, k -> newZero());
+				coeff.addMul(n, c1, c2);
 				if (coeff.signum() == 0) {
-					remove(k);
+					remove(m);
 				}
 			});
 		});
@@ -189,9 +194,9 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 
 	public TreeMap<Mono, P> coeffsOf(String gen) {
 		TreeMap<Mono, P> coeffs = new TreeMap<>();
-		forEach((mono, coeff) -> {
-			String vars = mono.getVars();
-			short[] exps = mono.getExps();
+		forEach((m, c) -> {
+			String vars = m.getVars();
+			short[] exps = m.getExps();
 			short[] expsGen = new short[exps.length];
 			short[] expsCoeff = exps.clone();
 			for (int i = 0; i < gen.length(); i ++) {
@@ -200,7 +205,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 				expsCoeff[j] = 0;
 			}
 			coeffs.computeIfAbsent(new Mono(vars, expsGen), k -> newPoly()).
-					append(coeff, new Mono(vars, expsCoeff));
+					append(c, new Mono(vars, expsCoeff));
 		});
 		return coeffs;
 	}
@@ -273,13 +278,13 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		int numNewVars = numVars + 1;
 		String newVars = vars + newVar;
 		P p = newPoly();
-		for (Map.Entry<Mono, Integer> entry : expsMap.entrySet()) {
-			Mono m = entry.getKey();
+		int deg_ = deg;
+		expsMap.forEach((m, n) -> {
 			short[] newExps = new short[numNewVars];
 			System.arraycopy(m.getExps(), 0, newExps, 0, numVars);
-			newExps[numVars] = (short) (deg - entry.getValue().intValue());
+			newExps[numVars] = (short) (deg_ - n.intValue());
 			p.put(new Mono(newVars, newExps), get(m));
-		}
+		});
 		return p;
 	}
 

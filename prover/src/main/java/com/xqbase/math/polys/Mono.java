@@ -33,15 +33,6 @@ public class Mono implements Comparable<Mono> {
 		return exps;
 	}
 
-	public Mono mul(Mono o) {
-		Mono o2 = new Mono(vars);
-		o2.exps = new short[exps.length];
-		for (int i = 0; i < exps.length; i ++) {
-			o2.exps[i] = (short) (exps[i] + o.exps[i]);
-		}
-		return o2;
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		return Arrays.equals(exps, ((Mono) o).exps);
