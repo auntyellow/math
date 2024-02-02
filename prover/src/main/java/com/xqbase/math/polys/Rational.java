@@ -96,12 +96,13 @@ public class Rational extends MutableNumber<Rational> {
 
 	@Override
 	public float floatValue() {
-		return p.floatValue()/q.floatValue();
+		return (float) doubleValue();
 	}
 
 	@Override
 	public double doubleValue() {
-		return p.doubleValue()/q.doubleValue();
+		double q_ = q.doubleValue();
+		return Double.isInfinite(q_) ? 1/q.divide(p).doubleValue() : p.doubleValue()/q_;
 	}
 
 	@Override
@@ -180,5 +181,58 @@ public class Rational extends MutableNumber<Rational> {
 	@Override
 	public Rational gcd(Rational n1) {
 		return valueOf(1);
+	}
+
+	private static final Rational __0 = Rational.valueOf(0);
+	private static final Rational __1 = Rational.valueOf(1);
+	private static final Rational HALF = new Rational(_1, BigInteger.valueOf(2));
+	private static final Rational SQRT_ERROR = new Rational(_1, BigInteger.valueOf(1639));
+
+	/** @return s that s^2 >= this */
+	public Rational sqrt() {
+		if (signum() <= 0) {
+			return __0;
+		}
+		Rational s;
+		// initial estimate, see BigInteger.sqrt() (jdk 9+) for more accurate approach:
+		// https://github.com/openjdk/jdk/blob/jdk-11-ga/src/java.base/share/classes/java/math/MutableBigInteger.java#L1869
+		if (compareTo(__1) <= 0) {
+			// t = q/p <= 1/this
+			// quick estimate: 1 <= sqrt(1~3), 2 <= sqrt(4~15), 4 <= sqrt(16~63); ...
+			// e = (t.bit_length - 1)/2
+			// s = 1/2^e >= 1/sqrt(t) >= sqrt(this)
+			BigInteger t = q.divide(p);
+			int e = (t.bitLength() - 1)/2;
+			s = new Rational(_1, _1.shiftLeft(e));
+		} else {
+			// t = (p + q - 1)/q >= r
+			// quick estimate: 2 >= sqrt(2~4), 4 >= sqrt(5~16), 8 >= sqrt(17-64); ...
+			// e = ((t - 1).bit_length + 1)/2
+			// s = 2^e >= sqrt(t) >= sqrt(r)
+			BigInteger t = p.add(q).subtract(_1).divide(q);
+			int e = (t.subtract(_1).bitLength() + 1)/2;
+			s = new Rational(_1.shiftLeft(e));
+		}
+		// 3 iterations are enough
+		for (int i = 0; i < 3; i ++) {
+			// x1 = (x0 + a/x0)/2
+			s.add(div(s));
+			Rational n2 = new Rational(BigInteger.ZERO);
+			n2.addMul(HALF, s);
+			s = n2;
+		}
+		// in the worst case s = 2*sqrt(r), so after 3 iterations:
+		// s = 3281*sqrt(r)/3280, error = (s^2 - r)/r < 1/1639, see sqrt-heron-error.py
+		Rational e = new Rational(BigInteger.ZERO);
+		e.addMul(s, s);
+		e.add(negate());
+		if (e.signum() < 0) {
+			throw new ArithmeticException("Unexpected: (" + s + ")^2 < " + this);
+		}
+		if (e.div(this).compareTo(SQRT_ERROR) >= 0) {
+			throw new ArithmeticException("Unexpected: ((" + s + ")^2 - "
+					+ this + ")/(" + this + ") >= " + SQRT_ERROR);
+		}
+		return s;
 	}
 }
