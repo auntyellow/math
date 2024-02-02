@@ -113,10 +113,10 @@ public class SDSTest {
 		long n = 7540113804746346429L;
 		RationalPoly f = new RationalPoly(vars, m + "*x - " + n + "*y");
 		f = new RationalPoly().addMul(f, f);
-		SDS.Result<Rational> result;/* = SDS.sds(f);
+		SDS.Result<Rational> result = SDS.sds(f);
 		assertTrue(result.isNonNegative());
 		assertEquals("[[" + n + ", " + m + "]]", result.getZeroAt().toString());
-		assertEquals(91, result.getDepth());*/
+		assertEquals(91, result.getDepth());
 		// 1e-22
 		Rational e_22 = f.valueOf("1/10000000000000000000000");
 		RationalPoly pos = new RationalPoly(vars, "x**2 + y**2");

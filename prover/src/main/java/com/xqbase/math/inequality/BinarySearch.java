@@ -1,7 +1,6 @@
 package com.xqbase.math.inequality;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -18,6 +17,7 @@ public class BinarySearch {
 	private static final Rational _0 = Rational.valueOf(0);
 	private static final Rational _1 = Rational.valueOf(1);
 	private static final Rational HALF = _1.div(Rational.valueOf(2));
+	private static final Rational MAX_UPPER = new Rational(BigInteger.ONE.shiftLeft(100));
 	private static final Rational[] EMPTY_RESULT = new Rational[0];
 
 	private static Rational __() {
@@ -31,12 +31,6 @@ public class BinarySearch {
 			}
 		}
 		return true;
-	}
-
-	private static void fillResult(Rational[] result, boolean[] key, Rational upper) {
-		for (int i = 0; i < key.length; i ++) {
-			result[i] = key[i] ? upper : _0;
-		}
 	}
 
 	/**
@@ -82,6 +76,7 @@ public class BinarySearch {
 			subsUpper[i] = subs;
 		}
 
+		/*
 		// product([false, true], repeat = len)
 		boolean[] key0 = new boolean[len];
 		Arrays.fill(key0, false);
@@ -98,54 +93,63 @@ public class BinarySearch {
 		}
 		// remove first trivial zeros
 		keys.remove(0);
+		*/
 
-		// f1 = f.subs(vi, vi + upper), double upper until f1 trivially non-negative
-		Rational upper = __();
-		upper.add(_1);
-		while (true) {
-			RationalPoly f1 = f;
-			for (int i = 0; i < len; i ++) {
+		Rational[] lengths = new Rational[len];
+		for (int i = 0; i < len; i ++) {
+			// f1 = f.subs(x_i, x_i + length_i), double upper until f1 trivially non-negative
+			Rational length = __();
+			while (true) {
+				length.add(_1);
 				RationalPoly sub = new RationalPoly();
 				sub.put(ms[i], _1);
-				sub.put(m0, upper);
-				f1 = f1.subs(vars.charAt(i), sub);
-			}
-			if (nonNegative(f1)) {
-				break;
-			}
-			// negative test
-			for (boolean[] key : keys) {
-				RationalPoly f0 = f;
-				for (int i = 0; i < len; i ++) {
-					f0 = f0.subs(vars.charAt(i), key[i] ? upper : _0);
+				sub.put(m0, length);
+				RationalPoly f1 = f.subs(vars.charAt(i), sub);
+				if (nonNegative(f1)) {
+					break;
 				}
-				Rational c0 = f0.remove(m0);
-				if (!f0.isEmpty()) {
-					Rational[] result = new Rational[len];
-					fillResult(result, key, upper);
-					throw new ArithmeticException("Unexpected substitution result: " + f + " =" +
-							Arrays.toString(result) + "=> " + f0);
+				if (length.compareTo(MAX_UPPER) > 0) {
+					throw new IllegalArgumentException(f + " may be negative for large " + vars.charAt(i));
 				}
-				if (c0 == null || c0.signum() >= 0) {
-					continue;
-				}
-				Rational[] result = new Rational[len + 1];
-				fillResult(result, key, upper);
-				result[len] = c0;
-				return result;
+				length.add(length);
 			}
-			upper.add(upper);
+			lengths[i] = length;
 		}
+
+		/*
+		// negative test
+		for (boolean[] key : keys) {
+			RationalPoly f0 = f;
+			for (int i = 0; i < len; i ++) {
+				f0 = f0.subs(vars.charAt(i), key[i] ? upper : _0);
+			}
+			Rational c0 = f0.remove(m0);
+			if (!f0.isEmpty()) {
+				Rational[] result = new Rational[len];
+				for (int i = 0; i < key.length; i ++) {
+					result[i] = key[i] ? length : _0;
+				}
+				throw new ArithmeticException("Unexpected substitution result: " + f + " =" +
+						Arrays.toString(result) + "=> " + f0);
+			}
+			if (c0 == null || c0.signum() >= 0) {
+				continue;
+			}
+			Rational[] result = new Rational[len + 1];
+			for (int i = 0; i < key.length; i ++) {
+				result[i] = key[i] ? length : _0;
+			}
+			result[len] = c0;
+			return result;
+		}
+		*/
 
 		Rational[] coords = new Rational[len];
 		Arrays.fill(coords, _0);
-		Rational[] lengths = new Rational[len];
-		Arrays.fill(lengths, upper);
 		RationalPoly f1 = f;
-		upper = _1.div(upper);
 		for (int i = 0; i < len; i ++) {
 			RationalPoly sub = new RationalPoly();
-			sub.put(ms[i], upper);
+			sub.put(ms[i], lengths[i]);
 			f1 = f1.subs(vars.charAt(i), sub);
 		}
 		return binarySearch(f1, vars, m0, coords, lengths, subsLower, subsUpper);
