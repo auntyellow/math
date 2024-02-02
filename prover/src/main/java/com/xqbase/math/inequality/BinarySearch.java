@@ -1,6 +1,7 @@
 package com.xqbase.math.inequality;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -16,9 +17,7 @@ public class BinarySearch {
 
 	private static final Rational _0 = Rational.valueOf(0);
 	private static final Rational _1 = Rational.valueOf(1);
-	private static final Rational _2 = Rational.valueOf(2);
-	private static final Rational HALF = _1.div(_2);
-	private static final Rational MAX_UPPER = new Rational(BigInteger.ONE.shiftLeft(100));
+	private static final Rational HALF = _1.div(Rational.valueOf(2));
 	private static final Rational[] EMPTY_RESULT = new Rational[0];
 
 	private static Rational __() {
@@ -32,6 +31,12 @@ public class BinarySearch {
 			}
 		}
 		return true;
+	}
+
+	private static void fillResult(Rational[] result, boolean[] key, Rational upper) {
+		for (int i = 0; i < key.length; i ++) {
+			result[i] = key[i] ? upper : _0;
+		}
 	}
 
 	/**
@@ -77,8 +82,26 @@ public class BinarySearch {
 			subsUpper[i] = subs;
 		}
 
+		// product([false, true], repeat = len)
+		boolean[] key0 = new boolean[len];
+		Arrays.fill(key0, false);
+		ArrayList<boolean[]> keys = new ArrayList<>();
+		keys.add(key0);
+		for (int i = 0; i < len; i ++) {
+			boolean[][] keys_ = new boolean[keys.size()][];
+			keys.toArray(keys_);
+			for (boolean[] key : keys_) {
+				boolean[] key1 = key.clone();
+				key1[i] = true;
+				keys.add(key1);
+			}
+		}
+		// remove first trivial zeros
+		keys.remove(0);
+
 		// f1 = f.subs(vi, vi + upper), double upper until f1 trivially non-negative
-		Rational upper = _1;
+		Rational upper = __();
+		upper.add(_1);
 		while (true) {
 			RationalPoly f1 = f;
 			for (int i = 0; i < len; i ++) {
@@ -90,12 +113,28 @@ public class BinarySearch {
 			if (nonNegative(f1)) {
 				break;
 			}
-			if (upper.equals(MAX_UPPER)) {
-				throw new ArithmeticException("Polynomial may be negative for large variables: " + f);
+			// negative test
+			for (boolean[] key : keys) {
+				RationalPoly f0 = f;
+				for (int i = 0; i < len; i ++) {
+					f0 = f0.subs(vars.charAt(i), key[i] ? upper : _0);
+				}
+				Rational c0 = f0.remove(m0);
+				if (!f0.isEmpty()) {
+					Rational[] result = new Rational[len];
+					fillResult(result, key, upper);
+					throw new ArithmeticException("Unexpected substitution result: " + f + " =" +
+							Arrays.toString(result) + "=> " + f0);
+				}
+				if (c0 == null || c0.signum() >= 0) {
+					continue;
+				}
+				Rational[] result = new Rational[len + 1];
+				fillResult(result, key, upper);
+				result[len] = c0;
+				return result;
 			}
-			Rational newUpper = __();
-			newUpper.addMul(_2, upper);
-			upper = newUpper;
+			upper.add(upper);
 		}
 
 		Rational[] coords = new Rational[len];
@@ -114,66 +153,68 @@ public class BinarySearch {
 
 	private static Rational[] binarySearch(RationalPoly f, String vars, Mono m0,
 			Rational[] coords, Rational[] lengths, RationalPoly[] subsLower, RationalPoly[] subsUpper) {
+		// value at (0, ..., 0)
 		int len = vars.length();
-		Rational grad2 = __();
-		Rational absMax = _0;
-		int iMax = -1;
-		for (int i = 0; i < len; i ++) {
-			Rational abs = __();
-			for (Map.Entry<Mono, Rational> entry : f.entrySet()) {
-				Rational c = entry.getValue();
-				abs.addMul(Rational.valueOf(entry.getKey().getExps()[i]),
-						c.signum() < 0 ? c.negate() : c);
-				if (abs.compareTo(absMax) > 0) {
-					absMax = abs;
-					iMax = i;
-				}
-			}
-			grad2.addMul(abs, abs);
-		}
-		// value at lower bound
 		Rational f0 = f.getOrDefault(m0, _0);
 		if (f0.signum() < 0) {
-			Rational[] result = new Rational[len + 1];
-			System.arraycopy(coords, 0, result, 0, len);
+			Rational[] result = Arrays.copyOf(coords, len + 1);
 			result[len] = f0;
 			return result;
 		}
-		// f_min = f_0 - |grad f|d
-		Rational min = __();
-		min.addMul(f0, f0);
-		min.addMul(grad2, Rational.valueOf(len).negate());
-		if (min.signum() >= 0) {
+		Rational f1 = __();
+		f1.add(f0);
+		Rational fxMin = _0;
+		int iMin = -1;
+		for (int i = 0; i < len; i ++) {
+			// f(x1, y0) = f(x0, y0) + intg_x0x1(f_x(y = y0))
+			// f = sum_j(c_j*x**a_j*y**b_j), 0 <= x0, x1, y0, y1 <= 1:
+			// f_x = sum_j(c_j*a_j*x**(a_j - 1)y**b_i) >= sum_j(c_j*a_j) (c_j < 0)
+			// f(x_i1) >= f(x_i0) + sum_i(sum_j(c_j*a_ij)) (c_j < 0)
+			Rational fx = __();
+			for (Map.Entry<Mono, Rational> entry : f.entrySet()) {
+				Rational c = entry.getValue();
+				if (c.signum() >= 0) {
+					continue;
+				}
+				fx.addMul(c, Rational.valueOf(entry.getKey().getExps()[i]));
+			}
+			f1.add(fx);
+			if (fx.compareTo(fxMin) < 0) {
+				fxMin = fx;
+				iMin = i;
+			}
+		}
+		if (f1.signum() >= 0) {
 			if (log.isDebugEnabled()) {
 				log.debug("non_negative: " + Arrays.toString(coords) + ", " + Arrays.toString(lengths));
 			}
 			return EMPTY_RESULT;
 		}
-		// not positive-semidefinite, divide at i_max
+		// not positive-semidefinite, divide at i_min
 		if (log.isDebugEnabled()) {
 			log.debug("try_dividing: " + Arrays.toString(coords) + ", " + Arrays.toString(lengths) +
-					", f = " + f0.doubleValue() + ", |grad f| = " + Math.sqrt(grad2.doubleValue()));
+					", f = " + f0.doubleValue() + ", f_" + vars.charAt(iMin) + " = " + fxMin.doubleValue());
 		}
 		// set new lengths, used in upper and lower half
 		Rational[] newLengths = lengths.clone();
 		Rational length = __();
-		length.addMul(HALF, lengths[iMax]);
-		newLengths[iMax] = length;
+		length.addMul(HALF, lengths[iMin]);
+		newLengths[iMin] = length;
 		// set new coords, used in upper half only
 		Rational[] newCoords = coords.clone();
 		Rational coord = __();
-		coord.add(coords[iMax]);
+		coord.add(coords[iMin]);
 		coord.addMul(_1, length);
-		newCoords[iMax] = coord;
-		char x = vars.charAt(iMax);
+		newCoords[iMin] = coord;
+		char x = vars.charAt(iMin);
 		// search upper half: f.subs(x, (x + 1)/2)
-		Rational[] result = binarySearch(f.subs(x, subsUpper[iMax]), vars, m0,
+		Rational[] result = binarySearch(f.subs(x, subsUpper[iMin]), vars, m0,
 				newCoords, newLengths, subsLower, subsUpper);
 		if (result.length > 0) {
 			return result;
 		}
 		// search lower half: f.subs(x, x/2)
-		return binarySearch(f.subs(x, subsLower[iMax]), vars, m0,
+		return binarySearch(f.subs(x, subsLower[iMin]), vars, m0,
 				coords, newLengths, subsLower, subsUpper);
 	}
 }
