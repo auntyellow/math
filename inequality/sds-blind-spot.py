@@ -19,6 +19,13 @@ def main():
     print('f(y->2y) =', factor(f))
     print('f(1111) =', f.subs({w: 1, x: 1, y: 1, z: 1}))
     print('f =', factor(f.subs(x, w*(1 + t)).subs(y, w*(1 + u)).subs(z, w*(1 + v))))
+    print()
+
+    # non-homogeneous
+    f = (4*x - 3*y)**2 + 1
+    print('f =', Poly(f).homogenize(z).expr)
+    f = (5*x - 4*y)**2 + x
+    print('f =', Poly(f).homogenize(z).expr)
 
 if __name__ == '__main__':
     main()

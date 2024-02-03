@@ -66,6 +66,11 @@ public class SDSTest {
 		assertTrue(result.isNonNegative());
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
 		assertEquals(1, result.getDepth());
+
+		// (4*x - 3*y)**2 + 1, doesn't work (A_3, T_3, Y_3, Z_3)
+		// SDS.sds(new BigPoly("xyz", "16*x**2 - 24*x*y + 9*y**2 + z**2"));
+		// (5*x - 4*y)**2 + x, doesn't work (A_3, T_3, Y_3, Z_3)
+		// SDS.sds(new BigPoly("xyz", "25*x**2 - 40*x*y + x*z + 16*y**2"));
 	}
 
 	private static <T extends MutableNumber<T>, P extends Poly<T, P>> T

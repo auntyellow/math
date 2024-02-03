@@ -24,37 +24,26 @@ public class BinarySearch {
 		return new Rational(BigInteger.ZERO);
 	}
 
-	private static boolean nonNegative(RationalPoly f) {
-		for (Rational v : f.values()) {
-			if (v.signum() < 0) {
-				return false;
-			}
-		}
-		return true;
-	}
+	private String vars;
+	private int len;
+	/** monopoly for constant term, helps to get f(0, 0, ..., 0) */
+	private Mono m0;
+	/** helps to generate new f for lower half */
+	private RationalPoly[] subsLower;
+	/** helps to generate new f for upper half */
+	private RationalPoly[] subsUpper;
+	/** helps to call binarySearch1 in binarySearch0 */
+	private Rational[] coords0;
 
-	/**
-	 * binary search negative for all x_i >= 0
-	 *
-	 * @param f shouldn't be homogeneous because it hardly works when x_i are near zero.<p>
-	 * For homogeneous polynomials, try {@link SDS}.
-	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative for all x_i >= 0
-	 */
-	public static Rational[] binarySearch(RationalPoly f) {
-		if (nonNegative(f)) {
-			return EMPTY_RESULT;
-		}
-		String vars = f.getVars();
-		int len = vars.length();
-
-		// m0 helps to find f0 (constant) directly
+	private BinarySearch(String vars) {
+		this.vars = vars;
+		len = vars.length();
 		short[] exps0 = new short[len];
 		Arrays.fill(exps0, (short) 0);
-		Mono m0 = new Mono(exps0);
+		m0 = new Mono(exps0);
 		Mono[] ms = new Mono[len];
-		// subs helps to generate new f
-		RationalPoly[] subsLower = new RationalPoly[len];
-		RationalPoly[] subsUpper = new RationalPoly[len];
+		subsLower = new RationalPoly[len];
+		subsUpper = new RationalPoly[len];
 		for (int i = 0; i < len; i ++) {
 			short[] exps = exps0.clone();
 			exps[i] = 1;
@@ -68,99 +57,39 @@ public class BinarySearch {
 			subs.put(m0, HALF);
 			subsUpper[i] = subs;
 		}
-
-		/*
-		// product([false, true], repeat = len)
-		boolean[] key0 = new boolean[len];
-		Arrays.fill(key0, false);
-		ArrayList<boolean[]> keys = new ArrayList<>();
-		keys.add(key0);
-		for (int i = 0; i < len; i ++) {
-			boolean[][] keys_ = new boolean[keys.size()][];
-			keys.toArray(keys_);
-			for (boolean[] key : keys_) {
-				boolean[] key1 = key.clone();
-				key1[i] = true;
-				keys.add(key1);
-			}
-		}
-		// remove first trivial zeros
-		keys.remove(0);
-		*/
-
-		/*
-		Rational[] lengths = new Rational[len];
-		for (int i = 0; i < len; i ++) {
-			// f1 = f.subs(x_i, x_i + length_i), double upper until f1 trivially non-negative
-			Rational length = __();
-			while (true) {
-				length.add(_1);
-				RationalPoly sub = new RationalPoly();
-				sub.put(ms[i], _1);
-				sub.put(m0, length);
-				RationalPoly f1 = f.subs(vars.charAt(i), sub);
-				if (nonNegative(f1)) {
-					break;
-				}
-				if (length.compareTo(MAX_UPPER) > 0) {
-					throw new IllegalArgumentException(f + " may be negative for large " + vars.charAt(i));
-				}
-				length.add(length);
-			}
-			lengths[i] = length;
-		}
-		*/
-
-		/*
-		// negative test
-		for (boolean[] key : keys) {
-			RationalPoly f0 = f;
-			for (int i = 0; i < len; i ++) {
-				f0 = f0.subs(vars.charAt(i), key[i] ? upper : _0);
-			}
-			Rational c0 = f0.remove(m0);
-			if (!f0.isEmpty()) {
-				Rational[] result = new Rational[len];
-				for (int i = 0; i < key.length; i ++) {
-					result[i] = key[i] ? length : _0;
-				}
-				throw new ArithmeticException("Unexpected substitution result: " + f + " =" +
-						Arrays.toString(result) + "=> " + f0);
-			}
-			if (c0 == null || c0.signum() >= 0) {
-				continue;
-			}
-			Rational[] result = new Rational[len + 1];
-			for (int i = 0; i < key.length; i ++) {
-				result[i] = key[i] ? length : _0;
-			}
-			result[len] = c0;
-			return result;
-		}
-		*/
-
-		Rational[] coords = new Rational[len];
-		Arrays.fill(coords, _0);
-		Rational[] lengths = new Rational[len];
-		Arrays.fill(lengths, _1);
-		RationalPoly f1 = f;
-		for (int i = 0; i < len; i ++) {
-			RationalPoly sub = new RationalPoly(vars);
-			sub.put(ms[i], lengths[i]);
-			f1 = f1.subs(vars.charAt(i), sub);
-		}
-		return binarySearch(f1, vars, m0, coords, lengths, subsLower, subsUpper);
+		coords0 = new Rational[len];
+		Arrays.fill(coords0, _0);
 	}
 
-	private static Rational[] binarySearch(RationalPoly f, String vars, Mono m0,
-			Rational[] coords, Rational[] lengths, RationalPoly[] subsLower, RationalPoly[] subsUpper) {
-		// value at (0, ..., 0)
-		int len = vars.length();
-		Rational f0 = f.getOrDefault(m0, _0);
-		if (f0.signum() < 0) {
-			Rational[] result = Arrays.copyOf(coords, len + 1);
-			result[len] = f0;
+	/**
+	 * binary search negative for all 0 <= x_i <= 1
+	 * @param f shouldn't be homogeneous because it hardly works when f == 0 at x_i == k*x_j.<p>
+	 * For homogeneous polynomials, try {@link SDS}.
+	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative for all 0 <= x_i <= 1
+	 */
+	public static Rational[] binarySearch(RationalPoly f) {
+		BinarySearch bs = new BinarySearch(f.getVars());
+		Rational[] bounds = new Rational[bs.len];
+		Arrays.fill(bounds, _1);
+		Rational f0 = f.getOrDefault(bs.m0, _0);
+		if (f0.signum() <= 0) {
+			Rational[] result = Arrays.copyOf(bs.coords0, bs.len + 1);
+			result[bs.len] = f0;
 			return result;
+		}
+		return bs.binarySearch(f, bs.coords0, bounds, f0);
+	}
+
+	/** @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative for all 0 <= x_i <= b */
+	private Rational[] binarySearch(RationalPoly f, Rational[] coords, Rational[] bounds, Rational f0_) {
+		Rational f0 = f0_;
+		if (f0 == null) {
+			f0 = f.getOrDefault(m0, _0);
+			if (f0.signum() <= 0) {
+				Rational[] result = Arrays.copyOf(coords, len + 1);
+				result[len] = f0;
+				return result;
+			}
 		}
 		Rational f1 = __();
 		f1.add(f0);
@@ -187,35 +116,33 @@ public class BinarySearch {
 		}
 		if (f1.signum() >= 0) {
 			if (log.isDebugEnabled()) {
-				log.debug("non_negative: " + Arrays.toString(coords) + ", " + Arrays.toString(lengths));
+				log.debug("non_negative: " + Arrays.toString(coords) + ", " + Arrays.toString(bounds));
 			}
 			return EMPTY_RESULT;
 		}
 		// not positive-semidefinite, divide at i_min
 		if (log.isDebugEnabled()) {
-			log.debug("try_dividing: " + Arrays.toString(coords) + ", " + Arrays.toString(lengths) +
+			log.debug("try_dividing: " + Arrays.toString(coords) + ", " + Arrays.toString(bounds) +
 					", f = " + f0.doubleValue() + ", f_" + vars.charAt(iMin) + " = " + fxMin.doubleValue());
 		}
-		// set new lengths, used in upper and lower half
-		Rational[] newLengths = lengths.clone();
-		Rational length = __();
-		length.addMul(HALF, lengths[iMin]);
-		newLengths[iMin] = length;
+		// set new bounds, used in upper and lower half
+		Rational[] newBounds = bounds.clone();
+		Rational bound = __();
+		bound.addMul(HALF, bounds[iMin]);
+		newBounds[iMin] = bound;
 		// set new coords, used in upper half only
 		Rational[] newCoords = coords.clone();
 		Rational coord = __();
 		coord.add(coords[iMin]);
-		coord.addMul(_1, length);
+		coord.addMul(_1, bound);
 		newCoords[iMin] = coord;
 		char x = vars.charAt(iMin);
 		// search upper half: f.subs(x, (x + 1)/2)
-		Rational[] result = binarySearch(f.subs(x, subsUpper[iMin]), vars, m0,
-				newCoords, newLengths, subsLower, subsUpper);
+		Rational[] result = binarySearch(f.subs(x, subsUpper[iMin]), newCoords, newBounds, null);
 		if (result.length > 0) {
 			return result;
 		}
 		// search lower half: f.subs(x, x/2)
-		return binarySearch(f.subs(x, subsLower[iMin]), vars, m0,
-				coords, newLengths, subsLower, subsUpper);
+		return binarySearch(f.subs(x, subsLower[iMin]), coords, newBounds, f0);
 	}
 }
