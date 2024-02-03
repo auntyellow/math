@@ -5,10 +5,12 @@ import java.math.BigInteger;
 public class RationalPoly extends Poly<Rational, RationalPoly> {
 	private static final long serialVersionUID = 1L;
 
-	public RationalPoly() {/**/}
+	public RationalPoly(String vars) {
+		super(vars);
+	}
 
-	public RationalPoly(String var, String expr) {
-		super(var, expr);
+	public RationalPoly(String vars, String expr) {
+		super(vars, expr);
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class PolyTest {
 
 	@Test
 	public void testParse() {
-		assertEquals("0", new LongPoly().toString());
+		assertEquals("0", new LongPoly(VARS_7).toString());
 		assertTrue(new LongPoly("", "0").isEmpty());
 		for (int i = -100; i <= 100; i ++) {
 			String expr = "" + i;

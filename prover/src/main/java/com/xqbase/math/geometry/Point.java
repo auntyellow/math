@@ -4,8 +4,8 @@ import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Poly;
 
 public class Point {
-	private static LongPoly __() {
-		return new LongPoly();
+	private static LongPoly __(String vars) {
+		return new LongPoly(vars);
 	}
 
 	private LongPoly x, y, z;
@@ -35,15 +35,16 @@ public class Point {
 	}
 
 	public boolean liesOn(Line l) {
-		return __().addMul(x, l.getU()).addMul(y, l.getV()).addMul(z, l.getW()).isEmpty();
+		return x.newPoly().addMul(x, l.getU()).addMul(y, l.getV()).addMul(z, l.getW()).isEmpty();
 	}
 
 	/** reflect this about p */
 	public Point reflect(Point p) {
+		String vars = x.getVars();
 		return new Point(
-				__().addMul(2, z, p.getX()).subMul(x, p.getZ()),
-				__().addMul(2, z, p.getY()).subMul(y, p.getZ()),
-				__().addMul(z, p.getZ()));
+				__(vars).addMul(2, z, p.getX()).subMul(x, p.getZ()),
+				__(vars).addMul(2, z, p.getY()).subMul(y, p.getZ()),
+				__(vars).addMul(z, p.getZ()));
 	}
 
 	@Override
@@ -52,10 +53,11 @@ public class Point {
 	}
 
 	public static Point midpoint(Point p1, Point p2) {
+		String vars = p1.getX().getVars();
 		return new Point(
-				__().addMul(p1.getX(), p2.getZ()).addMul(p1.getZ(), p2.getX()),
-				__().addMul(p1.getY(), p2.getZ()).addMul(p1.getZ(), p2.getY()),
-				__().addMul(2, p1.getZ(), p2.getZ()));
+				__(vars).addMul(p1.getX(), p2.getZ()).addMul(p1.getZ(), p2.getX()),
+				__(vars).addMul(p1.getY(), p2.getZ()).addMul(p1.getZ(), p2.getY()),
+				__(vars).addMul(2, p1.getZ(), p2.getZ()));
 	}
 
 	public static boolean collinear(Point p1, Point p2, Point p3) {

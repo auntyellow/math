@@ -255,11 +255,11 @@ public class SDS {
 		return (P[]) polys;
 	}
 
-	private static Mono getMono(String vars, int i) {
-		short[] exps = new short[vars.length()];
+	private static Mono getMono(int len, int i) {
+		short[] exps = new short[len];
 		Arrays.fill(exps, (short) 0);
 		exps[i] = 1;
-		return new Mono(vars, exps);
+		return new Mono(exps);
 	}
 
 	private static final String VARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -279,7 +279,7 @@ public class SDS {
 		P[] subs = unchecked(new Poly[len]);
 		Mono[] monos = new Mono[len];
 		for (int i = 0; i < len; i ++) {
-			monos[i] = getMono(tempVars, len + i);
+			monos[i] = getMono(len*2, len + i);
 		}
 		for (int i = 0; i < len; i ++) {
 			P p = f.newPoly();
@@ -312,7 +312,6 @@ public class SDS {
 			Transform transform, Find find, int maxDepth) {
 		// check homogeneous
 		int deg = 0;
-		String vars = "";
 		for (Mono m : f.keySet()) {
 			int exps = 0;
 			for (int exp : m.getExps()) {
@@ -320,7 +319,6 @@ public class SDS {
 			}
 			if (deg == 0) {
 				deg = exps;
-				vars = m.getVars();
 			} else if (deg != exps) {
 				throw new IllegalArgumentException(f + " is not homogeneous");
 			}
@@ -328,10 +326,11 @@ public class SDS {
 		if (deg == 0) {
 			return new Result<>();
 		}
+		String vars = f.getVars();
 		int len = vars.length();
 		Mono[] monos = new Mono[len];
 		for (int i = 0; i < len; i ++) {
-			monos[i] = getMono(vars, i);
+			monos[i] = getMono(len, i);
 		}
 
 		// product([false, true], repeat = len)
@@ -637,7 +636,7 @@ public class SDS {
 								exps1[permSubs.perm[i]] = exps[i];
 								// exps1[i] = exps[permSubs.perm[i]];
 							}
-							f1.put(new Mono(vars, exps1), term.getValue());
+							f1.put(new Mono(exps1), term.getValue());
 						}
 						if (permSubs.reverse) {
 							// Z_n
@@ -665,7 +664,7 @@ public class SDS {
 								exps1[permSubs.perm[i]] = exps[i];
 								// exps1[i] = exps[permSubs.perm[i]];
 							}
-							f2.put(new Mono(permSubs.tempVars, exps1), term.getValue());
+							f2.put(new Mono(exps1), term.getValue());
 						}
 						// substitute 0..n-1 with n..2n-1
 						for (int i = 0; i < permSubs.subs.length; i ++) {
@@ -673,7 +672,7 @@ public class SDS {
 						}
 						// copy and truncate n..2n-1
 						for (Map.Entry<Mono, T> term : f2.entrySet()) {
-							f1.put(new Mono(vars, Arrays.copyOfRange(term.getKey().getExps(), len, len2)),
+							f1.put(new Mono(Arrays.copyOfRange(term.getKey().getExps(), len, len2)),
 									term.getValue());
 						}
 					}

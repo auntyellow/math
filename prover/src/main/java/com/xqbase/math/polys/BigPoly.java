@@ -5,10 +5,12 @@ import java.math.BigInteger;
 public class BigPoly extends Poly<MutableBig, BigPoly> {
 	private static final long serialVersionUID = 1L;
 
-	public BigPoly() {/**/}
+	public BigPoly(String vars) {
+		super(vars);
+	}
 
-	public BigPoly(String var, String expr) {
-		super(var, expr);
+	public BigPoly(String vars, String expr) {
+		super(vars, expr);
 	}
 
 	@Override

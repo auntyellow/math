@@ -4,8 +4,12 @@ import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Poly;
 
 public class Circle {
-	private static LongPoly __() {
-		return new LongPoly();
+	private static LongPoly __(String vars) {
+		return new LongPoly(vars);
+	}
+
+	private LongPoly __() {
+		return __(a.getVars());
 	}
 
 	private LongPoly a, d, e, f;
@@ -28,12 +32,12 @@ public class Circle {
 	}
 
 	public Point getCenter() {
-		return new Point(d, e, __().add(-2, a));
+		return new Point(d, e, a.newPoly().add(-2, a));
 	}
 
 	public boolean passesThrough(Point p) {
 		LongPoly[] r = row(p);
-		return __().addMul(a, r[0]).addMul(d, r[1]).addMul(e, r[2]).addMul(f, r[3]).isEmpty();
+		return a.newPoly().addMul(a, r[0]).addMul(d, r[1]).addMul(e, r[2]).addMul(f, r[3]).isEmpty();
 	}
 
 	/** pick the other point P1 lies on this circle, such that PP1's direction is (x, y) */
@@ -50,11 +54,12 @@ public class Circle {
 		LongPoly x = p.getX();
 		LongPoly y = p.getY();
 		LongPoly z = p.getZ();
+		String vars = x.getVars();
 		return new LongPoly[] {
-			__().addMul(x, x).addMul(y, y),
-			__().addMul(x, z),
-			__().addMul(y, z),
-			__().addMul(z, z),
+			__(vars).addMul(x, x).addMul(y, y),
+			__(vars).addMul(x, z),
+			__(vars).addMul(y, z),
+			__(vars).addMul(z, z),
 		};
 	}
 

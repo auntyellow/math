@@ -54,7 +54,7 @@ public class Han23P341 {
 
 				for (int[] perm : perms) {
 					// f1 = f0's permutation and substitution
-					BigPoly f1 = new BigPoly();
+					BigPoly f1 = new BigPoly(vars);
 					for (Map.Entry<Mono, MutableBig> term : f0.entrySet()) {
 						short[] exps = term.getKey().getExps();
 						short[] exps1 = exps.clone();
@@ -62,16 +62,16 @@ public class Han23P341 {
 							// permute
 							exps1[perm[i]] = exps[i];
 						}
-						f1.put(new Mono(vars, exps1), term.getValue());
+						f1.put(new Mono(exps1), term.getValue());
 					}
 					// substitute
 					f1 = f1.subs('a', ab).subs('b', bc); // .subs('c', c);
 					boolean trivial = true;
 					for (BigPoly coeff : f1.coeffsOf("abc").values()) {
 						// vars = "abcuv" -> vars = "uv"
-						BigPoly coeff1 = new BigPoly();
+						BigPoly coeff1 = new BigPoly("uv");
 						for (Map.Entry<Mono, MutableBig> entry : coeff.entrySet()) {
-							coeff1.put(new Mono("uv", Arrays.copyOfRange(entry.getKey().getExps(), 3, 5)),
+							coeff1.put(new Mono(Arrays.copyOfRange(entry.getKey().getExps(), 3, 5)),
 									entry.getValue());
 						}
 						if (!SDS.sds(coeff1.homogenize('w'), SDS.Transform.T_n).isNonNegative()) {

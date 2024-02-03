@@ -3,10 +3,12 @@ package com.xqbase.math.polys;
 public class LongPoly extends Poly<MutableLong, LongPoly> {
 	private static final long serialVersionUID = 1L;
 
-	public LongPoly() {/**/}
+	public LongPoly(String vars) {
+		super(vars);
+	}
 
-	public LongPoly(String var, String expr) {
-		super(var, expr);
+	public LongPoly(String vars, String expr) {
+		super(vars, expr);
 	}
 
 	@Override

@@ -3,30 +3,19 @@ package com.xqbase.math.polys;
 import java.util.Arrays;
 
 public class Mono implements Comparable<Mono> {
-	private transient String vars;
 	private short[] exps;
 
-	private Mono(String vars) {
-		this.vars = vars;
-	}
-
-	public Mono(String vars, short[] exps) {
-		this(vars);
+	public Mono(short[] exps) {
 		this.exps = exps;
 	}
 
 	public Mono(String vars, String expr) {
-		this(vars);
 		exps = new short[vars.length()];
 		if (!expr.isEmpty()) {
 			for (String s : expr.replace("**", "^").split("\\*")) {
 				exps[vars.indexOf(s.charAt(0))] = (s.length() == 1 ? 1 : Byte.parseByte(s.substring(2)));
 			}
 		}
-	}
-
-	public String getVars() {
-		return vars;
 	}
 
 	public short[] getExps() {
@@ -44,7 +33,17 @@ public class Mono implements Comparable<Mono> {
 	}
 
 	@Override
-	public String toString() {
+	public int compareTo(Mono o) {
+		for (int i = 0; i < exps.length; i ++) {
+			int c = o.exps[i] - exps[i];
+			if (c != 0) {
+				return c;
+			}
+		}
+		return 0;
+	}
+
+	public String toString(String vars) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < exps.length; i ++) {
 			int exp = exps[i];
@@ -57,16 +56,5 @@ public class Mono implements Comparable<Mono> {
 			}
 		}
 		return sb.length() == 0 ? "" : sb.substring(1);
-	}
-
-	@Override
-	public int compareTo(Mono o) {
-		for (int i = 0; i < exps.length; i ++) {
-			int c = o.exps[i] - exps[i];
-			if (c != 0) {
-				return c;
-			}
-		}
-		return 0;
 	}
 }

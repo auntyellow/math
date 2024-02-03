@@ -17,18 +17,30 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	public abstract T[] newVector(int n);
 	public abstract T[][] newMatrix(int n1, int n2);
 
+	private transient String vars;
+
 	public P newPoly() {
 		try {
-			return unchecked(getClass().getConstructor().newInstance());
+			return unchecked(getClass().
+					getConstructor(String.class).newInstance(vars));
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public P newPoly(String vars, String expr) {
+	public P newPoly(String newVars) {
 		try {
 			return unchecked(getClass().
-					getConstructor(String.class, String.class).newInstance(vars, expr));
+					getConstructor(String.class).newInstance(newVars));
+		} catch (ReflectiveOperationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public P newPoly(String newVars, String expr) {
+		try {
+			return unchecked(getClass().
+					getConstructor(String.class, String.class).newInstance(newVars, expr));
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
@@ -36,7 +48,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 
 	private static Logger log = LoggerFactory.getLogger(Poly.class);
 
-	private void append(String vars, String expr, boolean minus) {
+	private void append(String expr, boolean minus) {
 		if (expr.isEmpty()) {
 			return;
 		}
@@ -63,16 +75,23 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		}
 	}
 
-	protected Poly() {/**/}
+	protected Poly(String vars) {
+		this.vars = vars;
+	}
 
 	protected Poly(String vars, String expr) {
+		this(vars);
 		for (String ss : expr.replace(" ", "").replace("**", "^").split("\\+")) {
 			boolean minus = false;
 			for (String s : ss.split("\\-")) {
-				append(vars, s, minus);
+				append(s, minus);
 				minus = true;
 			}
 		}
+	}
+
+	public String getVars() {
+		return vars;
 	}
 
 	@Override
@@ -100,7 +119,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 					sb.append(c + "*");
 				}
 			}
-			String s = m.toString();
+			String s = m.toString(vars);
 			int len = sb.length();
 			if (s.isEmpty()) {
 				if (len == 0) {
@@ -181,7 +200,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 				for (int i = 0; i < exps1.length; i ++) {
 					exps[i] = (short) (exps1[i] + exps2[i]);
 				}
-				Mono m = new Mono(m1.getVars(), exps);
+				Mono m = new Mono(exps);
 				T coeff = computeIfAbsent(m, k -> newZero());
 				coeff.addMul(n, c1, c2);
 				if (coeff.signum() == 0) {
@@ -195,7 +214,6 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	public TreeMap<Mono, P> coeffsOf(String gen) {
 		TreeMap<Mono, P> coeffs = new TreeMap<>();
 		forEach((m, c) -> {
-			String vars = m.getVars();
 			short[] exps = m.getExps();
 			short[] expsGen = new short[exps.length];
 			short[] expsCoeff = exps.clone();
@@ -204,8 +222,8 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 				expsGen[j] = exps[j];
 				expsCoeff[j] = 0;
 			}
-			coeffs.computeIfAbsent(new Mono(vars, expsGen), k -> newPoly()).
-					append(c, new Mono(vars, expsCoeff));
+			coeffs.computeIfAbsent(new Mono(expsGen), k -> newPoly()).
+					append(c, new Mono(expsCoeff));
 		});
 		return coeffs;
 	}
@@ -218,14 +236,13 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
 		Map.Entry<Mono, P> lt = ai.firstEntry();
 		Mono lm = lt.getKey();
-		String vars = lm.getVars();
 		P p = lt.getValue();
 		short[] exps = new short[vars.length()];
 		int fromIndex = vars.indexOf(from);
 		for (int i = lm.getExps()[fromIndex] - 1; i >= 0; i --) {
 			exps[fromIndex] = (short) i;
 			P p1 = toFunc.apply(p);
-			P a = ai.get(new Mono(vars, exps));
+			P a = ai.get(new Mono(exps));
 			if (a != null) {
 				p1.add(a);
 			}
@@ -253,7 +270,6 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	public P homogenize(char newVar) {
 		boolean homogeneous = true;
 		int deg = 0;
-		String vars = "";
 		HashMap<Mono, Integer> expsMap = new HashMap<>();
 		for (Mono mono : keySet()) {
 			int exps = 0;
@@ -262,7 +278,6 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 			}
 			if (deg == 0) {
 				deg = exps;
-				vars = mono.getVars();
 			} else if (exps != deg) {
 				homogeneous = false;
 				if (exps > deg) {
@@ -276,14 +291,31 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		}
 		int numVars = vars.length();
 		int numNewVars = numVars + 1;
-		String newVars = vars + newVar;
-		P p = newPoly();
+		P p = newPoly(vars + newVar);
 		int deg_ = deg;
 		expsMap.forEach((m, n) -> {
 			short[] newExps = new short[numNewVars];
 			System.arraycopy(m.getExps(), 0, newExps, 0, numVars);
 			newExps[numVars] = (short) (deg_ - n.intValue());
-			p.put(new Mono(newVars, newExps), get(m));
+			p.put(new Mono(newExps), get(m));
+		});
+		return p;
+	}
+
+	public P diff(char var) {
+		int i = vars.indexOf(var);
+		P p = newPoly();
+		forEach((m, c) -> {
+			short[] exps = m.getExps().clone();
+			T c1 = newZero();
+			int exp = exps[i];
+			if (exp == 0) {
+				return;
+			}
+			c1.addMul(valueOf(exp), c);
+			exps[i] --;
+			Mono m1 = new Mono(exps);
+			p.put(m1, c1);
 		});
 		return p;
 	}

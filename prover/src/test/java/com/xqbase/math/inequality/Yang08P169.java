@@ -24,7 +24,7 @@ public class Yang08P169 {
 		BigPoly p = subsAll(new BigPoly(VARS, expr));
 		BigPoly t = new BigPoly(VARS, "1");
 		for (int i = 0; i < exp; i ++) {
-			t = new BigPoly().addMul(t, p);
+			t = new BigPoly(VARS).addMul(t, p);
 		}
 		return t;
 	}
@@ -40,7 +40,7 @@ public class Yang08P169 {
 	public static void main(String[] args) throws Exception {
 		long t0 = System.currentTimeMillis();
 		int n = 1000;
-		BigPoly p = new BigPoly();
+		BigPoly p = new BigPoly(VARS);
 		p.addMul(pow("a - b", n), sym("abcd"));
 		p.addMul(pow("a - c", n), sym("acbd"));
 		p.addMul(pow("a - d", n), sym("adbc"));

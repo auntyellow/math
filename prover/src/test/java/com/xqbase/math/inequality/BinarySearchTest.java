@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,15 +32,7 @@ public class BinarySearchTest {
 	@Test
 	public void testBasic() {
 		RationalPoly f = new RationalPoly("ab", "a^2-b");
-		try {
-			binarySearch(f);
-			Assert.fail();
-		} catch (IllegalArgumentException e) {
-			assertEquals(f + " may be negative for large a", e.getMessage());
-		}
-
-		// doesn't work now
-		// assertEquals("[0, 1, -1]", Arrays.toString(binarySearch(f)));
+		assertEquals("[0, 1/2, -1/2]", Arrays.toString(binarySearch(f)));
 
 		// 1e-22
 		String e_22 = "1/10000000000000000000000";
@@ -50,7 +41,7 @@ public class BinarySearchTest {
 		long m = 4660046610375530309L;
 		long n = 7540113804746346429L;
 		f = new RationalPoly(vars, m + "*x - " + n);
-		f = new RationalPoly().addMul(f, f);
+		f = new RationalPoly(vars).addMul(f, f);
 		assertTrue(binarySearch(new RationalPoly(vars, e_22).add(f)).length == 0);
 		f = new RationalPoly(vars, "-" + e_22).add(f);
 		Rational[] result = binarySearch(f);
@@ -145,17 +136,11 @@ public class BinarySearchTest {
 		assertTrue(result[1].signum() < 0);
 		assertEquals(result[1], subs(f, Arrays.copyOfRange(result, 0, 1), 'z'));
 		// p172, problem 11, results from p172-11.py
-		f = new RationalPoly("uv", "1611722090*u**2*v**4 + 9029643704*u**2*v**3 + 19050320662*u**2*v**2 + 18119287408*u**2*v + 6657060569*u**2 + 961033254*u*v**3 + 1281377672*u*v**2 - 3203444180*u*v - 4484821852*u + 2082238717*v**2 + 7047577196*v + 6406888360");
+		f = new RationalPoly("uv", "170172209*u**4 - 1301377672*u**3*v - 20000000*u**3 + 3553788598*u**2*v**2 + 30000000*u**2 - 3864133016*u*v**3 - 20000000*u + 1611722090*v**4 - 1621722090*v**3 + 5315682897*v**2 - 6426888360*v + 2572755344");
 		assertTrue(binarySearch(f).length == 0);
-		f = new RationalPoly("uv", "170172209*u**4*v**2 + 1341377672*u**3*v**2 - 961033254*u**3*v + 4634821852*u**2*v**2 - 5766199524*u**2*v + 1441549881*u**2 + 8508954868*u*v**2 - 10251021376*u*v + 5766199524*u + 6657060569*v**2 - 4484821852*v + 6406888360");
+		f = new RationalPoly("uv", "2572755344*u**4 - 6426888360*u**3*v - 20000000*u**3 + 5315682897*u**2*v**2 + 30000000*u**2 - 1621722090*u*v**3 - 20000000*u + 1611722090*v**4 - 3864133016*v**3 + 3553788598*v**2 - 1301377672*v + 170172209");
 		assertTrue(binarySearch(f).length == 0);
-		f = new RationalPoly("uv", "170172209*u**2*v**4 + 60000000*u**2*v**3 - 170344418*u**2*v**2 + 180000000*u**2*v + 410344418*u**2 - 640688836*u*v**3 - 640688836*u*v**2 + 640688836*u*v - 320344418*u + 640688836*v**2 + 1281377672*v + 2082238717");
-		assertTrue(binarySearch(f).length == 0);
-		f = new RationalPoly("uv", "170172209*u**4*v**2 + 700688836*u**3*v**2 - 961033254*u**3*v + 1751722090*u**2*v**2 - 2883099762*u**2*v + 1441549881*u**2 + 1461377672*u*v**2 - 1601722090*u*v + 2883099762*u + 410344418*v**2 - 320344418*v + 2082238717");
-		assertTrue(binarySearch(f).length == 0);
-		f = new RationalPoly("uv", "170172209*u**2*v**4 + 1341377672*u**2*v**3 + 3994133016*u**2*v**2 + 5305510688*u**2*v + 5215510688*u**2 - 640688836*u*v**3 - 3844133016*u*v**2 - 7688266032*u*v - 1281377672*u + 640688836*v**2 + 2562755344*v + 4004305225");
-		assertTrue(binarySearch(f).length == 0);
-		f = new RationalPoly("uv", "2732927553*u**4*v**2 + 11592399048*u**3*v**2 + 3203444180*u**3*v + 19370665080*u**2*v**2 + 7688266032*u**2*v + 2082238717*u**2 + 15556532064*u*v**2 + 3844133016*u*v + 5445855106*u + 5215510688*v**2 - 1281377672*v + 4004305225");
+		f = new RationalPoly("uv", "2572755344*u**4 - 20000000*u**3*v - 6426888360*u**3 + 30000000*u**2*v**2 + 5315682897*u**2 - 20000000*u*v**3 - 1621722090*u + 170172209*v**4 - 1301377672*v**3 + 3553788598*v**2 - 3864133016*v + 1611722090");
 		assertTrue(binarySearch(f).length == 0);
 	}
 }

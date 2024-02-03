@@ -17,7 +17,7 @@ public class BinarySearch {
 	private static final Rational _0 = Rational.valueOf(0);
 	private static final Rational _1 = Rational.valueOf(1);
 	private static final Rational HALF = _1.div(Rational.valueOf(2));
-	private static final Rational MAX_UPPER = new Rational(BigInteger.ONE.shiftLeft(100));
+	// private static final Rational MAX_UPPER = new Rational(BigInteger.ONE.shiftLeft(100));
 	private static final Rational[] EMPTY_RESULT = new Rational[0];
 
 	private static Rational __() {
@@ -44,20 +44,13 @@ public class BinarySearch {
 		if (nonNegative(f)) {
 			return EMPTY_RESULT;
 		}
-		String vars = null;
-		for (Mono m : f.keySet()) {
-			vars = m.getVars();
-			break;
-		}
-		if (vars == null) {
-			return EMPTY_RESULT;
-		}
+		String vars = f.getVars();
 		int len = vars.length();
 
 		// m0 helps to find f0 (constant) directly
 		short[] exps0 = new short[len];
 		Arrays.fill(exps0, (short) 0);
-		Mono m0 = new Mono(vars, exps0);
+		Mono m0 = new Mono(exps0);
 		Mono[] ms = new Mono[len];
 		// subs helps to generate new f
 		RationalPoly[] subsLower = new RationalPoly[len];
@@ -65,12 +58,12 @@ public class BinarySearch {
 		for (int i = 0; i < len; i ++) {
 			short[] exps = exps0.clone();
 			exps[i] = 1;
-			Mono m = new Mono(vars, exps);
+			Mono m = new Mono(exps);
 			ms[i] = m;
-			RationalPoly subs = new RationalPoly();
+			RationalPoly subs = new RationalPoly(vars);
 			subs.put(m, HALF);
 			subsLower[i] = subs;
-			subs = new RationalPoly();
+			subs = new RationalPoly(vars);
 			subs.put(m, HALF);
 			subs.put(m0, HALF);
 			subsUpper[i] = subs;
@@ -95,6 +88,7 @@ public class BinarySearch {
 		keys.remove(0);
 		*/
 
+		/*
 		Rational[] lengths = new Rational[len];
 		for (int i = 0; i < len; i ++) {
 			// f1 = f.subs(x_i, x_i + length_i), double upper until f1 trivially non-negative
@@ -115,6 +109,7 @@ public class BinarySearch {
 			}
 			lengths[i] = length;
 		}
+		*/
 
 		/*
 		// negative test
@@ -146,9 +141,11 @@ public class BinarySearch {
 
 		Rational[] coords = new Rational[len];
 		Arrays.fill(coords, _0);
+		Rational[] lengths = new Rational[len];
+		Arrays.fill(lengths, _1);
 		RationalPoly f1 = f;
 		for (int i = 0; i < len; i ++) {
-			RationalPoly sub = new RationalPoly();
+			RationalPoly sub = new RationalPoly(vars);
 			sub.put(ms[i], lengths[i]);
 			f1 = f1.subs(vars.charAt(i), sub);
 		}
