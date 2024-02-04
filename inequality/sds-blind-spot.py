@@ -23,9 +23,18 @@ def main():
 
     # non-homogeneous
     f = (4*x - 3*y)**2 + 1
-    print('f =', Poly(f).homogenize(z).expr)
-    f = (5*x - 4*y)**2 + x
-    print('f =', Poly(f).homogenize(z).expr)
+    f = Poly(f).homogenize(z).expr
+    print('f =', f)
+    print('f(4x<=3y) =', expand(f.subs(x, 3*x/7).subs(y, y + 4*x/7)))
+    print('f(3y<=4x) =', expand(f.subs(y, 4*y/7).subs(x, x + 3*y/7)))
+    f = (3*x - 1*y)**2 + x
+    f = Poly(f).homogenize(z).expr
+    print('f =', f)
+    print('f(5x<=4y) =', expand(f.subs(x, 4*x/9).subs(y, y + 5*x/9)))
+    print('f(4y<=5x) =', expand(f.subs(y, 5*y/9).subs(x, x + 4*y/9)))
+    f = (x**2 - y)**2 + 1
+    f = Poly(f).homogenize(z).expr
+    print('f =', f)
 
 if __name__ == '__main__':
     main()

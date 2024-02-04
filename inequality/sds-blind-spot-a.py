@@ -12,10 +12,12 @@ def w(u, v):
     if x < 0 or y < 0 or z < 0:
         return nan
     # (4*x - 3*y)**2 + 1
-    w0 = 16*x**2 - 24*x*y + 9*y**2 + z**2
+    # w0 = 16*x**2 - 24*x*y + 9*y**2 + z**2
     # (5*x - 4*y)**2 + x
     # w0 = 25*x**2 - 40*x*y + x*z + 16*y**2
-    return sqrt(w0)
+    # (x**2 - y)**2 + 1
+    w0 = x**4 - 2*x**2*y*z + y**2*z**2 + z**4
+    return w0**.2
 
 def main():
     len = 1

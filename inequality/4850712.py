@@ -13,6 +13,9 @@ def sum_cyc(f, vars):
 
 def main():
     k, u, v, x, y, z = symbols('k, u, v, x, y, z', negative = False)
+    # https://math.stackexchange.com/q/1775572
+    # m, n = 5, 8
+    # f = sum_cyc(x**4/(n*x**3 + m*y**3) - x/(n + m), (x, y, z))
     # m, n = 5, 13    # non-negative, https://math.stackexchange.com/q/1777075
     # m, n = 63, 164  # non-negative
     # m, n = 121, 315 # negative
