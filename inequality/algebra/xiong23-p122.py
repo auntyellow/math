@@ -1,4 +1,3 @@
-from math import inf
 from sympy import *
 
 # ISBN 9787542878021, p122, §8, ex8
@@ -15,7 +14,7 @@ def main():
     # g >= 0
     g = 3*p**4 + 8*p**3*q + 4*p**3*r + 64*p**3*v - 464*p**3 + 88*p**2*q**2 + 88*p**2*q*r + 128*p**2*q*v - 928*p**2*q + 82*p**2*r**2 + 64*p**2*r*v - 464*p**2*r + 192*p**2*v - 1488*p**2 + 128*p*q**3 + 192*p*q**2*r + 64*p*q**2*v - 352*p*q**2 + 136*p*q*r**2 + 64*p*q*r*v - 352*p*q*r + 256*p*q*v - 1984*p*q + 36*p*r**3 + 112*p*r**2 + 128*p*r*v - 992*p*r + 192*p*v - 1536*p + 48*q**4 + 96*q**3*r + 64*q**3 + 72*q**2*r**2 + 96*q**2*r + 64*q**2*v - 448*q**2 + 24*q*r**3 + 128*q*r**2 + 64*q*r*v - 448*q*r + 128*q*v - 1024*q + 3*r**4 + 48*r**3 + 48*r**2 + 64*r*v - 512*r + 64*v - 512
     p0 = Poly(g, (p, q, r))
-    max = -inf
+    max = -oo
     for coeff in p0.coeffs():
         # print(coeff)
         m = solve(Eq(coeff, 0), v)

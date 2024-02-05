@@ -1,7 +1,7 @@
 from sympy import *
 
 # ISBN 9787542848482, p68, §2.4, ex9
-# sum_cyc(sqrt(1 + 48*x/(y + z))) >= 15
+# sum_cyc(sqrt(1 + k*x/(y + z))) >= 3*sqrt(1 + k/2) for 0 <= k <= 48
 
 def cyc(f, vars):
     x, y, z = vars
@@ -13,45 +13,55 @@ def sum_cyc(f, vars):
     return f + f1 + cyc(f1, vars)
 
 def main():
-    x, y, z = symbols('x, y, z', negative = False)
-    f0 = sqrt(1 + 48*x/(y + z))
+    k, x, y, z = symbols('k, x, y, z', negative = False)
+    k = S(48)
+    f0 = sqrt(1 + k*x/(y + z))
     m, n, p, q, r, s, t = symbols('m, n, p, q, r, s, t')
     n = 1
-    g = 15*(n*x**2 + m*(y**2 + z**2) + p*(x*y + x*z) + q*y*z)
+    g = 3*sqrt(1 + k/2)*(n*x**2 + m*(y**2 + z**2) + p*(x*y + x*z) + q*y*z)
     h = (n + 2*m)*(x**2 + y**2 + z**2) + (2*p + q)*(x*y + x*z + y*z)
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (x, y, z))))
     f = f0**2 - (g/h)**2
-    # f >= 0 if sum_cyc(f0) >= 15
+    # f >= 0 if sum_cyc(f0) >= 3*sqrt(1 + k/2)
     # f(1,1,1) = 0
-    eq1 = Eq(f.subs(x, 1).subs(y, 1).subs(z, 1), 0)
+    eq1 = factor(f.subs(x, 1).subs(y, 1).subs(z, 1))
     s32 = S(3)/2
     # f(3/2,3/2,0) = 0
-    eq2 = Eq(f.subs(x, s32).subs(y, s32).subs(z, 0), 0)
+    eq2 = factor(f.subs(x, s32).subs(y, s32).subs(z, 0))
     # f(3/2,0,3/2) = 0
-    eq3 = Eq(f.subs(x, s32).subs(y, 0).subs(z, s32), 0)
+    eq3 = factor(f.subs(x, s32).subs(y, 0).subs(z, s32))
     # f(0,3/2,3/2) = 0
-    eq4 = Eq(f.subs(x, 0).subs(y, s32).subs(z, s32), 0)
+    eq4 = factor(f.subs(x, 0).subs(y, s32).subs(z, s32))
     # f_a,b(1,1,1) = 0
-    eq5 = Eq(diff(f.subs(z, 3 - x - y), x).subs(x, 1).subs(y, 1), 0)
-    eq6 = Eq(diff(f.subs(z, 3 - x - y), y).subs(x, 1).subs(y, 1), 0)
+    eq5 = factor(diff(f.subs(z, 3 - x - y), x).subs(x, 1).subs(y, 1))
+    eq6 = factor(diff(f.subs(z, 3 - x - y), y).subs(x, 1).subs(y, 1))
     # f_a(3/2,3/2,0) = 0
-    eq7 = Eq(diff(f.subs(z, 0).subs(y, 3 - x), x).subs(x, s32), 0)
+    eq7 = factor(diff(f.subs(z, 0).subs(y, 3 - x), x).subs(x, s32))
     # f_a(3/2,0,3/2) = 0
-    eq8 = Eq(diff(f.subs(y, 0).subs(z, 3 - x), x).subs(x, s32), 0)
+    eq8 = factor(diff(f.subs(y, 0).subs(z, 3 - x), x).subs(x, s32))
     # f_b(0,3/2,3/2) = 0
-    eq9 = Eq(diff(f.subs(x, 0).subs(z, 3 - y), y).subs(y, s32), 0)
-    print('eq1:', factor(eq1)) # True
-    print('eq2:', factor(eq2))
-    print('eq3:', factor(eq3)) # = eq2
-    print('eq4:', factor(eq4))
-    print('eq5:', factor(eq5))
-    print('eq6:', factor(eq6)) # True
-    print('eq7:', factor(eq7))
-    print('eq8:', factor(eq8)) # = eq7
-    print('eq9:', factor(eq9)) # True
+    eq9 = factor(diff(f.subs(x, 0).subs(z, 3 - y), y).subs(y, s32))
+    print('eq1:', eq1) # 0
+    print('eq2:', eq2)
+    print('eq3:', eq3) # = eq2
+    print('eq4:', eq4)
+    print('eq5:', eq5)
+    print('eq6:', eq6) # 0
+    print('eq7:', eq7)
+    print('eq8:', eq8) # = eq7
+    print('eq9:', eq9) # 0
+    eq2 = -23*k*m**2 - 14*k*m*p - 16*k*m*q - 14*k*m + k*p**2 - 8*k*p*q + 2*k*p - 2*k*q**2 - 8*k*q + k - 14*m**2 + 4*m*p - 16*m*q + 4*m + 10*p**2 - 8*p*q + 20*p - 2*q**2 - 8*q + 10
+    eq4 = -36*k*m**2 - 36*k*m*q - 9*k*q**2 - 40*m**2 + 32*m*p - 56*m*q + 32*m + 8*p**2 + 8*p*q + 16*p - 16*q**2 + 8*q + 8
+    eq5 = 14*k*m + 2*k*p + 7*k*q - 5*k + 16*m - 8*p + 8*q - 16
+    eq7 = 25*k*m**2 + 25*k*m*p + 8*k*m*q + 16*k*m + 4*k*p**2 + 4*k*p*q - k*p + k*q**2 + 4*k*q - 5*k + 18*m**2 + 18*m*p - 18*p - 18
     mpq = solve([eq2, eq4, eq5, eq7], (m, p, q))
+    # the first solution is extraneous
+    # why we lost the second solution when we keep k?
     print('mpq =', mpq)
-    mpq = mpq[0]
+    mpq = mpq[len(mpq) - 1]
+    # show Groebner basis:
+    B = groebner([eq2, eq4, eq5, eq7], m, p, q)
+    print(B, len(B))
     f = f.subs(m, mpq[0]).subs(p, mpq[1]).subs(q, mpq[2])
     u, v = symbols('u, v', negative = False)
     # doesn't hold
@@ -61,37 +71,37 @@ def main():
     print()
 
     # try cubic homogeneous polynomial
-    g = 15*(n*x**3 + p*(x**2*y + x**2*z) + q*(x*y**2 + x*z**2) + r*(y**2*z + y*z**2) + s*(y**3 + z**3) + t*x*y*z)
+    g = 3*sqrt(1 + k/2)*(n*x**3 + p*(x**2*y + x**2*z) + q*(x*y**2 + x*z**2) + r*(y**2*z + y*z**2) + s*(y**3 + z**3) + t*x*y*z)
     h = (n + 2*s)*(x**3 + y**3 + z**3) + (p + q + r)*(x**2*y + x**2*z + x*y**2 + x*z**2 + y**2*z + y*z**2) + 3*t*x*y*z
     # factor(sum_cyc(...)) is too slow
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (x, y, z))))
     f = f0**2 - (g/h)**2
     # f(1,1,1) = 0
-    eq1 = Eq(f.subs(x, 1).subs(y, 1).subs(z, 1), 0)
+    eq1 = factor(f.subs(x, 1).subs(y, 1).subs(z, 1))
     # f(3/2,3/2,0) = 0
-    eq2 = Eq(f.subs(x, s32).subs(y, s32).subs(z, 0), 0)
+    eq2 = factor(f.subs(x, s32).subs(y, s32).subs(z, 0))
     # f(3/2,0,3/2) = 0
-    eq3 = Eq(f.subs(x, s32).subs(y, 0).subs(z, s32), 0)
+    eq3 = factor(f.subs(x, s32).subs(y, 0).subs(z, s32))
     # f(0,3/2,3/2) = 0
-    eq4 = Eq(f.subs(x, 0).subs(y, s32).subs(z, s32), 0)
+    eq4 = factor(f.subs(x, 0).subs(y, s32).subs(z, s32))
     # f_a,b(1,1,1) = 0
-    eq5 = Eq(diff(f.subs(z, 3 - x - y), x).subs(x, 1).subs(y, 1), 0)
-    eq6 = Eq(diff(f.subs(z, 3 - x - y), y).subs(x, 1).subs(y, 1), 0)
+    eq5 = factor(diff(f.subs(z, 3 - x - y), x).subs(x, 1).subs(y, 1))
+    eq6 = factor(diff(f.subs(z, 3 - x - y), y).subs(x, 1).subs(y, 1))
     # f_a(3/2,3/2,0) = 0
-    eq7 = Eq(diff(f.subs(z, 0).subs(y, 3 - x), x).subs(x, s32), 0)
+    eq7 = factor(diff(f.subs(z, 0).subs(y, 3 - x), x).subs(x, s32))
     # f_a(3/2,0,3/2) = 0
-    eq8 = Eq(diff(f.subs(y, 0).subs(z, 3 - x), x).subs(x, s32), 0)
+    eq8 = factor(diff(f.subs(y, 0).subs(z, 3 - x), x).subs(x, s32))
     # f_b(0,3/2,3/2) = 0
-    eq9 = Eq(diff(f.subs(x, 0).subs(z, 3 - y), y).subs(y, s32), 0)
-    print('eq1:', factor(eq1)) # True
-    print('eq2:', factor(eq2))
-    print('eq3:', factor(eq3)) # = eq2
-    print('eq4:', factor(eq4))
-    print('eq5:', factor(eq5))
-    print('eq6:', factor(eq6)) # True
-    print('eq7:', factor(eq7))
-    print('eq8:', factor(eq8)) # = eq7
-    print('eq9:', factor(eq9)) # True
+    eq9 = factor(diff(f.subs(x, 0).subs(z, 3 - y), y).subs(y, s32))
+    print('eq1:', eq1) # 0
+    print('eq2:', eq2)
+    print('eq3:', eq3) # = eq2
+    print('eq4:', eq4)
+    print('eq5:', eq5)
+    print('eq6:', eq6) # 0
+    print('eq7:', eq7)
+    print('eq8:', eq8) # = eq7
+    print('eq9:', eq9) # 0
     pqr = solve([eq2, eq4, eq5, eq7], (p, q, r))
     print('pqr =', pqr)
     pqr = pqr[0]
@@ -127,6 +137,9 @@ def main():
 
     # result from chen09-p70a.py, could be s = 0 and t0 >= 1/3
     s0, t0 = 0, S(1)/3
+    k = symbols('k')
+    g = 3*sqrt(1 + k/2)*(n*x**3 + p*(x**2*y + x**2*z) + q*(x*y**2 + x*z**2) + r*(y**2*z + y*z**2) + s*(y**3 + z**3) + t*x*y*z)
+    h = (n + 2*s)*(x**3 + y**3 + z**3) + (p + q + r)*(x**2*y + x**2*z + x*y**2 + x*z**2 + y**2*z + y*z**2) + 3*t*x*y*z
     g = g.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     h = h.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     print('g =', factor(g))
@@ -135,6 +148,17 @@ def main():
     f = f.subs(x, x0).subs(y, y0).subs(z, z0)
     print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
+    k1 = -(19208*k*u**7 + 67228*k*u**6*v + 441784*k*u**6 + 91238*k*u**5*v**2 + 1325352*k*u**5*v + 3491544*k*u**5 + 60025*k*u**4*v**3 + 1587110*k*u**4*v**2 + 8728860*k*u**4*v + 11751768*k*u**4 + 19208*k*u**3*v**4 + 965300*k*u**3*v**3 + 8985032*k*u**3*v**2 + 23503536*k*u**3*v + 21292800*k*u**3 + 2401*k*u**2*v**5 + 299586*k*u**2*v**4 + 4748688*k*u**2*v**3 + 18706700*k*u**2*v**2 + 31939200*k*u**2*v + 22110000*k*u**2 + 37828*k*u*v**5 + 1298964*k*u*v**4 + 6954932*k*u*v**3 + 17315000*k*u*v**2 + 22110000*k*u*v + 12625000*k*u + 148996*k*v**5 + 1031392*k*v**4 + 3334300*k*v**3 + 6110000*k*v**2 + 6312500*k*v + 3125000*k - 921984*u**7 - 3226944*u**6*v - 30378432*u**6 - 5241824*u**5*v**2 - 91135296*u**5*v - 197806912*u**5 - 5037200*u**4*v**3 - 125595280*u**4*v**2 - 494517280*u**4*v - 605646464*u**4 - 3055984*u**3*v**4 - 99298400*u**3*v**3 - 547539936*u**3*v**2 - 1211292928*u**3*v - 1048414400*u**3 - 1160248*u**2*v**5 - 47072328*u**2*v**4 - 326792624*u**2*v**3 - 1009661600*u**2*v**2 - 1572621600*u**2*v - 1068280000*u**2 - 253000*u*v**6 - 12612344*u*v**5 - 104307072*u*v**4 - 404015136*u*v**3 - 878120000*u*v**2 - 1068280000*u*v - 606000000*u - 24200*v**7 - 1474000*v**6 - 14172008*v**5 - 64987216*v**4 - 176956400*v**3 - 300280000*v**2 - 303000000*v - 150000000)
+    k2 = -(470596*k*u**7 + 1872780*k*u**6*v + 4008984*k*u**6 + 3247573*k*u**5*v**2 + 13798456*k*u**5*v + 14976880*k*u**5 + 3207330*k*u**4*v**3 + 20274750*k*u**4*v**2 + 43158408*k*u**4*v + 31919192*k*u**4 + 1918981*k*u**3*v**4 + 16504664*k*u**3*v**3 + 51140208*k*u**3*v**2 + 73907732*k*u**3*v + 41903200*k*u**3 + 665940*k*u**2*v**5 + 7811946*k*u**2*v**4 + 31678476*k*u**2*v**3 + 66089900*k*u**2*v**2 + 73160000*k*u**2*v + 33860000*k*u**2 + 108900*k*u*v**6 + 2010360*k*u*v**5 + 10225752*k*u*v**4 + 27625536*k*u*v**3 + 43848300*k*u*v**2 + 39735000*k*u*v + 15562500*k*u + 217800*k*v**6 + 1356960*k*v**5 + 4555568*k*v**4 + 9257200*k*v**3 + 11985000*k*v**2 + 9250000*k*v + 3125000*k - 22588608*u**7 - 89893440*u**6*v - 193666032*u**6 - 160254304*u**5*v**2 - 662666088*u**5*v - 726851240*u**5 - 166746440*u**4*v**3 - 986907000*u**4*v**2 - 2081703184*u**4*v - 1549961616*u**4 - 109168288*u**3*v**4 - 823744672*u**3*v**3 - 2488929584*u**3*v**2 - 3572109536*u**3*v - 2029443600*u**3 - 44974320*u**2*v**5 - 405650608*u**2*v**4 - 1564258048*u**2*v**3 - 3217895200*u**2*v**2 - 3534680000*u**2*v - 1632280000*u**2 - 10788800*u*v**6 - 111785280*u*v**5 - 515798496*u*v**4 - 1355548928*u*v**3 - 2135178400*u*v**2 - 1914280000*u*v - 747000000*u - 1161600*v**7 - 13446400*v**6 - 71446080*v**5 - 224788864*v**4 - 452985600*v**3 - 582280000*v**2 - 444000000*v - 150000000)
+    min = oo
+    for coeff in Poly(k1, u, v).coeffs() + Poly(k2, u, v).coeffs():
+        if Poly(coeff, k).nth(1) == 0:
+            continue
+        print(coeff)
+        k0 = solve(Eq(coeff, 0), k)[0]
+        if k0 < min:
+            min = k0
+    print('k(min) =', k0)
 
 if __name__ == '__main__':
     main()
