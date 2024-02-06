@@ -118,10 +118,17 @@ public class PolyTest {
 	@Test
 	public void testCoeffsOf() {
 		StringBuilder sb = new StringBuilder();
-		new LongPoly(VARS_PQUV, K2).coeffsOf("uv").forEach((mono, coeff) -> {
-			sb.append("(" + coeff + ")*" + mono + " + ");
+		LongPoly f = new LongPoly(VARS_PQUV, K2);
+		LongPoly e = new LongPoly(VARS_PQUV);
+		f.coeffsOf("uv").forEach((mono, coeff) -> {
+			sb.append("(" + coeff + ")*" + mono.toString(VARS_PQUV) + " + ");
+			e.add(coeff);
 		});
 		assertEquals(P2, sb.substring(0, sb.length() - 3));
+		LongPoly e2 = f.exclude("uv");
+		assertEquals("pq", e2.getVars());
+		// e is about pquv and e2 is about uv so e != e2
+		assertEquals(e.toString(), e2.toString());
 	}
 
 	@Test

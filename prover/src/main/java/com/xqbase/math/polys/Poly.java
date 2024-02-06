@@ -48,7 +48,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 
 	private static Logger log = LoggerFactory.getLogger(Poly.class);
 
-	private void append(String expr, boolean minus) {
+	private void append(boolean minus, String expr) {
 		if (expr.isEmpty()) {
 			return;
 		}
@@ -64,10 +64,10 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 				s = s.substring(i + 1);
 			}
 		}
-		append(minus ? c.negate() : c, new Mono(vars, s));
+		append(new Mono(vars, s), minus ? c.negate() : c);
 	}
 
-	public void append(T n, Mono mono) {
+	public void append(Mono mono, T n) {
 		T coeff = computeIfAbsent(mono, k -> newZero());
 		coeff.add(n);
 		if (coeff.signum() == 0) {
@@ -84,7 +84,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		for (String ss : expr.replace(" ", "").replace("**", "^").split("\\+")) {
 			boolean minus = false;
 			for (String s : ss.split("\\-")) {
-				append(s, minus);
+				append(minus, s);
 				minus = true;
 			}
 		}
@@ -212,20 +212,53 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	}
 
 	public TreeMap<Mono, P> coeffsOf(String gen) {
+		int genLen = gen.length();
+		int[] iExp = new int[genLen];
+		for (int i = 0; i < genLen; i ++) {
+			iExp[i] = vars.indexOf(gen.charAt(i));
+		}
 		TreeMap<Mono, P> coeffs = new TreeMap<>();
 		forEach((m, c) -> {
 			short[] exps = m.getExps();
 			short[] expsGen = new short[exps.length];
 			short[] expsCoeff = exps.clone();
-			for (int i = 0; i < gen.length(); i ++) {
-				int j = vars.indexOf(gen.charAt(i));
+			for (int i = 0; i < genLen; i ++) {
+				int j = iExp[i];
 				expsGen[j] = exps[j];
 				expsCoeff[j] = 0;
 			}
 			coeffs.computeIfAbsent(new Mono(expsGen), k -> newPoly()).
-					append(c, new Mono(expsCoeff));
+					append(new Mono(expsCoeff), c);
 		});
 		return coeffs;
+	}
+
+	/** exclude variables by setting them to 1 */
+	public P exclude(String ex) {
+		int len = vars.length();
+		int[] iExp = new int[len];
+		int j = 0;
+		StringBuilder newVars = new StringBuilder();
+		for (int i = 0; i < len; i ++) {
+			char var = vars.charAt(i);
+			int k = ex.indexOf(var);
+			if (k < 0) {
+				iExp[i] = j;
+				j ++;
+				newVars.append(var);
+			}
+		}
+		int newLen = j;
+		P p = newPoly(newVars.toString());
+		forEach((m, c) -> {
+			short[] exps = m.getExps();
+			short[] newExps = new short[newLen];
+			for (int i = 0; i < newLen; i ++) {
+				newExps[iExp[i]] = exps[i];
+			}
+			p.append(new Mono(newExps), c);
+		});
+		return p;
 	}
 
 	private P subs(char from, Function<P, P> toFunc) {

@@ -50,7 +50,7 @@ public class BinarySearchTest {
 		assertEquals(result[1], subs(f, Arrays.copyOfRange(result, 0, 1), 'x'));
 		/*
 		// doesn't work due to critical points near (1, 3, 1) and (1, 2, 1, 1) 
-		// (3*x - y)**2 + (x - z)**2, 
+		// (3*x - y)**2 + (x - z)**2
 		vars = "xyz";
 		f = new RationalPoly(vars, "10*x**2 - 6*x*y - 2*x*z + y**2 + z**2");
 		// (2*w - x)**2 + (w - y)**2 + (w - z)**2
