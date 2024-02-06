@@ -236,25 +236,25 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	/** exclude variables by setting them to 1 */
 	public P exclude(String ex) {
 		int len = vars.length();
-		int[] iExp = new int[len];
+		int newLen = len - ex.length();
+		int[] iExp = new int[newLen];
 		int j = 0;
 		StringBuilder newVars = new StringBuilder();
 		for (int i = 0; i < len; i ++) {
 			char var = vars.charAt(i);
 			int k = ex.indexOf(var);
 			if (k < 0) {
-				iExp[i] = j;
+				iExp[j] = i;
 				j ++;
 				newVars.append(var);
 			}
 		}
-		int newLen = j;
 		P p = newPoly(newVars.toString());
 		forEach((m, c) -> {
 			short[] exps = m.getExps();
 			short[] newExps = new short[newLen];
 			for (int i = 0; i < newLen; i ++) {
-				newExps[iExp[i]] = exps[i];
+				newExps[i] = exps[iExp[i]];
 			}
 			p.append(new Mono(newExps), c);
 		});

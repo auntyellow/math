@@ -43,6 +43,11 @@ public class Mono implements Comparable<Mono> {
 		return 0;
 	}
 
+	@Override
+	public String toString() {
+		return Arrays.toString(exps);
+	}
+
 	public String toString(String vars) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < exps.length; i ++) {
