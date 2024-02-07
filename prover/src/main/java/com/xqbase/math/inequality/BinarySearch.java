@@ -61,6 +61,12 @@ public class BinarySearch {
 		Arrays.fill(coords0, _0);
 	}
 
+	private Rational[] negativeResult(Rational[] coords, Rational f0) {
+		Rational[] result = Arrays.copyOf(coords, len + 1);
+		result[len] = f0;
+		return result;		
+	}
+
 	/**
 	 * binary search negative for all 0 <= x_i <= 1
 	 * @param f shouldn't be homogeneous because it hardly works when f == 0 at x_i == k*x_j.<p>
@@ -69,14 +75,12 @@ public class BinarySearch {
 	 */
 	public static Rational[] binarySearch(RationalPoly f) {
 		BinarySearch bs = new BinarySearch(f.getVars());
-		Rational[] bounds = new Rational[bs.len];
-		Arrays.fill(bounds, _1);
 		Rational f0 = f.getOrDefault(bs.m0, _0);
 		if (f0.signum() <= 0) {
-			Rational[] result = Arrays.copyOf(bs.coords0, bs.len + 1);
-			result[bs.len] = f0;
-			return result;
+			return bs.negativeResult(bs.coords0, f0);
 		}
+		Rational[] bounds = new Rational[bs.len];
+		Arrays.fill(bounds, _1);
 		return bs.binarySearch(f, bs.coords0, bounds, f0);
 	}
 
@@ -86,9 +90,7 @@ public class BinarySearch {
 		if (f0 == null) {
 			f0 = f.getOrDefault(m0, _0);
 			if (f0.signum() <= 0) {
-				Rational[] result = Arrays.copyOf(coords, len + 1);
-				result[len] = f0;
-				return result;
+				return negativeResult(coords, f0);
 			}
 		}
 		Rational f1 = __();

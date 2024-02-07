@@ -211,6 +211,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		return unchecked(this);
 	}
 
+	/** like sympy.polys.polytools.poly(expr, *gens) */
 	public TreeMap<Mono, P> coeffsOf(String gen) {
 		int genLen = gen.length();
 		int[] iExp = new int[genLen];
