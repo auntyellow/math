@@ -40,10 +40,33 @@ def main():
     print('f(d=0) =', factor(f.subs(d, 0).subs(a, c*(1 + u + v)).subs(b, c*(1 + u))))
     # equivalent to g1(uvw)
     h = 64*u**6 + 192*u**5*v + 576*u**5 + 240*u**4*v**2 - 288*u**4*v + 2160*u**4 + 160*u**3*v**3 - 2016*u**3*v**2 + 864*u**3*v + 4320*u**3 + 60*u**2*v**4 - 1008*u**2*v**3 - 1944*u**2*v**2 + 4752*u**2*v + 4860*u**2 + 12*u*v**5 + 180*u*v**4 - 648*u*v**3 + 1512*u*v**2 + 4860*u*v + 2916*u + v**6 + 18*v**5 + 135*v**4 + 540*v**3 + 1215*v**2 + 1458*v + 729
-    print('h =', factor(h.subs(u, 1 + s).subs(v, 1 + s + t)))
+    print('h =', h)
     # (a + b + c)**6 >= 1728*(a - b)*(a - c)*(b - c)*a*b*c
     # equality occurs when a = 2 + 2*cos(pi/9), b = 2 - 2*cos(4*pi/9) and c = 2 - 2*cos(2*pi/9)
     # see https://math.stackexchange.com/a/3353472
+    h_u, h_v = diff(h, u), diff(h, v)
+    print('h_u =', h_u)
+    print('h_v =', h_v)
+    B = groebner([h_u, h_v], u, v)
+    print(B)
+    print(factor(B[1]), '= 0')
+    v01 = nsolve(B[1], (15, 100), solver='bisect', verify=False)
+    v02 = nsolve(B[1], (4, 15), solver='bisect', verify=False)
+    v03 = nsolve(B[1], (2, 4), solver='bisect', verify=False)
+    v04 = nsolve(B[1], (1, 2), solver='bisect', verify=False)
+    v05 = nsolve(B[1], (.2, 1), solver='bisect', verify=False)
+    v06 = nsolve(B[1], (0, .2), solver='bisect', verify=False)
+    v0s = [v01, v02, v03, v04, v05, v06]
+    print('v =', v0s)
+    for v0 in v0s:
+        p = Poly(B[0].subs(v, v0), u)
+        print(p.expr, '= 0')
+        u0 = -N(p.nth(0)/p.nth(1))
+        if u0 >= 0:
+            print('u0 =', u0)
+            print('v0 =', v0)
+            # v01 and v03 are saddle points; v02 is minimum (largest root of v**3 - 3*v**2 - 9*v + 3 == 0)
+            print('h0 =', N(h.subs(u, u0).subs(v, v0)))
 
 if __name__ == '__main__':
     main()
