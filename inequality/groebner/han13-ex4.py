@@ -27,9 +27,9 @@ def main():
     v02 = nsolve(B[1], (.45, 1), solver='bisect', verify=False)
     v03 = nsolve(B[1], (.25, .45), solver='bisect', verify=False)
     v04 = nsolve(B[1], (0, .25), solver='bisect', verify=False)
-    v0s = [v01, v02, v03, v04]
-    print('v =', v0s)
-    for v0 in v0s:
+    v0n = [v01, v02, v03, v04]
+    print('v =', v0n)
+    for v0 in v0n:
         p = Poly(B[0].subs(v, v0), u)
         print(p.expr, '= 0')
         u0 = -N(p.nth(0)/p.nth(1))
