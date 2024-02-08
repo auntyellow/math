@@ -16,7 +16,7 @@ def main():
         print(factor(f), '= 0')
     print(len(B), 'equations')
     x = QQ['x'].gen()
-    # however, RR may get wrong values, perhaps due to precision loss
+    # RR may get wrong values, perhaps due to precision loss
     dn = B[len(B) - 1].subs({d: x}).roots(AA, multiplicities = False)
     print('d =', dn)
     # dn[0] and dn[4] can't solve c, dn[3] can't solve b, dn[1] is saddle point

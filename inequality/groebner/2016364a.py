@@ -15,7 +15,7 @@ def fun(X):
     return a**4 + b**4 + c**4 + d**4 + a**2*b**2 + b**2*c**2 + c**2*d**2 + d**2*a**2 + 8*(1 - a)*(1 - b)*(1 - c)*(1 - d) - 1
 
 def main():
-    res = basinhopping(fun, [.5, .5, .5, .5], niter = 1000, minimizer_kwargs = {'method': 'Nelder-Mead'})
+    res = basinhopping(fun, [0, 0, 0, 0], niter = 1000, minimizer_kwargs = {'method': 'Nelder-Mead'})
     print(res)
     print('a =', res.x[0], '=', nsimplify(res.x[0], tolerance = 0.001))
     print('b =', res.x[1], '=', nsimplify(res.x[1], tolerance = 0.001))
