@@ -1,4 +1,4 @@
-from sympy import diff, factor, groebner, solve, symbols
+from sympy import diff, factor, groebner, resultant, solve, symbols
 
 # https://www.johndcook.com/blog/2017/05/13/grobner-bases/
 
@@ -42,6 +42,45 @@ def main():
                 fl = factor(B[0].subs(z, z0).subs(y, y0).subs(x, x0))
                 print('     ', fl, '= 0')
                 for l0 in solve(fl, dict = True):
+                    l0 = l0[l]
+                    print('      l =', l0)
+                    solutions += 1
+    print(solutions, 'solutions')
+    print()
+
+    h1 = resultant(Lx, Ly, l) # xyz
+    h2 = resultant(Lx, Lz, l) # xyz
+    h3 = resultant(h1, h2, x) # yz
+    h4 = resultant(h1, G, x) # yz
+    h5 = resultant(h3, h4, y) # z
+    solutions = 0
+    print(factor(h5), '= 0')
+    for z0 in solve(h5, dict = True):
+        z0 = z0[z]
+        print('z =', z0)
+        fy1 = factor(h4.subs(z, z0))
+        print(' ', fy1, '= 0')
+        fy2 = factor(h3.subs(z, z0))
+        print(' ', fy2, '= 0')
+        for y0 in solve([fy1, fy2], dict = True):
+            y0 = y0[y]
+            print('  y =', y0)
+            fx1 = factor(h1.subs(z, z0).subs(y, y0))
+            print('   ', fx1, '= 0')
+            fx2 = factor(h2.subs(z, z0).subs(y, y0))
+            print('   ', fx2, '= 0')
+            fx3 = factor(G.subs(z, z0).subs(y, y0))
+            print('   ', fx3, '= 0')
+            for x0 in solve([fx1, fx2, fx3], dict = True):
+                x0 = x0[x]
+                print('    x =', x0)
+                fl1 = factor(Lx.subs(z, z0).subs(y, y0).subs(x, x0))
+                print('     ', fl, '= 0')
+                fl2 = factor(Ly.subs(z, z0).subs(y, y0).subs(x, x0))
+                print('     ', fl, '= 0')
+                fl3 = factor(Lz.subs(z, z0).subs(y, y0).subs(x, x0))
+                print('     ', fl, '= 0')
+                for l0 in solve([fl1, fl2, fl3], dict = True):
                     l0 = l0[l]
                     print('      l =', l0)
                     solutions += 1

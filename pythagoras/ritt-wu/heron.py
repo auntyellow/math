@@ -1,4 +1,4 @@
-from sympy import Matrix, factor, prem, solve, symbols
+from sympy import Matrix, factor, prem, resultant, solve, symbols
 
 def dist2(P1, P2):
     return (P1[0] - P2[0])**2 + (P1[1] - P2[1])**2
@@ -35,6 +35,17 @@ def main():
     print('R(e) =', R)
     R = prem(R, h1a, d)
     print('R(d) =', factor(R))
+    print()
+    h3 = resultant(h1, h2, d) # e
+    print('h3 =', factor(h3))
+    h4 = resultant(h1, g, d) # e
+    print('h4 =', factor(h4))
+    h4 = 2*S - c*e
+    R = resultant(h3, h4, e)
+    print('R =', factor(R))
+    print()
+    S2_16 = a**4 - 2*a**2*b**2 - 2*a**2*c**2 + b**4 - 2*b**2*c**2 + c**4
+    print('16*S**2 =', factor(S2_16))
 
 if __name__ == '__main__':
     main()
