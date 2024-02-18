@@ -97,11 +97,19 @@ public class SDSTest {
 		assertEquals("[[0, 0, 1], [0, 1, 0], [1, 0, 0], [1, 1, 1]]", result.getZeroAt().toString());
 
 		// (4*x - 3*y)**2 + 1, doesn't work (A_3, T_3, Y_3, Z_3), should divide into 4*x <= 3*y and 3*y <= 4*x
-		// SDS.sds(new BigPoly("xyz", "16*x**2 - 24*x*y + 9*y**2 + z**2"));
+		// try a weaker one
+		result = SDS.sds(new LongPoly("xyz", "16*x**2 - 23*x*y + 9*y**2 + z**2"));
+		// A_3 and H_3 need 3; T_3 needs 4; Z_3 needs 6
+		positive(result, 3);
 		// (5*x - 4*y)**2 + x, doesn't work (A_3, T_3, Y_3, Z_3), should divide into 5*x <= 4*y and 4*y <= 5*x
-		// SDS.sds(new BigPoly("xyz", "25*x**2 - 40*x*y + x*z + 16*y**2"));
+		// try a weaker one
+		result = SDS.sds(new LongPoly("xyz", "25*x**2 - 39*x*y + x*z + 16*y**2"));
+		// A_3 and T_3 need 4; H_3 needs 6; Z_3 needs 10
+		nonNegative(result, 4);
+		assertEquals("[[0, 0, 1]]", result.getZeroAt().toString());
 		// (x**2 - y)**2 + 1, doesn't work (A_3, T_3, Y_3, Z_3)
-		// SDS.sds(new BigPoly("xyz", "x**4 - 2*x**2*y*z + y**2*z**2 + z**4"));
+		// doesn't work on a weaker one
+		// SDS.sds(new BigPoly("xyz", "10*x**4 - 19*x**2*y*z + 10*y**2*z**2 + z**4"));
 	}
 
 	private static <T extends MutableNumber<T>, P extends Poly<T, P>> List<T> asList(P f, long... values) {
