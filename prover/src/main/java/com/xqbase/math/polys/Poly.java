@@ -1,5 +1,6 @@
 package com.xqbase.math.polys;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -258,6 +259,51 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 				newExps[i] = exps[iExp[i]];
 			}
 			p.append(new Mono(newExps), c);
+		});
+		return p;
+	}
+
+	public int degree(char var) {
+		int i = vars.indexOf(var);
+		int degree = 0;
+		for (Mono m : keySet()) {
+			int exp = m.getExps()[i];
+			if (exp > degree) {
+				degree = exp;
+			}
+		}
+		return degree;
+	}
+
+	public int[] degrees() {
+		int len = vars.length();
+		int[] degrees = new int[len];
+		Arrays.fill(degrees, 0);
+		for (Mono m : keySet()) {
+			short[] exps = m.getExps();
+			for (int i = 0; i < len; i ++) {
+				if (exps[i] > degrees[i]) {
+					degrees[i] = exps[i];
+				}
+			}
+		}
+		return degrees;
+	}
+
+	/** x -> 1/x and remove denominator */
+	public P reciprocal(char var) {
+		return reciprocal(var, degree(var));
+	}
+
+	/** x -> 1/x and remove denominator */
+	public P reciprocal(char var, int degree) {
+		int i = vars.indexOf(var);
+		P p = newPoly();
+		forEach((m, c) -> {
+			short[] exps = m.getExps();
+			short[] exps1 = exps.clone();
+			exps1[i] = (short) (degree - exps[i]);
+			p.put(new Mono(exps1), c);
 		});
 		return p;
 	}

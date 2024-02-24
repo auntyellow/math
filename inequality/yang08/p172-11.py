@@ -9,6 +9,7 @@ def main():
         - 1301377672*y**3*z + 3553788598*y**2*z**2 - 3864133016*y*z**3 \
         + 1611722090*z**4
     u, v = symbols('u, v', negative = False) # 0 <= u, v <= 1
+    # proved by BinarySearch
     print('f(x=max(xyz)) =', factor(f.subs(y, x*(1 - u)).subs(z, x*(1 - v))))
     print('f(y=max(xyz)) =', factor(f.subs(x, y*(1 - u)).subs(z, y*(1 - v))))
     print('f(z=max(xyz)) =', factor(f.subs(x, z*(1 - u)).subs(y, z*(1 - v))))
