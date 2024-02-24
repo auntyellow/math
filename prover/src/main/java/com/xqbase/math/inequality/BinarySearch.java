@@ -148,8 +148,8 @@ public class BinarySearch {
 			for (int i = 0; i < bounds.length; i ++) {
 				sb.append(coords[i].doubleValue() + "(" + bounds[i].doubleValue() + "), ");
 			}
-			log.debug(indent() + "divide [" + sb.substring(0, sb.length() - 2) + "] at " + x +
-					", f = " + f0.doubleValue() + ", f_" + vars.charAt(iMin) + " = " + fxMin.doubleValue());
+			log.debug(indent() + "divide [" + sb.substring(0, sb.length() - 2) + "], f = " +
+					f0.doubleValue() + ", f_" + vars.charAt(iMin) + " = " + fxMin.doubleValue());
 			// set new bounds for upper and lower half
 			newBounds = bounds.clone();
 			Rational bound = __(HALF, bounds[iMin]);
@@ -183,7 +183,7 @@ public class BinarySearch {
 	 * search negative for f and 0 <= x_i <= 1, where f(0) may be positive, zero or negative
 	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative
 	 */
-	private Rational[] search01(RationalPoly f) {
+	private Rational[] search0(RationalPoly f) {
 		Rational f0 = f.getOrDefault(m0, _0);
 		int s = f0.signum();
 		if (s < 0) {
@@ -214,19 +214,18 @@ public class BinarySearch {
 			}
 			RationalPoly f2 = new RationalPoly(vars);
 			int i_ = i;
-			int lowestDegree_ = minDeg;
+			int minDeg_ = minDeg;
 			f1.forEach((m, c) -> {
 				short[] exps2 = m.getExps().clone();
-				exps2[i_] -= lowestDegree_;
+				exps2[i_] -= minDeg_;
 				if (exps2[i_] < 0) {
 					throw new RuntimeException();
 				}
 				f2.put(new Mono(exps2), c);
 			});
-			char x = vars.charAt(i);
-			log.info("search f(" + x + " = max(" + vars + ")) = " + f2);
+			log.info("search f(" + vars.charAt(i) + " = max(" + vars + ")) = " + f2);
 			depth ++;
-			Rational[] result = search01(f2);
+			Rational[] result = search0(f2);
 			depth --;
 			if (result.length == 0) {
 				continue;
@@ -249,6 +248,14 @@ public class BinarySearch {
 			return result;
 		}
 		return EMPTY_RESULT;
+	}
+
+	/**
+	 * search negative for f and 0 <= x_i <= 1, where f(0) may be positive, zero or negative
+	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative
+	 */
+	public static Rational[] search01(RationalPoly f) {
+		return new BinarySearch(f.getVars()).search0(f);
 	}
 
 	/**
@@ -288,7 +295,7 @@ public class BinarySearch {
 			}
 			RationalPoly fi = fs.get(i);
 			log.info("search f(" + sb + ") = " + fi);
-			Rational[] result = bs.search01(fi);
+			Rational[] result = bs.search0(fi);
 			if (result.length == 0) {
 				continue;
 			}
