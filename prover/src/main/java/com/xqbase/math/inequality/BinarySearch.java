@@ -223,7 +223,7 @@ public class BinarySearch {
 				}
 				f2.put(new Mono(exps2), c);
 			});
-			log.info("search f(" + vars.charAt(i) + " = max(" + vars + ")) = " + f2);
+			log.info(indent() + "search f(" + vars.charAt(i) + " = max(" + vars + ")) = " + f2);
 			depth ++;
 			Rational[] result = search0(f2);
 			depth --;
