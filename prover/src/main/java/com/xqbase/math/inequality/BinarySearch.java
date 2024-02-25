@@ -16,6 +16,7 @@ import com.xqbase.math.polys.RationalPoly;
 public class BinarySearch {
 	private static Logger log = LoggerFactory.getLogger(BinarySearch.class);
 
+	private static final int MAX_DEPTH = 100;
 	private static final Rational _0 = Rational.valueOf(0);
 	private static final Rational _1 = Rational.valueOf(1);
 	private static final Rational HALF = _1.div(Rational.valueOf(2));
@@ -97,7 +98,7 @@ public class BinarySearch {
 		Rational f0 = f0_;
 		if (f0 == null) {
 			f0 = f.getOrDefault(m0, _0);
-			if (f0.signum() <= 0) {
+			if (f0.signum() <= 0 || depth > MAX_DEPTH) {
 				return negativeResult(f0);
 			}
 		}

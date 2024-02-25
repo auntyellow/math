@@ -21,6 +21,7 @@ def main():
     # m, n = 121, 315 # negative
     m, n = 1, k
     f = sum_cyc(x**3/(n*x**2 + m*y**2) - x/(n + m), (x, y, z))
+    # print('f(x=min(xyz)) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + v))))
     print('f =', f)
     fn, fd = fraction(cancel(f))
     # proved or found counterexample by SDS
