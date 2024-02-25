@@ -26,15 +26,40 @@ def main():
     print('g(xy) =', cancel(g.subs(x, x*y)/y**2))
     print()
 
-    f = (3*x**2 - 5*y)**2 + 1
+    f = (3*x**3 - 5*y**2)**2 + 1
     print('f =', expand(f))
-    f = f.subs({x: 1/x, y: 1/y})*x**4*y**2
+    f = f.subs({x: 1/x, y: 1/y})*x**6*y**4
     print('f =', expand(f))
-    print('f(yx) =', cancel(f.subs(y, x*y)/x**2))
-    print('f(xy) =', cancel(f.subs(x, x*y)/y**2))
-    g = x**4*y**2 + 25*x**2 - 30*x*y + 9*y**2
+    print('f(yx) =', cancel(f.subs(y, x*y)/x**4))
+    print('f(xy) =', cancel(f.subs(x, x*y)/y**4))
+    g = x**6*y**4 + 25*x**2 - 30*x*y**2 + 9*y**4
     print('g(yx) =', cancel(g.subs(y, x*y)/x**2))
     print('g(xy) =', cancel(g.subs(x, x*y)/y**2))
+    h = x**6*y**8 + 25*x**2 - 30*x*y + 9*y**2
+    print('h(yx) =', cancel(h.subs(y, x*y)/x**2))
+    print('h(xy) =', cancel(h.subs(x, x*y)/y**2))
+    # homogeneous min-degree
+    f = f.subs(x, x**2).subs(y, y**3)
+    print('f =', expand(f))
+    print('f(yx) =', cancel(f.subs(y, x*y)/x**12))
+    print('f(xy) =', cancel(f.subs(x, x*y)/y**12))
+    print()
+
+    f = (3*x**3 - 5*y**2)**2 + x**3*y**2
+    print('f =', expand(f))
+    print('f(yx) =', cancel(f.subs(y, x*y)/x**4))
+    print('f(xy) =', cancel(f.subs(x, x*y)/y**4))
+    g = 9*x**2 - 29*x*y**2 + 25*y**4
+    print('g(yx) =', cancel(g.subs(y, x*y)/x**2))
+    print('g(xy) =', cancel(g.subs(x, x*y)/y**2))
+    h = 9*x**2 - 29*x*y + 25*y**2
+    print('h(yx) =', cancel(h.subs(y, x*y)/x**2))
+    print('h(xy) =', cancel(h.subs(x, x*y)/y**2))
+    # homogeneous min-degree
+    f = f.subs(x, x**2).subs(y, y**3)
+    print('f =', expand(f))
+    print('f(yx) =', cancel(f.subs(y, x*y)/x**12))
+    print('f(xy) =', cancel(f.subs(x, x*y)/y**12))
     print()
 
     u, v = symbols('u, v', negative = False)
@@ -56,6 +81,12 @@ def main():
     # doesn't seem to work
     print('g(y = max(xyz)) =', cancel(g.subs(x, x*y).subs(z, y*z)/y**2))
     print('g(z = max(xyz)) =', cancel(g.subs(x, x*z).subs(y, y*z)/z**2))
+    # homogeneous min-degree
+    f = f.subs(x, x**2).subs(y, y**2).subs(z, z**3)
+    print('f =', expand(f))
+    print('f(x = max(xyz)) =', cancel(f.subs(y, x*y).subs(z, x*z)/x**12))
+    print('f(y = max(xyz)) =', cancel(f.subs(x, x*y).subs(z, y*z)/y**12))
+    print('f(z = max(xyz)) =', cancel(f.subs(x, x*z).subs(y, y*z)/z**12))
 
 if __name__ == '__main__':
     main()
