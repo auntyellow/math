@@ -44,12 +44,10 @@ public class BinarySearch {
 	private RationalPoly[] subsLower;
 	/** helps to generate new f for upper half: x -> (x + 1)/2 */
 	private RationalPoly[] subsUpper;
-	/** helps to call {@link #search0(RationalPoly) */
+	/** helps to call {@link #search1(RationalPoly, Rational, Rational[], Rational[])} */
 	private Rational[] bounds1;
 	/** helps to call {@link #negativeResult(Rational)} */
 	private Rational[] coords0;
-	/** helps to generate f' in {@link #search0(RationalPoly)} */
-	private RationalPoly[][] subsDiff;
 
 	private BinarySearch(String vars) {
 		this.vars = vars;
@@ -60,7 +58,6 @@ public class BinarySearch {
 		m0 = new Mono(exps0);
 		subsLower = new RationalPoly[len];
 		subsUpper = new RationalPoly[len];
-		subsDiff = new RationalPoly[len][len];
 		for (int i = 0; i < len; i ++) {
 			short[] exps = exps0.clone();
 			exps[i] = 1;
@@ -72,16 +69,6 @@ public class BinarySearch {
 			subs.put(m, HALF);
 			subs.put(m0, HALF);
 			subsUpper[i] = subs;
-			for (int j = 0; j < len; j ++) {
-				// x_j -> x_i*x_j
-				short[] eij = exps0.clone();
-				eij[i] = 1;
-				eij[j] = 1;
-				subs = new RationalPoly(vars);
-				subs.put(new Mono(eij), _1);
-				// i = j is useless
-				subsDiff[i][j] = subs;
-			}
 		}
 		bounds1 = new Rational[len];
 		Arrays.fill(bounds1, _1);
@@ -183,54 +170,109 @@ public class BinarySearch {
 	 * search negative for f and 0 <= x_i <= 1, where f(0) may be positive, zero or negative
 	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative
 	 */
-	private Rational[] search0(RationalPoly f) {
+	private Rational[] search0(RationalPoly f, int[] degrees) {
 		Rational f0 = f.getOrDefault(m0, _0);
 		int s = f0.signum();
 		if (s < 0) {
 			return negativeResult(f0);
 		}
 		if (s > 0) {
+			// test if max-subs works
+			// return EMPTY_RESULT;
 			return search1(f, f0, bounds1, coords0);
 		}
 
-		int minDeg = Integer.MAX_VALUE;
-		for (Mono m : f.keySet()) {
-			int degree = 0;
-			for (short exp : m.getExps()) {
-				degree += exp;
-			}
-			if (degree < minDeg) {
-				minDeg = degree;
+		// calculate minDegs
+		int[] minDegs = new int[len];
+		Arrays.fill(minDegs, 0);
+		for (int i = 0; i < len; i ++) {
+			int degree = degrees[i];
+			for (int j = 1; j <= degree; j ++) {
+				short[] exps = m0.getExps().clone();
+				exps[i] = (short) j;
+				if (f.containsKey(new Mono(exps))) {
+					minDegs[i] = j;
+					break;
+				}
 			}
 		}
-
+		// homogenize minDegs
+		int lcm = 1;
 		for (int i = 0; i < len; i ++) {
-			// x_i = max(x), x_j = k_j*x_i, f /= x_i**minDeg (*)
-			RationalPoly f1 = f;
-			for (int j = 0; j < len; j ++) {
-				if (j != i) {
-					f1 = f1.subs(vars.charAt(j), subsDiff[i][j]);
+			int minDeg = minDegs[i];
+			if (minDeg > 0) {
+				lcm = lcm/(int) BigInteger.valueOf(lcm).gcd(BigInteger.valueOf(minDeg)).longValue()*minDeg;
+			}
+		}
+		for (int i = 0; i < len; i ++) {
+			int minDeg = minDegs[i];
+			if (minDeg == 0) {
+				continue;
+			}
+			minDegs[i] = lcm/minDeg;
+		}
+		int[] pows = minDegs;
+		// x_i -> x_i**pow_i (A)
+		RationalPoly f1 = new RationalPoly(vars);
+		f.forEach((m, c) -> {
+			short[] exps = m.getExps().clone();
+			for (int i = 0; i < len; i ++) {
+				int pow = pows[i];
+				if (pow > 0) {
+					exps[i] *= pow;
 				}
 			}
+			f1.put(new Mono(exps), c);
+		});
+
+		for (int i = 0; i < len; i ++) {
+			if (pows[i] == 0) {
+				continue;
+			}
+			// x_i = max(x), x_j = k_j*x_i, f /= x_i**minDeg (B)
 			RationalPoly f2 = new RationalPoly(vars);
+			// terms that can't be cancelled by x_i**minDeg goes here
+			RationalPoly f3 = new RationalPoly(vars);
 			int i_ = i;
-			int minDeg_ = minDeg;
+			int lcm_ = lcm;
 			f1.forEach((m, c) -> {
 				short[] exps2 = m.getExps().clone();
-				exps2[i_] -= minDeg_;
-				if (exps2[i_] < 0) {
-					throw new RuntimeException();
+				for (int j = 0; j < len; j ++) {
+					if (j != i_ && pows[j] > 0) {
+						exps2[i_] += exps2[j];
+					}
 				}
-				f2.put(new Mono(exps2), c);
+				if (exps2[i_] < lcm_) {
+					f3.put(new Mono(exps2), c);
+				} else {
+					exps2[i_] -= lcm_;
+					f2.put(new Mono(exps2), c);
+				}
 			});
-			log.info(indent() + "search f(" + vars.charAt(i) + " = max(" + vars + ")) = " + f2);
+			if (!f3.isEmpty()) {
+				// TODO how to prove? throw or warn or call search0?
+				log.warn(indent() + "unable to search f(deg_" + vars.charAt(i) + " < min_deg) = " + f3);
+			}
+			String vars_ = vars;
+			for (int j = 0; j < len; j ++) {
+				if (pows[j] == 0) {
+					vars_ = vars_.replace(Character.toString(vars.charAt(j)), "");
+				}
+			}
+			log.info(indent() + "search f(" + vars.charAt(i) + " = max(" + vars_ + ")) = " + f2);
+			f0 = f2.get(m0);
+			if (f0 == null || f0.signum() <= 0) {
+				throw new AssertionError("constant term <= 0: " + f2);
+			}
 			depth ++;
-			Rational[] result = search0(f2);
+			// test if max-subs works
+			// Rational[] result = EMPTY_RESULT;
+			Rational[] result = search1(f2, f0, bounds1, coords0);
 			depth --;
 			if (result.length == 0) {
 				continue;
 			}
-			// restore (*)
+			// restore (B)
 			Rational xi = result[i];
 			if (xi.signum() == 0) {
 				// there should be negative near 0
@@ -242,8 +284,21 @@ public class BinarySearch {
 					result[j] = __(result[j], xi);
 				}
 			}
-			for (int j = 0; j < minDeg; j ++) {
+			for (int j = 0; j < lcm; j ++) {
 				result[len] = result[len].div(xi);
+			}
+			// restore (A)
+			for (int j = 0; j < len; j ++) {
+				int pow = pows[j];
+				if (pow <= 1) {
+					continue;
+				}
+				Rational xj = result[j];
+				Rational x = xj;
+				for (int k = 1; k < pow; k ++) {
+					x = __(x, xj);
+				}
+				result[j] = x;
 			}
 			return result;
 		}
@@ -255,7 +310,7 @@ public class BinarySearch {
 	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative
 	 */
 	public static Rational[] search01(RationalPoly f) {
-		return new BinarySearch(f.getVars()).search0(f);
+		return new BinarySearch(f.getVars()).search0(f, f.degrees());
 	}
 
 	/**
@@ -295,7 +350,7 @@ public class BinarySearch {
 			}
 			RationalPoly fi = fs.get(i);
 			log.info("search f(" + sb + ") = " + fi);
-			Rational[] result = bs.search0(fi);
+			Rational[] result = bs.search0(fi, degrees);
 			if (result.length == 0) {
 				continue;
 			}

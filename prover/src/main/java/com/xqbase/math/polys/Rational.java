@@ -183,12 +183,13 @@ public class Rational extends MutableNumber<Rational> {
 		return valueOf(1);
 	}
 
+	/*
 	private static final Rational __0 = Rational.valueOf(0);
 	private static final Rational __1 = Rational.valueOf(1);
 	private static final Rational HALF = new Rational(_1, BigInteger.valueOf(2));
 	private static final Rational SQRT_ERROR = new Rational(_1, BigInteger.valueOf(1639));
 
-	/** @return s that s^2 >= this */
+	// @return s that s^2 >= this
 	public Rational sqrt() {
 		if (signum() <= 0) {
 			return __0;
@@ -235,4 +236,5 @@ public class Rational extends MutableNumber<Rational> {
 		}
 		return s;
 	}
+	*/
 }
