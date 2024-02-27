@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
@@ -52,7 +51,7 @@ public class SDS {
 		return c instanceof List ? (List<T>) c : new ArrayList<>(c);
 	}
 
-	static final <T> Comparator<? extends Collection<T>> listComparator(Comparator<T> comparator) {
+	static final <T> Comparator<Collection<T>> listComparator(Comparator<T> comparator) {
 		return (o1, o2) -> {
 			int len1 = o1.size();
 			int len2 = o2.size();
@@ -71,13 +70,13 @@ public class SDS {
 
 	public static class Result<T extends MutableNumber<T>> {
 		List<T> negativeAt = null;
-		Set<List<T>> zeroAt;
-		Map<Integer, Set<Set<List<T>>>> simplices;
+		TreeSet<List<T>> zeroAt;
+		List<Set<Set<List<T>>>> simplices;
 		int depth = 0;
 
 		Result() {
 			zeroAt = new TreeSet<>(listComparator(Comparator.<T>naturalOrder()));
-			simplices = new TreeMap<>();
+			simplices = new ArrayList<>();
 		}
 
 		public boolean isNonNegative() {
@@ -92,7 +91,7 @@ public class SDS {
 			return zeroAt;
 		}
 
-		public Map<Integer, Set<Set<List<T>>>> getSimplices() {
+		public List<Set<Set<List<T>>>> getSimplices() {
 			return simplices;
 		}
 
@@ -183,12 +182,9 @@ public class SDS {
 		if (!transList.isEmpty()) {
 			int numKeys = keys.size();
 			if (dumpLattice) {
-				@SuppressWarnings("unchecked")
-				Comparator<List<T>> comparator = (Comparator<List<T>>) listComparator(Comparator.<T>naturalOrder());
-				Set<Set<List<T>>> simplices = result.simplices.computeIfAbsent(Integer.valueOf(result.depth),
-						k -> new TreeSet<>(listComparator(comparator)));
+				Set<Set<List<T>>> simplices = result.simplices.get(result.depth);
 				for (List<Integer> trans : transList) {
-					Set<List<T>> simplex = new TreeSet<>(comparator);
+					Set<List<T>> simplex = new TreeSet<>(result.zeroAt.comparator());
 					for (int i = 0; i < numKeys; i ++) {
 						List<T> lattice = matMulReduce(trans, transMat, keys.get(i), f);
 						result.zeroAt.add(lattice);
@@ -370,6 +366,10 @@ public class SDS {
 
 		// depth = 0
 		Result<T> result = new Result<>();
+		@SuppressWarnings("unchecked")
+		Comparator<Collection<List<T>>> comparator =
+				listComparator((Comparator<List<T>>) result.zeroAt.comparator());
+		result.simplices.add(new TreeSet<>(comparator));
 		// transList is always empty if skipNegative
 		List<List<Integer>> initTransList = find == Find.SKIP ? Collections.emptyList() :
 				Collections.singletonList(Collections.emptyList());
@@ -616,6 +616,7 @@ public class SDS {
 		Map<P, List<List<Integer>>> polyTransList = Collections.singletonMap(f, initTransList);
 		for (result.depth = 1; result.depth < maxDepth; result.depth ++) {
 			log.debug("depth = " + result.depth + ", polynomials = " + polyTransList.size());
+			result.simplices.add(new TreeSet<>(comparator));
 			int traceCurr = 0, traceTrans = 0;
 			HashMap<P, List<List<Integer>>> polyTransList1 = new HashMap<>();
 			for (Map.Entry<P, List<List<Integer>>> transEntry : polyTransList.entrySet()) {

@@ -1,7 +1,6 @@
 package com.xqbase.math.inequality;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.xqbase.math.polys.LongPoly;
@@ -14,7 +13,7 @@ public class DumpLattice {
 		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("xyz", "-x - y - z"), SDS.Transform.Y_n, SDS.Find.DUMP_LATTICE, 5);
 		// dump into sds-lattice-j4.py
 		// SDS.Result<MutableLong> result = SDS.sds(new LongPoly("wxyz", "-w - x - y - z"), SDS.Transform.J_4, SDS.Find.DUMP_LATTICE, 2);
-		for (Set<Set<List<MutableLong>>> simplices : result.getSimplices().values()) {
+		for (Set<Set<List<MutableLong>>> simplices : result.getSimplices()) {
 			for (Set<List<MutableLong>> simplex : simplices) {
 				String s = simplex.toString();
 				System.out.println("    [" + s.substring(1, s.length() - 1) + "],");
@@ -37,9 +36,10 @@ public class DumpLattice {
 		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("wxyz", "-w - x - y - z"), SDS.Transform.Y_n, SDS.Find.DUMP_LATTICE, 9);
 		@SuppressWarnings("unchecked")
 		List<MutableLong>[] emptyList = new List[0];
-		for (Map.Entry<Integer, Set<Set<List<MutableLong>>>> simplices : result.getSimplices().entrySet()) {
+		int depth = 0;
+		for (Set<Set<List<MutableLong>>> simplices : result.getSimplices()) {
 			double max = 0;
-			for (Set<List<MutableLong>> simplex : simplices.getValue()) {
+			for (Set<List<MutableLong>> simplex : simplices) {
 				List<MutableLong>[] simplex_ = simplex.toArray(emptyList);
 				double[][] vertices = new double[simplex_.length][];
 				for (int i = 0; i < vertices.length; i ++) {
@@ -65,9 +65,10 @@ public class DumpLattice {
 					}
 				}
 			}
-			System.out.println("depth = " + simplices.getKey() +
-					", simplices = " + simplices.getValue().size() +
+			System.out.println("depth = " + depth +
+					", simplices = " + simplices.size() +
 					", max_diameter = " + max);
+			depth ++;
 		}
 	}
 }
