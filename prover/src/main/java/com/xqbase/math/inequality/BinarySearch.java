@@ -265,8 +265,8 @@ public class BinarySearch {
 			}
 		}
 
-		int lcm = 1;
 		// denominators' lcm
+		int lcm = 1;
 		for (int i = 0; i < len; i ++) {
 			Rational shrink = shrinks[i];
 			if (shrink.signum() > 0) {
@@ -284,14 +284,6 @@ public class BinarySearch {
 				pows[i] = 0;
 			}
 		}
-		// final minDeg
-		lcm = 1;
-		for (int i = 0; i < len; i ++) {
-			int pow = pows[i];
-			if (pow > 0) {
-				lcm = lcm/BigInteger.valueOf(lcm).gcd(BigInteger.valueOf(pow)).intValue()*pow;
-			}
-		}
 		// x_i -> x_i**pow_i (A)
 		RationalPoly f1 = new RationalPoly(vars);
 		f.forEach((m, c) -> {
@@ -304,13 +296,25 @@ public class BinarySearch {
 			}
 			f1.put(new Mono(exps), c);
 		});
-		int lcm_ = lcm;
+		// final minDeg
+		for (int i = 0; i < len; i ++) {
+			if (hasVar[i]) {
+				minDeg *= pows[i];
+			}
+		}
+		int minDeg__ = minDeg;
 
 		for (int i = 0; i < len; i ++) {
 			if (pows[i] == 0) {
 				continue;
 			}
 			// x_i = max(x), x_j = k_j*x_i, f /= x_i**minDeg (B)
+			StringBuilder sb = new StringBuilder();
+			for (int j = 0; j < len; j ++) {
+				if (pows[j] > 0) {
+					sb.append(vars.charAt(j));
+				}
+			}
 			RationalPoly f2 = new RationalPoly(vars);
 			int i_ = i;
 			f1.forEach((m, c) -> {
@@ -320,19 +324,14 @@ public class BinarySearch {
 						exps2[i_] += exps2[j];
 					}
 				}
-				if (exps2[i_] < lcm_) {
-					throw new AssertionError(m.toString(vars) + " can't be cancelled by " +
-							vars.charAt(i_) + "**" + lcm_ + ", f = " + f2);
+				if (exps2[i_] < minDeg__) {
+					throw new AssertionError(m.toString(vars) + " after " +
+							sb + " substitutions can't be divided by " +
+							vars.charAt(i_) + "**" + minDeg__ + ", f = " + f1);
 				}
-				exps2[i_] -= lcm_;
+				exps2[i_] -= minDeg__;
 				f2.put(new Mono(exps2), c);
 			});
-			StringBuilder sb = new StringBuilder();
-			for (int j = 0; j < len; j ++) {
-				if (pows[j] > 0) {
-					sb.append(vars.charAt(j));
-				}
-			}
 			log.info(indent() + "search f(" + vars.charAt(i) + " = max(" + sb + ")) = " + f2);
 			depth ++;
 			// test if max-subs works
@@ -357,7 +356,7 @@ public class BinarySearch {
 					result[j] = __(result[j], xi);
 				}
 			}
-			for (int j = 0; j < lcm; j ++) {
+			for (int j = 0; j < minDeg; j ++) {
 				if (result[len] != null) {
 					result[len] = result[len].div(xi);
 				}
