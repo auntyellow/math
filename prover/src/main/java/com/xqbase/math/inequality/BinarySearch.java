@@ -191,36 +191,107 @@ public class BinarySearch {
 			return search1(f, f0, bounds1, coords0);
 		}
 
-		// calculate minDegs
-		int[] minDegs = new int[len];
-		Arrays.fill(minDegs, 0);
-		for (int i = 0; i < len; i ++) {
-			// TODO find min x_i**n is not a correct way
-			for (int j = 1; j <= 100; j ++) {
-				short[] exps = m0.getExps().clone();
-				exps[i] = (short) j;
-				if (f.containsKey(new Mono(exps))) {
-					minDegs[i] = j;
-					break;
+		// convert Mono to Rational[]
+		ArrayList<Rational[]> monos = new ArrayList<>();
+		// calculate minDeg and minMonos
+		int minDeg = Integer.MAX_VALUE;
+		ArrayList<Rational[]> minMonos = new ArrayList<>();
+		for (Mono mono : f.keySet()) {
+			short[] exps = mono.getExps();
+			int degree = 0;
+			Rational[] m = new Rational[len];
+			for (int i = 0; i < len; i ++) {
+				int exp = exps[i];
+				degree += exp;
+				m[i] = Rational.valueOf(exp);
+			}
+			monos.add(m);
+			if (degree < minDeg) {
+				minDeg = degree;
+				minMonos = new ArrayList<>();
+			}
+			if (degree == minDeg) {
+				minMonos.add(m);
+			}
+		}
+		Rational minDeg_ = Rational.valueOf(minDeg);
+
+		// whether minMonos has x_i:
+		boolean[] hasVar = new boolean[len];
+		Arrays.fill(hasVar, false);
+		for (Rational[] m : minMonos) {
+			for (int i = 0; i < len; i ++) {
+				if (m[i].signum() > 0) {
+					hasVar[i] = true;
 				}
 			}
 		}
-		// homogenize minDegs
-		int lcm = 1;
+
+		// 0 = no need to substitute; 1 = no need to shrink
+		Rational[] shrinks = new Rational[len];
 		for (int i = 0; i < len; i ++) {
-			int minDeg = minDegs[i];
-			if (minDeg > 0) {
-				lcm = lcm/(int) BigInteger.valueOf(lcm).gcd(BigInteger.valueOf(minDeg)).longValue()*minDeg;
-			}
-		}
-		for (int i = 0; i < len; i ++) {
-			int minDeg = minDegs[i];
-			if (minDeg == 0) {
+			if (hasVar[i]) {
+				shrinks[i] = _1;
 				continue;
 			}
-			minDegs[i] = lcm/minDeg;
+			Rational shrink = _0;
+			for (Rational[] m : monos) {
+				// exp_i
+				Rational exp = m[i];
+				if (exp.signum() == 0) {
+					continue;
+				}
+				// sum(exp_j), j != i
+				Rational exps = __();
+				for (int j = 0; j < len; j ++) {
+					if (j != i) {
+						exps.add(m[j]);
+					}
+				}
+				Rational gap = __(minDeg_);
+				gap.add(exps.negate());
+				if (gap.signum() <= 0) {
+					continue;
+				}
+				gap = gap.div(exp);
+				if (gap.compareTo(shrink) > 0) {
+					shrink = gap;
+				}
+			}
+			shrinks[i] = shrink;
+			// make at least one deg(has x_i) = minDeg and other deg > minDeg
+			for (Rational[] m : monos) {
+				m[i] = __(m[i], shrink);
+			}
 		}
-		int[] pows = minDegs;
+
+		int lcm = 1;
+		// denominators' lcm
+		for (int i = 0; i < len; i ++) {
+			Rational shrink = shrinks[i];
+			if (shrink.signum() > 0) {
+				BigInteger q = shrink.getQ();
+				lcm = lcm/BigInteger.valueOf(lcm).gcd(q).intValue()*q.intValue();
+			}
+		}
+		// numerators when all denominators = lcm, 0 = no need to substitute
+		int[] pows = new int[len];
+		for (int i = 0; i < len; i ++) {
+			Rational shrink = shrinks[i];
+			if (shrink.signum() > 0) {
+				pows[i] = lcm/shrink.getQ().intValue()*shrink.getP().intValue();
+			} else {
+				pows[i] = 0;
+			}
+		}
+		// final minDeg
+		lcm = 1;
+		for (int i = 0; i < len; i ++) {
+			int pow = pows[i];
+			if (pow > 0) {
+				lcm = lcm/BigInteger.valueOf(lcm).gcd(BigInteger.valueOf(pow)).intValue()*pow;
+			}
+		}
 		// x_i -> x_i**pow_i (A)
 		RationalPoly f1 = new RationalPoly(vars);
 		f.forEach((m, c) -> {
@@ -233,6 +304,7 @@ public class BinarySearch {
 			}
 			f1.put(new Mono(exps), c);
 		});
+		int lcm_ = lcm;
 
 		for (int i = 0; i < len; i ++) {
 			if (pows[i] == 0) {
@@ -240,10 +312,7 @@ public class BinarySearch {
 			}
 			// x_i = max(x), x_j = k_j*x_i, f /= x_i**minDeg (B)
 			RationalPoly f2 = new RationalPoly(vars);
-			// terms that can't be cancelled by x_i**minDeg goes here
-			RationalPoly f3 = new RationalPoly(vars);
 			int i_ = i;
-			int lcm_ = lcm;
 			f1.forEach((m, c) -> {
 				short[] exps2 = m.getExps().clone();
 				for (int j = 0; j < len; j ++) {
@@ -252,31 +321,23 @@ public class BinarySearch {
 					}
 				}
 				if (exps2[i_] < lcm_) {
-					f3.put(new Mono(exps2), c);
-				} else {
-					exps2[i_] -= lcm_;
-					f2.put(new Mono(exps2), c);
+					throw new AssertionError(m.toString(vars) + " can't be cancelled by " +
+							vars.charAt(i_) + "**" + lcm_ + ", f = " + f2);
 				}
+				exps2[i_] -= lcm_;
+				f2.put(new Mono(exps2), c);
 			});
-			if (!f3.isEmpty()) {
-				// TODO how to prove? throw or warn or call search0?
-				log.warn(indent() + "unable to search f(deg_" + vars.charAt(i) + " < min_deg) = " + f3);
-			}
-			String vars_ = vars;
+			StringBuilder sb = new StringBuilder();
 			for (int j = 0; j < len; j ++) {
-				if (pows[j] == 0) {
-					vars_ = vars_.replace(Character.toString(vars.charAt(j)), "");
+				if (pows[j] > 0) {
+					sb.append(vars.charAt(j));
 				}
 			}
-			log.info(indent() + "search f(" + vars.charAt(i) + " = max(" + vars_ + ")) = " + f2);
-			f0 = f2.get(m0);
-			if (f0 == null || f0.signum() <= 0) {
-				throw new AssertionError("constant term <= 0: " + f2);
-			}
+			log.info(indent() + "search f(" + vars.charAt(i) + " = max(" + sb + ")) = " + f2);
 			depth ++;
 			// test if max-subs works
 			// Rational[] result = EMPTY_RESULT;
-			Rational[] result = search1(f2, f0, bounds1, coords0);
+			Rational[] result = search0(f2);
 			depth --;
 			if (result.length == 0) {
 				continue;
@@ -297,7 +358,9 @@ public class BinarySearch {
 				}
 			}
 			for (int j = 0; j < lcm; j ++) {
-				result[len] = result[len].div(xi);
+				if (result[len] != null) {
+					result[len] = result[len].div(xi);
+				}
 			}
 			// restore (A)
 			for (int j = 0; j < len; j ++) {
