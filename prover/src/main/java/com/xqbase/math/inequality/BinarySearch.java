@@ -80,7 +80,7 @@ public class BinarySearch {
 	private Rational[] negativeResult(Rational f0) {
 		Rational[] result = Arrays.copyOf(coords0, len + 1);
 		result[len] = f0;
-		return result;		
+		return result;
 	}
 
 	private String indent() {
@@ -92,14 +92,20 @@ public class BinarySearch {
 	 * search negative for f(0) > 0 and all 0 <= x_i <= 1
 	 * @param bounds just for log
 	 * @param coords just for log
-	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative
+	 * @return [] if f is proved non-negative, or<br>
+	 * [x_i, f(x_i)] if negative found, or<br>
+	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
 	private Rational[] search1(RationalPoly f, Rational f0_, Rational[] bounds, Rational[] coords) {
 		Rational f0 = f0_;
 		if (f0 == null) {
 			f0 = f.getOrDefault(m0, _0);
-			if (f0.signum() <= 0 || depth > MAX_DEPTH) {
+			int s = f0.signum();
+			if (s < 0) {
 				return negativeResult(f0);
+			}
+			if (s == 0 || depth > MAX_DEPTH) {
+				return negativeResult(null);
 			}
 		}
 		Rational f1 = __(f0);
@@ -169,9 +175,11 @@ public class BinarySearch {
 
 	/**
 	 * search negative for f and 0 <= x_i <= 1, where f(0) may be positive, zero or negative
-	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative
+	 * @return [] if f is proved non-negative, or<br>
+	 * [x_i, f(x_i)] if negative found, or<br>
+	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
-	private Rational[] search0(RationalPoly f, int[] degrees) {
+	private Rational[] search0(RationalPoly f) {
 		Rational f0 = f.getOrDefault(m0, _0);
 		int s = f0.signum();
 		if (s < 0) {
@@ -187,8 +195,8 @@ public class BinarySearch {
 		int[] minDegs = new int[len];
 		Arrays.fill(minDegs, 0);
 		for (int i = 0; i < len; i ++) {
-			int degree = degrees[i];
-			for (int j = 1; j <= degree; j ++) {
+			// TODO find min x_i**n is not a correct way
+			for (int j = 1; j <= 100; j ++) {
 				short[] exps = m0.getExps().clone();
 				exps[i] = (short) j;
 				if (f.containsKey(new Mono(exps))) {
@@ -277,7 +285,10 @@ public class BinarySearch {
 			Rational xi = result[i];
 			if (xi.signum() == 0) {
 				// there should be negative near 0
-				Arrays.fill(result, _0);
+				Arrays.fill(result, 0, len, _0);
+				if (result[len] != null) {
+					result[len] = _0;
+				}
 				return result;
 			}
 			for (int j = 0; j < len; j ++) {
@@ -308,15 +319,19 @@ public class BinarySearch {
 
 	/**
 	 * search negative for f and 0 <= x_i <= 1, where f(0) may be positive, zero or negative
-	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative
+	 * @return [] if f is proved non-negative, or<br>
+	 * [x_i, f(x_i)] if negative found, or<br>
+	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
 	public static Rational[] search01(RationalPoly f) {
-		return new BinarySearch(f.getVars()).search0(f, f.degrees());
+		return new BinarySearch(f.getVars()).search0(f);
 	}
 
 	/**
 	 * search negative for all x_i >= 0
-	 * @return [x_i, f(x_i)] if negative found, or [] if f is proved non-negative
+	 * @return [] if f is proved non-negative, or<br>
+	 * [x_i, f(x_i)] if negative found, or<br>
+	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
 	public static Rational[] search(RationalPoly f) {
 		BinarySearch bs = new BinarySearch(f.getVars());
@@ -351,11 +366,12 @@ public class BinarySearch {
 			}
 			RationalPoly fi = fs.get(i);
 			log.info("search f(" + sb + ") = " + fi);
-			Rational[] result = bs.search0(fi, degrees);
+			Rational[] result = bs.search0(fi);
 			if (result.length == 0) {
 				continue;
 			}
 			// restore (*)
+			Rational f0 = result[bs.len];
 			boolean reeval = false;
 			for (int j = 0; j < bs.len; j ++) {
 				if (!reciprocal[j]) {
@@ -368,16 +384,16 @@ public class BinarySearch {
 					continue;
 				}
 				result[j] = _1.div(result[j]);
-				if (reeval) {
+				if (f0 == null || reeval) {
 					continue;
 				}
-				Rational f0 = result[bs.len];
+				f0 = result[bs.len];
 				for (int k = 0; k < degrees[j]; k ++) {
 					f0 = __(f0, result[j]);
 				}
 				result[bs.len] = f0;
 			}
-			if (!reeval) {
+			if (f0 == null || !reeval) {
 				return result;
 			}
 			RationalPoly f1 = f;
@@ -390,7 +406,7 @@ public class BinarySearch {
 						f + ", result = " + Arrays.toString(result));
 			}
 			if (result[bs.len] == null) {
-				result[bs.len] = _0;
+				result[bs.len] = null;
 			}
 			return result;
 		}
