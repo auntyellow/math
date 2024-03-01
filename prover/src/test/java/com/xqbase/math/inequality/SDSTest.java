@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import com.xqbase.math.polys.BigPoly;
 import com.xqbase.math.polys.LongPoly;
-import com.xqbase.math.polys.Mono;
+import com.xqbase.math.polys.Monom;
 import com.xqbase.math.polys.MutableBig;
 import com.xqbase.math.polys.MutableLong;
 import com.xqbase.math.polys.MutableNumber;
@@ -42,7 +42,7 @@ public class SDSTest {
 		for (int i = 0; i < values.size(); i ++) {
 			f1 = f1.subs(vars.charAt(i), values.get(i));
 		}
-		T c0 = f1.remove(new Mono(vars.toString(), ""));
+		T c0 = f1.remove(new Monom(vars.toString(), ""));
 		Assert.assertTrue(f1.isEmpty());
 		return c0 == null ? f.valueOf(0) : c0;
 	}

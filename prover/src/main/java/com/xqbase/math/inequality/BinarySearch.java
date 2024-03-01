@@ -9,7 +9,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xqbase.math.polys.Mono;
+import com.xqbase.math.polys.Monom;
 import com.xqbase.math.polys.Rational;
 import com.xqbase.math.polys.RationalPoly;
 
@@ -31,6 +31,7 @@ public class BinarySearch {
 		return new Rational(n1.getP(), n1.getQ());
 	}
 
+	/** @return n1*n2 */
 	private static Rational __(Rational n1, Rational n2) {
 		Rational n = __();
 		n.addMul(n1, n2);
@@ -40,7 +41,7 @@ public class BinarySearch {
 	private String vars;
 	private int len, depth;
 	/** monopoly for constant term, helps to get f(0, 0, ..., 0) */
-	private Mono m0;
+	private Monom m0;
 	/** helps to generate new f for lower half: x -> x/2 */
 	private RationalPoly[] subsLower;
 	/** helps to generate new f for upper half: x -> (x + 1)/2 */
@@ -56,13 +57,13 @@ public class BinarySearch {
 		depth = 0;
 		short[] exps0 = new short[len];
 		Arrays.fill(exps0, (short) 0);
-		m0 = new Mono(exps0);
+		m0 = new Monom(exps0);
 		subsLower = new RationalPoly[len];
 		subsUpper = new RationalPoly[len];
 		for (int i = 0; i < len; i ++) {
 			short[] exps = exps0.clone();
 			exps[i] = 1;
-			Mono m = new Mono(exps);
+			Monom m = new Monom(exps);
 			RationalPoly subs = new RationalPoly(vars);
 			subs.put(m, HALF);
 			subsLower[i] = subs;
@@ -191,13 +192,13 @@ public class BinarySearch {
 			return search1(f, f0, bounds1, coords0);
 		}
 
-		// convert Mono to Rational[]
-		ArrayList<Rational[]> monos = new ArrayList<>();
-		// calculate minDeg and minMonos
-		int minDeg = Integer.MAX_VALUE;
-		ArrayList<Rational[]> minMonos = new ArrayList<>();
-		for (Mono mono : f.keySet()) {
-			short[] exps = mono.getExps();
+		// convert Monon to Rational[]
+		ArrayList<Rational[]> monoms = new ArrayList<>();
+		// calculate minDeg and minMonoms
+		int minDeg0 = Integer.MAX_VALUE;
+		ArrayList<Rational[]> minMonoms = new ArrayList<>();
+		for (Monom monom : f.keySet()) {
+			short[] exps = monom.getExps();
 			int degree = 0;
 			Rational[] m = new Rational[len];
 			for (int i = 0; i < len; i ++) {
@@ -205,21 +206,21 @@ public class BinarySearch {
 				degree += exp;
 				m[i] = Rational.valueOf(exp);
 			}
-			monos.add(m);
-			if (degree < minDeg) {
-				minDeg = degree;
-				minMonos = new ArrayList<>();
+			monoms.add(m);
+			if (degree < minDeg0) {
+				minDeg0 = degree;
+				minMonoms = new ArrayList<>();
 			}
-			if (degree == minDeg) {
-				minMonos.add(m);
+			if (degree == minDeg0) {
+				minMonoms.add(m);
 			}
 		}
-		Rational minDeg_ = Rational.valueOf(minDeg);
+		Rational minDeg_ = Rational.valueOf(minDeg0);
 
-		// whether minMonos has x_i:
+		// whether minMonoms has x_i:
 		boolean[] hasVar = new boolean[len];
 		Arrays.fill(hasVar, false);
-		for (Rational[] m : minMonos) {
+		for (Rational[] m : minMonoms) {
 			for (int i = 0; i < len; i ++) {
 				if (m[i].signum() > 0) {
 					hasVar[i] = true;
@@ -235,7 +236,7 @@ public class BinarySearch {
 				continue;
 			}
 			Rational shrink = _0;
-			for (Rational[] m : monos) {
+			for (Rational[] m : monoms) {
 				// exp_i
 				Rational exp = m[i];
 				if (exp.signum() == 0) {
@@ -260,7 +261,7 @@ public class BinarySearch {
 			}
 			shrinks[i] = shrink;
 			// make at least one deg(has x_i) = minDeg and other deg > minDeg
-			for (Rational[] m : monos) {
+			for (Rational[] m : monoms) {
 				m[i] = __(m[i], shrink);
 			}
 		}
@@ -294,15 +295,17 @@ public class BinarySearch {
 					exps[i] *= pow;
 				}
 			}
-			f1.put(new Mono(exps), c);
+			f1.put(new Monom(exps), c);
 		});
 		// final minDeg
+		minDeg_ = __();
+		Rational[] minMonom = minMonoms.get(0);
 		for (int i = 0; i < len; i ++) {
-			if (hasVar[i]) {
-				minDeg *= pows[i];
-			}
+			minDeg_.addMul(minMonom[i], Rational.valueOf(pows[i]));
 		}
-		int minDeg__ = minDeg;
+		int minDeg = minDeg_.intValue();
+		log.info(indent() + "vars = " + vars + ", shrinks = " + Arrays.toString(shrinks) +
+				", pows = " + Arrays.toString(pows) + ", minDeg = " + minDeg + ", f = " + f1);
 
 		for (int i = 0; i < len; i ++) {
 			if (pows[i] == 0) {
@@ -324,13 +327,13 @@ public class BinarySearch {
 						exps2[i_] += exps2[j];
 					}
 				}
-				if (exps2[i_] < minDeg__) {
+				if (exps2[i_] < minDeg) {
 					throw new AssertionError(m.toString(vars) + " after " +
 							sb + " substitutions can't be divided by " +
-							vars.charAt(i_) + "**" + minDeg__ + ", f = " + f1);
+							vars.charAt(i_) + "**" + minDeg + ", f = " + f1);
 				}
-				exps2[i_] -= minDeg__;
-				f2.put(new Mono(exps2), c);
+				exps2[i_] -= minDeg;
+				f2.put(new Monom(exps2), c);
 			});
 			log.info(indent() + "search f(" + vars.charAt(i) + " = max(" + sb + ")) = " + f2);
 			depth ++;

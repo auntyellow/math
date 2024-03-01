@@ -97,22 +97,20 @@ def main():
     f = f.subs(u, u/2)*64
     # f(0, 0, ?) = f(?, 0, 0) = 0
     p = Poly(f, b, c, u)
-    for t in p.terms(order = 'grlex'):
-        (mono, coeff) = t
-        (eb, ec, eu) = mono
+    for m in p.monoms(order = 'grlex'):
+        (eb, ec, eu) = m
         deg = eb + ec + eu
-        print(deg, mono, ec + eu if eu > 0 else '')
+        print(deg, m, ec + eu if eu > 0 else '')
     print('f(cb) =', cancel(f.subs(c, b*c)/b**5))
     print('f(bc) =', cancel(f.subs(b, b*c)/c**5))
     print()
     # f(cb)
     g = 5*b**4*c**5*u**6 + 24*b**4*c**5*u**5 + 12*b**4*c**5*u**4 - 64*b**4*c**5*u**3 + 48*b**4*c**5*u**2 + 384*b**4*c**5*u + 320*b**4*c**5 + 5*b**4*c**4*u**6 + 24*b**4*c**4*u**5 + 12*b**4*c**4*u**4 - 64*b**4*c**4*u**3 + 48*b**4*c**4*u**2 + 384*b**4*c**4*u + 320*b**4*c**4 + 5*b**4*c**3*u**6 + 24*b**4*c**3*u**5 + 12*b**4*c**3*u**4 - 64*b**4*c**3*u**3 + 48*b**4*c**3*u**2 + 384*b**4*c**3*u + 320*b**4*c**3 + 16*b**3*c**5*u**6 + 72*b**3*c**5*u**5 - 320*b**3*c**5*u**3 + 1152*b**3*c**5*u + 1024*b**3*c**5 + 24*b**3*c**4*u**6 + 72*b**3*c**4*u**5 - 144*b**3*c**4*u**4 - 480*b**3*c**4*u**3 + 576*b**3*c**4*u**2 + 2304*b**3*c**4*u + 1536*b**3*c**4 + 16*b**3*c**3*u**6 + 48*b**3*c**3*u**5 - 48*b**3*c**3*u**4 - 32*b**3*c**3*u**3 + 960*b**3*c**3*u**2 + 1920*b**3*c**3*u + 1024*b**3*c**3 + 4*b**3*c**2*u**6 + 24*b**3*c**2*u**5 + 48*b**3*c**2*u**4 + 64*b**3*c**2*u**3 + 192*b**3*c**2*u**2 + 384*b**3*c**2*u + 256*b**3*c**2 + 18*b**2*c**5*u**6 + 80*b**2*c**5*u**5 - 32*b**2*c**5*u**4 - 480*b**2*c**5*u**3 - 128*b**2*c**5*u**2 + 1280*b**2*c**5*u + 1152*b**2*c**5 + 36*b**2*c**4*u**6 + 88*b**2*c**4*u**5 - 352*b**2*c**4*u**4 - 960*b**2*c**4*u**3 + 896*b**2*c**4*u**2 + 3712*b**2*c**4*u + 2304*b**2*c**4 + 24*b**2*c**3*u**6 + 24*b**2*c**3*u**5 - 312*b**2*c**3*u**4 - 192*b**2*c**3*u**3 + 2208*b**2*c**3*u**2 + 3840*b**2*c**3*u + 1536*b**2*c**3 + 6*b**2*c**2*u**6 + 16*b**2*c**2*u**5 + 8*b**2*c**2*u**4 + 288*b**2*c**2*u**3 + 1184*b**2*c**2*u**2 + 1408*b**2*c**2*u + 384*b**2*c**2 + 8*b**2*c*u**5 + 40*b**2*c*u**4 + 96*b**2*c*u**3 + 160*b**2*c*u**2 + 128*b**2*c*u + 8*b*c**5*u**6 + 40*b*c**5*u**5 - 24*b*c**5*u**4 - 288*b*c**5*u**3 - 96*b*c**5*u**2 + 640*b*c**5*u + 512*b*c**5 + 20*b*c**4*u**6 + 60*b*c**4*u**5 - 256*b*c**4*u**4 - 720*b*c**4*u**3 + 544*b*c**4*u**2 + 2240*b*c**4*u + 1280*b*c**4 + 16*b*c**3*u**6 + 16*b*c**3*u**5 - 352*b*c**3*u**4 - 352*b*c**3*u**3 + 1728*b*c**3*u**2 + 2816*b*c**3*u + 1024*b*c**3 + 4*b*c**2*u**6 - 128*b*c**2*u**4 + 192*b*c**2*u**3 + 1472*b*c**2*u**2 + 1408*b*c**2*u + 256*b*c**2 + 4*b*c*u**5 + 8*b*c*u**4 + 176*b*c*u**3 + 448*b*c*u**2 + 192*b*c*u + 8*b*u**4 + 32*b*u**3 + 32*b*u**2 + c**5*u**6 + 8*c**5*u**5 - 4*c**5*u**4 - 64*c**5*u**3 - 16*c**5*u**2 + 128*c**5*u + 64*c**5 + 3*c**4*u**6 + 20*c**4*u**5 - 64*c**4*u**4 - 192*c**4*u**3 + 160*c**4*u**2 + 448*c**4*u + 192*c**4 + 3*c**3*u**6 + 16*c**3*u**5 - 136*c**3*u**4 - 112*c**3*u**3 + 496*c**3*u**2 + 576*c**3*u + 192*c**3 + c**2*u**6 + 4*c**2*u**5 - 96*c**2*u**4 + 96*c**2*u**3 + 448*c**2*u**2 + 320*c**2*u + 64*c**2 - 16*c*u**4 + 96*c*u**3 + 144*c*u**2 + 64*c*u + 4*u**4 + 16*u**3 + 16*u**2
     p = Poly(g, b, c, u)
-    for t in p.terms(order = 'grlex'):
-        (mono, coeff) = t
-        (eb, ec, eu) = mono
+    for m in p.monoms(order = 'grlex'):
+        (eb, ec, eu) = m
         deg = eb + ec + eu
-        print(deg, mono, ec + eu if eb > 0 else '')
+        print(deg, m, ec + eu if eb > 0 else '')
     print('g(uc) =', cancel(g.subs(u, c*u)/c**2))
     print('g(cu) =', cancel(g.subs(c, c*u)/u**2))
     print()
@@ -120,21 +118,19 @@ def main():
     f = (3*x**4 - 5*y**3)**2 + (4*x**3 - 7*z**2)**2
     print('f =', expand(f))
     p = Poly(f, x, y, z)
-    for t in p.terms(order = 'grlex'):
-        (mono, coeff) = t
-        (ex, ey, ez) = mono
+    for m in p.monoms(order = 'grlex'):
+        (ex, ey, ez) = m
         deg = ex + ey + ez
         # shrink x
-        print(deg, mono, S(4 - ey - ez)/ex if ex > 0 else '')
+        print(deg, m, S(4 - ey - ez)/ex if ex > 0 else '')
     print()
     f = f.subs({x: x**2, y: y**3, z: z**3})
     print('f =', expand(f))
     p = Poly(f, x, y, z)
-    for t in p.terms(order = 'grlex'):
-        (mono, coeff) = t
-        (ex, ey, ez) = mono
+    for m in p.monoms(order = 'grlex'):
+        (ex, ey, ez) = m
         deg = ex + ey + ez
-        print(deg, mono, S(12 - ex + ez)/ey if ey > 0 else '')
+        print(deg, m, S(12 - ex + ez)/ey if ey > 0 else '')
     print()
     f = f.subs(y**3, y**2)
     print('f =', expand(f))

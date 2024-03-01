@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xqbase.math.polys.Mono;
+import com.xqbase.math.polys.Monom;
 import com.xqbase.math.polys.MutableNumber;
 import com.xqbase.math.polys.Poly;
 import com.xqbase.math.polys.Rational;
@@ -198,7 +198,7 @@ public class SDS {
 				for (int i = 0; i < numKeys; i ++) {
 					values.add(f.newZero());
 				}
-				for (Map.Entry<Mono, T> entry : f.entrySet()) {
+				for (Map.Entry<Monom, T> entry : f.entrySet()) {
 					short[] exps = entry.getKey().getExps();
 					T coeff = entry.getValue();
 					for (int i = 0; i < numKeys; i ++) {
@@ -251,11 +251,11 @@ public class SDS {
 		return (P[]) polys;
 	}
 
-	private static Mono getMono(int len, int i) {
+	private static Monom getMonom(int len, int i) {
 		short[] exps = new short[len];
 		Arrays.fill(exps, (short) 0);
 		exps[i] = 1;
-		return new Mono(exps);
+		return new Monom(exps);
 	}
 
 	private static final String VARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -273,16 +273,16 @@ public class SDS {
 
 		// build substitution polynomials from transformation matrix
 		P[] subs = unchecked(new Poly[len]);
-		Mono[] monos = new Mono[len];
+		Monom[] monoms = new Monom[len];
 		for (int i = 0; i < len; i ++) {
-			monos[i] = getMono(len*2, len + i);
+			monoms[i] = getMonom(len*2, len + i);
 		}
 		for (int i = 0; i < len; i ++) {
 			P p = f.newPoly();
 			for (int j = 0; j < len; j ++) {
 				long c = mat[i][j];
 				if (c != 0) {
-					p.put(monos[j], f.valueOf(c));
+					p.put(monoms[j], f.valueOf(c));
 				}
 			}
 			subs[i] = p;
@@ -308,7 +308,7 @@ public class SDS {
 			Transform transform, Find find, int maxDepth) {
 		// check homogeneous
 		int deg = 0;
-		for (Mono m : f.keySet()) {
+		for (Monom m : f.keySet()) {
 			int exps = 0;
 			for (int exp : m.getExps()) {
 				exps += exp;
@@ -324,9 +324,9 @@ public class SDS {
 		}
 		String vars = f.getVars();
 		int len = vars.length();
-		Mono[] monos = new Mono[len];
+		Monom[] monoms = new Monom[len];
 		for (int i = 0; i < len; i ++) {
-			monos[i] = getMono(len, i);
+			monoms[i] = getMonom(len, i);
 		}
 
 		// product([false, true], repeat = len)
@@ -418,13 +418,13 @@ public class SDS {
 			P[] subs = unchecked(new Poly[transform == Transform.T_n ? len : len - 1]);
 			for (int i = 0; i < len - 1; i ++) {
 				P sub = f.newPoly();
-				sub.put(monos[i], column[i]);
-				sub.put(monos[i + 1], one);
+				sub.put(monoms[i], column[i]);
+				sub.put(monoms[i + 1], one);
 				subs[i] = sub;
 			}
 			if (transform == Transform.T_n) {
 				P sub = f.newPoly();
-				sub.put(monos[len - 1], column[len - 1]);
+				sub.put(monoms[len - 1], column[len - 1]);
 				subs[len - 1] = sub;
 			}
 
@@ -551,11 +551,11 @@ public class SDS {
 
 			subs = unchecked(new Poly[len]);
 			P sub0 = f.newPoly();
-			sub0.put(monos[0], lead);
+			sub0.put(monoms[0], lead);
 			for (int i = 1; i < len; i ++) {
-				sub0.put(monos[i], one);
+				sub0.put(monoms[i], one);
 				P sub = f.newPoly();
-				sub.put(monos[i], diag);
+				sub.put(monoms[i], diag);
 				subs[i] = sub;
 			}
 			subs[0] = sub0;
@@ -629,7 +629,7 @@ public class SDS {
 					// f1 = f0's permutation and substitution (transformation)
 					P f1 = f.newPoly();
 					if (permSubs.tempVars == null) {
-						for (Map.Entry<Mono, T> term : f0.entrySet()) {
+						for (Map.Entry<Monom, T> term : f0.entrySet()) {
 							short[] exps = term.getKey().getExps();
 							short[] exps1 = new short[len];
 							for (int i = 0; i < len; i ++) {
@@ -637,7 +637,7 @@ public class SDS {
 								exps1[permSubs.perm[i]] = exps[i];
 								// exps1[i] = exps[permSubs.perm[i]];
 							}
-							f1.put(new Mono(exps1), term.getValue());
+							f1.put(new Monom(exps1), term.getValue());
 						}
 						if (permSubs.reverse) {
 							// Z_n
@@ -656,7 +656,7 @@ public class SDS {
 						// temp poly (2n-vars)
 						P f2 = f.newPoly();
 						// copy 0..n-1
-						for (Map.Entry<Mono, T> term : f0.entrySet()) {
+						for (Map.Entry<Monom, T> term : f0.entrySet()) {
 							short[] exps = term.getKey().getExps();
 							short[] exps1 = new short[len2];
 							Arrays.fill(exps1, len, len2, (short) 0);
@@ -665,15 +665,15 @@ public class SDS {
 								exps1[permSubs.perm[i]] = exps[i];
 								// exps1[i] = exps[permSubs.perm[i]];
 							}
-							f2.put(new Mono(exps1), term.getValue());
+							f2.put(new Monom(exps1), term.getValue());
 						}
 						// substitute 0..n-1 with n..2n-1
 						for (int i = 0; i < permSubs.subs.length; i ++) {
 							f2 = f2.subs(vars.charAt(i), permSubs.subs[i]);
 						}
 						// copy and truncate n..2n-1
-						for (Map.Entry<Mono, T> term : f2.entrySet()) {
-							f1.put(new Mono(Arrays.copyOfRange(term.getKey().getExps(), len, len2)),
+						for (Map.Entry<Monom, T> term : f2.entrySet()) {
+							f1.put(new Monom(Arrays.copyOfRange(term.getKey().getExps(), len, len2)),
 									term.getValue());
 						}
 					}

@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.xqbase.math.polys.BigPoly;
-import com.xqbase.math.polys.Mono;
+import com.xqbase.math.polys.Monom;
 import com.xqbase.math.polys.MutableBig;
 
 public class Han23P341 {
@@ -55,14 +55,14 @@ public class Han23P341 {
 				for (int[] perm : perms) {
 					// f1 = f0's permutation and substitution
 					BigPoly f1 = new BigPoly(vars);
-					for (Map.Entry<Mono, MutableBig> term : f0.entrySet()) {
+					for (Map.Entry<Monom, MutableBig> term : f0.entrySet()) {
 						short[] exps = term.getKey().getExps();
 						short[] exps1 = exps.clone();
 						for (int i = 0; i < 3; i ++) {
 							// permute
 							exps1[perm[i]] = exps[i];
 						}
-						f1.put(new Mono(exps1), term.getValue());
+						f1.put(new Monom(exps1), term.getValue());
 					}
 					// substitute
 					f1 = f1.subs('a', ab).subs('b', bc); // .subs('c', c);
@@ -70,8 +70,8 @@ public class Han23P341 {
 					for (BigPoly coeff : f1.coeffsOf("abc").values()) {
 						// vars = "abcuv" -> vars = "uv"
 						BigPoly coeff1 = new BigPoly("uv");
-						for (Map.Entry<Mono, MutableBig> entry : coeff.entrySet()) {
-							coeff1.put(new Mono(Arrays.copyOfRange(entry.getKey().getExps(), 3, 5)),
+						for (Map.Entry<Monom, MutableBig> entry : coeff.entrySet()) {
+							coeff1.put(new Monom(Arrays.copyOfRange(entry.getKey().getExps(), 3, 5)),
 									entry.getValue());
 						}
 						if (!SDS.sds(coeff1.homogenize('w'), SDS.Transform.T_n).isNonNegative()) {

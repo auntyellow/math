@@ -2,14 +2,14 @@ package com.xqbase.math.polys;
 
 import java.util.Arrays;
 
-public class Mono implements Comparable<Mono> {
+public class Monom implements Comparable<Monom> {
 	private short[] exps;
 
-	public Mono(short[] exps) {
+	public Monom(short[] exps) {
 		this.exps = exps;
 	}
 
-	public Mono(String vars, String expr) {
+	public Monom(String vars, String expr) {
 		exps = new short[vars.length()];
 		if (!expr.isEmpty()) {
 			for (String s : expr.replace("**", "^").split("\\*")) {
@@ -24,7 +24,7 @@ public class Mono implements Comparable<Mono> {
 
 	@Override
 	public boolean equals(Object o) {
-		return Arrays.equals(exps, ((Mono) o).exps);
+		return Arrays.equals(exps, ((Monom) o).exps);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class Mono implements Comparable<Mono> {
 	}
 
 	@Override
-	public int compareTo(Mono o) {
+	public int compareTo(Monom o) {
 		for (int i = 0; i < exps.length; i ++) {
 			int c = o.exps[i] - exps[i];
 			if (c != 0) {
