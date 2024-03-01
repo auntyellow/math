@@ -8,8 +8,6 @@ def main():
     '''
     print('f(----) =', factor(f.subs(a, (1 - a)/2).subs(b, (1 - b)/2).subs(c, (1 - c)/2).subs(d, (1 - d)/2)))
     print('f(---+) =', factor(f.subs(a, (1 - a)/2).subs(b, (1 - b)/2).subs(c, (1 - c)/2).subs(d, (1 + d)/2)))
-    print('f(---+, d <= 3/4) =', factor(f.subs(a, (1 - a)/2).subs(b, (1 - b)/2).subs(c, (1 - c)/2).subs(d, (2 + d)/4)))
-    print('f(---+, d >= 3/4) =', factor(f.subs(a, a/2).subs(b, b/2).subs(c, c/2).subs(d, (4 - d)/4)))
     print('f(--++) =', factor(f.subs(a, (1 - a)/2).subs(b, (1 - b)/2).subs(c, (1 + c)/2).subs(d, (1 + d)/2)))
     print('f(-+++) =', factor(f.subs(a, (1 - a)/2).subs(b, (1 + b)/2).subs(c, (1 + c)/2).subs(d, (1 + d)/2)))
     print('f(++++) =', factor(f.subs(a, (1 + a)/2).subs(b, (1 + b)/2).subs(c, (1 + c)/2).subs(d, (1 + d)/2)))
