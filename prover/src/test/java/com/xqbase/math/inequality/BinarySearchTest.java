@@ -100,7 +100,7 @@ public class BinarySearchTest {
 		// (2*w - x)**2 + (w - y)**2 + (w - z)**2
 		f = __("wxyz", "6*w**2 - 4*w*x - 2*w*y - 2*w*z + x**2 + y**2 + z**2");
 		*/
-		// luckily not stack overflow: x**2*y**2 + 16*y**2 - 24*y + 9 at (0, 3/4)
+		// luckily not stack overflow: x**2*y**2 + 16*y**2 - 24*y + 9 = 0 at (0, 3/4)
 		critical(__("xy", "16*x**2 - 24*x*y + 9*y**2 + 1"), INFINITY, INFINITY);
 		// - 30*x*y + ... + 1 causes so: 2*x**2*y**2 + 25*y**2 - 30*y + 9 = 0 at (0, 3/5)
 		// - 30*x*y causes stack overflow: 25*x**2*y**2 - 30*x*y + 9 = 0 at x*y = 3/5

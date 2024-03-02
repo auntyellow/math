@@ -65,11 +65,11 @@ def main():
         if u0 >= 0:
             print('u0 =', u0)
             print('v0 =', v0)
-            # v01 and v03 are saddle points; v02 is minimum (largest root of v**3 - 3*v**2 - 9*v + 3 == 0)
+            # v01 and v03 are saddle points; v02 is minimum (largest root of v**3 - 3*v**2 - 9*v + 3 = 0)
             print('h0 =', N(h.subs(u, u0).subs(v, v0)))
     print()
 
-    # prove h(v0, u0) == 0:
+    # prove h(v0, u0) = 0:
     h1 = v**3 - 3*v**2 - 9*v + 3
     print('h1 =', h1)
     h2 = rem(B[0], h1, v)
@@ -78,6 +78,13 @@ def main():
     print('R =', R)
     R = rem(R, h1)
     print('R =', R)
+    print()
+
+    # another way to prove g1(v0, u0) = 0:
+    res = resultant(h, h1, v)
+    print('res =', factor(res), '= 0')
+    # disc = 0 means h(u0) = h_u(u0) = 0
+    print('disc =', discriminant(res))
 
 if __name__ == '__main__':
     main()

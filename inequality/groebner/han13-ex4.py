@@ -20,36 +20,33 @@ def main():
     g1_u, g1_v = diff(g1, u), diff(g1, v)
     print('g1_u =', g1_u)
     print('g1_v =', g1_v)
-    B = groebner([g1_u, g1_v], u, v)
-    print(B)
-    print(factor(B[1]), '= 0')
-    v01 = nsolve(B[1], (1, 2), solver='bisect', verify=False)
-    v02 = nsolve(B[1], (.45, 1), solver='bisect', verify=False)
-    v03 = nsolve(B[1], (.25, .45), solver='bisect', verify=False)
-    v04 = nsolve(B[1], (0, .25), solver='bisect', verify=False)
-    v0n = [v01, v02, v03, v04]
-    print('v =', v0n)
-    for v0 in v0n:
-        p = Poly(B[0].subs(v, v0), u)
-        print(p.expr, '= 0')
-        u0 = -N(p.nth(0)/p.nth(1))
-        if u0 >= 0:
-            print('u0 =', u0)
-            print('v0 =', v0)
-            # largest root of v**3 - v**2 - 2*v + 1 == 0
-            print('g0 =', N(g1.subs(u, u0).subs(v, v0)))
-            v00, u00 = v0, u0
+    # B = groebner([g1_u, g1_v], v, u)
+    # print(B)
+    res = resultant(g1_u, g1_v, v)
+    print('res =', factor(res), '= 0')
+    u0 = nsolve(res, (0, 1), solver='bisect', verify=False)
+    print('u =', u0)
+    v0 = solve(g1_v.subs(u, u0))[0]
+    print('v =', v0)
+    print('g0 =', N(g1.subs(u, u0).subs(v, v0)))
     print()
 
-    # prove g1(v0, u0) == 0:
-    h1 = v**3 - v**2 - 2*v + 1
+    # prove g1(v0, u0) = 0:
+    h1 = u**3 + 4*u**2 + 3*u - 1
     print('h1 =', h1)
-    h2 = rem(B[0], h1, v)
+    h2 = prem(g1_v, h1, u)
     print('h2 =', h2)
-    R = rem(g1, h2, u)
+    R = prem(g1, h2, v)
     print('R =', R)
-    R = rem(R, h1)
+    R = prem(R, h1)
     print('R =', R)
+    print()
+
+    # another way to prove g1(v0, u0) = 0:
+    res = resultant(g1, h1, u)
+    print('res =', factor(res), '= 0')
+    # disc = 0 means g1(v0) = g1_v(v0) = 0
+    print('disc =', discriminant(res))
 
 if __name__ == '__main__':
     main()
