@@ -43,6 +43,7 @@ def main():
     u, v = symbols('u, v', negative = False)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))
+    print('f(yxz) =', factor(f.subs(x, y*(1 + u)).subs(z, y*(1 + u + v))))
 
 if __name__ == '__main__':
     main()

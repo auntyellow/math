@@ -1,75 +1,68 @@
-from math import sqrt
-from scipy.optimize import minimize
-from sympy import nsimplify
+from math import nan, sqrt
+import matplotlib.pyplot as plt
 
-# # IMO 2001 problem 2
-# sum_cyc(a/sqrt(a**2 + 8*b*c)) >= 1
+S13 = 1/sqrt(3)
+S43 = 2/sqrt(3)
 
-def fun(X):
-    p, q = X[0], X[1]
-    non_positive_coeffs = [
-        800*p**2 - 640*p + 128,
-        2400*p**2 - 1920*p + 384,
-        320*p**2 - 2048*p + 768,
-        3200*p**2 + 1120*p*q - 2560*p - 448*q + 512,
-        800*p**2 - 5120*p + 1920,
-        -4092*p**2 + 224*p*q - 3536*p - 196*q**2 + 1008*q + 1536,
-        2400*p**2 + 2240*p*q - 1920*p - 896*q + 384,
-        1600*p**2 + 1344*p*q - 5760*p - 1792*q + 2048,
-        -8184*p**2 + 448*p*q - 7072*p - 392*q**2 + 2016*q + 3072,
-        -5024*p**2 + 2016*p*q - 4000*p + 2016*q + 1024,
-        1000*p**2 + 1680*p*q - 800*p + 392*q**2 - 672*q + 160,
-        1600*p**2 + 2016*p*q - 3520*p - 2688*q + 1152,
-        -6264*p**2 - 2380*p*q - 5584*p - 588*q**2 - 1792*q + 1856,
-        -7536*p**2 + 3024*p*q - 6000*p + 3024*q + 1536,
-        -1512*p**2 + 1512*p*q - 1512*p + 1512*q,
-        200*p**2 + 560*p*q - 160*p + 392*q**2 - 224*q + 32,
-        880*p**2 + 1792*p*q - 1152*p + 784*q**2 - 1344*q + 320,
-        -2172*p**2 - 2604*p*q - 2048*p - 392*q**2 - 2800*q + 320,
-        -4416*p**2 - 2016*p*q - 4800*p - 2016*q - 384,
-        -1512*p**2 + 1512*p*q - 1512*p + 1512*q,
-        200*p**2 + 560*p*q - 160*p + 392*q**2 - 224*q + 32,
-        -195*p**2 - 98*p*q - 12*p + 245*q**2 - 196*q - 160,
-        -952*p**2 - 1512*p*q - 1400*p - 1512*q - 448,
-        -540*p**2 - 756*p*q - 1836*p - 756*q - 1296,
-        17*p**2 + 98*p*q - 288*p - 147*q**2 + 784*q - 1040,
-        158*p**2 + 448*p*q - 776*p - 686*q**2 + 3192*q - 3776,
-        106*p**2 + 756*p*q - 3008*p + 98*q**2 + 1344*q - 4192,
-        557*p**2 + 770*p*q + 204*p - 1519*q**2 + 6356*q - 5792,
-        818*p**2 + 4900*p*q - 8248*p - 1078*q**2 + 7448*q - 11712,
-        -579*p**2 - 98*p*q - 6828*p + 245*q**2 - 196*q - 6592,
-        868*p**2 + 532*p*q + 2408*p - 1960*q**2 + 7784*q - 4928,
-        2816*p**2 + 10696*p*q - 6968*p - 1960*q**2 + 16184*q - 13312,
-        -1620*p**2 + 7980*p*q - 14552*p - 392*q**2 + 7784*q - 12736,
-        -1208*p**2 - 1512*p*q - 5944*p - 1512*q - 4736,
-        512*p**2 - 224*p*q + 2900*p - 1568*q**2 + 5852*q - 2512,
-        4592*p**2 + 9912*p*q - 784*p - 1960*q**2 + 17360*q - 8512,
-        -864*p**2 + 17276*p*q - 11416*p - 588*q**2 + 17864*q - 9376,
-        -3792*p**2 + 5040*p*q - 8592*p + 5040*q - 4800,
-        -540*p**2 - 756*p*q - 1836*p - 756*q - 1296,
-        -40*p**2 - 616*p*q + 1544*p - 784*q**2 + 2520*q - 768,
-        3208*p**2 + 4368*p*q + 1712*p - 1176*q**2 + 9072*q - 3456,
-        2280*p**2 + 12544*p*q - 4288*p - 392*q**2 + 14112*q - 4608,
-        -4560*p**2 + 9072*p*q - 6096*p + 9072*q - 1536,
-        -1512*p**2 + 1512*p*q - 1512*p + 1512*q,
-        -100*p**2 - 280*p*q + 360*p - 196*q**2 + 504*q - 128,
-        520*p**2 + 448*p*q + 928*p - 392*q**2 + 2016*q - 768,
-        1908*p**2 + 3248*p*q - 608*p - 196*q**2 + 4032*q - 1536,
-        -1024*p**2 + 4032*p*q - 2048*p + 4032*q - 1024,
-        -1512*p**2 + 1512*p*q - 1512*p + 1512*q,
-    ]
-    v = 0
-    for coeff in non_positive_coeffs:
-        v += coeff**2 if coeff > 0 else 0
-    return v
+def z(x, y):
+    a = x - S13*y
+    b = S43*y
+    c = 1 - a - b
+    if a < 0 or b < 0 or c < 0 or a*b + a*c + b*c == 0:
+        return nan
+    if b > a and b > c:
+        z0 = a/sqrt(a**2 + 8*b*c) + b/sqrt(b**2 + 8*a*c) + c/sqrt(c**2 + 8*a*b) - 1
+        return sqrt(z0)
+    m0, m2 = min(a, b, c), max(a, b, c)
+    m1 = 1 - m0 - m2
+    f2 = a**2/(a**2 + 8*b*c)
+    if m2 < 5.5*m0:
+        n, m = 1, -1/11
+        g = n*a + m*(b + c)
+        h = (n + 2*m)*(a + b + c)
+        z0 = f2 - (g/h)**2
+        return sqrt(z0)
+    if 6*m1 < m2:
+        n, m = 1, 0
+        g = n*a + m*(b + c)
+        h = (n + 2*m)*(a + b + c)
+        z0 = f2 - (g/h)**2
+        return sqrt(z0)
+    z0 = a/sqrt(a**2 + 8*b*c) + b/sqrt(b**2 + 8*a*c) + c/sqrt(c**2 + 8*a*b) - 1
+    return sqrt(z0)
+
+def xyz(u, v):
+    u1, v1 = 1/(u + 1), 1/(v + 1)
+    z = 1/(1 + u1 + v1)
+    x, y = u1*z, v1*z
+    return x, y, z
+
+def add_point(Px, Py, x, y):
+    Px.append(x + y/2)
+    Py.append(y/S43)
+
+def plot(*P_n):
+    Px, Py = [], []
+    for P in P_n:
+        add_point(Px, Py, P[0], P[1])
+    plt.plot(Px, Py, linewidth = .5, color = 'black')    
 
 def main():
-    # default xatol doesn't work here
-    res = minimize(fun, [0, 0], method = 'Nelder-Mead', options = {'xatol': 1e-10})
-    print(res)
-    p0 = nsimplify(res.x[0], tolerance = 0.001, rational = True)
-    q0 = nsimplify(res.x[1], tolerance = 0.001, rational = True)
-    print('f({},{}) ='.format(p0, q0), fun([p0, q0]))
+    len = 1
+    res = 500
+    aspect = .87
+    Z = [[z(j/res, i/res) for j in range(len*res)] for i in range(round(len*res*aspect))]
+    plt.imshow(Z, origin = 'lower', extent = [0, len, 0, len*aspect], cmap = plt.cm.hsv)
+    oo = 1e+10
+    P00, P0O = xyz(0, 0), xyz(0, oo)
+    plot((P0O[1], P0O[2]), (P00[0], P00[1]), (P0O[2], P0O[0]))
+    plot((P0O[0], P0O[1]), (P00[0], P00[1]))
+    P04, P5O, P45 = xyz(0, 4.5), xyz(5, oo), xyz(4.5, 5)
+    plot((P5O[0], P5O[1]), (P45[1], P45[0]), (P04[0], P04[1]), (P45[2], P45[0]), (P5O[2], P5O[1]))
+    plot((P5O[2], P5O[0]), (P45[2], P45[1]), (P04[0], P04[2]))
+    plot((P5O[1], P5O[0]), (P45[0], P45[1]), (P04[1], P04[0]))
+    plt.colorbar()
+    plt.show()
 
 if __name__ == '__main__':
     main()
