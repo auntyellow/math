@@ -125,7 +125,7 @@ def main():
     # search possible s and t
     print()
     print('```python')
-    print('    non_negative_coeffs = [')
+    print('    coeffs = [')
     for coeff in Poly(k1, u, v).coeffs() + Poly(k2, u, v).coeffs() + Poly(k3, u, v).coeffs():
         print('        ' + str(coeff) + ',')
     print('    ]')

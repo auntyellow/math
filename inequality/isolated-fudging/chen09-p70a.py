@@ -14,7 +14,7 @@ def fun(X):
             bounds += (1 + v**2)*1e10
     if bounds > 0:
         return bounds
-    non_negative_coeffs = [
+    coeffs = [
         511784*s**2 - 132720*s*t - 488656*s + 8064*t**2 + 62160*t + 115976,
         296296*s**2 - 48048*s*t - 174944*s + 3696*t + 11704,
         1535352*s**2 - 398160*s*t - 1465968*s + 24192*t**2 + 186480*t + 347928,
@@ -110,7 +110,7 @@ def fun(X):
         595400*s**2 - 258300*s*t - 415900*s + 27900*t**2 + 90900*t + 71600,
     ]
     v = 0
-    for coeff in non_negative_coeffs:
+    for coeff in coeffs:
         v += coeff**2 if coeff < 0 else 0
     return v
 

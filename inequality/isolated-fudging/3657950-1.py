@@ -42,10 +42,9 @@ def main():
     print('y =', factor((g/h/2).subs(m, m0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, m0)
     u, v = symbols('u, v', negative = False)
-    # a <= b <= c
     print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
-    # c <= b <= a
     print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))
+    print('f(bac) =', factor(f.subs(a, b*(1 + u)).subs(c, b*(1 + u + v))))
 
 if __name__ == '__main__':
     main()
