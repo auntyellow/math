@@ -14,16 +14,13 @@ def sum_cyc(f, vars):
 
 def main():
     a, b, c = symbols('a, b, c', negative = False)
-    x = symbols('x', negative = False)
     f0 = a/(b + c)
-    # graph of f0(b=c)
-    print('y =', factor(f0.subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     m, n = symbols('m, n')
     n = 1
     g = n*a + m*(b + c)
-    h = (n + 2*m)*(a + b + c)/3
+    h = (n + 2*m)*(a + b + c)
     print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (a, b, c))))
-    f = f0 - g/h/2
+    f = f0 - 3*g/h/2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
     # homogeneous, hence assume a + b + c = 3
@@ -38,8 +35,6 @@ def main():
     m0 = m0[0]
     print('g =', factor(g.subs(m, m0)))
     print('h =', factor(h.subs(m, m0)))
-    # graph of g/2h(b=c)
-    print('y =', factor((g/h/2).subs(m, m0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, m0)
     u, v = symbols('u, v', negative = False)
     print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))

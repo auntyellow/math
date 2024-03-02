@@ -14,17 +14,14 @@ def sum_cyc(f, vars):
 def main():
     a, b, c = symbols('a, b, c', negative = False)
     x, y, z = symbols('x, y, z', negative = False)
-    f0 = sqrt((24*a + 13)/(24*a + 13*b*c))
-    # graph of f0(b=c)
-    print('y =', factor(f0.subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
-    print()
+    f2 = (24*a + 13)/(24*a + 13*b*c)
 
     m, n, p, q, r, s, t = symbols('m, n, p, q, r, s, t')
     n = 1
     g = n*a**2 + m*(b**2 + c**2) + p*(a*b + a*c) + q*b*c
-    h = (n + 2*m)*(a**2 + b**2 + c**2)/3 + (2*p + q)*(a*b + a*c + b*c)/3
+    h = (n + 2*m)*(a**2 + b**2 + c**2) + (2*p + q)*(a*b + a*c + b*c)
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (a, b, c))))
-    f = f0**2 - (g/h)**2
+    f = f2 - (3*g/h)**2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
     s32 = S(3)/2
@@ -55,8 +52,6 @@ def main():
     mpq = solve([eq2, eq4, eq5, eq7], (m, p, q))
     print('mpq =', mpq)
     mpq = mpq[0]
-    # graph of g/h(b=c)
-    print('y =', factor((g/h).subs(m, mpq[0]).subs(p, mpq[1]).subs(q, mpq[2]).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, mpq[0]).subs(p, mpq[1]).subs(q, mpq[2])
     x, y, z = symbols('x, y, z', negative = False)
     xyz = (x + y + z)/3
@@ -73,10 +68,10 @@ def main():
 
     # try cubic homogeneous polynomial
     g = n*a**3 + p*(a**2*b + a**2*c) + q*(a*b**2 + a*c**2) + r*(b**2*c + b*c**2) + s*(b**3 + c**3) + t*a*b*c
-    h = (n + 2*s)*(a**3 + b**3 + c**3)/3 + (p + q + r)*(a**2*b + a**2*c + a*b**2 + a*c**2 + b**2*c + b*c**2)/3 + t*a*b*c
+    h = (n + 2*s)*(a**3 + b**3 + c**3) + (p + q + r)*(a**2*b + a**2*c + a*b**2 + a*c**2 + b**2*c + b*c**2) + 3*t*a*b*c
     # factor(sum_cyc(...)) is too slow
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (a, b, c))))
-    f = f0**2 - (g/h)**2
+    f = f2 - (3*g/h)**2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
     # f(3/2,3/2,0) = 0
@@ -108,11 +103,9 @@ def main():
     pqr = pqr[0]
     # https://math.stackexchange.com/a/4776836
     # n, p, q, r, s, t = 5234, 102924, 105253, 50591, 14537, 182976
-    # graph of g/h(b=c)
     s0, t0 = S(14537)/5234, S(182976)/5234
     p0, q0, r0 = pqr[0].subs(s, s0).subs(t, t0), pqr[1].subs(s, s0).subs(t, t0), pqr[2].subs(s, s0).subs(t, t0)
     print('pqr =', p0, q0, r0)
-    print('y =', factor((g/h).subs(p, p0).subs(q, q0).subs(r, r0).subs(s, s0).subs(t, t0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2])
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     u, v = symbols('u, v', negative = False)
@@ -133,13 +126,11 @@ def main():
     print()
     # result from 4774103-bh.py
     s0, t0 = S(577)/202, S(477)/13
-    # graph of g/h(b=c)
-    print('y =', factor((g/h).subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     g = g.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     h = h.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     print('g =', factor(g))
     print('h =', factor(h))
-    f = f0**2 - (g/h)**2
+    f = f2 - (3*g/h)**2
     f = f.subs(a, a0).subs(b, b0).subs(c, c0)
     print('f(xyz) =', factor(f.subs(y, x*(1 + u)).subs(z, x*(1 + u + v))))
     print('f(zyx) =', factor(f.subs(y, z*(1 + u)).subs(x, z*(1 + u + v))))

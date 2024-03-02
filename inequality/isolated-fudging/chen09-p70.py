@@ -15,14 +15,13 @@ def sum_cyc(f, vars):
 def main():
     k, x, y, z = symbols('k, x, y, z', negative = False)
     k = S(48)
-    f0 = sqrt(1 + k*x/(y + z))
+    f2 = 1 + k*x/(y + z)
     m, n, p, q, r, s, t = symbols('m, n, p, q, r, s, t')
     n = 1
     g = 3*sqrt(1 + k/2)*(n*x**2 + m*(y**2 + z**2) + p*(x*y + x*z) + q*y*z)
     h = (n + 2*m)*(x**2 + y**2 + z**2) + (2*p + q)*(x*y + x*z + y*z)
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (x, y, z))))
-    f = f0**2 - (g/h)**2
-    # f >= 0 if sum_cyc(f0) >= 3*sqrt(1 + k/2)
+    f = f2 - (g/h)**2
     # f(1,1,1) = 0
     eq1 = factor(f.subs(x, 1).subs(y, 1).subs(z, 1))
     s32 = S(3)/2
@@ -76,7 +75,7 @@ def main():
     h = (n + 2*s)*(x**3 + y**3 + z**3) + (p + q + r)*(x**2*y + x**2*z + x*y**2 + x*z**2 + y**2*z + y*z**2) + 3*t*x*y*z
     # factor(sum_cyc(...)) is too slow
     print('sum_cyc(g/h) =', cancel(sum_cyc(g/h, (x, y, z))))
-    f = f0**2 - (g/h)**2
+    f = f2 - (g/h)**2
     # f(1,1,1) = 0
     eq1 = factor(f.subs(x, 1).subs(y, 1).subs(z, 1))
     # f(3/2,3/2,0) = 0
@@ -137,7 +136,7 @@ def main():
     h = h.subs(p, pqr[0]).subs(q, pqr[1]).subs(r, pqr[2]).subs(s, s0).subs(t, t0)
     print('g =', factor(g))
     print('h =', factor(h))
-    f = f0**2 - (g/h)**2
+    f = f2 - (g/h)**2
     f = f.subs(x, x0).subs(y, y0).subs(z, z0)
     print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
     print('f(cba) =', factor(f.subs(b, c*(1 + u)).subs(a, c*(1 + u + v))))

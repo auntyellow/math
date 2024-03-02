@@ -14,18 +14,14 @@ def sum_cyc(f, vars):
 
 def main():
     a, b, c = symbols('a, b, c', negative = False)
-    x, y, z = symbols('x, y, z', negative = False)
-    f0 = a/sqrt(a**2 + 8*b*c)
-    # graph of f0(b=c)
-    print('y =', factor(f0.subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
-    print()
+    f2 = a**2/(a**2 + 8*b*c)
 
     m, n = symbols('m, n')
     n = 1
     g = n*a + m*(b + c)
     h = (n + 2*m)*(a + b + c)
     print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (a, b, c))))
-    f = f0**2 - (g/h)**2
+    f = f2 - (g/h)**2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
     # homogeneous, hence assume a + b + c = 3
@@ -38,8 +34,6 @@ def main():
     m0 = solve(eq2, m)
     print('m =', m0)
     m0 = m0[0]
-    # graph of g/h(b=c)
-    print('y =', factor((g/h).subs(m, m0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, m0)
     print('f(1,1,1) =', f.subs(a, 1).subs(b, 1).subs(c, 1))
     print('f(1,8,9) =', f.subs(a, 1).subs(b, 8).subs(c, 9))
@@ -62,7 +56,7 @@ def main():
     print('g(bacU) =', factor(g.subs(c, b*(U + u)/(1 + u)).subs(a, b*(U + u + v)/(1 + u + v)).subs(m, m0)))
     print()
     # f(1,0,0) = 0
-    f = f0**2 - (g/h)**2
+    f = f2 - (g/h)**2
     eq4 = Eq(f.subs(a, 1).subs(b, 0).subs(c, 0), 0)
     print('eq4:', factor(eq4))
     m0 = solve(eq4, m)
@@ -79,7 +73,7 @@ def main():
     print('f(baVc) =', factor(f.subs(a, c/V/(1 + u)).subs(b, c/V/(1 + u + v))))
     print()
     # remaining areas
-    f = f0**2 - (g/h)**2
+    f = f2 - (g/h)**2
     U, V = 100, S(100)/99
     # a <= b <= V*a, c <= b/U
     print('f(cUabV) =', factor(f.subs(c, b/(U + u)).subs(b, a*(V + v)/(1 + v))))
@@ -107,7 +101,7 @@ def main():
     g = n*a**2 + m*(b**2 + c**2) + p*(a*b + a*c) + q*b*c
     h = (n + 2*m)*(a**2 + b**2 + c**2) + (2*p + q)*(a*b + a*c + b*c)
     print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (a, b, c))))
-    f = f0**2 - (g/h)**2
+    f = f2 - (g/h)**2
     # f(1,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 1), 0)
     # f_a,b(1,1) = 0

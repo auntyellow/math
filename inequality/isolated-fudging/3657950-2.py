@@ -14,16 +14,13 @@ def sum_cyc(f, vars):
 
 def main():
     a, b, c = symbols('a, b, c', negative = False)
-    x = symbols('x', negative = False)
-    f0 = sqrt(a/(b + c))
-    # graph of f0(b=c)
-    print('y =', factor(f0.subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
+    f2 = a/(b + c)
     m, n = symbols('m, n')
     n = 1
     g = n*a + m*(b + c)
-    h = (n + 2*m)*(a + b + c)/3
+    h = (n + 2*m)*(a + b + c)
     print('sum_cyc(g/h) =', factor(sum_cyc(g/h, (a, b, c))))
-    f = f0**2 - (2*g/h/3)**2
+    f = f2 - (2*g/h)**2
     # f(1,1,0) = f(1,0,1) = f(0,1,1) = 0
     eq1 = Eq(f.subs(a, 1).subs(b, 1).subs(c, 0), 0)
     eq2 = Eq(f.subs(a, 1).subs(b, 0).subs(c, 1), 0)
@@ -46,8 +43,6 @@ def main():
     m0 = m0[0][0]
     print('g =', factor(g.subs(m, m0)))
     print('h =', factor(h.subs(m, m0)))
-    # graph of 2g/3h(b=c)
-    print('y =', factor((2*g/h/3).subs(m, m0).subs(a, x).subs(b, (3 - x)/2).subs(c, (3 - x)/2)))
     f = f.subs(m, m0)
     u, v = symbols('u, v', negative = False)
     print('f(abc) =', factor(f.subs(b, a*(1 + u)).subs(c, a*(1 + u + v))))
