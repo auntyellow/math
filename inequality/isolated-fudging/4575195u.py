@@ -44,7 +44,6 @@ def main():
     print('f(zyxU) =', factor(f.subs(x, z*(U + u)/(1 + u)).subs(y, z*(U + u + v)/(1 + u + v))))
     # unable to cover area near (1, 1, 1)
     print()
-    '''
 
     # try quadratic homogeneous polynomial
     n = 1
@@ -99,6 +98,15 @@ def main():
     print('    ]')
     print('```')
     print()
+    # result from 4575195a.py
+    p0, q0, r0 = S(1529)/840, S(179)/237, S(104)/207
+    f = f.subs(p, p0).subs(q, q0).subs(r, r0)
+    print('f(xyzU) =', factor(f.subs(z, x*(U + u)/(1 + u)).subs(y, x*(U + u + v)/(1 + u + v))))
+    print('f(xzyU) =', factor(f.subs(y, x*(U + u)/(1 + u)).subs(z, x*(U + u + v)/(1 + u + v))))
+    print('f(yxzU) =', factor(f.subs(z, y*(U + u)/(1 + u)).subs(x, y*(U + u + v)/(1 + u + v))))
+    print('f(xyzU) =', factor(f.subs(x, y*(U + u)/(1 + u)).subs(z, y*(U + u + v)/(1 + u + v))))
+    print('f(zxyU) =', factor(f.subs(y, z*(U + u)/(1 + u)).subs(x, z*(U + u + v)/(1 + u + v))))
+    print('f(zyxU) =', factor(f.subs(x, z*(U + u)/(1 + u)).subs(y, z*(U + u + v)/(1 + u + v))))
 
 if __name__ == '__main__':
     main()

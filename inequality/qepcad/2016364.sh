@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export saclib=/usr/local/saclib
 export qe=/usr/local/qepcad
 $qe/bin/qepcad +N100000000 << END
 [https://math.stackexchange.com/q/2016364]

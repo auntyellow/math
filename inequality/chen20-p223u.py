@@ -1,8 +1,10 @@
 from sympy import *
 
+def dist2(P1, P2):
+    return (P1[0] - P2[0])**2 + (P1[1] - P2[1])**2
 
 def main():
-    # ISBN 9787030655189, p224, ex 8.5.2
+    # ISBN 9787030655189, p223, ex 8.5.2
     # 1 = c <= a <= b
     p, q = symbols('p, q', negative = False)
     A, B, C = (1/(1 + p), 1/(1 + p), 0), (1/(1 + p + q), 0, 1/(1 + p + q)), (0, 1, 1)
