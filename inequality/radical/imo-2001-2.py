@@ -41,8 +41,8 @@ def main():
     # U = 4/3: k = 50031545098999707
     # U = 11/6: k = 209847509734914867068928
 
-    # prove when u > U or v > U (u and v are symmetric)
-    # doesn't work: prove when 0 <= 1/u <= 1/U (u >= U) and 0 <= v <= U by radical-prover
+    # prove when u > U \/ v > U (u and v are symmetric)
+    # doesn't work: prove when 0 <= 1/u <= 1/U (u >= U) /\ 0 <= v <= U by radical-prover
     '''
     # factor to avoid division by zero
     A, B, C = factor(A0.subs(u, 1/u)), factor(B0.subs(u, 1/u)), factor(C0.subs(u, 1/u))
@@ -55,7 +55,7 @@ def main():
     s = -x**2/2 + 3*x/2
     f = s.subs(x, A0) + s.subs(x, B0) + s.subs(x, C0) - 1
     print('f =', factor(f.subs(u, u + 12)))
-    # then prove when S(11)/6 <= u <= 12 and 0 <= v <= 12 by radical-prover
+    # then prove when S(11)/6 <= u <= 12 /\ 0 <= v <= 12 by radical-prover
 
 if __name__ == '__main__':
     main()
