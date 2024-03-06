@@ -19,14 +19,16 @@ def main():
     # f(oo, oo) = f(oo, 0) = f(0, ?) = oo, i.e. a*b + b*c + a*c = 0, i.e. a = 4 or b = 4 or c = 4
 
     u, v = symbols('u, v', negative = False)
-    a0 = 4/(1 + u)
-    b0 = (4 - a0)/(1 + v)
-    c0 = (4 - a0 - b0)/(1 + a0*b0)
+    a = 4/(1 + u)
+    b = (4 - a)/(1 + v)
+    c = (4 - a - b)/(1 + a*b)
+    A0 = 1/(a**2 + 4*b*c)
+    B0 = 1/(b**2 + 4*a*c)
+    C0 = 1/(c**2 + 4*a*b)
     D = S(25)/16
     '''
-    subs = {u: S(1)/2 + 1/(1 + u), v: S(1)/2/(1 + v)}
-    a, b, c = a0.subs(subs), b0.subs(subs), c0.subs(subs)
-    A, B, C = 1/(a**2 + 4*b*c), 1/(b**2 + 4*a*c), 1/(c**2 + 4*a*b)
+    subs = {u: S(1)/2 + 1/(1 + u)}
+    A, B, C = A0.subs(subs), B0.subs(subs), C0.subs(subs)
     # try to use conclusion from radical3b.py
     f1 = D - C
     print('f1 =', factor(f1))
@@ -43,35 +45,58 @@ def main():
     # prove 1/sqrt(b**2 + 4*a*c) >= 5/4 when u <= 1/100
     # 1/50 doesn't work
     subs = {u: S(1)/100/(1 + u)}
-    a, b, c = a0.subs(subs), b0.subs(subs), c0.subs(subs)
-    f = 1/(b**2 + 4*a*c) - D
-    print('f(u<=1/100) =', factor(f))
+    print('f(u<=1/100) =', factor(B0.subs(subs) - D))
     print()
 
     # prove 1/sqrt(a**2 + 4*b*c) >= 5/4 or 1/sqrt(b**2 + 4*a*c) >= 5/4 when u >= 100 and v >= 100
     # 50 doesn't work
     subs = {u: u + 100, v: v + 100}
-    a, b, c = a0.subs(subs), b0.subs(subs), c0.subs(subs)
-    f = 1/(a**2 + 4*b*c) - D
-    g = 1/(b**2 + 4*a*c) - D
-    print('f(u,v>=100) =', factor(f))
-    print('g(u,v>=100) =', factor(g))
+    print('f1(u,v>=100) =', factor(A0.subs(subs) - D))
+    print('f2(u,v>=100) =', factor(B0.subs(subs) - D))
     print()
 
     # prove 1/sqrt(a**2 + 4*b*c) >= 5/4 or 1/sqrt(c**2 + 4*a*b) >= 5/4 when u >= 100 and v <= 1/100
     # 50 doesn't work
     subs = {u: u + 100, v: S(1)/100/(1 + v)}
-    a, b, c = a0.subs(subs), b0.subs(subs), c0.subs(subs)
-    f = 1/(a**2 + 4*b*c) - D
-    g = 1/(c**2 + 4*a*b) - D
-    print('f(u>=100,v<=1/100) =', factor(f))
-    print('g(u>=100,v<=1/100) =', factor(g))
+    print('f1(u>=100,v<=1/100) =', factor(A0.subs(subs) - D))
+    print('f2(u>=100,v<=1/100) =', factor(C0.subs(subs) - D))
     print()
 
-    # 1/100 <= u <= 1/2 and v <= 1/100
-    # 3/2 <= u <= 100 and v <= 1/100
-    # u >= 1/100 and 1/100 <= v <= 100
-    # 1/100 <= u <= 100 and v >= 100
+    print('1/100 <= u <= 1/2 and v <= 1')
+    subs = {u: S(1)/100 + 49*u/100}
+    A, B, C = A0.subs(subs), B0.subs(subs), C0.subs(subs)
+    print('A =', factor(A))
+    print('B =', factor(B))
+    print('C =', factor(C))
+    print()
+    print('1/100 <= u <= 1/2 and v >= 1')
+    subs = {u: S(1)/100 + 49*u/100, v: 1/v}
+    A, B, C = A0.subs(subs), B0.subs(subs), C0.subs(subs)
+    print('A =', factor(A))
+    print('B =', factor(B))
+    print('C =', factor(C))
+    print()
+    print('3/2 <= u <= 100 and v <= 1')
+    subs = {u: S(3)/2 + 197*u/2}
+    A, B, C = A0.subs(subs), B0.subs(subs), C0.subs(subs)
+    print('A =', factor(A))
+    print('B =', factor(B))
+    print('C =', factor(C))
+    print()
+    print('3/2 <= u <= 100 and v >= 1')
+    subs = {u: S(3)/2 + 197*u/2, v: 1/v}
+    A, B, C = A0.subs(subs), B0.subs(subs), C0.subs(subs)
+    print('A =', factor(A))
+    print('B =', factor(B))
+    print('C =', factor(C))
+    print()
+    print('u >= 100 and 1/100 <= v <= 100')
+    subs = {u: 100/u, v: S(1)/100 + 9999*v/100}
+    A, B, C = A0.subs(subs), B0.subs(subs), C0.subs(subs)
+    print('A =', factor(A))
+    print('B =', factor(B))
+    print('C =', factor(C))
+    print()
 
 if __name__ == '__main__':
     main()

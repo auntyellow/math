@@ -2,12 +2,15 @@ from sage.all import *
 
 def main():
     u, v = var('u, v')
-    a0 = 4/(1 + u)
-    b0 = (4 - a0)/(1 + v)
-    c0 = (4 - a0 - b0)/(1 + a0*b0)
-    subs = {u: Integer(1)/2 + 1/(1 + u), v: Integer(1)/2/(1 + v)}
-    a, b, c = a0.subs(subs), b0.subs(subs), c0.subs(subs)
-    A, B, C, D = 1/(a**2 + 4*b*c), 1/(b**2 + 4*a*c), 1/(c**2 + 4*a*b), Integer(25)/16
+    a = 4/(1 + u)
+    b = (4 - a)/(1 + v)
+    c = (4 - a - b)/(1 + a*b)
+    A0 = 1/(a**2 + 4*b*c)
+    B0 = 1/(b**2 + 4*a*c)
+    C0 = 1/(c**2 + 4*a*b)
+    D = Integer(25)/16
+    subs = {u: Integer(1)/2 + 1/(1 + u)}
+    A, B, C = A0.subs(subs), B0.subs(subs), C0.subs(subs)
     # try to use conclusion from radical3b.py
     f1 = D - C
     print('f1 =', factor(f1))
