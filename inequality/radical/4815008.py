@@ -5,6 +5,7 @@ from sympy import *
 def main():
     # a*b + a*c + b*c = 3:
     # https://math.stackexchange.com/q/2133854
+    # https://math.stackexchange.com/q/4782823
     # a*b + a*c + b*c + a*b*c = 4:
     # https://math.stackexchange.com/q/3273670
     # a + b + c + a*b*c = 4:

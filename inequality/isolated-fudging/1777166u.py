@@ -1,6 +1,3 @@
-import sys
-sys.setrecursionlimit(10000)
-
 from sympy import *
 
 # https://math.stackexchange.com/q/1777166
