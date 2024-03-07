@@ -1,4 +1,4 @@
-from math import nan, sqrt
+from math import log, nan, sqrt
 import matplotlib.pyplot as plt
 
 S13 = 1/sqrt(3)
@@ -8,10 +8,10 @@ def z(x, y):
     a = 3*(x - S13*y)
     b = 3*S43*y
     c = 3 - a - b
-    if a < 0 or b < 0 or c < 0:
+    if a < 0 or b < 0 or c < 0 or a*b + b*c + a*c == 0:
         return nan
-    z0 = a**(1/3) + b**(1/3) + c**(1/3) - a*b - b*c - a*c
-    return z0
+    z0 = (a**(1/3) + b**(1/3) + c**(1/3))/(a*b + b*c + a*c) - 1
+    return sqrt(log(1 + z0))
 
 def main():
     len = 1

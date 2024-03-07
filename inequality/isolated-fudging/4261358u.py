@@ -40,11 +40,31 @@ def main():
     u, v = symbols('u, v', negative = False)
     # U = 5 doesn't work
     U = 4
-    # x <= y <= z <= U*a
+    # x <= y <= z <= U*x
     # too slow
+    '''
     print('f(xyzU) =', factor(f.subs({z: x*(U + u)/(1 + u), y: x*(U + u + v)/(1 + u + v)})))
     print('f(zyxU) =', factor(f.subs({x: z*(U + u)/(1 + u), y: z*(U + u + v)/(1 + u + v)})))
     print('f(yxzU) =', factor(f.subs({z: y*(U + u)/(1 + u), x: y*(U + u + v)/(1 + u + v)})))
+    '''
+
+    A0 = f3
+    B0 = cyc(A0, (x, y, z))
+    C0 = cyc(B0, (x, y, z))
+    subs1 = {x: z/(1 + u), y: z/(1 + v)}
+    A0, B0, C0, D0 = factor(A0.subs(subs1)), factor(B0.subs(subs1)), factor(C0.subs(subs1)), 1
+    s3 = S(1)/3
+    print('f(z=max) =', A0**s3 + B0**s3 + C0**s3 - D0)
+    # we proved x <= y <= z <= 4*x, i.e. u, v <= U = 3
+
+    # C > D when x, y << z, so try u, v >= V and make V as small as possible
+    # V = 8 doesn't work
+    V = 9
+    subs1 = {u: V + u, v: V + v}
+    A, B, C, D = A0.subs(subs1), B0.subs(subs1), C0.subs(subs1), D0
+    print('C - D =', factor(C - D))
+
+    # TODO prove when u >= U /\ 0 <= v <= V (u and v are symmetric)
 
 if __name__ == '__main__':
     main()

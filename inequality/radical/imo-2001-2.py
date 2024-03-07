@@ -14,17 +14,14 @@ def main():
     A0 = a**2/(a**2 + 8*b*c)
     B0 = cyc(A0, (a, b, c))
     C0 = cyc(B0, (a, b, c))
-    b1, c1 = a*(1 + u), a*(1 + v)
-    A0, B0, C0 = factor(A0.subs(b, b1).subs(c, c1)), factor(B0.subs(b, b1).subs(c, c1)), factor(C0.subs(b, b1).subs(c, c1))
-    f = sqrt(A0) + sqrt(B0) + sqrt(C0) - 1
-    # f = 0 iff u = v = 0, see figure in imo-2001-2a.py
-    print('f =', f)
-    # try 0 <= u, v <= U and make U as large as possible
-    U = S(11)/6
-    u1, v1 = U/(1 + u), U/(1 + v)
-    # u1, v1 = U, U
-    A, B, C, D = A0.subs(u, u1).subs(v, v1), B0.subs(u, u1).subs(v, v1), C0.subs(u, u1).subs(v, v1), 1
+    subs1 = {b: a*(1 + u), c: a*(1 + v)}
+    A0, B0, C0, D0 = factor(A0.subs(subs1)), factor(B0.subs(subs1)), factor(C0.subs(subs1)), 1
+    print('f(a=min) =', sqrt(A0) + sqrt(B0) + sqrt(C0) - sqrt(D0))
 
+    # f = 0 iif u = v = 0, so try 0 <= u, v <= U and make U as large as possible
+    U = S(11)/6
+    subs1 = {u: U/(1 + u), v: U/(1 + v)}
+    A, B, C, D = A0.subs(subs1), B0.subs(subs1), C0.subs(subs1), D0
     # try to use conclusion from radical3b.py
     f1 = D - C
     print('f1 =', factor(f1))
@@ -40,20 +37,14 @@ def main():
     # k*u**14*v**12 + ... - k*u**13*v**13 + ... + k*u**12*v**14 + ...
     # U = 4/3: k = 50031545098999707
     # U = 11/6: k = 209847509734914867068928
+    print()
 
-    # prove when u > U \/ v > U (u and v are symmetric)
-    # doesn't work: prove when 0 <= 1/u <= 1/U (u >= U) /\ 0 <= v <= U by radical-prover
-    '''
-    # factor to avoid division by zero
-    A, B, C = factor(A0.subs(u, 1/u)), factor(B0.subs(u, 1/u)), factor(C0.subs(u, 1/u))
-    print('f(1/u,v) =', sqrt(A) + sqrt(B) + sqrt(C) - 1)
-    '''
-    # first prove when u >= 12
+    # f is ambiguous when u -> +oo. luckily we can try u >= U and make U as small as possible
     # result from sqrt-quadratic.py
     x = symbols('x', negative = False)
     # u >= 11 or smaller doesn't work, should use sqrt(x) >= cubic(x)
     s = -x**2/2 + 3*x/2
-    f = s.subs(x, A0) + s.subs(x, B0) + s.subs(x, C0) - 1
+    f = s.subs(x, A0) + s.subs(x, B0) + s.subs(x, C0) - D0
     print('f =', factor(f.subs(u, u + 12)))
     # then prove when S(11)/6 <= u <= 12 /\ 0 <= v <= 12 by radical-prover
 

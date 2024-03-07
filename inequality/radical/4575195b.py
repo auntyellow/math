@@ -14,12 +14,12 @@ def w(u, v):
     w0 = sqrt((4*x**2 + y**2)/(3*x**2 + y*z)) + sqrt((4*y**2 + z**2)/(3*y**2 + x*z)) + sqrt((4*z**2 + x**2)/(3*z**2 + x*y)) - D
     w0 = sqrt(log(1 + w0))
     '''
-    # mark the case u < 5 in 4575195u.py
+    # mark the case u, v < 5 and u, v > 13 in 4575195.py
     m0, m2 = min(x, y, z), max(x, y, z)
     m1 = 1 - m0 - m2
     if m2 < 6*m0: # and m2 < 6*m1
         return -w0
-    if 24*m1 < m2: # and 24*m0 < m2:
+    if 14*m1 < m2: # and 14*m0 < m2:
         return -w0
     '''
     return w0
@@ -43,17 +43,15 @@ def plot(*P_n):
 def main():
     len = 1
     res = 500
-    aspect = .87
+    aspect = 1/S43
     W = [[w(j/res, i/res) for j in range(len*res)] for i in range(round(len*res*aspect))]
     plt.imshow(W, origin = 'lower', extent = [0, len, 0, len*aspect], cmap = plt.cm.hsv)
     oo = 1e+10
     P00, P0O = xyz(0, 0), xyz(0, oo)
     plot((P0O[1], P0O[2]), (P00[0], P00[1]), (P0O[0], P0O[1]))
-    P05, P23, P5_23 = xyz(0, 5), xyz(23, oo), xyz(5, 23)
-    plot((P05[0], P05[1]), (P5_23[1], P5_23[0]), (P23[0], P23[1]))
-    plot((P05[1], P05[0]), (P5_23[0], P5_23[1]), (P23[1], P23[0]))
-    P11 = xyz(11, oo)
-    plot((P11[0], P11[1]), (P11[1], P11[0]))
+    P05, P13, P5_13 = xyz(0, 5), xyz(13, oo), xyz(5, 13)
+    plot((P05[0], P05[1]), (P5_13[1], P5_13[0]), (P13[0], P13[1]))
+    plot((P05[1], P05[0]), (P5_13[0], P5_13[1]), (P13[1], P13[0]))
     plt.colorbar()
     plt.show()
 
