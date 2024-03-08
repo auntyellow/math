@@ -107,6 +107,7 @@ def main():
     print('f(xyzU) =', factor(f.subs(x, y*(U + u)/(1 + u)).subs(z, y*(U + u + v)/(1 + u + v))))
     print('f(zxyU) =', factor(f.subs(y, z*(U + u)/(1 + u)).subs(x, z*(U + u + v)/(1 + u + v))))
     print('f(zyxU) =', factor(f.subs(x, z*(U + u)/(1 + u)).subs(y, z*(U + u + v)/(1 + u + v))))
+    # we proved x <= y <= z <= 3*x/2, much weaker than radical/4575195.py (x <= y <= z <= 6*x)
 
 if __name__ == '__main__':
     main()

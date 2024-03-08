@@ -31,20 +31,22 @@ def sign(f):
 def subs2(f, x0, y0):
     x, y = symbols('x, y', negative = False)
     f0, f1 = f.subs(x, x0).subs(y, y0), f.subs(y, y0).subs(x, x0)
-    if f0 != f1:
+    # https://github.com/sympy/sympy/issues/26317#issuecomment-1982069794
+    if not Eq(f0, f1).simplify():
         raise Exception('{} has ambiguous values {} and {} at ({}, {})'.format(f, f0, f1, x0, y0))
     return f0
 
-# return '' if sum(sqrt(A_n)) - D >= 0, or the counterexample
+# return '' if sum(A_n**(1/pow)) - D >= 0, or the counterexample
 # param A_n: 2-var functions about x and y
 # param D: a positive constant
-def negative(A_n, D, x0, x1, y0, y1):
+def negative(A_n, D, x0, x1, y0, y1, pow = 2):
     x, y = symbols('x, y', negative = False)
 
     # try to find counterexample
+    pow1 = S(1)/pow
     f0 = -D
     for A_i in A_n:
-        f0 += subs2(sqrt(A_i), x0, y0)
+        f0 += subs2(A_i**pow1, x0, y0)
     if f0 < 0:
         return 'f({},{})={}'.format(x0, y0, N(f0))
 
@@ -52,7 +54,7 @@ def negative(A_n, D, x0, x1, y0, y1):
     min_n = []
     for A_i in A_n:
         a00, a01, a10, a11 = subs2(A_i, x0, y0), subs2(A_i, x0, y1), subs2(A_i, x1, y0), subs2(A_i, x1, y1)
-        min_i = min(sqrt(a00), sqrt(a01), sqrt(a10), sqrt(a11))
+        min_i = min(a00**pow1, a01**pow1, a10**pow1, a11**pow1)
         sum_min += min_i
         min_n.append(min_i)
     # divide if sum_min - D < 0
@@ -64,11 +66,11 @@ def negative(A_n, D, x0, x1, y0, y1):
         u, v = symbols('u, v', negative = False)
         non_negative = True
         for i in range(len(A_n)):
-            # sqrt(A_i) >= D*m_i/sum_min (for all i) => sum(sqrt(A_i)) >= D
-            f = A_n[i] - (min_n[i]*D/sum_min)**2
+            # A_i**(1/pow) >= D*m_i/sum_min (for all i) => sum(A_i**(1/pow)) >= D
+            f = A_n[i] - (min_n[i]*D/sum_min)**pow
             f = factor(f.subs(x, x0 + dx/(1 + u)).subs(y, y0 + dy/(1 + v)))
             if sign(f) <= 0:
-                logging.info('unable to prove sqrt({}) >= {}: [{},{},{},{}]'.format(A_n[i], min_n[i]*D/sum_min, x0, x1, y0, y1))
+                logging.info('unable to prove ({})**(1/{}) >= {}: [{},{},{},{}]'.format(A_n[i], pow, min_n[i]*D/sum_min, x0, x1, y0, y1))
                 non_negative = False
                 break
         if non_negative:
@@ -78,35 +80,35 @@ def negative(A_n, D, x0, x1, y0, y1):
     # divide
     if dx < dy:
         ym = y0 + dy/S(2)
-        n = negative(A_n, D, x0, x1, ym, y1)
+        n = negative(A_n, D, x0, x1, ym, y1, pow)
         if n != '':
             return n
-        return negative(A_n, D, x0, x1, y0, ym)
+        return negative(A_n, D, x0, x1, y0, ym, pow)
     xm = x0 + dx/S(2)
-    n = negative(A_n, D, xm, x1, y0, y1)
+    n = negative(A_n, D, xm, x1, y0, y1, pow)
     if n != '':
         return n
-    return negative(A_n, D, x0, xm, y0, y1)
+    return negative(A_n, D, x0, xm, y0, y1, pow)
 
 def main():
     logging.basicConfig(level = 'INFO')
     x, y = symbols('x, y', negative = False)
     # find negative at (1, 1)
-    print('[' + negative([(x - 1)**2 + (y - 1)**2], sqrt(2), 0, 2, 0, 2) + ']')
+    print('[' + negative([(x - 1)**2 + (y - 1)**2], 1, 0, 2, 0, 2) + ']')
     # prove non-negative
     print('[' + negative([(x - 1)**2 + (y - 1)**2 + 1], 1, 0, 2, 0, 2) + ']')
     # non-termination due to zero point (1, 1) not at the lattice
     # print('[' + negative([(x - 1)**2 + (y - 1)**2 + 1], 1, 0, 3, 0, 3) + ']')
     u, v = x, y
-    # result from imo-2001-2.py
+    # imo-2001-2.py, 11/6 <= u <= 12 and 0 <= v <= 12
     A_n = [(u + 1)**2/(u**2 + 2*u + 8*v + 9), (v + 1)**2/(8*u + v**2 + 2*v + 9), 1/(8*u*v + 8*u + 8*v + 9)]
     # sqrt(A) + sqrt(B) + sqrt(C) >= 11/10 works, too slow; 10/9 doesn't work
     print('[' + negative(A_n, 1, S(11)/6, 12, 0, 12) + ']')
-    # result from 4575195.py
-    # f(1/u,v), too slow
+    # 4575195.py
+    # f(1/u,v), 0 <= 1/u <= 1/5 and 0 <= v <= 13, too slow
     A_n = [(u + 1)*(v**2 + 2*v + 5)/(u*v**2 + 2*u*v + 4*u + 3), (4*u**2*v**2 + 8*u**2*v + 5*u**2 + 2*u + 1)/((v + 1)*(3*u**2*v + 4*u**2 + 2*u + 1)), (v + 1)*(5*u**2 + 8*u + 4)/((u + 1)*(3*u*v + 4*u + 3*v + 3))]
     print('[' + negative(A_n, 3*sqrt(5)/2, 0, S(1)/5, 0, 13) + ']')
-    # f(u,1/v)
+    # f(u,1/v), 0 <= u <= 13 and 0 <= 1/v <= 1/5
     A_n = [(u + 1)*(5*v**2 + 2*v + 1)/(3*u*v**2 + 4*v**2 + 2*v + 1), (u**2*v**2 + 2*u*v**2 + 5*v**2 + 8*v + 4)/((v + 1)*(u**2*v + 2*u*v + 4*v + 3)), (v + 1)*(4*u**2 + 8*u + 5)/((u + 1)*(3*u*v + 3*u + 4*v + 3))]
     print('[' + negative(A_n, 3*sqrt(5)/2, 0, 13, 0, S(1)/5) + ']')
     '''
@@ -145,6 +147,13 @@ def main():
         101*(u + 100)**2*(99*v + 1)*(9999*u**2*v + 101*u**2 + 1999800*u*v + 180200*u + 99990000*v + 1010000)**2/(160000*(399920004*u**5*v**2 + 8079192*u**5*v + 40804*u**5 + 999700029999*u**4*v**3 + 170265941703*u**4*v**2 + 16032426597*u**4*v + 145601701*u**4 + 399880011999600*u**3*v**3 + 28114376281200*u**3*v**2 + 3045307438800*u**3*v + 130704280400*u**3 + 59982001799940000*u**2*v**3 + 2217556422180000*u**2*v**2 + 160425755820000*u**2*v + 1456022060000*u**2 + 3998800119996000000*u*v**3 + 81183760812000000*u*v**2 + 816038388000000*u*v + 4080804000000*u + 99970002999900000000*v**3 + 1029794010300000000*v**2 + 202979700000000*v + 10100000000)),
     ]
     print('[' + negative(A_n, 5/4, 0, 1, 0, 1) + ']')
+    # 4261358.py, 0 <= 1/u <= 1/3 /\ 0 <= v <= 12, too slow
+    A_n = [
+        u*(2*u*v + 3*u + v + 2)**5/(243*(u + 1)**3*(v + 1)**2*(u*v + 3*u + 1)**3),
+        (2*u*v + 3*u + v + 2)**5/(243*(u + 1)**2*(v + 1)**3*(u*v + 3*u + 1)**3),
+        (2*u*v + 3*u + v + 2)**5/(243*(u + 1)**2*(v + 1)**2*(u*v + 3*u + 1)**3),
+    ]
+    print('[' + negative(A_n, 1, 0, S(1)/3, 0, 12, pow = 3) + ']')
     '''
 
 if __name__ == '__main__':

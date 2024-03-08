@@ -53,8 +53,7 @@ def main():
     C0 = cyc(B0, (x, y, z))
     subs1 = {x: z/(1 + u), y: z/(1 + v)}
     A0, B0, C0, D0 = factor(A0.subs(subs1)), factor(B0.subs(subs1)), factor(C0.subs(subs1)), 1
-    s3 = S(1)/3
-    print('f(z=max) =', A0**s3 + B0**s3 + C0**s3 - D0)
+    print(f'f(z=max) = ({A0})**(1/3) + ({B0})**(1/3) + ({C0})**(1/3) - {D0}')
     # we proved x <= y <= z <= 4*x, i.e. u, v <= U = 3
 
     # C > D when x, y << z, so try u, v >= V and make V as small as possible
@@ -64,7 +63,9 @@ def main():
     A, B, C, D = A0.subs(subs1), B0.subs(subs1), C0.subs(subs1), D0
     print('C - D =', factor(C - D))
 
-    # TODO prove when u >= U /\ 0 <= v <= V (u and v are symmetric)
+    # prove when u >= U /\ 0 <= v <= V (u and v are symmetric)
+    A, B, C, D = factor(A0.subs(u, 1/u)), factor(B0.subs(u, 1/u)), factor(C0.subs(u, 1/u)), D0
+    print(f'f(1/u) = ({A})**(1/3) + ({B})**(1/3) + ({C})**(1/3) - {D}')
 
 if __name__ == '__main__':
     main()
