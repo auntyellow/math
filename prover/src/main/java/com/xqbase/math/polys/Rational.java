@@ -180,7 +180,7 @@ public class Rational extends MutableNumber<Rational> {
 
 	@Override
 	public Rational gcd(Rational n1) {
-		return valueOf(1);
+		return new Rational(p.gcd(n1.p).multiply(q.gcd(n1.q)), q.multiply(n1.q));
 	}
 
 	/*

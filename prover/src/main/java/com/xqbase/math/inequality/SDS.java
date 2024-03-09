@@ -391,7 +391,7 @@ public class SDS {
 			if (transform == Transform.T_n) {
 				T lcm = one;
 				if (!(one instanceof Rational)) {
-					// gcd doesn't work for Rational
+					// not necessary for Rational
 					for (int i = 1; i <= len; i ++) {
 						T i_ = f.valueOf(i);
 						T t = f.newZero();
