@@ -20,8 +20,7 @@ def main():
     # https://ask.sagemath.org/question/33051#post-id-33060
     A = QQ['a, b, c, d']
     a, b, c, d = A.gens()
-    F = A.fraction_field()
-    R = PolynomialRing(F, 'x1, x2, x3, x4', order = 'lex')
+    R = PolynomialRing(A.fraction_field(), 'x1, x2, x3, x4', order = 'lex')
     x1, x2, x3, x4 = R.gens()
     A, B, C, D = (0, 0), (a, 0), (x1, x2), (x3, x4)
     BC = dist2(B, C) - b**2

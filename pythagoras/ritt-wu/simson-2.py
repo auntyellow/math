@@ -1,4 +1,4 @@
-from sympy import Matrix, factor, groebner, solve, symbols
+from sympy import *
 
 def collinear(P):
     return [P[0], P[1], 1]
@@ -30,13 +30,15 @@ def main():
     h7 = det(collinear, D, E, F)
     g = det(concyclic, A, B, C, P)
     # eliminate xf, yf, xe, ye, xd, yd
-    # get xc(yp), yc(py), xp(yp) 
+    # get xc(yp), yc(yp), xp(yp) 
     G = groebner([h1, h2, h3, h4, h5, h6, h7], xd, yd, xe ,ye, xf, yf, xp)
     print(G, len(G))
-    xp0s = solve(G[len(G) - 1], xp)
-    print('xp =', xp0s)
-    for xp0 in xp0s:
-        print('g =', factor(g.subs(xp, xp0)))
+    h8 = G[len(G) - 1]
+    print('g =', Poly(g, xp))
+    print('h8 =', Poly(h8, xp))
+    R = prem(g, h8, xp)
+    print('R(xp) =', R)
+    print('Is g == h8?', expand(g) == expand(h8))
 
 if __name__ == '__main__':
     main()

@@ -1,4 +1,4 @@
-from sympy import Matrix, prem, var
+from sympy import *
 
 def collinear(P):
     return [P[0], P[1], 1]
