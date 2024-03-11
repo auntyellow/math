@@ -16,8 +16,6 @@ def main():
     B, C = (x1, y.subs(x, x1)), (x2, -y.subs(x, x2))
     print('B =', B)
     print('C =', C)
-    # angles are converted to tan
-    # APB, APC = -(b - p)/d, -(c - p)/e
     AB2, AC2, BC2 = dist2(A, B), dist2(A, C), dist2(B, C)
     cosB = simplify((AB2 + BC2 - AC2)/2/sqrt(AB2*BC2))
     cosC = simplify((AC2 + BC2 - AB2)/2/sqrt(AC2*BC2))
