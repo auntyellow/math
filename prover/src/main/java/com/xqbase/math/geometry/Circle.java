@@ -63,7 +63,7 @@ public class Circle {
 		};
 	}
 
-	public static boolean concyclic(Point p1, Point p2, Point p3, Point p4) {
+	public static LongPoly concyclic(Point p1, Point p2, Point p3, Point p4) {
 		LongPoly[] r1 = row(p1);
 		LongPoly[] r2 = row(p2);
 		LongPoly[] r3 = row(p3);
@@ -72,6 +72,6 @@ public class Circle {
 				r1[0], r1[1], r1[2], r1[3],
 				r2[0], r2[1], r2[2], r2[3],
 				r3[0], r3[1], r3[2], r3[3],
-				r4[0], r4[1], r4[2], r4[3]).isEmpty();
+				r4[0], r4[1], r4[2], r4[3]);
 	}
 }

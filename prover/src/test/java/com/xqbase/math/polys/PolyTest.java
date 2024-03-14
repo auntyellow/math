@@ -112,7 +112,7 @@ public class PolyTest {
 		Point a4 = P("e - g", "-d + f", "d*g - e*f");
 		Point a3 = P("c - e", "-b + d", "b*e - c*d");
 		Point b1 = P("c - g", "-b + f", "b*g - c*f");
-		assertTrue(Circle.concyclic(c4, a4, a3, b1));
+		assertTrue(Circle.concyclic(c4, a4, a3, b1).isEmpty());
 	}
 
 	@Test
