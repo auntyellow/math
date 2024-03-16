@@ -39,8 +39,46 @@ def main():
     # let's prove the case C on arc BD
     g = factor(AC2*BD2 - AB2*CD2 - BC2*AD2)
     print('g =', g, '>= 0')
-    h = expand(g**2 - 4*AB2*CD2*BC2*AD2)
-    print('h =', h)
+    # too slow
+    # h = expand(4*AB2*CD2*BC2*AD2 - g**2)
+    # print('h =', h)
+    print()
+
+    # https://en.wikipedia.org/wiki/Ptolemy%27s_inequality
+    u, v = symbols('u, v', positive = True)
+    # wlog, assume A outside circle
+    A = (-u*e**2, 0)
+    AB2, CD2, BC2, AD2, AC2, BD2 = dist2(A, B), dist2(C, D), dist2(B, C), dist2(A, D), dist2(A, C), dist2(B, D)
+    # to prove sqrt(AB2*CD2) + sqrt(BC2*AD2) >= sqrt(AC2*BD2) <==>
+    # (sqrt(AB2*CD2) + sqrt(BC2*AD2))**2 = AB2*CD2 + BC2*AD2 + 2*sqrt(AB2*CD2*BC2*AD2) >= AC2*BD2 <==>
+    # 2*sqrt(AB2*CD2*BC2*AD2) >= AC2*BD2 - AB2*CD2 + BC2*AD2 = g
+    # g <= 0 means Ptolemy's inequality holds
+    # g >= 0 should prove h = 4*AB2*CD2*BC2*AD2 - g**2 >= 0
+    g = factor(AC2*BD2 - AB2*CD2 - BC2*AD2)
+    print('g =', g)
+    # g = 2*f*g1*g2*g3*g4, g1 >= 0, g2 >= 0, g3 >= 0 when u + b >= 0
+    g4 = d**4 + 2*d**3*f + 2*d**2*e**2 + d**2*f**2 + 2*d*e**2*f + d*e**2*u + e**4 + e**2*f**2
+    # g4 >= 0 when d >= 0
+    # too slow
+    # h = expand(4*AB2*CD2*BC2*AD2 - g**2)
+    # proved by SDS
+    # print('h =', h)
+
+    # when d <= 0:
+    print('g4 =', g4)
+    u = factor(solve(g4, u)[0])
+    print('g4 >= 0 iff u <=', u)
+    u = (d**2 + e**2)*(d**2 + 2*d*f + e**2 + f**2)/((v - d)*e**2)
+    print('i.e. u =', u)
+    # d <= 0 in A, B, C, D
+    A = (-u*e**2, 0)
+    AB2, CD2, BC2, AD2, AC2, BD2 = dist2(A, B), dist2(C, D), dist2(B, C), dist2(A, D), dist2(A, C), dist2(B, D)
+    g = factor(AC2*BD2 - AB2*CD2 - BC2*AD2)
+    print('g =', g, '>= 0')
+    # too slow
+    # h = cancel(4*AB2*CD2*BC2*AD2 - g**2)
+    # proved by SDS
+    # print('h =', h)
 
 if __name__ == '__main__':
     main()
