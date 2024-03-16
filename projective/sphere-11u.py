@@ -21,7 +21,8 @@ def on_surface(surface, P):
 
 def main():
     # https://imomath.com/index.cgi?page=inversion (Problem 11)
-    # sufficient to prove: if seven vertices of a hexahedron lie on a quadric curve, then so does the eighth vertex
+    # insufficient to prove: if seven vertices of a hexahedron lie on a quadric curve, then so does the eighth vertex
+    # see comments under https://math.stackexchange.com/q/4880727
     a, b, c, d, e, f, g, h, j, k, p, q, r, x, y, z, w = symbols('a, b, c, d, e, f, g, h, j, k, p, q, r, x, y, z, w')
     O, A, B, C = (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (0, 0, 0, 1)
     # O, B, C, D are coplanar; O, A, C, E are coplanar; O, A, B, F are coplanar

@@ -17,6 +17,7 @@ def dist2(P1, P2):
     return (P1[0] - P2[0])**2 + (P1[1] - P2[1])**2
 
 def main():
+    # https://en.wikipedia.org/wiki/Brahmagupta%27s_formula
     a, b, c, d, x1, x2, x3, x4, S = symbols('a, b, c, d, x1, x2, x3, x4, S')
     A, B, C, D = (0, 0), (a, 0), (x1, x2), (x3, x4)
     BC = dist2(B, C) - b**2
