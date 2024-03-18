@@ -5,13 +5,12 @@ def dist2(P1, P2):
 
 def main():
     # https://imomath.com/index.cgi?page=inversion (Example 2)
-    # let's prove the converse: if BO bisects ∠ABP and BO bisects ∠ACP,
+    # let's prove the converse: if BQ bisects ∠ABP and BQ bisects ∠ACP,
     # then ∠APB - ∠ACB (∠C) = ∠APC - ∠ABC (∠B)
-    # TODO: how can we prove the original proposition?
     a, b, c, p = symbols('a, b, c, p', positive = True)
     x, y = symbols('x, y')
     A, O, P, B = (-a - p, 0), (0, 0), (p, 0), (x, y)
-    # put B on a curve such that PO bisects ∠ABP, i.e. AB/PB = AO/PO
+    # put B on a curve such that PQ bisects ∠ABP, i.e. AB/PB = AQ/PQ
     curve = p**2*dist2(A, B) - (a + p)**2*dist2(P, B)
     print('curve =', Poly(curve, x, y))
     poly = Poly(curve.subs(y, -p*x/b), x)
@@ -65,6 +64,18 @@ def main():
     print('sin²∠APC + cos²∠APC =', factor((n2_sinAPC + (cosAPC*CP)**2)/CP2))
     g = cosAPB*cosC + sinAPB*sinC - cosAPC*cosB - sinAPC*sinB
     print('cos(∠APB - ∠C) - cos(∠APC - ∠B) =', factor(g))
+
+    '''
+    Now let's prove the original proposition (see imo-1996-2.ggb), i.e.
+    if BQ bisects ∠ABP and C'Q' bisects ∠AC'P and Q ≠ Q', then ∠APB - ∠AC'B ≠ ∠APC' - ∠ABC'.
+    According to above proof, B is on O (the circle determined by PQA) and
+    C' is on O' (the circle determined by PQ'A).
+    Assume PQ' > PQ, then it's easy to prove O' is outside O (two circles don't intersect).
+    Make C the intersect of PC' and O,
+    then ∠APB - ∠AC'B = ∠PAC' + ∠PBC' > ∠PAC + ∠PBC = ∠APB - ∠ACB = ∠APC - ∠ABC > ∠APC - ∠ABC' (QED),
+    where the first two equalities are from angle relationship in triangle or quadrilateral,
+    and the last equality is from above proved converse.
+    '''
 
 if __name__ == '__main__':
     main()
