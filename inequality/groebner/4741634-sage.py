@@ -25,5 +25,8 @@ def main():
     print('z =', zn)
     print(len(zn), 'roots')
 
+    # TODO isolate real roots, see
+    # https://doc.sagemath.org/html/en/reference/polynomial_rings/sage/rings/polynomial/real_roots.html
+
 if __name__ == '__main__':
     main()
