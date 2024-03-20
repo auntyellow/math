@@ -1,4 +1,5 @@
 from sage.all import *
+from sage.rings.polynomial.real_roots import *
 
 # https://math.stackexchange.com/q/4741634
 
@@ -21,12 +22,9 @@ def main():
     print()
 
     t = QQ['t'].gen()
-    zn = B[len(B) - 1].subs({z: t}).roots(RealField(1000), multiplicities = False)
-    print('z =', zn)
-    print(len(zn), 'roots')
-
-    # TODO isolate real roots, see
-    # https://doc.sagemath.org/html/en/reference/polynomial_rings/sage/rings/polynomial/real_roots.html
+    zn = real_roots(B[len(B) - 1].subs({z: t}))
+    for z in zn:
+        print(z)
 
 if __name__ == '__main__':
     main()
