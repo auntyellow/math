@@ -12,8 +12,8 @@ def main():
     print('f(abc,1uv) =', factor(f.subs(b, a*(1 + b)).subs(c, a*(1 + b + c)).subs(u, 1 + u).subs(v, 1 + u + v)))
     print('f(acb,uv1) =', factor(f.subs(c, a*(1 + c)).subs(b, a*(1 + b + c)).subs(u, 1/(1 + u)).subs(v, 1/(1 + u + v))).subs(b, w).subs(c, b).subs(w, c)) # similar to f(abc,1uv)
     # so only need to prove when a = max(a, b, c)
-    print('f(uv1) =', factor(f.subs(b, a*b).subs(c, a*c))) # proved by BinarySearch
-    print('f(u1v) =', factor(f.subs(b, a*b).subs(c, a*c).subs(v, 1/v))) # proved by BinarySearch
+    print('f(uv1) =', factor(f.subs(b, a*b).subs(c, a*c))) # proved by Bisection
+    print('f(u1v) =', factor(f.subs(b, a*b).subs(c, a*c).subs(v, 1/v))) # proved by Bisection
     print('f(1uv) =', factor(f.subs(b, a*b).subs(c, a*c).subs(u, 1/u).subs(v, 1/v)).subs(b, w).subs(c, b).subs(w, c)) # similar to f(abc,uv1)
 
 if __name__ == '__main__':

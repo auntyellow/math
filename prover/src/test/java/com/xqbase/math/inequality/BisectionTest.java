@@ -16,8 +16,8 @@ import com.xqbase.math.polys.Monom;
 import com.xqbase.math.polys.Rational;
 import com.xqbase.math.polys.RationalPoly;
 
-public class BinarySearchTest {
-	private static Logger log = LoggerFactory.getLogger(BinarySearchTest.class);
+public class BisectionTest {
+	private static Logger log = LoggerFactory.getLogger(BisectionTest.class);
 
 	private static final Rational INFINITY = Rational.valueOf(Long.MAX_VALUE);
 
@@ -44,7 +44,7 @@ public class BinarySearchTest {
 	}
 
 	private static void	positive(RationalPoly f) {
-		Rational[] result = BinarySearch.search(f);
+		Rational[] result = Bisection.search(f);
 		if (result.length > 0) {
 			Assert.fail("expected positive, actually " + toString(result));
 		}
@@ -52,14 +52,14 @@ public class BinarySearchTest {
 
 	private static void	positive01(RationalPoly f) {
 		log.info("search01 " + f);
-		Rational[] result = BinarySearch.search01(f);
+		Rational[] result = Bisection.search01(f);
 		if (result.length > 0) {
 			Assert.fail("expected positive, actually " + toString(result));
 		}
 	}
 
 	private static void	negative(RationalPoly f, int signum) {
-		Rational[] result = BinarySearch.search(f);
+		Rational[] result = Bisection.search(f);
 		Assert.assertNotEquals(0, result.length);
 		String vars = f.getVars();
 		RationalPoly f1 = f;
@@ -76,7 +76,7 @@ public class BinarySearchTest {
 	}
 
 	private static void critical(RationalPoly f, Rational... x) {
-		Rational[] result = BinarySearch.search(f);
+		Rational[] result = Bisection.search(f);
 		Assert.assertNotEquals(0, result.length);
 		for (int i = 0; i < x.length; i ++) {
 			Assert.assertEquals(x[i], result[i]);

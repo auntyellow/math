@@ -13,8 +13,8 @@ import com.xqbase.math.polys.Monom;
 import com.xqbase.math.polys.Rational;
 import com.xqbase.math.polys.RationalPoly;
 
-public class BinarySearch {
-	private static Logger log = LoggerFactory.getLogger(BinarySearch.class);
+public class Bisection {
+	private static Logger log = LoggerFactory.getLogger(Bisection.class);
 
 	private static final int MAX_DEPTH = 100;
 	private static final Rational _0 = Rational.valueOf(0);
@@ -51,7 +51,7 @@ public class BinarySearch {
 	/** helps to call {@link #negativeResult(Rational)} */
 	private Rational[] coords0;
 
-	private BinarySearch(String vars) {
+	private Bisection(String vars) {
 		this.vars = vars;
 		len = vars.length();
 		depth = 0;
@@ -389,7 +389,7 @@ public class BinarySearch {
 	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
 	public static Rational[] search01(RationalPoly f) {
-		return new BinarySearch(f.getVars()).search0(f);
+		return new Bisection(f.getVars()).search0(f);
 	}
 
 	/**
@@ -399,7 +399,7 @@ public class BinarySearch {
 	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
 	public static Rational[] search(RationalPoly f) {
-		BinarySearch bs = new BinarySearch(f.getVars());
+		Bisection bs = new Bisection(f.getVars());
 		// initial fs and reciprocals: only one original f and no reciprocal
 		List<RationalPoly> fs = new ArrayList<>();
 		fs.add(f);
@@ -422,7 +422,7 @@ public class BinarySearch {
 				reciprocals.add(reciprocal);
 			}
 		}
-		// binary search each polynomial
+		// bisect each polynomial
 		for (int i = 0; i < fs.size(); i ++) {
 			boolean[] reciprocal = reciprocals.get(i);
 			StringBuilder sb = new StringBuilder();

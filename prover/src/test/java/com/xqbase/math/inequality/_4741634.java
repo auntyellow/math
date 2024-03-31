@@ -86,7 +86,7 @@ public class _4741634 {
 			Rational z1 = new Rational(roots[1]);
 			System.out.print("prove f(" + z0 + " <= z <= " + z1 + ") >= 0: ");
 			z1.add(z0.negate());
-			System.out.println(BinarySearch.
+			System.out.println(Bisection.
 					search01(fz.subs('z', new RationalPoly(VARS, z1 + "*z + " + z0))).length == 0);
 		}
 	}
