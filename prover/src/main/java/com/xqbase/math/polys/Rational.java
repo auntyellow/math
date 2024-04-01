@@ -101,8 +101,12 @@ public class Rational extends MutableNumber<Rational> {
 
 	@Override
 	public double doubleValue() {
+		double p_ = p.doubleValue();
 		double q_ = q.doubleValue();
-		return Double.isInfinite(q_) ? 1/q.divide(p).doubleValue() : p.doubleValue()/q_;
+		if (Double.isFinite(p_) && Double.isFinite(q_)) {
+			return p_/q_;
+		}
+		return p.compareTo(q.abs()) > 0 ? p.divide(q).doubleValue() : 1/q.divide(p).doubleValue();
 	}
 
 	@Override

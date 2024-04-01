@@ -25,7 +25,7 @@ public class _4741634 {
 		{"27656399156659227/36028797018963968", "13828199606240535/18014398509481984"},
 		{"224012579530412151/288230376151711744", "1792100636299119051/2305843009213693952"},
 		// {"1125885508536879/1125899906842624", "70370283000321/70368744177664"}, // z = 1
-		{"10146491560867689/9007199254740992", "5073265290167973/4503599627370496"},
+		{"10146491560867689/9007199254740992", "5073265290167973/4503599627370496"}, // TODO x0*x1 < 0?
 		{"17475801291296075579366967849873987356765544066402167481314715811362604803307371/14821387422376473014217086081112052205218558037201992197050570753012880593911808", "33332445700256491812680382193890751194292211713838440733087387133429107397/28269553036454149273332760011886696253239742350009903329945699220681916416"},
 		{"1586669345901/1099511627776", "101585857605921/70368744177664"},
 		{"32227587257378647666661432214880566702736917/22300745198530623141535718272648361505980416", "4755952434000056264199972156094093083851267563893786949822165911/3291009114642412084309938365114701009965471731267159726697218048"},
@@ -63,13 +63,33 @@ public class _4741634 {
 		return ret;
 	}
 
+	private static Rational subs(RationalPoly f, char from, Rational to) {
+		RationalPoly poly = f.subs(from, to);
+		Rational ret = poly.remove(CONSTANT);
+		if (!poly.isEmpty()) {
+			throw new RuntimeException("Should be empty: " + poly);
+		}
+		return ret;
+	}
+
+	private static Rational[] subsInterval(RationalPoly f, char var, Rational to0, Rational to1) {
+		Rational x0 = subs(f, var, to0);
+		Rational x1 = subs(f, var, to1);
+		if (x0.compareTo(x1) > 0) {
+			Rational t = x0;
+			x0 = x1;
+			x1 = t;
+		}
+		return new Rational[] {x0, x1};
+	}
+
 	public static void main(String[] args) throws Exception {
 		Properties p = new Properties();
 		// results from 4741634-sage.py, B[1] and B[2]
 		try (InputStream in = _4741634.class.getResourceAsStream("4741634.properties")) {
 			p.load(in);
 		}
-		// RationalPoly f = new RationalPoly(VARS, "-x**4*y*z**2 - x**3*y**3*z**3 - x**3*y**2 - x**2*y**4*z - x**2*z**3 - x*y**2*z**4 - 5*x*y*z + 4*x*y + 4*x*z - y**3*z**2 + 4*y*z");
+		RationalPoly f = new RationalPoly(VARS, "-x**4*y*z**2 - x**3*y**3*z**3 - x**3*y**2 - x**2*y**4*z - x**2*z**3 - x*y**2*z**4 - 5*x*y*z + 4*x*y + 4*x*z - y**3*z**2 + 4*y*z");
 		RationalPoly b1 = new RationalPoly(VARS, p.getProperty("B1"));
 		RationalPoly b2 = new RationalPoly(VARS, p.getProperty("B2"));
 		RationalPoly x = solve(b1, "x");
@@ -80,20 +100,46 @@ public class _4741634 {
 			String[] roots = ROOTS[i];
 			Rational z0 = new Rational(roots[0]);
 			Rational z1 = new Rational(roots[1]);
+			System.out.println(z0 + " <= z <= " + z1);
+			// too slow to prove monotonicity
+			/*
 			z1.add(z0.negate());
-			System.out.println("diameter: " + z1.doubleValue());
-			System.out.print("prove x(" + z0 + " <= z <= " + z1 + ") is monotonic: ");
+			System.out.print("prove x is monotonic: ");
 			RationalPoly x1 = x.subs('z', new RationalPoly(VARS, z1 + "*z + " + z0)).diff('z');
 			if (x1.get(CONSTANT).signum() < 0) {
 				x1 = new RationalPoly(VARS, "").add(-1, x1);
 			}
 			System.out.println(Bisection.search01(x1).length == 0);
-			System.out.print("prove y(" + z0 + " <= z <= " + z1 + ") is monotonic: ");
+			System.out.print("prove y is monotonic: ");
 			RationalPoly y1 = y.subs('z', new RationalPoly(VARS, z1 + "*z + " + z0)).diff('z');
 			if (y1.get(CONSTANT).signum() < 0) {
 				y1 = new RationalPoly(VARS, "").add(-1, y1);
 			}
 			System.out.println(Bisection.search01(y1).length == 0);
+			*/
+			Rational[] x01 = subsInterval(x, 'z', z0, z1);
+			Rational x0 = x01[0], x1 = x01[1];
+			System.out.println(x0.doubleValue());
+			System.out.println(x1.doubleValue());
+			Rational[] y01 = subsInterval(y, 'z', z0, z1);
+			Rational y0 = y01[0], y1 = y01[1];
+			System.out.println(y0.doubleValue());
+			System.out.println(y1.doubleValue());
+			if ((x0.signum() < 0 && x1.signum() < 0) || (y0.signum() < 0 && y1.signum() < 0)) {
+				System.out.println("x or y is negative: x = " + x0.doubleValue() + ", y = " + y0.doubleValue());
+				continue;
+			}
+			// TODO x0*x1 < 0?
+			x1.add(x0.negate());
+			y1.add(y0.negate());
+			z1.add(z0.negate());
+			System.out.println("width: [" + x1.doubleValue() + ", " + y1.doubleValue() + ", " + z1.doubleValue() + "]");
+			System.out.print("prove positive: ");
+			RationalPoly f1 = f.
+					subs('x', new RationalPoly(VARS, x1 + "*x + " + x0)).
+					subs('y', new RationalPoly(VARS, y1 + "*y + " + y0)).
+					subs('z', new RationalPoly(VARS, z1 + "*z + " + z0));
+			System.out.println(Bisection.search01(f1).length == 0);
 		}
 	}
 }
