@@ -1,6 +1,8 @@
 package com.xqbase.math.polys;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 
 public class Rational extends MutableNumber<Rational> {
 	private static final long serialVersionUID = 1L;
@@ -101,12 +103,7 @@ public class Rational extends MutableNumber<Rational> {
 
 	@Override
 	public double doubleValue() {
-		double p_ = p.doubleValue();
-		double q_ = q.doubleValue();
-		if (Double.isFinite(p_) && Double.isFinite(q_)) {
-			return p_/q_;
-		}
-		return p.compareTo(q.abs()) > 0 ? p.divide(q).doubleValue() : 1/q.divide(p).doubleValue();
+		return new BigDecimal(p).divide(new BigDecimal(q), MathContext.DECIMAL64).doubleValue();
 	}
 
 	@Override
