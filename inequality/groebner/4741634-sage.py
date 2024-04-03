@@ -24,8 +24,15 @@ def main():
     t = QQ['t'].gen()
     # original max_diameter may not work during proof of x and y's monotonicity in _4741634.java
     zn = real_roots(B[len(B) - 1].subs({z: t}), max_diameter = Integer(1)/2**20)
+    print('```java');
+    print('\tprivate static final String[][] ROOTS = {');
     for z in zn:
-        print(z)
+        intv = z[0]
+        if intv[1] < 0:
+            continue
+        print(f'\t\t{{"{intv[0]}", "{intv[1]}"}},')
+    print('\t};');
+    print('```');
 
 if __name__ == '__main__':
     main()

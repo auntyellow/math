@@ -33,9 +33,7 @@ public class Bisection {
 
 	/** @return n1*n2 */
 	private static Rational __(Rational n1, Rational n2) {
-		Rational n = __();
-		n.addMul(n1, n2);
-		return n;
+		return new Rational(n1.getP().multiply(n2.getP()), n1.getQ().multiply(n2.getQ()));
 	}
 
 	private String vars;

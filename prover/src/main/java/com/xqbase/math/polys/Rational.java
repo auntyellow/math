@@ -188,6 +188,22 @@ public class Rational extends MutableNumber<Rational> {
 		return new Rational(p.gcd(n1.p).multiply(q.gcd(n1.q)), q.multiply(n1.q));
 	}
 
+	public Rational floor(BigInteger q1) {
+		BigInteger p1 = p.multiply(q1).divide(q);
+		if (p.signum() < 0) {
+			p1 = p1.subtract(_1);
+		}
+		return new Rational(p1, q1);
+	}
+
+	public Rational cell(BigInteger q1) {
+		BigInteger p1 = p.multiply(q1).divide(q);
+		if (p.signum() > 0) {
+			p1 = p1.add(_1);
+		}
+		return new Rational(p1, q1);
+	}
+
 	/*
 	private static final Rational __0 = Rational.valueOf(0);
 	private static final Rational __1 = Rational.valueOf(1);
