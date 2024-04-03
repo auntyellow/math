@@ -6,7 +6,6 @@ import java.math.MathContext;
 
 public class Rational extends MutableNumber<Rational> {
 	private static final long serialVersionUID = 1L;
-	private static final BigInteger _0 = BigInteger.ZERO;
 	private static final BigInteger _1 = BigInteger.ONE;
 
 	private static final Rational[] cache =
@@ -38,7 +37,7 @@ public class Rational extends MutableNumber<Rational> {
 	}
 
 	private void reduce() {
-		if (p.equals(_0)) {
+		if (p.signum() == 0) {
 			q = _1;
 			return;
 		}
@@ -67,10 +66,16 @@ public class Rational extends MutableNumber<Rational> {
 	}
 
 	public Rational(BigInteger p, BigInteger q) {
+		this(p, q, true);
+	}
+
+	private Rational(BigInteger p, BigInteger q, boolean reduce) {
 		this.p = p;
 		this.q = q;
-		posQ();
-		reduce();
+		if (reduce) {
+			posQ();
+			reduce();
+		}
 	}
 
 	public Rational(String s) {
@@ -158,24 +163,12 @@ public class Rational extends MutableNumber<Rational> {
 
 	@Override
 	public void addMul(Rational n1, Rational n2) {
-		BigInteger p0 = p;
-		BigInteger q0 = q;
-		BigInteger p1 = n1.p.multiply(n2.p);
-		BigInteger q1 = n1.q.multiply(n2.q);
-		p = p0.multiply(q1).add(q0.multiply(p1));
-		q = q0.multiply(q1);
-		reduce();
+		add(new Rational(n1.p.multiply(n2.p), n1.q.multiply(n2.q), false));
 	}
 
 	@Override
 	public void addMul(Rational n1, Rational n2, Rational n3) {
-		BigInteger p0 = p;
-		BigInteger q0 = q;
-		BigInteger p1 = n1.p.multiply(n2.p).multiply(n3.p);
-		BigInteger q1 = n1.q.multiply(n2.q).multiply(n3.q);
-		p = p0.multiply(q1).add(q0.multiply(p1));
-		q = q0.multiply(q1);
-		reduce();
+		add(new Rational(n1.p.multiply(n2.p).multiply(n3.p), n1.q.multiply(n2.q).multiply(n3.q), false));
 	}
 
 	@Override
