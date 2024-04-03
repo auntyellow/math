@@ -96,14 +96,18 @@ public class Rational extends MutableNumber<Rational> {
 		return p.divide(q).longValue();
 	}
 
+	// MathContext.DECIMAL32.getPrecision() + 1 is not enough (RatioalTest, case 4)
+	private static final MathContext DECIMAL32 = new MathContext(MathContext.DECIMAL32.getPrecision() + 2);
+	private static final MathContext DECIMAL64 = new MathContext(MathContext.DECIMAL64.getPrecision() + 1);
+
 	@Override
 	public float floatValue() {
-		return (float) doubleValue();
+		return new BigDecimal(p).divide(new BigDecimal(q), DECIMAL32).floatValue();
 	}
 
 	@Override
 	public double doubleValue() {
-		return new BigDecimal(p).divide(new BigDecimal(q), MathContext.DECIMAL64).doubleValue();
+		return new BigDecimal(p).divide(new BigDecimal(q), DECIMAL64).doubleValue();
 	}
 
 	@Override
