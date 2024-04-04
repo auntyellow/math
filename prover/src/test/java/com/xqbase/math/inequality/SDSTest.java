@@ -24,8 +24,6 @@ import com.xqbase.math.polys.MutableBig;
 import com.xqbase.math.polys.MutableLong;
 import com.xqbase.math.polys.MutableNumber;
 import com.xqbase.math.polys.Poly;
-import com.xqbase.math.polys.Rational;
-import com.xqbase.math.polys.RationalPoly;
 
 public class SDSTest {
 	@BeforeClass
@@ -129,8 +127,14 @@ public class SDSTest {
 	private static final SDS.Transform Z_n = SDS.Transform.Z_n;
 	private static final SDS.Transform Y_n = SDS.Transform.Y_n;
 
-	private static RationalPoly addMul(RationalPoly f, Rational n, RationalPoly pos) {
-		return new RationalPoly(f.getVars()).add(f).add(n, pos);
+	/** @return n*f + pos */
+	private static BigPoly addPos(BigPoly f, MutableBig n, BigPoly pos) {
+		return new BigPoly(f.getVars()).add(n, f).add(pos);
+	}
+
+	/** @return n*f - pos */
+	private static BigPoly subPos(BigPoly f, MutableBig n, BigPoly pos) {
+		return new BigPoly(f.getVars()).add(n, f).sub(pos);
 	}
 
 	@Test
@@ -141,22 +145,22 @@ public class SDSTest {
 		String vars = "xy";
 		long m = 4660046610375530309L;
 		long n = 7540113804746346429L;
-		RationalPoly f = new RationalPoly(vars, m + "*x - " + n + "*y");
-		f = new RationalPoly(vars).addMul(f, f);
-		SDS.Result<Rational> result = SDS.sds(f);
+		BigPoly f = new BigPoly(vars, m + "*x - " + n + "*y");
+		f = new BigPoly(vars).addMul(f, f);
+		SDS.Result<MutableBig> result = SDS.sds(f);
 		nonNegative(result, 91);
 		assertEquals("[[" + n + ", " + m + "]]", result.getZeroAt().toString());
 		// 1e-22
-		Rational e_22 = f.valueOf("1/10000000000000000000000");
-		RationalPoly pos = new RationalPoly(vars, "x**2 + y**2");
+		MutableBig e22 = f.valueOf("10000000000000000000000");
+		BigPoly pos = new BigPoly(vars, "x**2 + y**2");
 		// T_2 works within 99 iterations (A_2 72)
-		result = SDS.sds(addMul(f, e_22, pos), T_n);
+		result = SDS.sds(addPos(f, e22, pos), T_n);
 		positive(result, 99);
 		// Z_2 == T_2
-		result = SDS.sds(addMul(f, e_22, pos), Z_n);
+		result = SDS.sds(addPos(f, e22, pos), Z_n);
 		positive(result, 99);
 		// T_2 finds negative within 98 iterations (A_2 71)
-		RationalPoly f1 = addMul(f, e_22.negate(), pos);
+		BigPoly f1 = subPos(f, e22, pos);
 		negative(SDS.sds(f1, T_n), 98, f1);
 		// Z_2 == T_2
 		negative(SDS.sds(f1, Z_n), 98, f1);
@@ -164,19 +168,19 @@ public class SDSTest {
 		// example 2
 		// (3*x - y)**2 + (x - z)**2
 		vars = "xyz";
-		f = new RationalPoly(vars, "10*x**2 - 6*x*y - 2*x*z + y**2 + z**2");
+		f = new BigPoly(vars, "10*x**2 - 6*x*y - 2*x*z + y**2 + z**2");
 		// zero at (1, 3, 1), not on A_3 or T_3's lattice?
 		assertEquals(0, subs(f, asList(f, 1, 3, 1)).signum());
 		// A_3 works for 1/6 but doesn't seem to work for 1/7
-		pos = new RationalPoly(vars, "x**2 + y**2 + z**2");
-		result = SDS.sds(addMul(f, f.valueOf("1/6"), pos));
+		pos = new BigPoly(vars, "x**2 + y**2 + z**2");
+		result = SDS.sds(addPos(f, f.valueOf(6), pos));
 		positive(result, 9);
 		// A_3 finds negative for 1e-22 (maybe larger)
-		result = SDS.sds(addMul(f, e_22.negate(), pos));
+		result = SDS.sds(subPos(f, e22, pos));
 		negative(result, 2);
 		assertEquals("[1, 3, 1]", result.getNegativeAt().toString());
 		// 1e-8
-		f1 = addMul(f, f.valueOf("1/100000000"), pos);
+		f1 = addPos(f, f.valueOf(100000000), pos);
 		// T_3 works within 16 iterations (A_3 doesn't work)
 		positive(SDS.sds(f1, T_n), 16);
 		// H_3 works within 15 iterations
@@ -186,7 +190,7 @@ public class SDSTest {
 		// Z_3 works within 26 iterations
 		positive(SDS.sds(f1, Z_n), 26);
 		// T_3 finds negative within 11 iterations
-		f1 = addMul(f, f.valueOf("-1/100000000"), pos);
+		f1 = subPos(f, f.valueOf(100000000), pos);
 		negative(SDS.sds(f1, T_n), 11, f1);
 		// H_3 finds negative within 13 iterations
 		negative(SDS.sds(f1, H_3), 13, f1);
@@ -198,31 +202,31 @@ public class SDSTest {
 		// example 3
 		// (2*w - x)**2 + (w - y)**2 + (w - z)**2
 		vars = "wxyz";
-		f = new RationalPoly(vars, "6*w**2 - 4*w*x - 2*w*y - 2*w*z + x**2 + y**2 + z**2");
+		f = new BigPoly(vars, "6*w**2 - 4*w*x - 2*w*y - 2*w*z + x**2 + y**2 + z**2");
 		// zero at (1, 2, 1, 1), not on A_4 or T_4's lattice?
 		assertEquals(0, subs(f, asList(f, 1, 2, 1, 1)).signum());
 		// A_4 works for 1/8 but doesn't seem to work for 1/9
-		pos = new RationalPoly(vars, "w**2 + x**2 + y**2 + z**2");
-		result = SDS.sds(addMul(f, f.valueOf("1/8"), pos));
+		pos = new BigPoly(vars, "w**2 + x**2 + y**2 + z**2");
+		result = SDS.sds(addPos(f, f.valueOf(8), pos));
 		positive(result, 6);
 		// T_4 needs 9 for 1e-4, 12 for 1e-5 (19991 polynomials at 10th iteration); A_4 doesn't work
-		result = SDS.sds(addMul(f, f.valueOf("1/10000"), pos), T_n);
+		result = SDS.sds(addPos(f, f.valueOf(10000), pos), T_n);
 		positive(result, 9);
 		// J_4 needs 16 for 1e-5, 21 for 1e-7, 27 for 1e-9
-		result = SDS.sds(addMul(f, f.valueOf("1/100000"), pos), J_4);
+		result = SDS.sds(addPos(f, f.valueOf(100000), pos), J_4);
 		positive(result, 16);
 		// Y_4 works within 47 iterations for 1e-22
-		result = SDS.sds(addMul(f, e_22, pos), Y_n);
+		result = SDS.sds(addPos(f, e22, pos), Y_n);
 		positive(result, 47);
 		// Z_4 works within 16 iterations for 1e-3, within 20 iterations for 1e-4 (374376 polynomials at 19th iteration)
-		result = SDS.sds(addMul(f, f.valueOf("1/1000"), pos), Z_n);
+		result = SDS.sds(addPos(f, f.valueOf(1000), pos), Z_n);
 		positive(result, 16);
 		// A_4 finds negative for 1e-22 (maybe larger)
-		result = SDS.sds(addMul(f, e_22.negate(), pos));
+		result = SDS.sds(subPos(f, e22, pos));
 		negative(result, 1);
 		assertEquals("[1, 2, 1, 1]", result.getNegativeAt().toString());
 		// 1e-5
-		f1 = addMul(f, f.valueOf("-1/100000"), pos);
+		f1 = subPos(f, f.valueOf(100000), pos);
 		// T_4 finds negative within 11 iterations
 		negative(SDS.sds(f1, T_n), 7, f1);
 		// J_4 finds negative within 9 iterations
@@ -428,76 +432,76 @@ public class SDSTest {
 	public void testHan13() {
 		// http://xbna.pku.edu.cn/CN/Y2013/V49/I4/545
 		// ex 4.1
-		RationalPoly f = new RationalPoly("xyz", "9*x**2 + 6*x*y - 6*x*z + y**2 - 2*y*z + z**2");
+		BigPoly f = new BigPoly("xyz", "9*x**2 + 6*x*y - 6*x*z + y**2 - 2*y*z + z**2");
 		// T_3 works for 1/3e6 within 16 iterations, 1/3e7 within 18 iterations (73801 polynomials after 13th iteration); A_3 doesn't work
-		RationalPoly pos = new RationalPoly("xyz", "z**2");
-		RationalPoly f1 = addMul(f, f.valueOf("1/3000000"), pos);
-		SDS.Result<Rational> result = SDS.sds(f1, T_n);
+		BigPoly pos = new BigPoly("xyz", "z**2");
+		BigPoly f1 = addPos(f, f.valueOf(3000000), pos);
+		SDS.Result<MutableBig> result = SDS.sds(f1, T_n);
 		positive(result, 16);
 		// H_3 works for 1/3e6 within 13 iterations, 1/3e7 within 15 iterations, Y_3 == H_3
 		result = SDS.sds(f1, H_3);
 		positive(result, 13);
-		result = SDS.sds(addMul(f, f.valueOf("1/30000000"), pos), H_3);
+		result = SDS.sds(addPos(f, f.valueOf(30000000), pos), H_3);
 		positive(result, 15);
 		// Z_3 works for 1/3e5 within 19 iterations, 1/3e6 within 22 iterations
-		result = SDS.sds(addMul(f, f.valueOf("1/300000"), pos), Z_n);
+		result = SDS.sds(addPos(f, f.valueOf(300000), pos), Z_n);
 		positive(result, 19);
 		// ex 4.2
-		BigPoly g = new BigPoly("abcdefghij", replaceAn("a1**2 + a2**2 + a3**2 + a4**2 + a5**2 + a6**2 + a7**2 + a8**2 + a9**2 + a10**2 - 4*a1*a2").toString());
-		SDS.Result<MutableBig> bigResult = SDS.sds(g);
-		negative(bigResult, 0, g);
+		f = new BigPoly("abcdefghij", replaceAn("a1**2 + a2**2 + a3**2 + a4**2 + a5**2 + a6**2 + a7**2 + a8**2 + a9**2 + a10**2 - 4*a1*a2").toString());
+		SDS.Result<MutableBig> bigResult = SDS.sds(f);
+		negative(bigResult, 0, f);
 		// ex 4.3
-		g = new BigPoly("xyz", "x**3 + y**3 + z**3 - 3*x*y*z");
-		bigResult = SDS.sds(g);
+		f = new BigPoly("xyz", "x**3 + y**3 + z**3 - 3*x*y*z");
+		bigResult = SDS.sds(f);
 		nonNegative(bigResult, 1);
 		assertEquals("[[1, 1, 1]]", bigResult.getZeroAt().toString());
 		// H_3 and Z_3 don't work
 		// result = SDS.sds(f, H_3);
-		g = new BigPoly("xyzw", "x**4 + y**4 + z**4 + w**4 - 4*x*y*z*w");
-		bigResult = SDS.sds(g);
+		f = new BigPoly("xyzw", "x**4 + y**4 + z**4 + w**4 - 4*x*y*z*w");
+		bigResult = SDS.sds(f);
 		nonNegative(bigResult, 1);
 		assertEquals("[[1, 1, 1, 1]]", bigResult.getZeroAt().toString());
 		// J_4 and Z_4 don't work
 		// result = SDS.sds(f, J_4);
 		// ex 4.4
-		f = new RationalPoly("abc", "a**4 - 3*a**3*b + 2*a**2*b**2 + 2*a**2*c**2 - 3*a*c**3 + b**4 - 3*b**3*c + 2*b**2*c**2 + c**4");
+		f = new BigPoly("abc", "a**4 - 3*a**3*b + 2*a**2*b**2 + 2*a**2*c**2 - 3*a*c**3 + b**4 - 3*b**3*c + 2*b**2*c**2 + c**4");
 		// zero at (1, 1, 1)
 		assertEquals(0, subs(f, asList(f, 1, 1, 1)).signum());
 		// T_3 doesn't work (46455 polynomials after 50th iteration)
 		// result = SDS.sds(f, T_n);
 		// A_3 works for 1e-9 but doesn't seem to work for 1e-10
-		pos = new RationalPoly("abc", "a**4 + b**4 + c**4");
-		result = SDS.sds(addMul(f, f.valueOf("1/1000000000"), pos));
+		pos = new BigPoly("abc", "a**4 + b**4 + c**4");
+		result = SDS.sds(addPos(f, f.valueOf(1000000000), pos));
 		positive(result, 14);
 		// Z_3 needs 30 for 1e-10, 33 for 1e-11
-		result = SDS.sds(addMul(f, f.valueOf("1/10000000000"), pos), Z_n);
+		result = SDS.sds(addPos(f, f.valueOf(10000000000L), pos), Z_n);
 		positive(result, 30);
 		// 1e-22
-		Rational e_22 = f.valueOf("1/10000000000000000000000");
+		MutableBig e22 = f.valueOf("10000000000000000000000");
 		// T_3 needs 32
-		result = SDS.sds(addMul(f, e_22, pos), T_n);
+		result = SDS.sds(addPos(f, e22, pos), T_n);
 		positive(result, 32);
 		// H_3 needs 38, Y_3 == H_3
-		result = SDS.sds(addMul(f, e_22, pos), H_3);
+		result = SDS.sds(addPos(f, e22, pos), H_3);
 		positive(result, 38);
 		// both A_3 and T_3 find negative without iteration
-		f1 = addMul(f, e_22.negate(), pos);
+		f1 = addPos(f, e22.negate(), pos);
 		result = SDS.sds(f1);
 		negative(result, 0, f1);
-		assertEquals("[1, 1, 1]", result.getNegativeAt().toString());
+		assertEquals("[1, 0, 0]", result.getNegativeAt().toString());
 		// H_3 finds negative without iterations, Y_3 == H_3
 		result = SDS.sds(f1, H_3);
 		negative(result, 0, f1);
-		assertEquals("[1, 1, 1]", result.getNegativeAt().toString());
+		assertEquals("[1, 0, 0]", result.getNegativeAt().toString());
 		// Z_3 finds negative without iterations
 		result = SDS.sds(f1, Z_n);
 		negative(result, 0, f1);
-		assertEquals("[1, 1, 1]", result.getNegativeAt().toString());
+		assertEquals("[1, 0, 0]", result.getNegativeAt().toString());
 		// ex 4.5
 		// result from han13-ex5.py
-		g = new BigPoly("abcde", "a**2*b**2*c**2*d**2 + 3*a**2*b**2*c**2*e**2 + 3*a**2*b**2*d**2*e**2 + 9*a**2*b**2*e**4 + 3*a**2*c**2*d**2*e**2 + 9*a**2*c**2*e**4 + 9*a**2*d**2*e**4 + 11*a**2*e**6 - 32*a*b*e**6 - 32*a*c*e**6 - 32*a*d*e**6 + 3*b**2*c**2*d**2*e**2 + 9*b**2*c**2*e**4 + 9*b**2*d**2*e**4 + 11*b**2*e**6 - 32*b*c*e**6 - 32*b*d*e**6 + 9*c**2*d**2*e**4 + 11*c**2*e**6 - 32*c*d*e**6 + 11*d**2*e**6 + 81*e**8");
-		// both A_5 and T_5 need 5; Z_5 and Y_5 dont work
-		nonNegative(SDS.sds(g), 5);
+		f = new BigPoly("abcde", "a**2*b**2*c**2*d**2 + 3*a**2*b**2*c**2*e**2 + 3*a**2*b**2*d**2*e**2 + 9*a**2*b**2*e**4 + 3*a**2*c**2*d**2*e**2 + 9*a**2*c**2*e**4 + 9*a**2*d**2*e**4 + 11*a**2*e**6 - 32*a*b*e**6 - 32*a*c*e**6 - 32*a*d*e**6 + 3*b**2*c**2*d**2*e**2 + 9*b**2*c**2*e**4 + 9*b**2*d**2*e**4 + 11*b**2*e**6 - 32*b*c*e**6 - 32*b*d*e**6 + 9*c**2*d**2*e**4 + 11*c**2*e**6 - 32*c*d*e**6 + 11*d**2*e**6 + 81*e**8");
+		// both A_5 and T_5 need 5; Z_5 and Y_5 don't work
+		nonNegative(SDS.sds(f), 5);
 	}
 
 	@Test

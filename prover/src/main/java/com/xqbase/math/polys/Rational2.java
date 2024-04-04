@@ -49,7 +49,7 @@ public class Rational2 extends MutableNumber<Rational2> {
 	public Rational toRational() {
 		return scale > 0 ?
 				new Rational(p, _1.shiftLeft(scale)) :
-				new Rational(p.shiftLeft(scale));
+				new Rational(p.shiftLeft(-scale));
 	}
 
 	public Rational2(BigInteger p) {
