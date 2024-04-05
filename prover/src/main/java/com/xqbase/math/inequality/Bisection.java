@@ -44,7 +44,7 @@ public class Bisection {
 	private Rational2Poly[] subsLower;
 	/** helps to generate new f for upper half: x -> (x + 1)/2 */
 	private Rational2Poly[] subsUpper;
-	/** helps to call {@link #search1(RationalPoly, Rational, Rational[], Rational[])} */
+	/** helps to call {@link #search1} */
 	private Rational2[] bounds1;
 	/** helps to call {@link #negativeResult(Rational)} */
 	private Rational2[] coords0;
@@ -390,19 +390,10 @@ public class Bisection {
 	}
 
 	private Rational[] search0(RationalPoly f) {
-		BigInteger lcm = BigInteger.ONE;
-		for (Rational c : f.values()) {
-			BigInteger q = c.getQ();
-			lcm = lcm.divide(lcm.gcd(q)).multiply(q);
-		}
-		Rational2Poly f2 = new Rational2Poly(vars);
-		BigInteger lcm_ = lcm;
-		f.forEach((m, c) -> {
-			f2.put(m, new Rational2(c.getP().multiply(lcm_.divide(c.getQ()))));
-		});
-		Rational[] result = search0(f2);
+		BigInteger[] lcm_ = {null};
+		Rational[] result = search0(Rational2Poly.fromRationalPoly(f, lcm_));
 		if (result.length > 0 && result[len] != null) {
-			result[len] = result[len].div(new Rational(lcm));
+			result[len] = result[len].div(new Rational(lcm_[0]));
 		}
 		return result;
 	}
@@ -414,6 +405,16 @@ public class Bisection {
 	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
 	public static Rational[] search01(RationalPoly f) {
+		return new Bisection(f.getVars()).search0(f);
+	}
+
+	/**
+	 * search negative for f and 0 <= x_i <= 1, where f(0) may be positive, zero or negative
+	 * @return [] if f is proved non-negative, or<br>
+	 * [x_i, f(x_i)] if negative found, or<br>
+	 * [x_i, null] if unable to prove and x_i is the critical point 
+	 */
+	public static Rational[] search01(Rational2Poly f) {
 		return new Bisection(f.getVars()).search0(f);
 	}
 

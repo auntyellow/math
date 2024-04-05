@@ -13,7 +13,7 @@ public class Monom implements Comparable<Monom> {
 		exps = new short[vars.length()];
 		if (!expr.isEmpty()) {
 			for (String s : expr.replace("**", "^").split("\\*")) {
-				exps[vars.indexOf(s.charAt(0))] = (s.length() == 1 ? 1 : Byte.parseByte(s.substring(2)));
+				exps[vars.indexOf(s.charAt(0))] = (s.length() == 1 ? 1 : Short.parseShort(s.substring(2)));
 			}
 		}
 	}

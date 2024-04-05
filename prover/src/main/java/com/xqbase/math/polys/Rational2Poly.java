@@ -37,4 +37,21 @@ public class Rational2Poly extends Poly<Rational2, Rational2Poly> {
 	public Rational2[][] newMatrix(int n1, int n2) {
 		return new Rational2[n1][n2];
 	}
+
+	public static Rational2Poly fromRationalPoly(RationalPoly f, BigInteger[] lcm_) {
+		BigInteger lcm = BigInteger.ONE;
+		for (Rational c : f.values()) {
+			BigInteger q = c.getQ();
+			lcm = lcm.divide(lcm.gcd(q)).multiply(q);
+		}
+		Rational2Poly f2 = new Rational2Poly(f.getVars());
+		BigInteger lcm__ = lcm;
+		f.forEach((m, c) -> {
+			f2.put(m, new Rational2(c.getP().multiply(lcm__.divide(c.getQ()))));
+		});
+		if (lcm_ != null && lcm_.length > 0) {
+			lcm_[0] = lcm;
+		}
+		return f2;
+	}
 }
