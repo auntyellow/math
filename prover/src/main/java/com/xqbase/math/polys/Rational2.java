@@ -31,8 +31,16 @@ public class Rational2 extends MutableNumber<Rational2> {
 	}
 
 	private BigInteger p;
-	/** value = p*2^-scale */
+	/** value = p/2^scale */
 	private int scale;
+
+	public BigInteger getP() {
+		return p;
+	}
+
+	public int getScale() {
+		return scale;
+	}
 
 	private void reduce() {
 		if (p.signum() == 0) {
@@ -168,6 +176,7 @@ public class Rational2 extends MutableNumber<Rational2> {
 
 	@Override
 	public Rational2 gcd(Rational2 n1) {
+		// TODO set same scale
 		return new Rational2(toRational().gcd(n1.toRational()));
 	}
 }

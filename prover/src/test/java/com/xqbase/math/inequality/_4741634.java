@@ -137,6 +137,7 @@ public class _4741634 {
 			/*
 			z1.add(z0.negate());
 			System.out.print("prove x is monotonic: ");
+			// TODO too many terms. can we convert it into Rational2Poly?
 			RationalPoly x1 = x.subs('z', new RationalPoly(VARS, z1 + "*z + " + z0)).diff('z');
 			if (x1.get(CONSTANT).signum() < 0) {
 				x1 = new RationalPoly(VARS, "").add(-1, x1);

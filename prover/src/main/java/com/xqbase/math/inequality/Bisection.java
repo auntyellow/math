@@ -11,29 +11,29 @@ import org.slf4j.LoggerFactory;
 
 import com.xqbase.math.polys.Monom;
 import com.xqbase.math.polys.Rational;
+import com.xqbase.math.polys.Rational2;
+import com.xqbase.math.polys.Rational2Poly;
 import com.xqbase.math.polys.RationalPoly;
 
 public class Bisection {
 	private static Logger log = LoggerFactory.getLogger(Bisection.class);
 
 	private static final int MAX_DEPTH = 100;
-	private static final Rational _0 = Rational.valueOf(0);
-	private static final Rational _1 = Rational.valueOf(1);
-	private static final Rational HALF = _1.div(Rational.valueOf(2));
+	private static final Rational2 _0 = Rational2.valueOf(0);
+	private static final Rational _0_R = _0.toRational();
+	private static final Rational2 HALF = new Rational2(BigInteger.ONE, 1);
+	private static final Rational HALF_R = HALF.toRational();
 	private static final Rational INFINITY = Rational.valueOf(Long.MAX_VALUE);
 	private static final Rational[] EMPTY_RESULT = new Rational[0];
 
-	private static Rational __() {
+	private static Rational newZero() {
 		return new Rational(BigInteger.ZERO);
 	}
 
-	private static Rational __(Rational n1) {
-		return new Rational(n1.getP(), n1.getQ());
-	}
-
-	/** @return n1*n2 */
-	private static Rational __(Rational n1, Rational n2) {
-		return new Rational(n1.getP().multiply(n2.getP()), n1.getQ().multiply(n2.getQ()));
+	private static Rational mul(Rational n1, Rational n2) {
+		Rational r = newZero();
+		r.addMul(n1, n2);
+		return r;
 	}
 
 	private String vars;
@@ -41,13 +41,13 @@ public class Bisection {
 	/** monopoly for constant term, helps to get f(0, 0, ..., 0) */
 	private Monom m0;
 	/** helps to generate new f for lower half: x -> x/2 */
-	private RationalPoly[] subsLower;
+	private Rational2Poly[] subsLower;
 	/** helps to generate new f for upper half: x -> (x + 1)/2 */
-	private RationalPoly[] subsUpper;
+	private Rational2Poly[] subsUpper;
 	/** helps to call {@link #search1(RationalPoly, Rational, Rational[], Rational[])} */
-	private Rational[] bounds1;
+	private Rational2[] bounds1;
 	/** helps to call {@link #negativeResult(Rational)} */
-	private Rational[] coords0;
+	private Rational2[] coords0;
 
 	private Bisection(String vars) {
 		this.vars = vars;
@@ -56,29 +56,34 @@ public class Bisection {
 		short[] exps0 = new short[len];
 		Arrays.fill(exps0, (short) 0);
 		m0 = new Monom(exps0);
-		subsLower = new RationalPoly[len];
-		subsUpper = new RationalPoly[len];
+		subsLower = new Rational2Poly[len];
+		subsUpper = new Rational2Poly[len];
 		for (int i = 0; i < len; i ++) {
 			short[] exps = exps0.clone();
 			exps[i] = 1;
 			Monom m = new Monom(exps);
-			RationalPoly subs = new RationalPoly(vars);
+			Rational2Poly subs = new Rational2Poly(vars);
 			subs.put(m, HALF);
 			subsLower[i] = subs;
-			subs = new RationalPoly(vars);
+			subs = new Rational2Poly(vars);
 			subs.put(m, HALF);
 			subs.put(m0, HALF);
 			subsUpper[i] = subs;
 		}
-		bounds1 = new Rational[len];
-		Arrays.fill(bounds1, _1);
-		coords0 = new Rational[len];
+		bounds1 = new Rational2[len];
+		Arrays.fill(bounds1, Rational2.valueOf(1));
+		coords0 = new Rational2[len];
 		Arrays.fill(coords0, _0);
 	}
 
-	private Rational[] negativeResult(Rational f0) {
-		Rational[] result = Arrays.copyOf(coords0, len + 1);
-		result[len] = f0;
+	private Rational[] negativeResult(Rational2 f0) {
+		Rational[] result = new Rational[len + 1];
+		for (int i = 0; i < len; i ++) {
+			result[i] = _0_R;
+		}
+		if (f0 != null) {
+			result[len] = f0.toRational();
+		}
 		return result;
 	}
 
@@ -95,8 +100,8 @@ public class Bisection {
 	 * [x_i, f(x_i)] if negative found, or<br>
 	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
-	private Rational[] search1(RationalPoly f, Rational f0_, Rational[] bounds, Rational[] coords) {
-		Rational f0 = f0_;
+	private Rational[] search1(Rational2Poly f, Rational2 f0_, Rational2[] bounds, Rational2[] coords) {
+		Rational2 f0 = f0_;
 		if (f0 == null) {
 			f0 = f.getOrDefault(m0, _0);
 			int s = f0.signum();
@@ -107,8 +112,9 @@ public class Bisection {
 				return negativeResult(null);
 			}
 		}
-		Rational f1 = __(f0);
-		Rational fxMin = _0;
+		Rational2 f1 = f.newZero();
+		f1.add(f0);
+		Rational2 fxMin = _0;
 		int iMin = -1;
 		for (int i = 0; i < len; i ++) {
 			// f(x1, y0) = f(x0, y0) + intg_x0x1(f_x(y = y0))
@@ -116,11 +122,11 @@ public class Bisection {
 			// f_x = sum_j(c_j*a_j*x**(a_j - 1)y**b_i) >= sum_j(c_j*a_j) (c_j < 0)
 			// f(x_i1) >= f(x_i0) + sum_i(sum_j(c_j*a_ij)) (c_j < 0)
 			int i_ = i;
-			Rational fx = __();
+			Rational2 fx = f.newZero();
 			// TODO move outside for better performance
 			f.forEach((m, c) -> {
 				if (c.signum() < 0) {
-					fx.addMul(c, Rational.valueOf(m.getExps()[i_]));
+					fx.addMul(c, Rational2.valueOf(m.getExps()[i_]));
 				}
 			});
 			f1.add(fx);
@@ -133,8 +139,8 @@ public class Bisection {
 			return EMPTY_RESULT;
 		}
 		// not positive-semidefinite, divide at i_min
-		Rational[] newBounds = bounds;
-		Rational[] newCoords = coords;
+		Rational2[] newBounds = bounds;
+		Rational2[] newCoords = coords;
 		char x = vars.charAt(iMin);
 		if (log.isDebugEnabled()) {
 			StringBuilder sb = new StringBuilder();
@@ -145,11 +151,13 @@ public class Bisection {
 					f0.doubleValue() + ", f_" + vars.charAt(iMin) + " = " + fxMin.doubleValue());
 			// set new bounds for upper and lower half
 			newBounds = bounds.clone();
-			Rational bound = __(HALF, bounds[iMin]);
+			Rational2 bound = f.newZero();
+			bound.addMul(HALF, bounds[iMin]);
 			newBounds[iMin] = bound;
 			// set new coords for upper half
 			newCoords = coords.clone();
-			Rational coord = __(coords[iMin]);
+			Rational2 coord = f.newZero();
+			coord.add(coords[iMin]);
 			coord.add(bound);
 			newCoords[iMin] = coord;
 		}
@@ -158,8 +166,8 @@ public class Bisection {
 		Rational[] result = search1(f.subs(x, subsUpper[iMin]), null, newBounds, newCoords);
 		depth --;
 		if (result.length > 0) {
-			result[iMin] = __(HALF, result[iMin]);
-			result[iMin].add(HALF);
+			result[iMin] = mul(HALF_R, result[iMin]);
+			result[iMin].add(HALF_R);
 			return result;
 		}
 		// search lower half: f.subs(x, x/2)
@@ -167,7 +175,7 @@ public class Bisection {
 		result = search1(f.subs(x, subsLower[iMin]), f0, newBounds, coords);
 		depth --;
 		if (result.length > 0) {
-			result[iMin] = __(HALF, result[iMin]);
+			result[iMin] = mul(HALF_R, result[iMin]);
 		}
 		return result;
 	}
@@ -178,8 +186,8 @@ public class Bisection {
 	 * [x_i, f(x_i)] if negative found, or<br>
 	 * [x_i, null] if unable to prove and x_i is the critical point 
 	 */
-	private Rational[] search0(RationalPoly f) {
-		Rational f0 = f.getOrDefault(m0, _0);
+	private Rational[] search0(Rational2Poly f) {
+		Rational2 f0 = f.getOrDefault(m0, _0);
 		int s = f0.signum();
 		if (s < 0) {
 			return negativeResult(f0);
@@ -230,10 +238,10 @@ public class Bisection {
 		Rational[] shrinks = new Rational[len];
 		for (int i = 0; i < len; i ++) {
 			if (hasVar[i]) {
-				shrinks[i] = _1;
+				shrinks[i] = Rational.valueOf(1);
 				continue;
 			}
-			Rational shrink = _0;
+			Rational shrink = _0_R;
 			for (Rational[] m : monoms) {
 				// exp_i
 				Rational exp = m[i];
@@ -241,13 +249,14 @@ public class Bisection {
 					continue;
 				}
 				// sum(exp_j), j != i
-				Rational exps = __();
+				Rational exps = newZero();
 				for (int j = 0; j < len; j ++) {
 					if (j != i) {
 						exps.add(m[j]);
 					}
 				}
-				Rational gap = __(minDeg_);
+				Rational gap = newZero();
+				gap.add(minDeg_);
 				gap.add(exps.negate());
 				if (gap.signum() <= 0) {
 					continue;
@@ -260,7 +269,7 @@ public class Bisection {
 			shrinks[i] = shrink;
 			// make at least one deg(has x_i) = minDeg and other deg > minDeg
 			for (Rational[] m : monoms) {
-				m[i] = __(m[i], shrink);
+				m[i] = mul(m[i], shrink);
 			}
 		}
 
@@ -284,7 +293,7 @@ public class Bisection {
 			}
 		}
 		// x_i -> x_i**pow_i (A)
-		RationalPoly f1 = new RationalPoly(vars);
+		Rational2Poly f1 = new Rational2Poly(vars);
 		f.forEach((m, c) -> {
 			short[] exps = m.getExps().clone();
 			for (int i = 0; i < len; i ++) {
@@ -296,7 +305,7 @@ public class Bisection {
 			f1.put(new Monom(exps), c);
 		});
 		// final minDeg
-		minDeg_ = __();
+		minDeg_ = newZero();
 		Rational[] minMonom = minMonoms.get(0);
 		for (int i = 0; i < len; i ++) {
 			minDeg_.addMul(minMonom[i], Rational.valueOf(pows[i]));
@@ -316,7 +325,7 @@ public class Bisection {
 					sb.append(vars.charAt(j));
 				}
 			}
-			RationalPoly f2 = new RationalPoly(vars);
+			Rational2Poly f2 = new Rational2Poly(vars);
 			int i_ = i;
 			f1.forEach((m, c) -> {
 				short[] exps2 = m.getExps().clone();
@@ -346,15 +355,15 @@ public class Bisection {
 			Rational xi = result[i];
 			if (xi.signum() == 0) {
 				// there should be negative near 0
-				Arrays.fill(result, 0, len, _0);
+				Arrays.fill(result, 0, len, _0_R);
 				if (result[len] != null) {
-					result[len] = _0;
+					result[len] = _0_R;
 				}
 				return result;
 			}
 			for (int j = 0; j < len; j ++) {
 				if (j != i) {
-					result[j] = __(result[j], xi);
+					result[j] = mul(result[j], xi);
 				}
 			}
 			for (int j = 0; j < minDeg; j ++) {
@@ -371,13 +380,31 @@ public class Bisection {
 				Rational xj = result[j];
 				Rational x = xj;
 				for (int k = 1; k < pow; k ++) {
-					x = __(x, xj);
+					x = mul(x, xj);
 				}
 				result[j] = x;
 			}
 			return result;
 		}
 		return EMPTY_RESULT;
+	}
+
+	private Rational[] search0(RationalPoly f) {
+		BigInteger lcm = BigInteger.ONE;
+		for (Rational c : f.values()) {
+			BigInteger q = c.getQ();
+			lcm = lcm.divide(lcm.gcd(q)).multiply(q);
+		}
+		Rational2Poly f2 = new Rational2Poly(vars);
+		BigInteger lcm_ = lcm;
+		f.forEach((m, c) -> {
+			f2.put(m, new Rational2(c.getP().multiply(lcm_.divide(c.getQ()))));
+		});
+		Rational[] result = search0(f2);
+		if (result.length > 0 && result[len] != null) {
+			result[len] = result[len].div(new Rational(lcm));
+		}
+		return result;
 	}
 
 	/**
@@ -446,13 +473,13 @@ public class Bisection {
 					reeval = true;
 					continue;
 				}
-				result[j] = _1.div(result[j]);
+				result[j] = Rational.valueOf(1).div(result[j]);
 				if (f0 == null || reeval) {
 					continue;
 				}
 				f0 = result[bs.len];
 				for (int k = 0; k < degrees[j]; k ++) {
-					f0 = __(f0, result[j]);
+					f0 = mul(f0, result[j]);
 				}
 				result[bs.len] = f0;
 			}
