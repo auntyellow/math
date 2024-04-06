@@ -85,7 +85,7 @@ public class _4741634 {
 		return new Rational[] {x0.toRational().div(lcm_), x1.toRational().div(lcm_)};
 	}
 
-	// at least 2^-48 for the last interval
+	// at least 2^48 for the last interval
 	private static final BigInteger INTERVAL_DENOMINATOR = BigInteger.valueOf(1L<<62);
 
 	private static Rational2 floor(Rational r0) {
@@ -102,8 +102,8 @@ public class _4741634 {
 		return r1;
 	}
 
-	private static Rational2 cell(Rational r0) {
-		Rational2 r1 = new Rational2(r0.cell(INTERVAL_DENOMINATOR));
+	private static Rational2 ceil(Rational r0) {
+		Rational2 r1 = new Rational2(r0.ceil(INTERVAL_DENOMINATOR));
 		// for debug only
 		/*
 		Rational r10 = r0.negate();
@@ -138,7 +138,7 @@ public class _4741634 {
 			// exists z0' < z0 < z1 < z1' such that z0' and z1''s denominators are not too large
 			// monotonicity of (z0', z1') implies monotonicity of (z0, z1)
 			Rational2 z0 = floor(new Rational(roots[0]));
-			Rational2 z1 = cell(new Rational(roots[1]));
+			Rational2 z1 = ceil(new Rational(roots[1]));
 			System.out.println(z0 + " <= z <= " + z1);
 
 			Rational2 z1_ = new Rational2(BigInteger.ZERO);
@@ -158,9 +158,9 @@ public class _4741634 {
 			System.out.println(Bisection.search01(y_z).length == 0);
 
 			Rational[] x01 = subsInterval(x2, 'z', z0, z1, lcmX[0]);
-			Rational2 x0 = floor(x01[0]), x1 = cell(x01[1]);
+			Rational2 x0 = floor(x01[0]), x1 = ceil(x01[1]);
 			Rational[] y01 = subsInterval(y2, 'z', z0, z1, lcmY[0]);
-			Rational2 y0 = floor(y01[0]), y1 = cell(y01[1]);
+			Rational2 y0 = floor(y01[0]), y1 = ceil(y01[1]);
 			if ((x0.signum() < 0 && x1.signum() < 0) || (y0.signum() < 0 && y1.signum() < 0)) {
 				System.out.println("x or y is negative: x = " + x0.doubleValue() + ", y = " + y0.doubleValue());
 				continue;

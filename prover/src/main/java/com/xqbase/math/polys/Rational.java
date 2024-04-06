@@ -182,20 +182,20 @@ public class Rational extends MutableNumber<Rational> {
 		return new Rational(p.multiply(n1.q).gcd(q.multiply(n1.p)), q.multiply(n1.q));
 	}
 
-	public Rational floor(BigInteger q1) {
-		BigInteger p1 = p.multiply(q1).divide(q);
-		if (p.signum() < 0) {
-			p1 = p1.subtract(_1);
+	public Rational floor(BigInteger denominator) {
+		BigInteger[] pq = p.multiply(denominator).divideAndRemainder(q);
+		if (p.signum() < 0 && pq[1].signum() != 0) {
+			pq[0] = pq[0].subtract(_1);
 		}
-		return new Rational(p1, q1);
+		return new Rational(pq[0], denominator);
 	}
 
-	public Rational cell(BigInteger q1) {
-		BigInteger p1 = p.multiply(q1).divide(q);
-		if (p.signum() > 0) {
-			p1 = p1.add(_1);
+	public Rational ceil(BigInteger denominator) {
+		BigInteger[] pq = p.multiply(denominator).divideAndRemainder(q);
+		if (p.signum() > 0 && pq[1].signum() != 0) {
+			pq[0] = pq[0].add(_1);
 		}
-		return new Rational(p1, q1);
+		return new Rational(pq[0], denominator);
 	}
 
 	/*
