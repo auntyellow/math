@@ -176,9 +176,10 @@ public class Rational extends MutableNumber<Rational> {
 		return new Rational(p.multiply(n1.q), q.multiply(n1.p));
 	}
 
+	/** @see <a href="https://math.stackexchange.com/q/151081">GCD of rationals</a> */
 	@Override
 	public Rational gcd(Rational n1) {
-		return new Rational(p.gcd(n1.p).multiply(q.gcd(n1.q)), q.multiply(n1.q));
+		return new Rational(p.multiply(n1.q).gcd(q.multiply(n1.p)), q.multiply(n1.q));
 	}
 
 	public Rational floor(BigInteger q1) {

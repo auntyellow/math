@@ -176,7 +176,9 @@ public class Rational2 extends MutableNumber<Rational2> {
 
 	@Override
 	public Rational2 gcd(Rational2 n1) {
-		// TODO set same scale
-		return new Rational2(toRational().gcd(n1.toRational()));
+		int scale1 = n1.scale;
+		return scale > scale1 ?
+				new Rational2(p.gcd(n1.p.shiftLeft(scale - scale1)), scale) :
+				new Rational2(p.shiftLeft(scale1 - scale).gcd(n1.p), scale1);
 	}
 }
