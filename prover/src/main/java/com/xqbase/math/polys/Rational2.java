@@ -25,7 +25,7 @@ public class Rational2 extends MutableNumber<Rational2> {
 	private static int scale(BigInteger q) {
 		int lowest = q.getLowestSetBit();
 		if (q.bitLength() > lowest + 1) {
-			throw new ArithmeticException(q + " != 2^n");
+			throw new IllegalArgumentException(q + " != 2^n");
 		}
 		return lowest;
 	}

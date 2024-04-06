@@ -243,10 +243,10 @@ public class Rational extends MutableNumber<Rational> {
 		e.addMul(s, s);
 		e.add(negate());
 		if (e.signum() < 0) {
-			throw new ArithmeticException("Unexpected: (" + s + ")^2 < " + this);
+			throw new RuntimeException("Unexpected: (" + s + ")^2 < " + this);
 		}
 		if (e.div(this).compareTo(SQRT_ERROR) >= 0) {
-			throw new ArithmeticException("Unexpected: ((" + s + ")^2 - "
+			throw new RuntimeException("Unexpected: ((" + s + ")^2 - "
 					+ this + ")/(" + this + ") >= " + SQRT_ERROR);
 		}
 		return s;
