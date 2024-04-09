@@ -1,7 +1,7 @@
 #!/bin/bash
 
 export qe=/usr/local/qepcad
-$qe/bin/qepcad +N100000000 << END
+$qe/bin/qepcad +N1000000000 << END
 [ISBN 9787560349800, p226, ex 9.5]
 (a, b, c)
 0
