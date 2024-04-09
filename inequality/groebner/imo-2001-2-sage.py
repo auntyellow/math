@@ -8,7 +8,7 @@ def main():
     g2 = B**2*(b**2 + 8*a*c) - b**2
     g3 = C**2*(c**2 + 8*a*b) - c**2
     g4 = a + b + c - 3
-    f = A + B + C - 3
+    f = A + B + C - 1
     L = f + l1*g1 + l2*g2 + l3*g3 + l4*g4
     B = R.ideal(g1, g2, g3, g4, diff(L, a), diff(L, b), diff(L, c), diff(L, A), diff(L, B), diff(L, C)).groebner_basis()
     for f in B:
