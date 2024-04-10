@@ -1,0 +1,14 @@
+x2 = 4*a^2/((a + b)*(a + c))
+f5 = x2^4
+n = 1
+m = -7*p/22 - q/2 + 2/11
+g = n*a^2 + m*(b^2 + c^2) + p*(a*b + a*c) + q*b*c
+h = (n + 2*m)*(a^2 + b^2 + c^2) + (2*p + q)*(a*b + a*c + b*c)
+f = f5 - (3*g/h)^5
+U = 100/99
+fabcU = Factor[f /. {c -> a*(U + u)/(1 + u), b -> a*(U + u + v)/(1 + u + v)}]
+Print["fabcU =", fabcU]
+fcbaU = Factor[f /. {a -> c*(U + u)/(1 + u), b -> c*(U + u + v)/(1 + u + v)}]
+Print["fcbaU =", fcbaU]
+fbacU = Factor[f /. {c -> b*(U + u)/(1 + u), a -> b*(U + u + v)/(1 + u + v)}]
+Print["fbacU =", fbacU]
