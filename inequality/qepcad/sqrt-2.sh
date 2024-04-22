@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export qe=/usr/local/qepcad
 $qe/bin/qepcad +N100000000 << END
 [sum_cyc(sqrt(a/b)) >= 3]
 (a, b, c, a1, b1, c1)

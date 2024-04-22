@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export qe=/usr/local/qepcad
 $qe/bin/qepcad +N100000000 << END
 [sqrt(a/b) + sqrt(a/b) >= 2]
 (a, b, a1, b1)

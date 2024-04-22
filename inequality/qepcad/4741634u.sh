@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export qe=/usr/local/qepcad
 $qe/bin/qepcad +N100000000 << END
 [https://math.stackexchange.com/q/4741634]
 (x, y, z)

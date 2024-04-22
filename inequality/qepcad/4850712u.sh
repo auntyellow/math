@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # G (all_but_finitely_many) gets correct result?
-export qe=/usr/local/qepcad
 $qe/bin/qepcad +N100000000 << END
 [https://math.stackexchange.com/q/4850712]
 (k, x, y)

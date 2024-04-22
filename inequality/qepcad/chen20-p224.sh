@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # b <= 0 doesn't work: a = 0 /\ b = 0 causes degenerate
-export qe=/usr/local/qepcad
 $qe/bin/qepcad +N100000000 << END
 [ISBN 9787030655189, p224, ex 8.5.3]
 (r, a, b, c, d)

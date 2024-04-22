@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export qe=/usr/local/qepcad
 $qe/bin/qepcad << END
 [https://math.stackexchange.com/q/4850712 m, n = 63, 164]
 (x, y)
