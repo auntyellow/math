@@ -213,7 +213,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	}
 
 	/** like sympy.polys.polytools.poly(expr, *gens) */
-	public TreeMap<Monom, P> coeffsOf(String gen) {
+	public TreeMap<Monom, P> collect(String gen) {
 		int genLen = gen.length();
 		int[] iExp = new int[genLen];
 		for (int i = 0; i < genLen; i ++) {
@@ -312,7 +312,7 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		if (isEmpty()) {
 			return unchecked(this);
 		}
-		TreeMap<Monom, P> ai = coeffsOf(String.valueOf(from));
+		TreeMap<Monom, P> ai = collect(String.valueOf(from));
 		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
 		Map.Entry<Monom, P> lt = ai.firstEntry();
 		Monom lm = lt.getKey();

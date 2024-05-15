@@ -47,7 +47,7 @@ public class _4741634 {
 	}
 
 	private static RationalPoly solve(RationalPoly f, String var) {
-		TreeMap<Monom, RationalPoly> poly = f.coeffsOf(var);
+		TreeMap<Monom, RationalPoly> poly = f.collect(var);
 		RationalPoly a1 = poly.remove(new Monom(VARS, var));
 		RationalPoly a0 = poly.remove(CONSTANT);
 		if (!poly.isEmpty()) {

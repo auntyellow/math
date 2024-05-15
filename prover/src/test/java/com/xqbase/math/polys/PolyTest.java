@@ -120,7 +120,7 @@ public class PolyTest {
 		StringBuilder sb = new StringBuilder();
 		LongPoly f = new LongPoly(VARS_PQUV, K2);
 		LongPoly e = new LongPoly(VARS_PQUV);
-		f.coeffsOf("uv").forEach((mono, coeff) -> {
+		f.collect("uv").forEach((mono, coeff) -> {
 			sb.append("(" + coeff + ")*" + mono.toString(VARS_PQUV) + " + ");
 			e.add(coeff);
 		});

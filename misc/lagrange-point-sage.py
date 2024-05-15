@@ -10,7 +10,6 @@ def main():
     f1 = -R**3*r*u**3 + R**3*r*v**3 + R**3*v**3*x - 2*R**2*r**2*u**3 + 2*R**2*r**2*v**3 + R**2*r*u**3*x + 2*R**2*r*v**3*x - R*r**3*u**3 + R*r**3*v**3 + 2*R*r**2*u**3*x + R*r**2*v**3*x + r**3*u**3*x - u**3*v**3*x
     f3 = r**2 + 2*r*x - u**2 + x**2
     f4 = R**2 - 2*R*x - v**2 + x**2
-    '''
     B = PR.ideal(f1, f3, f4).groebner_basis()
     with proof.WithProof('polynomial', False):
         for f in B:
@@ -20,7 +19,6 @@ def main():
     # -x + R and x + r are singularities
     # x**2 + (-R + r)*x + R**2 + R*r + r**2 has no real solution
     print()
-    '''
     R, r = 1 - 3e-6, 3e-6
     x = QQ['x'].gen()
     # doesn't seem like Lagrange points
