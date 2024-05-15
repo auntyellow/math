@@ -45,6 +45,13 @@ def main():
     print('R(x5) =', R)
     R = prem(R, h1, x4)
     print('R(x4) =', R)
+    print()
+
+    # much simpler than x1..x10
+    G = groebner([h1, h2, h3, h4, h5, h6, h7], x10, x9, x8, x7, x6, x5, x4, x3, x2, x1)
+    print(G, len(G))
+    # TODO why != 0?
+    print(G.reduce(g))
 
 if __name__ == '__main__':
     main()
