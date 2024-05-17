@@ -16,7 +16,7 @@ def main():
     D, E, F = (b/2, c/2), (-a/2, c/2), ((b - a)/2, 0)
     A1, B1, C1 = (b/2 + k*c, c/2 + k*b), (-a/2 - k*c, c/2 + k*a), ((b - a)/2, -k*(a + b))
     AA1, BB1, CC1 = line(A, A1), line(B, B1), line(C, C1)
-    print('Are AA\', BB\' and CC\' concurrent?', concurrency(AA1, BB1, CC1))
+    print('Are AA\', BB\' and CC\' concurrent?', concurrency(AA1, BB1, CC1) == 0)
 
 if __name__ == '__main__':
     main()
