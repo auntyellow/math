@@ -19,26 +19,25 @@ def perpendicular(P1, P2, P3, P4):
 
 def main():
     # https://en.wikipedia.org/wiki/Simson_line converse
-    xc, yc, xd, yd, xe, ye, xf, yf, xp, yp = symbols('xc, yc, xd, yd, xe, ye, xf, yf, xp, yp')
-    A, B, C, P, F, E, D = (0, 0), (0, 1), (xc, yc), (xp, yp), (xf, yf), (xe, ye), (xd, yd)
-    h1 = det(collinear, A, B, F)
-    h2 = perpendicular(A, B, F, P)
-    h3 = det(collinear, C, A, E)
-    h4 = perpendicular(C, A, E, P)
-    h5 = det(collinear, B, C, D)
-    h6 = perpendicular(B, C, D, P)
-    h7 = det(collinear, D, E, F)
+    xc, yc, xd, yd, xe, ye, xp, yp = symbols('xc, yc, xd, yd, xe, ye, xp, yp')
+    A, B, C, D, E, F, P = (0, 0), (1, 0), (xc, yc), (xd, yd), (xe, ye), (xp, 0), (xp, yp)
+    h1 = det(collinear, C, A, E)
+    h2 = perpendicular(C, A, E, P)
+    h3 = det(collinear, B, C, D)
+    h4 = perpendicular(B, C, D, P)
+    h5 = det(collinear, D, E, F)
     g = det(concyclic, A, B, C, P)
-    # eliminate xf, yf, xe, ye, xd, yd
-    # get xc(yp), yc(yp), xp(yp) 
-    G = groebner([h1, h2, h3, h4, h5, h6, h7], xd, yd, xe ,ye, xf, yf, xp)
+
+    # ISBN 9787040316988, p297, theorem 6.1.4, xc and yc are free variables
+    G = groebner([h1, h2, h3, h4, h5], xd, yd, xe, ye, xp, yp)
     print(G, len(G))
-    h8 = G[len(G) - 1]
-    print('g =', Poly(g, xp))
-    print('h8 =', Poly(h8, xp))
-    R = prem(g, h8, xp)
-    print('R(xp) =', R)
-    print('Is g == h8?', expand(g) == expand(h8))
+    print(G.reduce(g))
+    print()
+
+    # theorem 6.1.5
+    z = symbols('z')
+    G = groebner([h1, h2, h3, h4, h5, 1 - z*g], xd, yd, xe, ye, xp, yp, z)
+    print(G)
 
 if __name__ == '__main__':
     main()

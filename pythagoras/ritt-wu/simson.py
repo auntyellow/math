@@ -55,11 +55,16 @@ def main():
     print('R(x4) =', R)
     print()
 
-    # much simpler than x1..x8
-    G = groebner([h1, h2, h3, h4, h5], x8, x7, x6, x5, x4, x3, x2, x1)
+    # ISBN 9787040316988, p297, theorem 6.1.4, x1 and x2 are free variables
+    G = groebner([h1, h2, h3, h4, h5], x3, x4, x5, x6, x7, x8)
     print(G, len(G))
-    # TODO why != 0?
     print(G.reduce(g))
+    print()
+
+    # theorem 6.1.5
+    z = symbols('z')
+    G = groebner([h1, h2, h3, h4, h5, 1 - z*g], x3, x4, x5, x6, x7, x8, z)
+    print(G)
 
 if __name__ == '__main__':
     main()
