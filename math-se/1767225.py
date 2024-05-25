@@ -37,6 +37,23 @@ def main():
     T = det(C1 + t*C2)
     print('T =', poly(T, t).expr)
     # TODO solve t and factor T
+    print()
+
+    # intersections can be imaginary
+    C1 = Matrix([[1, 0, 2], [0, 1, 0], [2, 0, 3]])
+    C2 = Matrix([[1, 0, -2], [0, 1, 0], [-2, 0, 3]])
+    X = Matrix([[x, y, 1]])
+    F1, F2 = expand((X*C1*X.transpose())[0, 0]), expand((X*C2*X.transpose())[0, 0])
+    print('F1 =', F1)
+    print('F2 =', F2)
+    t = symbols('t')
+    T = det(C1 + t*C2)
+    print('T =', poly(T, t).expr)
+    t0 = solve(poly(T, t).expr)
+    print('t =', t0)
+    for ti in t0:
+        F12 = F1 + ti*F2
+        print('F12 =', F12, ', intersections =', solve([F12, F1]))
 
 if __name__ == '__main__':
     main()
