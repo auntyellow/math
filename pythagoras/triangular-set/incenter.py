@@ -29,8 +29,8 @@ def vars(expr):
     return sorted(expr.free_symbols, key = lambda s: s.name)
 
 def main():
-    var('x1:11')
-    A, B, C, D, E, F, G = (0, 0), (1, 0), (x1, x2), (x3, x4), (x5, x6), (x7, x8), (x9, x10)
+    u1, u2, u3, u4, u5, x1, x2, x3, x4, x5 = symbols('u1, u2, u3, u4, u5, x1, x2, x3, x4, x5')
+    A, B, C, D, E, F, G = (0, 0), (1, 0), (u1, u2), (u3, x1), (u4, x2), (u5, x3), (x4, x5)
     h1 = bisect(D, A, B, C)
     h2 = bisect(E, B, C, A)
     h3 = bisect(F, C, A, B)
@@ -38,54 +38,54 @@ def main():
     h5 = det(collinear, B, E, G)
     g = det(collinear, C, F, G)
     print('h1 =', factor(h1))
-    h1 = 2*x1*x3*x4 - x2*x3**2 + x2*x4**2
+    # h1 = 2*u1*u3*x1 - u2*u3**2 + u2*x1**2
     print('h1 =', h1)
-    x40 = solve(h1, x4)
-    print('x4 =', x40)
-    h11, h12 = factor(x40[0] - x4), factor(x40[1] - x4)
+    x10 = solve(h1, x1)
+    print('x1 =', x10)
+    h11, h12 = factor(x10[0] - x1), factor(x10[1] - x1)
     print('h1 =', h11*h12, '=', factor(expand(h11*h12)))
     # hardly work due to difficult to decide whether h11 or h12 should be used
     print()
 
-    A, B, G, C = (0, 0), (1, 0), (x1, x2), (x3, x4)
+    A, B, G, C = (0, 0), (1, 0), (u1, u2), (x1, x2)
     h1 = bisect(G, A, B, C)
     h2 = bisect(G, B, A, C)
     g = bisect(G, C, A, B)
     print('h1 =', factor(h1))
     print('h2 =', factor(h2))
-    print('h3 =', factor(g))
-    h1 = x1**2*x4 - 2*x1*x2*x3 - x2**2*x4
-    h2 = x1**2*x4 - 2*x1*x2*x3 + 2*x1*x2 - 2*x1*x4 - x2**2*x4 + 2*x2*x3 - 2*x2 + x4
-    g = 2*x1**2*x3*x4 - x1**2*x4 - 2*x1*x2*x3**2 + 2*x1*x2*x3 + 2*x1*x2*x4**2 - 2*x1*x3**2*x4 - 2*x1*x4**3 - 2*x2**2*x3*x4 + x2**2*x4 + 2*x2*x3**3 - 2*x2*x3**2 + 2*x2*x3*x4**2 - 2*x2*x4**2 + x3**2*x4 + x4**3
+    print('g =', factor(g))
+    h1 = -u1**2*x2 + 2*u1*u2*x1 + u2**2*x2
+    h2 = -u1**2*x2 + 2*u1*u2*x1 - 2*u1*u2 + 2*u1*x2 + u2**2*x2 - 2*u2*x1 + 2*u2 - x2
+    g = 2*u1**2*x1*x2 - u1**2*x2 - 2*u1*u2*x1**2 + 2*u1*u2*x1 + 2*u1*u2*x2**2 - 2*u1*x1**2*x2 - 2*u1*x2**3 - 2*u2**2*x1*x2 + u2**2*x2 + 2*u2*x1**3 - 2*u2*x1**2 + 2*u2*x1*x2**2 - 2*u2*x2**2 + x1**2*x2 + x2**3
     print('h1 =', h1, vars(h1))
     print('h2 =', h2, vars(h2))
     print('g =', g)
     print()
 
-    # method 1: solve x3 and x4 directly
-    s = solve([h1, h2], x3, x4)
-    print('x3, x4 =', s)
+    # method 1: solve x1 and x2 directly
+    s = solve([h1, h2], x1, x2)
+    print('x1, x2 =', s)
     print('g =', cancel(g.subs(s)))
     print()
 
     # method 2: triangular set
-    h1a = prem(h2, h1, x4) # eliminate x4, resultant(h2, h1, x4) also works
+    h1a = prem(h2, h1, x2) # eliminate x2, resultant(h2, h1, x2) also works
     print('h1a =', h1a, vars(h1a))
-    R = prem(g, h2, x4)
-    print('R(x4) =', R, vars(R))
-    R = prem(R, h1a, x3)
-    print('R(x3) =', R)
+    R = prem(g, h2, x2)
+    print('R(x2) =', R, vars(R))
+    R = prem(R, h1a, x1)
+    print('R(x1) =', R)
     print()
 
-    # method 3: ISBN 9787040316988, p297, theorem 6.1.4, x1 and x2 are free variables
-    G = groebner([h1, h2], x3, x4)
+    # method 3: ISBN 9787040316988, p297, theorem 6.1.4
+    G = groebner([h1, h2], x1, x2)
     print(G, len(G))
     print(G.reduce(g))
     print()
 
     # method 4: theorem 6.1.5
     z = symbols('z')
-    G = groebner([h1, h2, 1 - z*g], x3, x4, z)
+    G = groebner([h1, h2, 1 - z*g], x1, x2, z)
     print(G)
 
 if __name__ == '__main__':

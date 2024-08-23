@@ -17,8 +17,8 @@ def vars(expr):
     return sorted(expr.free_symbols, key = lambda s: s.name)
 
 def main():
-    var('x1:8')
-    A, B, C, F, E, D, H = (0, 0), (1, 0), (x1, x2), (x1, 0), (x3, x4), (x5, x6), (x1, x7)
+    u1, u2, u3, u4, x1, x2, x3 = symbols('u1, u2, u3, u4, x1, x2, x3')
+    A, B, C, F, E, D, H = (0, 0), (1, 0), (u1, u2), (u1, 0), (u3, x1), (u4, x2), (u1, x3)
     # collinearities of ACE and BCD are not necessary
     # h0 = det(collinear, C, A, E)
     # h0 = det(collinear, B, C, D)
@@ -28,33 +28,28 @@ def main():
     g = det(collinear, B, E, H)
 
     print('h3 =', h3, vars(h3))
-    # h3a = prem(h4, h3, x6) # eliminate x6, resultant(h4, h3, x6) also works
-    # print('h3a =', h3a, vars(h3a))
     print('h2 =', h2, vars(h2))
     print('h1 =', h1, vars(h1))
-    # h1a = prem(h2, h1, x4) # eliminate x4, resultant(h2, h1, x4) also works
-    # print('h1a =', h1a, vars(h1a))
     print('g =', g, vars(g))
     print()
 
-    R = prem(g, h3, x7)
-    print('R(x7) =', R, vars(R))
-    R = prem(R, h2, x6)
-    print('R(x6) =', factor(R), vars(R))
-    # prem about x5 doesn't prove
-    R = prem(R, h1, x4)
-    print('R(x4) =', R)
+    R = prem(g, h3, x3)
+    print('R(x3) =', R, vars(R))
+    R = prem(R, h2, x2)
+    print('R(x2) =', R, vars(R))
+    R = prem(R, h1, x1)
+    print('R(x1) =', R)
     print()
 
-    # ISBN 9787040316988, p297, theorem 6.1.4, x1, x2, x3 and x5 are free variables
-    G = groebner([h1, h2, h3], x4, x6, x7)
+    # ISBN 9787040316988, p297, theorem 6.1.4
+    G = groebner([h1, h2, h3], x1, x2, x3)
     print(G, len(G))
     print(G.reduce(g))
     print()
 
     # theorem 6.1.5
     z = symbols('z')
-    G = groebner([h1, h2, h3, 1 - z*g], x4, x6, x7, z)
+    G = groebner([h1, h2, h3, 1 - z*g], x1, x2, x3, z)
     print(G)
 
 if __name__ == '__main__':
