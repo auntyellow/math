@@ -68,7 +68,7 @@ def main():
     print('g =', cancel(g.subs(s)))
     print()
 
-    # method 2: triangular set
+    # method 2: Wu's method
     h1a = prem(h2, h1, x2) # eliminate x2, resultant(h2, h1, x2) also works
     print('h1a =', h1a, vars(h1a))
     R = prem(g, h2, x2)

@@ -33,6 +33,7 @@ def main():
     print('g =', g, vars(g))
     print()
 
+    # Wu's method
     R = prem(g, h3, x3)
     print('R(x3) =', R, vars(R))
     R = prem(R, h2, x2)
