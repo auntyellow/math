@@ -29,21 +29,10 @@ def main():
     g = S - S0
     print('h1 =', h1)
     print('h2 =', h2)
-    h1a = prem(h2, h1, e)
-    print('h1a =', h1a)
-    R = prem(g, h2, e)
-    print('R(e) =', R)
-    R = prem(R, h1a, d)
-    print('R(d) =', factor(R))
-    print()
-    h3 = resultant(h1, h2, d) # e
-    print('h3 =', factor(h3))
-    h4 = resultant(h1, g, d) # e
-    print('h4 =', factor(h4))
-    h4 = 2*S - c*e
-    R = resultant(h3, h4, e)
-    print('R =', factor(R))
-    print()
+    h1a = resultant(h2, h1, d) # eliminate d
+    # prem(g, h1a, e) doesn't work; resultant(h1a, g, e) works
+    R = prem(h1a, g, e)
+    print('R(e) =', factor(R), '= 0')
     S2_16 = a**4 - 2*a**2*b**2 - 2*a**2*c**2 + b**4 - 2*b**2*c**2 + c**4
     print('16*S**2 =', factor(S2_16))
 

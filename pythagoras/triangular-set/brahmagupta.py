@@ -16,14 +16,17 @@ def det(row_def, *points):
 def dist2(P1, P2):
     return (P1[0] - P2[0])**2 + (P1[1] - P2[1])**2
 
+def vars(expr):
+    return sorted(expr.free_symbols, key = lambda s: s.name)
+
 def main():
     # https://en.wikipedia.org/wiki/Brahmagupta%27s_formula
     a, b, c, d, x1, x2, x3, x4, S = symbols('a, b, c, d, x1, x2, x3, x4, S')
     A, B, C, D = (0, 0), (a, 0), (x1, x2), (x3, x4)
-    BC = dist2(B, C) - b**2
-    CD = dist2(C, D) - c**2
-    DA = dist2(D, A) - d**2
-    concyc = det(concyclic, A, B, C, D)
+    h1 = dist2(B, C) - b**2
+    h2 = dist2(C, D) - c**2
+    h3 = dist2(D, A) - d**2
+    h4 = det(concyclic, A, B, C, D)
     S0 = (det(collinear, A, B, C) + det(collinear, A, C, D))/2
     # too slow, try brahmagupta-sage.py
     # B = groebner([BC, CD, DA, concyc], x1, x2, x3, x4)
@@ -33,17 +36,31 @@ def main():
         -a**4*d**2 + 2*a**2*b**2*d**2 + 2*a**2*c**2*d**2 - 6*a**2*d**4 - b**4*d**2 + 2*b**2*c**2*d**2 + 2*b**2*d**4 - c**4*d**2 + 2*c**2*d**4 - d**6 + x3*(4*a**3*d**2 - 4*a*b**2*d**2 - 4*a*c**2*d**2 + 4*a*d**4) + x4**2*(4*a**2*d**2 - 4*b**2*c**2),
         a**8*d**4 - 4*a**6*b**2*d**4 - 4*a**6*c**2*d**4 - 4*a**6*d**6 + 6*a**4*b**4*d**4 + 4*a**4*b**2*c**2*d**4 + 4*a**4*b**2*d**6 + 6*a**4*c**4*d**4 + 4*a**4*c**2*d**6 + 6*a**4*d**8 - 4*a**2*b**6*d**4 + 4*a**2*b**4*c**2*d**4 + 4*a**2*b**4*d**6 + 4*a**2*b**2*c**4*d**4 - 40*a**2*b**2*c**2*d**6 + 4*a**2*b**2*d**8 - 4*a**2*c**6*d**4 + 4*a**2*c**4*d**6 + 4*a**2*c**2*d**8 - 4*a**2*d**10 + b**8*d**4 - 4*b**6*c**2*d**4 - 4*b**6*d**6 + 6*b**4*c**4*d**4 + 4*b**4*c**2*d**6 + 6*b**4*d**8 - 4*b**2*c**6*d**4 + 4*b**2*c**4*d**6 + 4*b**2*c**2*d**8 - 4*b**2*d**10 + c**8*d**4 - 4*c**6*d**6 + 6*c**4*d**8 - 4*c**2*d**10 + d**12 + x4**4*(16*a**4*d**4 - 32*a**2*b**2*c**2*d**2 + 16*b**4*c**4) + x4**2*(8*a**6*d**4 + 8*a**4*b**2*c**2*d**2 - 16*a**4*b**2*d**4 - 16*a**4*c**2*d**4 - 16*a**4*d**6 - 16*a**2*b**4*c**2*d**2 + 8*a**2*b**4*d**4 - 16*a**2*b**2*c**4*d**2 + 96*a**2*b**2*c**2*d**4 - 16*a**2*b**2*d**6 + 8*a**2*c**4*d**4 - 16*a**2*c**2*d**6 + 8*a**2*d**8 + 8*b**6*c**2*d**2 - 16*b**4*c**4*d**2 - 16*b**4*c**2*d**4 + 8*b**2*c**6*d**2 - 16*b**2*c**4*d**4 + 8*b**2*c**2*d**6),
     ]
-    # prem doesn't seem to work
     '''
+    # wu's method doesn't seem to work?
     g = S - S0
-    R = prem(g, B[0], x1)
-    print('R(x1) =', R)
-    R = prem(R, B[1], x2)
-    print('R(x2) =', R)
-    R = prem(R, B[2], x3)
-    print('R(x3) =', R)
-    R = prem(R, B[3], x4)
-    print('R(x4) =', R, '=', Poly(R, x4))
+    x_i = [x1, x2, x3, x4]
+    print('h4 =', poly(h4, x_i).expr, vars(h4))
+    print('h3 =', poly(h3, x_i).expr, vars(h3))
+    h3a = resultant(h4, h3, x4) # eliminate x4, prem doesn't work
+    print('h3a =', poly(h3a, x_i).expr, vars(h3a))
+    print('h2 =', poly(h2, x_i).expr, vars(h2))
+    h2b = resultant(h3, h2, x4) # eliminate x4, prem doesn't work
+    print('h2b =', poly(h2b, x_i).expr, vars(h2b))
+    h2a = resultant(h3a, h2b, x3) # eliminate x3, prem doesn't work
+    print('h2a =', poly(h2a, x_i).expr, vars(h2a))
+    print('h1 =', poly(h1, x_i).expr, vars(h1))
+    h1a = prem(h2a, h1, x2) # eliminate x2, prem(h1, h2a, x2) doesn't work
+    print('h1a =', poly(h1a, x_i).expr, vars(h1a))
+    print('g =', poly(g, x_i).expr, vars(g))
+    print()
+
+    R = prem(h4, g, x4) # eliminate x4, prem(g, h4, x4) doesn't work
+    print('R(x4) =', poly(R, x_i).expr, vars(R))
+    R = resultant(R, h3a, x3) # eliminate x3, prem doesn't work
+    print('R(x3) =', poly(R, x_i).expr, vars(R))
+    R = resultant(R, h2a, x2) # eliminate x2, too slow, prem doesn't work
+    print('R(x2) =', poly(R, x_i).expr, vars(R))
     '''
     for x40 in solve(B[3], x4):
         x10 = solve(B[0].subs(x4, x40), x1)[0]
