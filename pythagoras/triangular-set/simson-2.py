@@ -50,7 +50,7 @@ def main():
     h1a = prem(h2a, h1b, x2) # eliminate x2
     print('h1a =', poly(h1a, x_i).expr, vars(h1a))
     print('g =', poly(g, x_i).expr, vars(g))
-    # Wu's method
+    # Wu's method, strict?
     # prem(g, h1a, x1) doesn't work; resultant(h1a, g, x1) works
     R = prem(h1a, g, x1)
     # there are degenerated conditions that g != 0
