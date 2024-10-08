@@ -1,4 +1,4 @@
-package a.c.e;
+package com.b.e;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +24,6 @@ public class a extends c {
 	}
 
 	public void c(String reportFormat) {
-		log.info(CLASS + ".setReportFormat({})", "" + reportFormat);
+		log.info(CLASS + ".setReportFormat(\"{}\")", "" + reportFormat);
 	}
 }

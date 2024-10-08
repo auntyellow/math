@@ -1,11 +1,11 @@
-package a.c.a;
+package com.b.a;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import a.c.e.b;
-import a.c.e.c;
-import a.c.e.d;
+import com.b.e.b;
+import com.b.e.c;
+import com.b.e.d;
 
 public class a {
 	private static final String CLASS = "com.ogprover.api.GeoGebraOGPInterface";

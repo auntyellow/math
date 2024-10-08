@@ -1,3 +1,3 @@
-package a.c.c;
+package com.b.c;
 
 public class a {/**/}

@@ -1,3 +1,3 @@
-package a.c.e;
+package com.b.e;
 
 public abstract class d {/**/}
