@@ -27,7 +27,7 @@ public class MutableBig extends MutableNumber<MutableBig> {
 		this.n = n;
 	}
 
-	public MutableBig(String s) {
+	public MutableBig(String s) throws NumberFormatException {
 		this(new BigInteger(s));
 	}
 

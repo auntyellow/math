@@ -2,6 +2,8 @@ package com.xqbase.math.inequality;
 
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 import java.util.TreeMap;
 import java.util.logging.Handler;
@@ -15,7 +17,8 @@ import com.xqbase.math.polys.Rational2Poly;
 import com.xqbase.math.polys.RationalPoly;
 
 public class _4741634 {
-	private static final String VARS = "xyz";
+	private static final List<String> VARS = Arrays.asList("x", "y", "z");
+	private static final int VAR_Z = VARS.indexOf("z");
 	private static final Rational _1 = Rational.valueOf(1);
 	// results from 4741634-sage.py, 15 positive real_roots excluding z = 1
 	private static final String[][] ROOTS = {
@@ -53,7 +56,7 @@ public class _4741634 {
 		if (!poly.isEmpty()) {
 			throw new RuntimeException("Should be empty: " + poly);
 		}
-		Rational denominator = a1.remove(new Monom(VARS, "")).negate();
+		Rational denominator = a1.remove(CONSTANT).negate();
 		if (!a1.isEmpty()) {
 			throw new RuntimeException("Should be empty: " + a1);
 		}
@@ -64,8 +67,8 @@ public class _4741634 {
 		return ret;
 	}
 
-	private static Rational2 subs(Rational2Poly f, char from, Rational2 to) {
-		Rational2Poly poly = f.subs(from, to);
+	private static Rational2 subs(Rational2Poly f, int fromVar, Rational2 to) {
+		Rational2Poly poly = f.subs(fromVar, to);
 		Rational2 ret = poly.remove(CONSTANT);
 		if (!poly.isEmpty()) {
 			throw new RuntimeException("Should be empty: " + poly);
@@ -73,7 +76,7 @@ public class _4741634 {
 		return ret;
 	}
 
-	private static Rational[] subsInterval(Rational2Poly f, char var, Rational2 to0, Rational2 to1, BigInteger lcm) {
+	private static Rational[] subsInterval(Rational2Poly f, int var, Rational2 to0, Rational2 to1, BigInteger lcm) {
 		Rational2 x0 = subs(f, var, to0);
 		Rational2 x1 = subs(f, var, to1);
 		if (x0.compareTo(x1) > 0) {
@@ -131,8 +134,8 @@ public class _4741634 {
 		BigInteger[] lcmY = {null};
 		Rational2Poly x2 = Rational2Poly.fromRationalPoly(x, lcmX);
 		Rational2Poly y2 = Rational2Poly.fromRationalPoly(y, lcmY);
-		System.out.println("x(z = 1) = " + x.subs('z', _1));
-		System.out.println("y(z = 1) = " + y.subs('z', _1));
+		System.out.println("x(z = 1) = " + x.subs(VAR_Z, _1));
+		System.out.println("y(z = 1) = " + y.subs(VAR_Z, _1));
 		for (int i = 0; i < ROOTS.length; i ++) {
 			String[] roots = ROOTS[i];
 			// exists z0' < z0 < z1 < z1' such that z0' and z1''s denominators are not too large
@@ -144,22 +147,22 @@ public class _4741634 {
 			Rational2 z1_ = new Rational2(BigInteger.ZERO);
 			z1_.add(z1);
 			z1_.add(z0.negate());
-			Rational2Poly x_z = x2.subs('z', new Rational2Poly(VARS, z1_ + "*z + " + z0)).diff('z');
+			Rational2Poly x_z = x2.subs(VAR_Z, new Rational2Poly(VARS, z1_ + "*z + " + z0)).diff(VAR_Z);
 			if (x_z.get(CONSTANT).signum() < 0) {
-				x_z = new Rational2Poly(VARS, "").add(-1, x_z);
+				x_z = new Rational2Poly(VARS).add(-1, x_z);
 			}
 			System.out.print("prove x is monotonic: ");
 			System.out.println(Bisection.search01(x_z).length == 0);
-			Rational2Poly y_z = y2.subs('z', new Rational2Poly(VARS, z1_ + "*z + " + z0)).diff('z');
+			Rational2Poly y_z = y2.subs(VAR_Z, new Rational2Poly(VARS, z1_ + "*z + " + z0)).diff(VAR_Z);
 			if (y_z.get(CONSTANT).signum() < 0) {
-				y_z = new Rational2Poly(VARS, "").add(-1, y_z);
+				y_z = new Rational2Poly(VARS).add(-1, y_z);
 			}
 			System.out.print("prove y is monotonic: ");
 			System.out.println(Bisection.search01(y_z).length == 0);
 
-			Rational[] x01 = subsInterval(x2, 'z', z0, z1, lcmX[0]);
+			Rational[] x01 = subsInterval(x2, VAR_Z, z0, z1, lcmX[0]);
 			Rational2 x0 = floor(x01[0]), x1 = ceil(x01[1]);
-			Rational[] y01 = subsInterval(y2, 'z', z0, z1, lcmY[0]);
+			Rational[] y01 = subsInterval(y2, VAR_Z, z0, z1, lcmY[0]);
 			Rational2 y0 = floor(y01[0]), y1 = ceil(y01[1]);
 			if ((x0.signum() < 0 && x1.signum() < 0) || (y0.signum() < 0 && y1.signum() < 0)) {
 				System.out.println("x or y is negative: x = " + x0.doubleValue() + ", y = " + y0.doubleValue());
@@ -173,9 +176,9 @@ public class _4741634 {
 			y1.add(y0.negate());
 			z1.add(z0.negate());
 			Rational2Poly f1 = f.
-					subs('x', new Rational2Poly(VARS, x1 + "*x + " + x0)).
-					subs('y', new Rational2Poly(VARS, y1 + "*y + " + y0)).
-					subs('z', new Rational2Poly(VARS, z1 + "*z + " + z0));
+					subs(0, new Rational2Poly(VARS, x1 + "*x + " + x0)).
+					subs(1, new Rational2Poly(VARS, y1 + "*y + " + y0)).
+					subs(2, new Rational2Poly(VARS, z1 + "*z + " + z0));
 			System.out.print("prove positive in (" +
 					x0.doubleValue() + " + " + x1.doubleValue() + ", " +
 					y0.doubleValue() + " + " + y1.doubleValue() + ", " +

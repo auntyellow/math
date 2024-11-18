@@ -10,9 +10,9 @@ public class DumpLattice {
 	/** @param args */
 	public static void main(String[] args) {
 		// dump into sds-lattice.py
-		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("xyz", "-x - y - z"), SDS.Transform.Y_n, SDS.Find.DUMP_LATTICE, 5);
+		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("-x - y - z", "x", "y", "z"), SDS.Transform.Y_n, SDS.Find.DUMP_LATTICE, 5);
 		// dump into sds-lattice-j4.py
-		// SDS.Result<MutableLong> result = SDS.sds(new LongPoly("wxyz", "-w - x - y - z"), SDS.Transform.J_4, SDS.Find.DUMP_LATTICE, 2);
+		// SDS.Result<MutableLong> result = SDS.sds(new LongPoly("-w - x - y - z", "w", "x", "y", "z"), SDS.Transform.J_4, SDS.Find.DUMP_LATTICE, 2);
 		for (Set<Set<List<MutableLong>>> simplices : result.getSimplices()) {
 			for (Set<List<MutableLong>> simplex : simplices) {
 				String s = simplex.toString();
@@ -25,7 +25,7 @@ public class DumpLattice {
 	/** @param args */
 	public static void main3d(String[] args) {
 		// dump into sds-lattice-3d.py
-		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("wxyz", "-w - x - y - z"), SDS.Transform.J_4, SDS.Find.DUMP_LATTICE, 5);
+		SDS.Result<MutableLong> result = SDS.sds(new LongPoly("-w - x - y - z", "w", "x", "y", "z"), SDS.Transform.J_4, SDS.Find.DUMP_LATTICE, 5);
 		for (List<MutableLong> zeroAt : result.getZeroAt()) {
 			System.out.println("    " + zeroAt + ",");
 		}

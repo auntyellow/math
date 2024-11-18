@@ -1,10 +1,12 @@
 package com.xqbase.math.geometry;
 
+import java.util.List;
+
 import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Poly;
 
 public class Point {
-	private static LongPoly __(String vars) {
+	private static LongPoly __(List<String> vars) {
 		return new LongPoly(vars);
 	}
 
@@ -40,7 +42,7 @@ public class Point {
 
 	/** reflect this about p */
 	public Point reflect(Point p) {
-		String vars = x.getVars();
+		List<String> vars = x.getVars();
 		return new Point(
 				__(vars).addMul(2, z, p.getX()).subMul(x, p.getZ()),
 				__(vars).addMul(2, z, p.getY()).subMul(y, p.getZ()),
@@ -53,7 +55,7 @@ public class Point {
 	}
 
 	public static Point midpoint(Point p1, Point p2) {
-		String vars = p1.getX().getVars();
+		List<String> vars = p1.getX().getVars();
 		return new Point(
 				__(vars).addMul(p1.getX(), p2.getZ()).addMul(p1.getZ(), p2.getX()),
 				__(vars).addMul(p1.getY(), p2.getZ()).addMul(p1.getZ(), p2.getY()),

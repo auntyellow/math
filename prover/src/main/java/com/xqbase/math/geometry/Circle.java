@@ -1,10 +1,12 @@
 package com.xqbase.math.geometry;
 
+import java.util.List;
+
 import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Poly;
 
 public class Circle {
-	private static LongPoly __(String vars) {
+	private static LongPoly __(List<String> vars) {
 		return new LongPoly(vars);
 	}
 
@@ -54,7 +56,7 @@ public class Circle {
 		LongPoly x = p.getX();
 		LongPoly y = p.getY();
 		LongPoly z = p.getZ();
-		String vars = x.getVars();
+		List<String> vars = x.getVars();
 		return new LongPoly[] {
 			__(vars).addMul(x, x).addMul(y, y),
 			__(vars).addMul(x, z),

@@ -1,14 +1,20 @@
 package com.xqbase.math.polys;
 
+import java.util.List;
+
 public class LongPoly extends Poly<MutableLong, LongPoly> {
 	private static final long serialVersionUID = 1L;
 
-	public LongPoly(String vars) {
+	public LongPoly(List<String> vars) {
 		super(vars);
 	}
 
-	public LongPoly(String vars, String expr) {
+	public LongPoly(List<String> vars, String expr) {
 		super(vars, expr);
+	}
+
+	public LongPoly(String expr, String... vars) {
+		super(expr, vars);
 	}
 
 	@Override
@@ -17,7 +23,7 @@ public class LongPoly extends Poly<MutableLong, LongPoly> {
 	}
 
 	@Override
-	public MutableLong valueOf(String s) {
+	public MutableLong valueOf(String s) throws NumberFormatException {
 		return new MutableLong(s);
 	}
 

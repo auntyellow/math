@@ -78,7 +78,7 @@ public class Rational extends MutableNumber<Rational> {
 		}
 	}
 
-	public Rational(String s) {
+	public Rational(String s) throws NumberFormatException {
 		int slash = s.indexOf('/');
 		if (slash < 0) {
 			p = new BigInteger(s);

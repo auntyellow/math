@@ -36,7 +36,7 @@ public class Bisection {
 		return r;
 	}
 
-	private String vars;
+	private List<String> vars;
 	private int len, depth;
 	/** monopoly for constant term, helps to get f(0, 0, ..., 0) */
 	private Monom m0;
@@ -49,9 +49,9 @@ public class Bisection {
 	/** helps to call {@link #negativeResult(Rational)} */
 	private Rational2[] coords0;
 
-	private Bisection(String vars) {
+	private Bisection(List<String> vars) {
 		this.vars = vars;
-		len = vars.length();
+		len = vars.size();
 		depth = 0;
 		short[] exps0 = new short[len];
 		Arrays.fill(exps0, (short) 0);
@@ -141,14 +141,14 @@ public class Bisection {
 		// not positive-semidefinite, divide at i_min
 		Rational2[] newBounds = bounds;
 		Rational2[] newCoords = coords;
-		char x = vars.charAt(iMin);
+		String x = vars.get(iMin);
 		if (log.isDebugEnabled()) {
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < bounds.length; i ++) {
 				sb.append(coords[i].doubleValue() + "(" + bounds[i].doubleValue() + "), ");
 			}
 			log.debug(indent() + "divide [" + sb.substring(0, sb.length() - 2) + "], f = " +
-					f0.doubleValue() + ", f_" + vars.charAt(iMin) + " = " + fxMin.doubleValue());
+					f0.doubleValue() + ", f_" + vars.get(iMin) + " = " + fxMin.doubleValue());
 			// set new bounds for upper and lower half
 			newBounds = bounds.clone();
 			Rational2 bound = f.newZero();
@@ -322,7 +322,7 @@ public class Bisection {
 			StringBuilder sb = new StringBuilder();
 			for (int j = 0; j < len; j ++) {
 				if (pows[j] > 0) {
-					sb.append(vars.charAt(j));
+					sb.append(vars.get(j));
 				}
 			}
 			Rational2Poly f2 = new Rational2Poly(vars);
@@ -337,12 +337,12 @@ public class Bisection {
 				if (exps2[i_] < minDeg) {
 					throw new AssertionError(m.toString(vars) + " after " +
 							sb + " substitutions can't be divided by " +
-							vars.charAt(i_) + "**" + minDeg + ", f = " + f1);
+							vars.get(i_) + "**" + minDeg + ", f = " + f1);
 				}
 				exps2[i_] -= minDeg;
 				f2.put(new Monom(exps2), c);
 			});
-			log.info(indent() + "search f(" + vars.charAt(i) + " = max(" + sb + ")) = " + f2);
+			log.info(indent() + "search f(" + vars.get(i) + " = max(" + sb + ")) = " + f2);
 			depth ++;
 			// test if max-subs works
 			// Rational[] result = EMPTY_RESULT;
@@ -437,12 +437,11 @@ public class Bisection {
 		int[] degrees = f.degrees();
 		// after each iteration, one var is reciprocated, fs and reciprocals doubled
 		for (int i = 0; i < bs.len; i ++) {
-			char var = bs.vars.charAt(i);
 			RationalPoly[] fs_ = new RationalPoly[fs.size()];
 			fs.toArray(fs_);
 			for (int j = 0; j < fs_.length; j ++) {
 				// x_i -> 1/x_i, f *= x_i**degree_i (*)
-				fs.add(fs_[j].reciprocal(var, degrees[i]));
+				fs.add(fs_[j].reciprocal(i, degrees[i]));
 				boolean[] reciprocal = reciprocals.get(j).clone();
 				reciprocal[i] = true;
 				reciprocals.add(reciprocal);
@@ -489,7 +488,7 @@ public class Bisection {
 			}
 			RationalPoly f1 = f;
 			for (int j = 0; j < bs.len; j ++) {
-				f1 = f1.subs(bs.vars.charAt(j), result[j]);
+				f1 = f1.subs(j, result[j]);
 			}
 			result[bs.len] = f1.remove(bs.m0);
 			if (!f1.isEmpty()) {

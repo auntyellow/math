@@ -1,16 +1,21 @@
 package com.xqbase.math.polys;
 
 import java.math.BigInteger;
+import java.util.List;
 
 public class BigPoly extends Poly<MutableBig, BigPoly> {
 	private static final long serialVersionUID = 1L;
 
-	public BigPoly(String vars) {
+	public BigPoly(List<String> vars) {
 		super(vars);
 	}
 
-	public BigPoly(String vars, String expr) {
+	public BigPoly(List<String> vars, String expr) {
 		super(vars, expr);
+	}
+
+	public BigPoly(String expr, String... vars) {
+		super(expr, vars);
 	}
 
 	@Override
@@ -19,7 +24,7 @@ public class BigPoly extends Poly<MutableBig, BigPoly> {
 	}
 
 	@Override
-	public MutableBig valueOf(String s) {
+	public MutableBig valueOf(String s) throws NumberFormatException {
 		return new MutableBig(s);
 	}
 

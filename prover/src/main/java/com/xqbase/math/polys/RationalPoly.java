@@ -1,16 +1,21 @@
 package com.xqbase.math.polys;
 
 import java.math.BigInteger;
+import java.util.List;
 
 public class RationalPoly extends Poly<Rational, RationalPoly> {
 	private static final long serialVersionUID = 1L;
 
-	public RationalPoly(String vars) {
+	public RationalPoly(List<String> vars) {
 		super(vars);
 	}
 
-	public RationalPoly(String vars, String expr) {
+	public RationalPoly(List<String> vars, String expr) {
 		super(vars, expr);
+	}
+
+	public RationalPoly(String expr, String... vars) {
+		super(expr, vars);
 	}
 
 	@Override
@@ -19,7 +24,7 @@ public class RationalPoly extends Poly<Rational, RationalPoly> {
 	}
 
 	@Override
-	public Rational valueOf(String s) {
+	public Rational valueOf(String s) throws NumberFormatException {
 		return new Rational(s);
 	}
 
