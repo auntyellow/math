@@ -1,23 +1,25 @@
 package com.xqbase.math.inequality;
 
 import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
 
 import com.xqbase.math.polys.BigPoly;
 
 public class Yang08P169 {
-	private static final String VARS = "abcduvw";
+	private static final List<String> VARS = Arrays.asList("a", "b", "c", "d", "u", "v", "w");
 	private static final String SUB_POLY = "-x3**2 - 2*x4*x1 + 6*x1**2 + 6*x2**2 + 4*x2*x1 - x4**2 - 2*x2*x3 - 2*x3*x1 - 2*x4*x2";
 
 	private static BigPoly subsAll(BigPoly p) {
 		/*
-		return p.subs('d', new BigPoly(VARS, "a + u")).
-				subs('c', new BigPoly(VARS, "a + u + v")).
-				subs('b', new BigPoly(VARS, "a + u + v + w"));
+		return p.subs("d", new BigPoly(VARS, "a + u")).
+				subs("c", new BigPoly(VARS, "a + u + v")).
+				subs("b", new BigPoly(VARS, "a + u + v + w"));
 		*/
 		// much faster
-		return p.subs('d', new BigPoly(VARS, "c + w")).
-				subs('c', new BigPoly(VARS, "b + v")).
-				subs('b', new BigPoly(VARS, "a + u"));
+		return p.subs("d", new BigPoly(VARS, "c + w")).
+				subs("c", new BigPoly(VARS, "b + v")).
+				subs("b", new BigPoly(VARS, "a + u"));
 	}
 
 	private static BigPoly pow(String expr, int exp) {

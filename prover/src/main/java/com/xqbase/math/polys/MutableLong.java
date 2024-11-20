@@ -27,7 +27,7 @@ public class MutableLong extends MutableNumber<MutableLong> {
 		this.n = n;
 	}
 
-	public MutableLong(String s) {
+	public MutableLong(String s) throws NumberFormatException {
 		this(Long.parseLong(s));
 	}
 

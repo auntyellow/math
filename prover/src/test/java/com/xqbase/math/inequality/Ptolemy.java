@@ -1,4 +1,4 @@
-package com.xqbase.math.geometry;
+package com.xqbase.math.inequality;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -24,7 +24,7 @@ public class Ptolemy {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(SDS.sds(new BigPoly("bdefu", H1)));
-		System.out.println(SDS.sds(new BigPoly("bdefv", H2).subs('d', new BigPoly("bdefv", "-d"))));
+		System.out.println(SDS.sds(new BigPoly(H1, "b", "d", "e", "f", "u")));
+		System.out.println(SDS.sds(new BigPoly(H2, "b", "d", "e", "f", "v").subs("d", new BigPoly("-d", "b", "d", "e", "f", "v"))));
 	}
 }

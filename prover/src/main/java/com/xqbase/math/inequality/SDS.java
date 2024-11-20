@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,7 +107,7 @@ public class SDS {
 	static class PermSubs<T extends MutableNumber<T>, U extends Poly<T, U>> {
 		int[] perm;
 		U[] subs;
-		String tempVars = null;
+		boolean tempVars = false;
 		boolean reverse = false;
 		int index;
 	}
@@ -257,19 +256,9 @@ public class SDS {
 		return new Monom(exps);
 	}
 
-	private static final String VARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
 	private static <T extends MutableNumber<T>, P extends Poly<T, P>> P[]
-			getSubsPoly(String vars, int[][] mat, P f, Consumer<String> tempVarsSetter) {
-		int len = vars.length();
-		// find first n chars not in vars as tempVars
-		String unusedVars = VARS;
-		for (int i = 0; i < len; i ++) {
-			unusedVars = unusedVars.replace(Character.toString(vars.charAt(i)), "");
-		}
-		String tempVars = vars + unusedVars.substring(0, len);
-		tempVarsSetter.accept(tempVars);
-
+			getSubsPoly(int[][] mat, P f) {
+		int len = mat.length;
 		// build substitution polynomials from transformation matrix
 		P[] subs = unchecked(new Poly[len]);
 		Monom[] monoms = new Monom[len];
@@ -321,8 +310,7 @@ public class SDS {
 		if (deg == 0) {
 			return new Result<>();
 		}
-		String vars = f.getVars();
-		int len = vars.length();
+		int len = f.getVars().size();
 		Monom[] monoms = new Monom[len];
 		for (int i = 0; i < len; i ++) {
 			monoms[i] = getMonom(len, i);
@@ -448,7 +436,8 @@ public class SDS {
 			if (len != 3) {
 				throw new IllegalArgumentException("H_3 only works on 3-var polynomials");
 			}
-			subs = unchecked(new Poly[] {f.newPoly("xyz", "2*x + y + z")});
+			List<String> xyz = Arrays.asList("x", "y", "z");
+			subs = unchecked(new Poly[] {f.newPoly(xyz, "2*x + y + z")});
 			for (int i = 0; i < 3; i ++) {
 				PermSubs<T, P> permSubs = new PermSubs<>();
 				permSubs.perm = new int[] {i, (i + 1)%3, (i + 2)%3};
@@ -468,12 +457,12 @@ public class SDS {
 			// x' = x + y, y' = y + z, z' = x + z
 			// doesn't work for MATRIX_H4 = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}}
 			permSubsH.subs = unchecked(new Poly[] {
-				f.newPoly("xyz", "2*x + y - z"),
-				f.newPoly("xyz", "y + z - x"),
-				f.newPoly("xyz", "z + x"),
+				f.newPoly(xyz, "2*x + y - z"),
+				f.newPoly(xyz, "y + z - x"),
+				f.newPoly(xyz, "z + x"),
 			});
 			// also works for MATRIX_H4 = {{0, 1, 1}, {1, 0, 1}, {1, 1, 0}}
-			// permSubsH.subs = getSubsPoly(f, vars, MATRIX_H4, s -> permSubsH.tempVars = s);
+			// permSubsH.subs = getSubsPoly(MATRIX_H4, f);
 			permSubsH.index = transMat.size();
 			T[][] m = f.newMatrix(3, 3);
 			for (int i = 0; i < 3; i ++) {
@@ -487,20 +476,19 @@ public class SDS {
 			if (len != 4) {
 				throw new IllegalArgumentException("J_4 only works on 4-var polynomials");
 			}
-			String[] tempVars = {null, null};
 			@SuppressWarnings("unchecked")
 			P[][] subsJ = (P[][]) new Poly[][] {
-				{ f.newPoly("xyzw", "2*x + y + z + w") },
+				{ f.newPoly("2*x + y + z + w", "x", "y", "z", "w") },
 				// Unable to substitute by x_i = p1(x_i, y_i, z_i, w), y = p2(x, y, z, w) ...
 				// so use tempVars for J[1]
-				getSubsPoly(vars, MATRIX_J[1], f, s -> tempVars[1] = s),
+				getSubsPoly(MATRIX_J[1], f),
 			};
 			for (int i = 0; i < 2; i ++) {
 				for (int j = 0; j < 4; j ++) {
 					PermSubs<T, P> permSubs = new PermSubs<>();
 					permSubs.perm = new int[] {j, (j + 1)%4, (j + 2)%4, (j + 3)%4};
 					permSubs.subs = subsJ[i];
-					permSubs.tempVars = tempVars[i];
+					permSubs.tempVars = i > 0;
 					permSubs.index = transMat.size();
 					m = f.newMatrix(4, 4);
 					for (int k = 0; k < 4; k ++) {
@@ -598,7 +586,8 @@ public class SDS {
 			for (int i = 0; i < len; i ++) {
 				permSubs.perm[i] = i;
 			}
-			permSubs.subs = getSubsPoly(vars, yMat, f, s -> permSubs.tempVars = s);
+			permSubs.subs = getSubsPoly(yMat, f);
+			permSubs.tempVars = true;
 			permSubs.index = transMat.size();
 			m = f.newMatrix(len, len);
 			for (int i = 0; i < len; i ++) {
@@ -624,30 +613,7 @@ public class SDS {
 				for (PermSubs<T, P> permSubs : permSubsList) {
 					// f1 = f0's permutation and substitution (transformation)
 					P f1 = f.newPoly();
-					if (permSubs.tempVars == null) {
-						for (Map.Entry<Monom, T> term : f0.entrySet()) {
-							short[] exps = term.getKey().getExps();
-							short[] exps1 = new short[len];
-							for (int i = 0; i < len; i ++) {
-								// permute
-								exps1[permSubs.perm[i]] = exps[i];
-								// exps1[i] = exps[permSubs.perm[i]];
-							}
-							f1.put(new Monom(exps1), term.getValue());
-						}
-						if (permSubs.reverse) {
-							// Z_n
-							for (int i = permSubs.subs.length - 1; i >= 0; i --) {
-								f1 = f1.subs(vars.charAt(i), permSubs.subs[i]);
-							}
-						} else {
-							// A_n: x0 += x1, x1 += x2, ... , x_n-2 += x_n-1
-							// T_n: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
-							for (int i = 0; i < permSubs.subs.length; i ++) {
-								f1 = f1.subs(vars.charAt(i), permSubs.subs[i]);
-							}
-						}
-					} else {
+					if (permSubs.tempVars) {
 						int len2 = len*2;
 						// temp poly (2n-vars)
 						P f2 = f.newPoly();
@@ -665,12 +631,35 @@ public class SDS {
 						}
 						// substitute 0..n-1 with n..2n-1
 						for (int i = 0; i < permSubs.subs.length; i ++) {
-							f2 = f2.subs(vars.charAt(i), permSubs.subs[i]);
+							f2 = f2.subs(i, permSubs.subs[i]);
 						}
 						// copy and truncate n..2n-1
 						for (Map.Entry<Monom, T> term : f2.entrySet()) {
 							f1.put(new Monom(Arrays.copyOfRange(term.getKey().getExps(), len, len2)),
 									term.getValue());
+						}
+					} else {
+						for (Map.Entry<Monom, T> term : f0.entrySet()) {
+							short[] exps = term.getKey().getExps();
+							short[] exps1 = new short[len];
+							for (int i = 0; i < len; i ++) {
+								// permute
+								exps1[permSubs.perm[i]] = exps[i];
+								// exps1[i] = exps[permSubs.perm[i]];
+							}
+							f1.put(new Monom(exps1), term.getValue());
+						}
+						if (permSubs.reverse) {
+							// Z_n
+							for (int i = permSubs.subs.length - 1; i >= 0; i --) {
+								f1 = f1.subs(i, permSubs.subs[i]);
+							}
+						} else {
+							// A_n: x0 += x1, x1 += x2, ... , x_n-2 += x_n-1
+							// T_n: x_i = x_i/(i + 1) + x_i+1, x_n-1 = x_i/n
+							for (int i = 0; i < permSubs.subs.length; i ++) {
+								f1 = f1.subs(i, permSubs.subs[i]);
+							}
 						}
 					}
 					List<List<Integer>> transList1 = new ArrayList<>();

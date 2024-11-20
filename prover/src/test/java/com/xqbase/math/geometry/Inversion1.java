@@ -1,5 +1,7 @@
 package com.xqbase.math.geometry;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -8,7 +10,7 @@ import java.util.logging.Logger;
 import com.xqbase.math.polys.LongPoly;
 
 public class Inversion1 {
-	private static final String VARS = "acdefPQRS";
+	private static final List<String> VARS = Arrays.asList("a", "c", "d", "e", "f", "P", "Q", "R", "S");
 
 	// results from inversion-1.py
 	private static final String X_E = "-2*R**2*a**3*c*e**3 - 2*R**2*a**3*c*e*f**2 - 4*R**2*a**2*c**2*e**3 + 4*R**2*a**2*c**2*e*f**2 - 8*R**2*a**2*c*e**3 - 2*R**2*a*c**3*e**3 - 2*R**2*a*c**3*e*f**2 - 8*R**2*a*c**2*e**3 - 8*R**2*a*c*e**3 - 2*R*a**3*d*e**3 - 2*R*a**3*d*e*f**2 - 6*R*a**2*c*d*e**3 + 2*R*a**2*c*d*e*f**2 - 8*R*a**2*d*e**3 - 6*R*a*c**2*d*e**3 + 2*R*a*c**2*d*e*f**2 - 16*R*a*c*d*e**3 - 8*R*a*d*e**3 - 2*R*c**3*d*e**3 - 2*R*c**3*d*e*f**2 - 8*R*c**2*d*e**3 - 8*R*c*d*e**3 - 2*a**2*d**2*e**3 - 2*a**2*d**2*e*f**2 - 4*a*c*d**2*e**3 + 4*a*c*d**2*e*f**2 - 8*a*d**2*e**3 - 2*c**2*d**2*e**3 - 2*c**2*d**2*e*f**2 - 8*c*d**2*e**3 - 8*d**2*e**3";
@@ -36,13 +38,13 @@ public class Inversion1 {
 
 	public static void main(String[] args) {
 		LongPoly g = Circle.concyclic(P(X_E, Y_E), P(X_F, Y_F), P(X_G, Y_G), P(X_H, Y_H));
-		g = new LongPoly(VARS, g.toString().replace("S**3", "Q*S").replace("S**2", "Q")).subs('Q', S2);
+		g = new LongPoly(VARS, g.toString().replace("S**3", "Q*S").replace("S**2", "Q")).subs("Q", S2);
 		g = new LongPoly(VARS, g.toString().
 				replace("R**11", "P**5*R").replace("R**10", "P**5").
 				replace("R**9", "P**4*R").replace("R**8", "P**4").
 				replace("R**7", "P**3*R").replace("R**6", "P**3").
 				replace("R**5", "P**2*R").replace("R**4", "P**2").
-				replace("R**3", "P*R").replace("R**2", "P")).subs('P', R2);
+				replace("R**3", "P*R").replace("R**2", "P")).subs("P", R2);
 		System.out.println("Are E, F, G and H concyclic? " + g.isEmpty());
 	}
 }

@@ -1,9 +1,12 @@
 package com.xqbase.math.geometry;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.xqbase.math.polys.LongPoly;
 
 public class Pascal {
-	private static final String VARS = "abcdef";
+	private static final List<String> VARS = Arrays.asList("a", "b", "c", "d", "e", "f");
 
 	private static Point P(String x, String y, String z) {
 		return new Point(new LongPoly(VARS, x), new LongPoly(VARS, y), new LongPoly(VARS, z));

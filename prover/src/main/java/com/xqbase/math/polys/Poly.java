@@ -1,7 +1,9 @@
 package com.xqbase.math.polys;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Function;
@@ -13,38 +15,42 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	private static final long serialVersionUID = 1L;
 
 	public abstract T valueOf(long n);
-	public abstract T valueOf(String s);
+	public abstract T valueOf(String s) throws NumberFormatException;
 	public abstract T newZero();
 	public abstract T[] newVector(int n);
 	public abstract T[][] newMatrix(int n1, int n2);
 
-	private transient String vars;
+	private transient List<String> vars;
 
 	public P newPoly() {
 		try {
 			return unchecked(getClass().
-					getConstructor(String.class).newInstance(vars));
+					getConstructor(List.class).newInstance(vars));
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public P newPoly(String newVars) {
+	public P newPoly(List<String> newVars) {
 		try {
 			return unchecked(getClass().
-					getConstructor(String.class).newInstance(newVars));
+					getConstructor(List.class).newInstance(newVars));
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public P newPoly(String newVars, String expr) {
+	public P newPoly(List<String> newVars, String expr) {
 		try {
 			return unchecked(getClass().
-					getConstructor(String.class, String.class).newInstance(newVars, expr));
+					getConstructor(List.class, String.class).newInstance(newVars, expr));
 		} catch (ReflectiveOperationException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public P newPoly(String expr, String... newVars) {
+		return newPoly(Arrays.asList(newVars), expr);
 	}
 
 	private static Logger log = LoggerFactory.getLogger(Poly.class);
@@ -54,18 +60,20 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 			return;
 		}
 		T c = valueOf(1);
-		String s = expr;
-		if (vars.indexOf(s.charAt(0)) < 0) {
-			int i = s.indexOf('*');
-			if (i < 0) {
-				c = valueOf(s);
-				s = "";
+		int times = expr.indexOf('*');
+		String expr_ = expr;
+		try {
+			if (times < 0) {
+				c = valueOf(expr_);
+				expr_ = "";
 			} else {
-				c = valueOf(s.substring(0, i));
-				s = s.substring(i + 1);
+				c = valueOf(expr.substring(0, times));
+				expr_ = expr.substring(times + 1);
 			}
+		} catch (NumberFormatException e) {
+			// no coeff: expr unchanged
 		}
-		append(new Monom(vars, s), minus ? c.negate() : c);
+		append(new Monom(vars, expr_), minus ? c.negate() : c);
 	}
 
 	public void append(Monom mono, T n) {
@@ -76,13 +84,13 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		}
 	}
 
-	protected Poly(String vars) {
+	protected Poly(List<String> vars) {
 		this.vars = vars;
 	}
 
-	protected Poly(String vars, String expr) {
+	protected Poly(List<String> vars, String expr) {
 		this(vars);
-		for (String ss : expr.replace(" ", "").replace("**", "^").split("\\+")) {
+		for (String ss : expr.replaceAll("\\s+", "").split("\\+")) {
 			boolean minus = false;
 			for (String s : ss.split("\\-")) {
 				append(minus, s);
@@ -91,7 +99,11 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		}
 	}
 
-	public String getVars() {
+	protected Poly(String expr, String... vars) {
+		this(Arrays.asList(vars), expr);
+	}
+
+	public List<String> getVars() {
 		return vars;
 	}
 
@@ -213,19 +225,14 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	}
 
 	/** like sympy.polys.polytools.poly(expr, *gens) */
-	public TreeMap<Monom, P> collect(String gen) {
-		int genLen = gen.length();
-		int[] iExp = new int[genLen];
-		for (int i = 0; i < genLen; i ++) {
-			iExp[i] = vars.indexOf(gen.charAt(i));
-		}
+	public TreeMap<Monom, P> collect(int... gens) {
 		TreeMap<Monom, P> coeffs = new TreeMap<>();
 		forEach((m, c) -> {
 			short[] exps = m.getExps();
 			short[] expsGen = new short[exps.length];
 			short[] expsCoeff = exps.clone();
-			for (int i = 0; i < genLen; i ++) {
-				int j = iExp[i];
+			for (int i = 0; i < gens.length; i ++) {
+				int j = gens[i];
 				expsGen[j] = exps[j];
 				expsCoeff[j] = 0;
 			}
@@ -235,23 +242,45 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		return coeffs;
 	}
 
+	private int[] toInts(List<String> s) {
+		int[] ints = new int[s.size()];
+		for (int i = 0; i < s.size(); i ++) {
+			ints[i] = vars.indexOf(s.get(i));
+		}
+		return ints;
+	}
+
+	/** like sympy.polys.polytools.poly(expr, *gens) */
+	public TreeMap<Monom, P> collect(List<String> gens) {
+		return collect(toInts(gens));
+	}
+
+	/** like sympy.polys.polytools.poly(expr, *gens) */
+	public TreeMap<Monom, P> collect(String... gens) {
+		return collect(Arrays.asList(gens));
+	}
+
 	/** exclude variables by setting them to 1 */
-	public P exclude(String ex) {
-		int len = vars.length();
-		int newLen = len - ex.length();
+	public P exclude(int... ex) {
+		int len = vars.size();
+		boolean[] excluded = new boolean[len];
+		Arrays.fill(excluded, false);
+		for (int i = 0; i < ex.length; i ++) {
+			excluded[ex[i]] = true;
+		}
+		int newLen = len - ex.length;
 		int[] iExp = new int[newLen];
 		int j = 0;
-		StringBuilder newVars = new StringBuilder();
+		List<String> newVars = new ArrayList<>();
 		for (int i = 0; i < len; i ++) {
-			char var = vars.charAt(i);
-			int k = ex.indexOf(var);
-			if (k < 0) {
-				iExp[j] = i;
-				j ++;
-				newVars.append(var);
+			if (excluded[i]) {
+				continue;
 			}
+			iExp[j] = i;
+			j ++;
+			newVars.add(vars.get(i));
 		}
-		P p = newPoly(newVars.toString());
+		P p = newPoly(newVars);
 		forEach((m, c) -> {
 			short[] exps = m.getExps();
 			short[] newExps = new short[newLen];
@@ -263,11 +292,20 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		return p;
 	}
 
-	public int degree(char var) {
-		int i = vars.indexOf(var);
+	/** exclude variables by setting them to 1 */
+	public P exclude(List<String> ex) {
+		return exclude(toInts(ex));
+	}
+
+	/** exclude variables by setting them to 1 */
+	public P exclude(String... ex) {
+		return exclude(Arrays.asList(ex));
+	}
+
+	public int degree(int var) {
 		int degree = 0;
 		for (Monom m : keySet()) {
-			int exp = m.getExps()[i];
+			int exp = m.getExps()[var];
 			if (exp > degree) {
 				degree = exp;
 			}
@@ -275,8 +313,12 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		return degree;
 	}
 
+	public int degree(String var) {
+		return degree(vars.indexOf(var));
+	}
+
 	public int[] degrees() {
-		int len = vars.length();
+		int len = vars.size();
 		int[] degrees = new int[len];
 		Arrays.fill(degrees, 0);
 		for (Monom m : keySet()) {
@@ -291,36 +333,44 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 	}
 
 	/** x -> 1/x and remove denominator */
-	public P reciprocal(char var) {
+	public P reciprocal(int var) {
 		return reciprocal(var, degree(var));
 	}
 
 	/** x -> 1/x and remove denominator */
-	public P reciprocal(char var, int degree) {
-		int i = vars.indexOf(var);
+	public P reciprocal(String var) {
+		return reciprocal(vars.indexOf(var));
+	}
+
+	/** x -> 1/x and remove denominator */
+	public P reciprocal(int var, int degree) {
 		P p = newPoly();
 		forEach((m, c) -> {
 			short[] exps = m.getExps();
 			short[] exps1 = exps.clone();
-			exps1[i] = (short) (degree - exps[i]);
+			exps1[var] = (short) (degree - exps[var]);
 			p.put(new Monom(exps1), c);
 		});
 		return p;
 	}
 
-	private P subs(char from, Function<P, P> toFunc) {
+	/** x -> 1/x and remove denominator */
+	public P reciprocal(String var, int degree) {
+		return reciprocal(vars.indexOf(var), degree);
+	}
+
+	private P subs(int fromVar, Function<P, P> toFunc) {
 		if (isEmpty()) {
 			return unchecked(this);
 		}
-		TreeMap<Monom, P> ai = collect(String.valueOf(from));
+		TreeMap<Monom, P> ai = collect(fromVar);
 		// a_0x^n+a_1x^{n-1}+a_2x^{n-2}+...+a_{n-1}x+a_n = (...((a_0x+a_1)x+a2)+...+a_{n-1})x+a_n
 		Map.Entry<Monom, P> lt = ai.firstEntry();
 		Monom lm = lt.getKey();
 		P p = lt.getValue();
-		short[] exps = new short[vars.length()];
-		int fromIndex = vars.indexOf(from);
-		for (int i = lm.getExps()[fromIndex] - 1; i >= 0; i --) {
-			exps[fromIndex] = (short) i;
+		short[] exps = new short[vars.size()];
+		for (int i = lm.getExps()[fromVar] - 1; i >= 0; i --) {
+			exps[fromVar] = (short) i;
 			P p1 = toFunc.apply(p);
 			P a = ai.get(new Monom(exps));
 			if (a != null) {
@@ -331,23 +381,31 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		return p;
 	}
 
-	public P subs(char from, T to) {
-		return subs(from, p -> {
+	public P subs(int fromVar, T to) {
+		return subs(fromVar, p -> {
 			P p1 = newPoly();
 			p1.add(to, p);
 			return p1;
 		});
 	}
 
-	public P subs(char from, P to) {
-		return subs(from, p -> {
+	public P subs(String fromVar, T to) {
+		return subs(vars.indexOf(fromVar), to);
+	}
+
+	public P subs(int fromVar, P to) {
+		return subs(fromVar, p -> {
 			P p1 = newPoly();
 			p1.addMul(p, to);
 			return p1;
 		});
 	}
 
-	public P homogenize(char newVar) {
+	public P subs(String fromVar, P to) {
+		return subs(vars.indexOf(fromVar), to);
+	}
+
+	public P homogenize(String newVar) {
 		boolean homogeneous = true;
 		int deg = 0;
 		HashMap<Monom, Integer> expsMap = new HashMap<>();
@@ -369,9 +427,11 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		if (homogeneous) {
 			return unchecked(this);
 		}
-		int numVars = vars.length();
+		int numVars = vars.size();
 		int numNewVars = numVars + 1;
-		P p = newPoly(vars + newVar);
+		List<String> newVars = new ArrayList<>(vars);
+		newVars.add(newVar);
+		P p = newPoly(newVars);
 		int deg_ = deg;
 		expsMap.forEach((m, n) -> {
 			short[] newExps = new short[numNewVars];
@@ -382,18 +442,17 @@ public abstract class Poly<T extends MutableNumber<T>, P extends Poly<T, P>> ext
 		return p;
 	}
 
-	public P diff(char var) {
-		int i = vars.indexOf(var);
+	public P diff(int var) {
 		P p = newPoly();
 		forEach((m, c) -> {
 			short[] exps = m.getExps().clone();
 			T c1 = newZero();
-			int exp = exps[i];
+			int exp = exps[var];
 			if (exp == 0) {
 				return;
 			}
 			c1.addMul(valueOf(exp), c);
-			exps[i] --;
+			exps[var] --;
 			Monom m1 = new Monom(exps);
 			p.put(m1, c1);
 		});

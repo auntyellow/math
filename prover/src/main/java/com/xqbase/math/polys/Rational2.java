@@ -80,7 +80,7 @@ public class Rational2 extends MutableNumber<Rational2> {
 		}
 	}
 
-	public Rational2(String s) {
+	public Rational2(String s) throws NumberFormatException {
 		this(new Rational(s));
 	}
 

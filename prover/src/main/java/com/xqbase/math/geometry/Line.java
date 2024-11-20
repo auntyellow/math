@@ -1,10 +1,12 @@
 package com.xqbase.math.geometry;
 
+import java.util.List;
+
 import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Poly;
 
 public class Line {
-	private static LongPoly __(String vars) {
+	private static LongPoly __(List<String> vars) {
 		return new LongPoly(vars);
 	}
 
@@ -25,7 +27,7 @@ public class Line {
 
 	/** a line passing through p and parallel to direction (x, y) */
 	public Line(Point p, LongPoly x, LongPoly y) {
-		String vars = p.getX().getVars();
+		List<String> vars = p.getX().getVars();
 		u = __(vars).addMul(p.getZ(), y);
 		v = __(vars).subMul(p.getZ(), x);
 		w = __(vars).addMul(p.getY(), x).subMul(p.getX(), y);

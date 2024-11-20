@@ -1,6 +1,7 @@
 package com.xqbase.math.polys;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Monom implements Comparable<Monom> {
 	private short[] exps;
@@ -9,12 +10,29 @@ public class Monom implements Comparable<Monom> {
 		this.exps = exps;
 	}
 
-	public Monom(String vars, String expr) {
-		exps = new short[vars.length()];
-		if (!expr.isEmpty()) {
-			for (String s : expr.replace("**", "^").split("\\*")) {
-				exps[vars.indexOf(s.charAt(0))] = (s.length() == 1 ? 1 : Short.parseShort(s.substring(2)));
+	public Monom(List<String> vars, String expr) {
+		exps = new short[vars.size()];
+		Arrays.fill(exps, (short) 0);
+		String expr_ = expr.trim();
+		if (expr_.isEmpty()) {
+			return;
+		}
+		for (String s : expr_.replaceAll("\\s+","").replace("**", "^").split("\\*")) {
+			String var;
+			short exp;
+			int pow = s.indexOf('^');
+			if (pow < 0) {
+				var = s;
+				exp = 1;
+			} else {
+				var = s.substring(0, pow);
+				exp = Short.parseShort(s.substring(pow + 1));
 			}
+			int varNo = vars.indexOf(var);
+			if (varNo < 0) {
+				throw new IllegalArgumentException("unrecognized variable \"" + var + "\"");
+			}
+			exps[varNo] = exp;
 		}
 	}
 
@@ -48,14 +66,14 @@ public class Monom implements Comparable<Monom> {
 		return Arrays.toString(exps);
 	}
 
-	public String toString(String vars) {
+	public String toString(List<String> vars) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < exps.length; i ++) {
 			int exp = exps[i];
 			if (exp <= 0) {
 				continue;
 			}
-			sb.append("*" + vars.charAt(i));
+			sb.append("*" + vars.get(i));
 			if (exp > 1) {
 				sb.append("**" + exp);
 			}
