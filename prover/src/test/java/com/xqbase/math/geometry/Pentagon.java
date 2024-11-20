@@ -1,7 +1,5 @@
 package com.xqbase.math.geometry;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -10,7 +8,7 @@ import java.util.logging.Logger;
 import com.xqbase.math.polys.LongPoly;
 
 public class Pentagon {
-	private static final List<String> VARS = Arrays.asList("a", "b", "c", "d", "e", "f", "g");
+	private static final String[] VARS = {"a", "b", "c", "d", "e", "f", "g"};
 
 	// results from pentagon.py
 	private static final String X_C4 = "b**2*c**2*d*e**2*g**2 - b**2*c**2*d*e*g**3 - b**2*c**2*e**3*f*g + b**2*c**2*e**2*f*g**2 - b**2*c*d*e**3*g**2 + b**2*c*d*e*g**4 + b**2*c*e**4*f*g - b**2*c*e**2*f*g**3 + b**2*d*e**3*g**3 - b**2*d*e**2*g**4 - b**2*e**4*f*g**2 + b**2*e**3*f*g**3 - b*c**3*d**2*e*g**2 + b*c**3*d**2*g**3 + b*c**3*e**3*f**2 - b*c**3*e**2*f**2*g + b*c**2*d**2*e**2*g**2 - b*c**2*d**2*g**4 - b*c**2*e**4*f**2 + b*c**2*e**2*f**2*g**2 - b*c*d**2*e**2*g**3 + b*c*d**2*e*g**4 + b*c*e**4*f**2*g - b*c*e**3*f**2*g**2 + c**4*d**2*e*f*g - c**4*d**2*f*g**2 - c**4*d*e**2*f**2 + c**4*d*e*f**2*g - c**3*d**2*e**2*f*g + c**3*d**2*f*g**3 + c**3*d*e**3*f**2 - c**3*d*e*f**2*g**2 + c**2*d**2*e**2*f*g**2 - c**2*d**2*e*f*g**3 - c**2*d*e**3*f**2*g + c**2*d*e**2*f**2*g**2";
@@ -35,7 +33,7 @@ public class Pentagon {
 	}
 
 	private static Point P(String x, String y, String z) {
-		return new Point(new LongPoly(VARS, x), new LongPoly(VARS, y), new LongPoly(VARS, z));
+		return new Point(new LongPoly(x, VARS), new LongPoly(y, VARS), new LongPoly(z, VARS));
 	}
 
 	public static void main(String[] args) {

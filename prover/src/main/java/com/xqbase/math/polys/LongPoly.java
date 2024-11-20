@@ -1,16 +1,10 @@
 package com.xqbase.math.polys;
 
-import java.util.List;
-
 public class LongPoly extends Poly<MutableLong, LongPoly> {
 	private static final long serialVersionUID = 1L;
 
-	public LongPoly(List<String> vars) {
+	public LongPoly(String[] vars) {
 		super(vars);
-	}
-
-	public LongPoly(List<String> vars, String expr) {
-		super(vars, expr);
 	}
 
 	public LongPoly(String expr, String... vars) {

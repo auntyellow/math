@@ -1,6 +1,5 @@
 package com.xqbase.math.inequality;
 
-import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -62,12 +61,12 @@ public class BisectionTest {
 	private static void	negative(RationalPoly f, int signum) {
 		Rational[] result = Bisection.search(f);
 		Assert.assertNotEquals(0, result.length);
-		List<String> vars = f.getVars();
+		String[] vars = f.getVars();
 		RationalPoly f1 = f;
 		for (int i = 0; i < result.length - 1; i ++) {
 			f1 = f1.subs(i, result[i]);
 		}
-		Rational c0 = f1.remove(new Monom(vars, ""));
+		Rational c0 = f1.remove(new Monom(vars.length));
 		if (c0 == null) {
 			c0 = Rational.valueOf(0);
 		}

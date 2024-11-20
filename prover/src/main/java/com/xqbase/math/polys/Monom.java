@@ -10,13 +10,18 @@ public class Monom implements Comparable<Monom> {
 		this.exps = exps;
 	}
 
-	public Monom(List<String> vars, String expr) {
-		exps = new short[vars.size()];
+	public Monom(int len) {
+		exps = new short[len];
 		Arrays.fill(exps, (short) 0);
+	}
+
+	public Monom(String expr, String... vars) {
+		this(vars.length);
 		String expr_ = expr.trim();
 		if (expr_.isEmpty()) {
 			return;
 		}
+		List<String> varList = Arrays.asList(vars);
 		for (String s : expr_.replaceAll("\\s+","").replace("**", "^").split("\\*")) {
 			String var;
 			short exp;
@@ -28,11 +33,11 @@ public class Monom implements Comparable<Monom> {
 				var = s.substring(0, pow);
 				exp = Short.parseShort(s.substring(pow + 1));
 			}
-			int varNo = vars.indexOf(var);
-			if (varNo < 0) {
+			int i = varList.indexOf(var);
+			if (i < 0) {
 				throw new IllegalArgumentException("unrecognized variable \"" + var + "\"");
 			}
-			exps[varNo] = exp;
+			exps[i] = exp;
 		}
 	}
 
@@ -66,14 +71,14 @@ public class Monom implements Comparable<Monom> {
 		return Arrays.toString(exps);
 	}
 
-	public String toString(List<String> vars) {
+	public String toString(String... vars) {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < exps.length; i ++) {
 			int exp = exps[i];
 			if (exp <= 0) {
 				continue;
 			}
-			sb.append("*" + vars.get(i));
+			sb.append("*" + vars[i]);
 			if (exp > 1) {
 				sb.append("**" + exp);
 			}

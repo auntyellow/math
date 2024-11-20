@@ -36,7 +36,7 @@ public class Bisection {
 		return r;
 	}
 
-	private List<String> vars;
+	private String[] vars;
 	private int len, depth;
 	/** monopoly for constant term, helps to get f(0, 0, ..., 0) */
 	private Monom m0;
@@ -49,9 +49,9 @@ public class Bisection {
 	/** helps to call {@link #negativeResult(Rational)} */
 	private Rational2[] coords0;
 
-	private Bisection(List<String> vars) {
+	private Bisection(String... vars) {
 		this.vars = vars;
-		len = vars.size();
+		len = vars.length;
 		depth = 0;
 		short[] exps0 = new short[len];
 		Arrays.fill(exps0, (short) 0);
@@ -141,14 +141,14 @@ public class Bisection {
 		// not positive-semidefinite, divide at i_min
 		Rational2[] newBounds = bounds;
 		Rational2[] newCoords = coords;
-		String x = vars.get(iMin);
+		String x = vars[iMin];
 		if (log.isDebugEnabled()) {
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < bounds.length; i ++) {
 				sb.append(coords[i].doubleValue() + "(" + bounds[i].doubleValue() + "), ");
 			}
 			log.debug(indent() + "divide [" + sb.substring(0, sb.length() - 2) + "], f = " +
-					f0.doubleValue() + ", f_" + vars.get(iMin) + " = " + fxMin.doubleValue());
+					f0.doubleValue() + ", f_" + vars[iMin] + " = " + fxMin.doubleValue());
 			// set new bounds for upper and lower half
 			newBounds = bounds.clone();
 			Rational2 bound = f.newZero();
@@ -322,7 +322,7 @@ public class Bisection {
 			StringBuilder sb = new StringBuilder();
 			for (int j = 0; j < len; j ++) {
 				if (pows[j] > 0) {
-					sb.append(vars.get(j));
+					sb.append(vars[j]);
 				}
 			}
 			Rational2Poly f2 = new Rational2Poly(vars);
@@ -337,12 +337,12 @@ public class Bisection {
 				if (exps2[i_] < minDeg) {
 					throw new AssertionError(m.toString(vars) + " after " +
 							sb + " substitutions can't be divided by " +
-							vars.get(i_) + "**" + minDeg + ", f = " + f1);
+							vars[i_] + "**" + minDeg + ", f = " + f1);
 				}
 				exps2[i_] -= minDeg;
 				f2.put(new Monom(exps2), c);
 			});
-			log.info(indent() + "search f(" + vars.get(i) + " = max(" + sb + ")) = " + f2);
+			log.info(indent() + "search f(" + vars[i] + " = max(" + sb + ")) = " + f2);
 			depth ++;
 			// test if max-subs works
 			// Rational[] result = EMPTY_RESULT;

@@ -1,17 +1,12 @@
 package com.xqbase.math.polys;
 
 import java.math.BigInteger;
-import java.util.List;
 
 public class BigPoly extends Poly<MutableBig, BigPoly> {
 	private static final long serialVersionUID = 1L;
 
-	public BigPoly(List<String> vars) {
+	public BigPoly(String[] vars) {
 		super(vars);
-	}
-
-	public BigPoly(List<String> vars, String expr) {
-		super(vars, expr);
 	}
 
 	public BigPoly(String expr, String... vars) {

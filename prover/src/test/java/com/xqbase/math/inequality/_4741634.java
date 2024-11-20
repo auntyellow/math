@@ -2,13 +2,12 @@ package com.xqbase.math.inequality;
 
 import java.io.InputStream;
 import java.math.BigInteger;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 import java.util.TreeMap;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import com.xqbase.math.polys.Monom;
 import com.xqbase.math.polys.Rational;
@@ -17,8 +16,8 @@ import com.xqbase.math.polys.Rational2Poly;
 import com.xqbase.math.polys.RationalPoly;
 
 public class _4741634 {
-	private static final List<String> VARS = Arrays.asList("x", "y", "z");
-	private static final int VAR_Z = VARS.indexOf("z");
+	private static final String[] VARS = {"x", "y", "z"};
+	private static final int VAR_Z = 2;
 	private static final Rational _1 = Rational.valueOf(1);
 	// results from 4741634-sage.py, 15 positive real_roots excluding z = 1
 	private static final String[][] ROOTS = {
@@ -39,10 +38,10 @@ public class _4741634 {
 		{"13026688165300328654393066908574120452850768877681205130069671066547555446023663085825521399926949514229306005466258757954726527107397600450425196907964409634325474412499126209277266885236217509226663290732363860419461033673052413124820857721775994287291508588537400444328511310186494747075321133280045822169360376284575248882311606878587720936129286169416418998515175253181561279896068345039105317602699349807595783073830871/7083271603906078757501937199839970337237042072752024044272935252133021449487672037753077279976540494138725768234495819230178699615482523444525217326451885295083794903354995236859949814158861106339793498427520403285563504697437506153794873484561573759163876734171825622767620957924878367969185009358384129424236514293956457858505582263102570156257796764049361854053114869322098725721757629614488965634874516982012228724064256", "26053376330600657308786133817148240905701537755362410260139342133095110892047326171651042799853899028458612010932517515909453054214795200900850393815928819268651682142692042925825964065348530263063585685302102352975119627182019317695648493485106053523924300347412984571997668158761266911133136358106742330846853572925357973821195731785770417170666359549349825309618872951065229763900853324014527327687603656925836555161333617/14166543207812157515003874399679940674474084145504048088545870504266042898975344075506154559953080988277451536468991638460357399230965046889050434652903770590167589806709990473719899628317722212679586996855040806571127009394875012307589746969123147518327753468343651245535241915849756735938370018716768258848473028587912915717011164526205140312515593528098723708106229738644197451443515259228977931269749033964024457448128512"},
 		{"3112143487080470314627049815162167478645162640360062341496209/1606938044258990275541962092341162602522202993782792835301376", "24897147896643762517016445364212659575566375027002952902035281/12855504354071922204335696738729300820177623950262342682411008"},
     };
-	private static final Monom CONSTANT = new Monom(VARS, "");
+	private static final Monom CONSTANT = new Monom(VARS.length);
 
 	static {
-		java.util.logging.Logger rootLogger = LogManager.getLogManager().getLogger("");
+		Logger rootLogger = LogManager.getLogManager().getLogger("");
 		rootLogger.setLevel(Level.FINE);
 		for (Handler h : rootLogger.getHandlers()) {
 			h.setLevel(Level.FINE);
@@ -51,7 +50,7 @@ public class _4741634 {
 
 	private static RationalPoly solve(RationalPoly f, String var) {
 		TreeMap<Monom, RationalPoly> poly = f.collect(var);
-		RationalPoly a1 = poly.remove(new Monom(VARS, var));
+		RationalPoly a1 = poly.remove(new Monom(var, VARS));
 		RationalPoly a0 = poly.remove(CONSTANT);
 		if (!poly.isEmpty()) {
 			throw new RuntimeException("Should be empty: " + poly);
@@ -125,9 +124,9 @@ public class _4741634 {
 		try (InputStream in = _4741634.class.getResourceAsStream("4741634.properties")) {
 			p.load(in);
 		}
-		Rational2Poly f = new Rational2Poly(VARS, "-x**4*y*z**2 - x**3*y**3*z**3 - x**3*y**2 - x**2*y**4*z - x**2*z**3 - x*y**2*z**4 - 5*x*y*z + 4*x*y + 4*x*z - y**3*z**2 + 4*y*z");
-		RationalPoly b1 = new RationalPoly(VARS, p.getProperty("B1"));
-		RationalPoly b2 = new RationalPoly(VARS, p.getProperty("B2"));
+		Rational2Poly f = new Rational2Poly("-x**4*y*z**2 - x**3*y**3*z**3 - x**3*y**2 - x**2*y**4*z - x**2*z**3 - x*y**2*z**4 - 5*x*y*z + 4*x*y + 4*x*z - y**3*z**2 + 4*y*z", VARS);
+		RationalPoly b1 = new RationalPoly(p.getProperty("B1"), VARS);
+		RationalPoly b2 = new RationalPoly(p.getProperty("B2"), VARS);
 		RationalPoly x = solve(b1, "x");
 		RationalPoly y = solve(b2, "y");
 		BigInteger[] lcmX = {null};
@@ -147,13 +146,13 @@ public class _4741634 {
 			Rational2 z1_ = new Rational2(BigInteger.ZERO);
 			z1_.add(z1);
 			z1_.add(z0.negate());
-			Rational2Poly x_z = x2.subs(VAR_Z, new Rational2Poly(VARS, z1_ + "*z + " + z0)).diff(VAR_Z);
+			Rational2Poly x_z = x2.subs(VAR_Z, new Rational2Poly(z1_ + "*z + " + z0, VARS)).diff(VAR_Z);
 			if (x_z.get(CONSTANT).signum() < 0) {
 				x_z = new Rational2Poly(VARS).add(-1, x_z);
 			}
 			System.out.print("prove x is monotonic: ");
 			System.out.println(Bisection.search01(x_z).length == 0);
-			Rational2Poly y_z = y2.subs(VAR_Z, new Rational2Poly(VARS, z1_ + "*z + " + z0)).diff(VAR_Z);
+			Rational2Poly y_z = y2.subs(VAR_Z, new Rational2Poly(z1_ + "*z + " + z0, VARS)).diff(VAR_Z);
 			if (y_z.get(CONSTANT).signum() < 0) {
 				y_z = new Rational2Poly(VARS).add(-1, y_z);
 			}
@@ -176,9 +175,9 @@ public class _4741634 {
 			y1.add(y0.negate());
 			z1.add(z0.negate());
 			Rational2Poly f1 = f.
-					subs(0, new Rational2Poly(VARS, x1 + "*x + " + x0)).
-					subs(1, new Rational2Poly(VARS, y1 + "*y + " + y0)).
-					subs(2, new Rational2Poly(VARS, z1 + "*z + " + z0));
+					subs(0, new Rational2Poly(x1 + "*x + " + x0, VARS)).
+					subs(1, new Rational2Poly(y1 + "*y + " + y0, VARS)).
+					subs(2, new Rational2Poly(z1 + "*z + " + z0, VARS));
 			System.out.print("prove positive in (" +
 					x0.doubleValue() + " + " + x1.doubleValue() + ", " +
 					y0.doubleValue() + " + " + y1.doubleValue() + ", " +

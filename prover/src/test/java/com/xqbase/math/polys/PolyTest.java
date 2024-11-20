@@ -3,9 +3,7 @@ package com.xqbase.math.polys;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -19,19 +17,19 @@ import com.xqbase.math.geometry.Line;
 import com.xqbase.math.geometry.Point;
 
 public class PolyTest {
-	private static List<String> vars(char from, int len) {
-		List<String> vars = new ArrayList<>();
+	private static String[] vars(char from, int len) {
+		String[] vars = new String[len];
 		for (int i = 0; i < len; i ++) {
-			vars.add(String.valueOf((char) (from + i)));
+			vars[i] = String.valueOf((char) (from + i));
 		}
 		return vars;
 	}
 
-	private static final List<String> VARS_7 = vars('a', 7);
-	private static final List<String> VARS_16 = vars('a', 16);
-	private static final List<String> VARS_19 = vars('a', 19);
-	private static final List<String> VARS_UV = vars('u', 2);
-	private static final List<String> VARS_PQUV = Arrays.asList("p", "q", "u", "v");
+	private static final String[] VARS_7 = vars('a', 7);
+	private static final String[] VARS_16 = vars('a', 16);
+	private static final String[] VARS_19 = vars('a', 19);
+	private static final String[] VARS_UV = vars('u', 2);
+	private static final String[] VARS_PQUV = {"p", "q", "u", "v"};
 
 	// Results from pentagon.py, A3B1A4 and C4
 	private static final String A = "b**2*d*e*g**2 - b**2*e**2*f*g - b*c*d**2*g**2 + b*c*e**2*f**2 + c**2*d**2*f*g - c**2*d*e*f**2";
@@ -61,25 +59,25 @@ public class PolyTest {
 		assertTrue(new LongPoly("", "0").isEmpty());
 		for (int i = -100; i <= 100; i ++) {
 			String expr = "" + i;
-			assertEquals(expr, "" + new LongPoly(VARS_7, expr));
+			assertEquals(expr, "" + new LongPoly(expr, VARS_7));
 		}
-		assertEquals(A, "" + new LongPoly(VARS_7, A));
-		assertEquals(D, "" + new LongPoly(VARS_7, D));
-		assertEquals(E, "" + new LongPoly(VARS_7, E));
-		assertEquals(F, "" + new LongPoly(VARS_7, F));
-		assertEquals(X, "" + new LongPoly(VARS_7, X));
-		assertEquals(Y, "" + new LongPoly(VARS_7, Y));
-		assertEquals(Z, "" + new LongPoly(VARS_7, Z));
+		assertEquals(A, "" + new LongPoly(A, VARS_7));
+		assertEquals(D, "" + new LongPoly(D, VARS_7));
+		assertEquals(E, "" + new LongPoly(E, VARS_7));
+		assertEquals(F, "" + new LongPoly(F, VARS_7));
+		assertEquals(X, "" + new LongPoly(X, VARS_7));
+		assertEquals(Y, "" + new LongPoly(Y, VARS_7));
+		assertEquals(Z, "" + new LongPoly(Z, VARS_7));
 	}
 
 	private static Point P(String x, String y, String z) {
-		return new Point(new LongPoly(VARS_7, x), new LongPoly(VARS_7, y), new LongPoly(VARS_7, z));
+		return new Point(new LongPoly(x, VARS_7), new LongPoly(y, VARS_7), new LongPoly(z, VARS_7));
 	}
 
 	@Test
 	public void testOnCircle() {
 		Point p = P(X, Y, Z);
-		Circle c = new Circle(new LongPoly(VARS_7, A), new LongPoly(VARS_7, D), new LongPoly(VARS_7, E), new LongPoly(VARS_7, F));
+		Circle c = new Circle(new LongPoly(A, VARS_7), new LongPoly(D, VARS_7), new LongPoly(E, VARS_7), new LongPoly(F, VARS_7));
 		assertTrue(c.passesThrough(p));
 	}
 
@@ -90,7 +88,7 @@ public class PolyTest {
 		LongPoly[][] m = new LongPoly[4][4];
 		for (int i = 0; i < 4; i ++) {
 			for (int j = 0; j < 4; j ++) {
-				m[i][j] = new LongPoly(VARS_16, "" + (char) ('a' + i * 4 + j));
+				m[i][j] = new LongPoly("" + (char) ('a' + i * 4 + j), VARS_16);
 			}
 		}
 		assertEquals(expected, Poly.det(
@@ -99,15 +97,15 @@ public class PolyTest {
 				m[2][0], m[2][1], m[2][2], m[2][3],
 				m[3][0], m[3][1], m[3][2], m[3][3]).toString());
 		// Results from pappus-h.py
-		LongPoly x_G = new LongPoly(VARS_19, "-a**2*h*n*p + a**2*j*m*p + a*b*g*n*p - a*b*j*k*p - a*c*g*m*p + a*c*h*k*p - a*d*h*n*q + a*d*j*m*q - a*e*j*k*q + a*f*h*k*q + b*d*g*n*q - b*f*g*k*q - c*d*g*m*q + c*e*g*k*q");
-		LongPoly y_G = new LongPoly(VARS_19, "-a*b*h*n*p + a*b*j*m*p - a*e*h*n*q + a*f*h*m*q + b**2*g*n*p - b**2*j*k*p - b*c*g*m*p + b*c*h*k*p + b*d*j*m*q + b*e*g*n*q - b*e*j*k*q - b*f*g*m*q - c*d*h*m*q + c*e*h*k*q");
-		LongPoly z_G = new LongPoly(VARS_19, "-a*c*h*n*p + a*c*j*m*p - a*e*j*n*q + a*f*j*m*q + b*c*g*n*p - b*c*j*k*p + b*d*j*n*q - b*f*j*k*q - c**2*g*m*p + c**2*h*k*p - c*d*h*n*q + c*e*g*n*q - c*f*g*m*q + c*f*h*k*q");
-		LongPoly x_H = new LongPoly(VARS_19, "-a*d*h*n*p*s + a*d*j*m*p*s + a*e*g*j*p*r + a*e*g*n*p*s - a*f*g*h*p*r - a*f*g*m*p*s - b*d*g*j*p*r - b*d*j*k*p*s + b*f*g**2*p*r + b*f*g*k*p*s + c*d*g*h*p*r + c*d*h*k*p*s - c*e*g**2*p*r - c*e*g*k*p*s - d**2*h*n*q*s + d**2*j*m*q*s + d*e*g*n*q*s - d*e*j*k*q*s - d*f*g*m*q*s + d*f*h*k*q*s");
-		LongPoly y_H = new LongPoly(VARS_19, "a*e*h*j*p*r + a*e*j*m*p*s - a*f*h**2*p*r - a*f*h*m*p*s - b*d*h*j*p*r - b*d*h*n*p*s + b*e*g*n*p*s - b*e*j*k*p*s + b*f*g*h*p*r + b*f*h*k*p*s + c*d*h**2*p*r + c*d*h*m*p*s - c*e*g*h*p*r - c*e*g*m*p*s - d*e*h*n*q*s + d*e*j*m*q*s + e**2*g*n*q*s - e**2*j*k*q*s - e*f*g*m*q*s + e*f*h*k*q*s");
-		LongPoly z_H = new LongPoly(VARS_19, "a*e*j**2*p*r + a*e*j*n*p*s - a*f*h*j*p*r - a*f*h*n*p*s - b*d*j**2*p*r - b*d*j*n*p*s + b*f*g*j*p*r + b*f*g*n*p*s + c*d*h*j*p*r + c*d*j*m*p*s - c*e*g*j*p*r - c*e*j*k*p*s - c*f*g*m*p*s + c*f*h*k*p*s - d*f*h*n*q*s + d*f*j*m*q*s + e*f*g*n*q*s - e*f*j*k*q*s - f**2*g*m*q*s + f**2*h*k*q*s");
-		LongPoly x_J = new LongPoly(VARS_19, "a*d*h*n*r - a*d*j*m*r + a*e*j*k*r + a*e*k*n*s - a*f*h*k*r - a*f*k*m*s - b*d*g*n*r - b*d*k*n*s + b*f*g*k*r + b*f*k**2*s + c*d*g*m*r + c*d*k*m*s - c*e*g*k*r - c*e*k**2*s");
-		LongPoly y_J = new LongPoly(VARS_19, "a*e*h*n*r + a*e*m*n*s - a*f*h*m*r - a*f*m**2*s - b*d*j*m*r - b*d*m*n*s - b*e*g*n*r + b*e*j*k*r + b*f*g*m*r + b*f*k*m*s + c*d*h*m*r + c*d*m**2*s - c*e*h*k*r - c*e*k*m*s");
-		LongPoly z_J = new LongPoly(VARS_19, "a*e*j*n*r + a*e*n**2*s - a*f*j*m*r - a*f*m*n*s - b*d*j*n*r - b*d*n**2*s + b*f*j*k*r + b*f*k*n*s + c*d*h*n*r + c*d*m*n*s - c*e*g*n*r - c*e*k*n*s + c*f*g*m*r - c*f*h*k*r");
+		LongPoly x_G = new LongPoly("-a**2*h*n*p + a**2*j*m*p + a*b*g*n*p - a*b*j*k*p - a*c*g*m*p + a*c*h*k*p - a*d*h*n*q + a*d*j*m*q - a*e*j*k*q + a*f*h*k*q + b*d*g*n*q - b*f*g*k*q - c*d*g*m*q + c*e*g*k*q", VARS_19);
+		LongPoly y_G = new LongPoly("-a*b*h*n*p + a*b*j*m*p - a*e*h*n*q + a*f*h*m*q + b**2*g*n*p - b**2*j*k*p - b*c*g*m*p + b*c*h*k*p + b*d*j*m*q + b*e*g*n*q - b*e*j*k*q - b*f*g*m*q - c*d*h*m*q + c*e*h*k*q", VARS_19);
+		LongPoly z_G = new LongPoly("-a*c*h*n*p + a*c*j*m*p - a*e*j*n*q + a*f*j*m*q + b*c*g*n*p - b*c*j*k*p + b*d*j*n*q - b*f*j*k*q - c**2*g*m*p + c**2*h*k*p - c*d*h*n*q + c*e*g*n*q - c*f*g*m*q + c*f*h*k*q", VARS_19);
+		LongPoly x_H = new LongPoly("-a*d*h*n*p*s + a*d*j*m*p*s + a*e*g*j*p*r + a*e*g*n*p*s - a*f*g*h*p*r - a*f*g*m*p*s - b*d*g*j*p*r - b*d*j*k*p*s + b*f*g**2*p*r + b*f*g*k*p*s + c*d*g*h*p*r + c*d*h*k*p*s - c*e*g**2*p*r - c*e*g*k*p*s - d**2*h*n*q*s + d**2*j*m*q*s + d*e*g*n*q*s - d*e*j*k*q*s - d*f*g*m*q*s + d*f*h*k*q*s", VARS_19);
+		LongPoly y_H = new LongPoly("a*e*h*j*p*r + a*e*j*m*p*s - a*f*h**2*p*r - a*f*h*m*p*s - b*d*h*j*p*r - b*d*h*n*p*s + b*e*g*n*p*s - b*e*j*k*p*s + b*f*g*h*p*r + b*f*h*k*p*s + c*d*h**2*p*r + c*d*h*m*p*s - c*e*g*h*p*r - c*e*g*m*p*s - d*e*h*n*q*s + d*e*j*m*q*s + e**2*g*n*q*s - e**2*j*k*q*s - e*f*g*m*q*s + e*f*h*k*q*s", VARS_19);
+		LongPoly z_H = new LongPoly("a*e*j**2*p*r + a*e*j*n*p*s - a*f*h*j*p*r - a*f*h*n*p*s - b*d*j**2*p*r - b*d*j*n*p*s + b*f*g*j*p*r + b*f*g*n*p*s + c*d*h*j*p*r + c*d*j*m*p*s - c*e*g*j*p*r - c*e*j*k*p*s - c*f*g*m*p*s + c*f*h*k*p*s - d*f*h*n*q*s + d*f*j*m*q*s + e*f*g*n*q*s - e*f*j*k*q*s - f**2*g*m*q*s + f**2*h*k*q*s", VARS_19);
+		LongPoly x_J = new LongPoly("a*d*h*n*r - a*d*j*m*r + a*e*j*k*r + a*e*k*n*s - a*f*h*k*r - a*f*k*m*s - b*d*g*n*r - b*d*k*n*s + b*f*g*k*r + b*f*k**2*s + c*d*g*m*r + c*d*k*m*s - c*e*g*k*r - c*e*k**2*s", VARS_19);
+		LongPoly y_J = new LongPoly("a*e*h*n*r + a*e*m*n*s - a*f*h*m*r - a*f*m**2*s - b*d*j*m*r - b*d*m*n*s - b*e*g*n*r + b*e*j*k*r + b*f*g*m*r + b*f*k*m*s + c*d*h*m*r + c*d*m**2*s - c*e*h*k*r - c*e*k*m*s", VARS_19);
+		LongPoly z_J = new LongPoly("a*e*j*n*r + a*e*n**2*s - a*f*j*m*r - a*f*m*n*s - b*d*j*n*r - b*d*n**2*s + b*f*j*k*r + b*f*k*n*s + c*d*h*n*r + c*d*m*n*s - c*e*g*n*r - c*e*k*n*s + c*f*g*m*r - c*f*h*k*r", VARS_19);
 		assertTrue(Poly.det(x_G, y_G, z_G, x_H, y_H, z_H, x_J, y_J, z_J).isEmpty());
 		Point pg = new Point(x_G, y_G, z_G);
 		Point ph = new Point(x_H, y_H, z_H);
@@ -130,7 +128,7 @@ public class PolyTest {
 	@Test
 	public void testCoeffsOf() {
 		StringBuilder sb = new StringBuilder();
-		LongPoly f = new LongPoly(VARS_PQUV, K2);
+		LongPoly f = new LongPoly(K2, VARS_PQUV);
 		LongPoly e = new LongPoly(VARS_PQUV);
 		f.collect(VARS_UV).forEach((mono, coeff) -> {
 			sb.append("(" + coeff + ")*" + mono.toString(VARS_PQUV) + " + ");
@@ -138,7 +136,7 @@ public class PolyTest {
 		});
 		assertEquals(P2, sb.substring(0, sb.length() - 3));
 		LongPoly e2 = f.exclude(VARS_UV);
-		assertEquals(Arrays.asList("p", "q"), e2.getVars());
+		assertEquals(Arrays.asList("p", "q"), Arrays.asList(e2.getVars()));
 		// e is about pquv and e2 is about uv so e != e2
 		assertEquals(e.toString(), e2.toString());
 	}
@@ -151,5 +149,17 @@ public class PolyTest {
 		assertEquals(homo, new LongPoly(nonHomo, "a", "b", "c", "u", "v").homogenize("w").toString());
 		LongPoly f = new LongPoly(homo, "a", "b", "c", "u", "v", "w");
 		assertTrue(f == f.homogenize("x"));
+	}
+
+	@Test
+	public void testAlign() {
+		LongPoly p1 = new LongPoly("a + b", "a", "b");
+		LongPoly p2 = new LongPoly("a - b", "b", "a");
+		LongPoly p = new LongPoly("");
+		p.addMul(p1, p2);
+		assertEquals(Arrays.asList("a", "b"), Arrays.asList(p.getVars()));
+		assertEquals("a**2 - b**2", p.toString());
+		p1.add(p2);
+		assertEquals("2*a", p1.toString());
 	}
 }
