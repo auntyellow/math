@@ -27,6 +27,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
 import com.xqbase.math.geometry.Line;
@@ -42,6 +43,12 @@ public class Prover {
 		return s == null || s.trim().isEmpty();
 	}
 
+	private static void skipBlank(Node node) {
+		if (!(node instanceof Text) || !isBlank(((Text) node).getData())) {
+			log.warn("skip unknown node {}, {}", toXml(node), node.getClass());
+		}
+	}
+
 	private static String toXml(Node node) {
 		StringWriter writer = new StringWriter();
 		try {
@@ -54,13 +61,13 @@ public class Prover {
 		return writer.toString();
 	}
 
-	private static LongPoly newCoord(List<String> vars) {
-		String newVar = "u" + (vars.size() + 1);
-		vars.add(newVar);
-		return new LongPoly(vars, newVar);
-	}
+	private static final LongPoly ONE = new LongPoly("1");
 
-	private static final LongPoly ONE = new LongPoly(Arrays.asList(), "1");
+	private static LongPoly newCoord(int[] vars) {
+		vars[0] ++;
+		String var = "u" + vars[0];
+		return new LongPoly(var, var);
+	}
 
 	public static String prove(String input) throws ProveException {
 		DocumentBuilder builder;
@@ -82,14 +89,14 @@ public class Prover {
 
 		Map<String, Point> points = new HashMap<>();
 		Map<String, Line> lines = new HashMap<>();
-		List<String> vars = new ArrayList<>();
+		int[] vars = {0};
 
 		NodeList nodes = pom.getChildNodes();
 		int len = nodes.getLength();
 		for (int i = 0; i < len; i ++) {
 			Node node = nodes.item(i);
 			if (!(node instanceof Element)) {
-				log.warn("skip unknown node {}", toXml(node));
+				skipBlank(node);
 				continue;
 			}
 			Element element = (Element) node;
@@ -108,10 +115,11 @@ public class Prover {
 						log.info("point {} already constructed", label);
 						break;
 					}
-					// free point
+					// free point TODO: 1st (0, 0, 1), 2nd (1, 0, 1)
+					// projective: 1st (1, 0, 0), 2nd (0, 1, 0), 3rd (0, 0, 1), 4th (1, 1, 1)
 					Point point = new Point(newCoord(vars), newCoord(vars), ONE);
 					points.put(label, point);
-					log.info("construct a free point {} {}", label, point);
+					log.info("construct a free point {}: {}", label, point);
 					break;
 				case "line":
 					if (lines.containsKey(label)) {
@@ -138,7 +146,7 @@ public class Prover {
 				for (int j = 0; j < lenJ; j ++) {
 					Node nodeJ = nodesJ.item(j);
 					if (!(nodeJ instanceof Element)) {
-						log.warn("skip unknown node {}", toXml(nodeJ));
+						skipBlank(nodeJ);
 						continue;
 					}
 					Element elementJ = (Element) nodeJ;
@@ -157,25 +165,91 @@ public class Prover {
 						}
 						break;
 					case "output":
-						outputLabel = elementJ.getAttribute("a1");
+						outputLabel = elementJ.getAttribute("a0");
 						break;
 					default:
 						log.warn("skip unknown input or output {}", toXml(elementJ));
 					}
 				}
-				if (isBlank(outputLabel)) {
+				if (isBlank(outputLabel) && !"Prove".equals(name)) {
+					// command "Prove" has an empty output
 					log.warn("missing output: {}", toXml(element));
 					continue;
 				}
 
 				switch (name) {
 				case "Line":
+					if (inputLabels.size() != 2) {
+						log.warn("unable to construct a line with less or more than 2 points: {}", inputLabels);
+						continue;
+					}
+					Point p1 = points.get(inputLabels.get(0));
+					Point p2 = points.get(inputLabels.get(1));
+					if (p1 == null || p2 == null) {
+						log.warn("points not found: {}", inputLabels);
+						continue;
+					}
+					Line line = new Line(p1, p2);
+					lines.put(outputLabel, line);
+					log.info("construct a line {} by {}: {}", outputLabel, inputLabels, line);
 					break;
 
 				case "Point":
+					if (inputLabels.size() != 1) {
+						log.warn("unable to construct a semi-free point with less or more than 1 line: {}", inputLabels);
+						continue;
+					}
+					label = inputLabels.get(0);
+					line = lines.get(label);
+					if (line == null) {
+						log.warn("line not found: {}", label);
+						continue;
+					}
+					Point point = new Point(line, newCoord(vars));
+					points.put(outputLabel, point);
+					log.info("construct a semi-free point {} on {}: {}", outputLabel, label, point);
 					break;
 
 				case "Intersect":
+					if (inputLabels.size() != 2) {
+						log.warn("unable to construct an intersect with less or more than 2 lines: {}", inputLabels);
+						continue;
+					}
+					Line l1 = lines.get(inputLabels.get(0));
+					Line l2 = lines.get(inputLabels.get(1));
+					if (l1 == null || l2 == null) {
+						log.warn("lines not found: {}", inputLabels);
+						continue;
+					}
+					point = new Point(l1, l2);
+					points.put(outputLabel, point);
+					log.info("construct an intersect {} by {}: {}", outputLabel, inputLabels, point);
+					break;
+
+				case "Prove":
+					if (inputLabels.size() != 1) {
+						log.warn("unable to prove less or more than 1 statement: {}", inputLabels);
+						continue;
+					}
+					String statement = inputLabels.get(0);
+					// TODO parse function name as statement
+					if (statement.startsWith("AreCollinear[") && statement.endsWith("]")) {
+						String[] args = statement.substring(13, statement.length() - 1).split(",");
+						if (args.length != 3) {
+							log.warn("AreCollinear should have 3 arguments: {}", statement);
+							continue;
+						}
+						p1 = points.get(args[0].trim());
+						p2 = points.get(args[1].trim());
+						Point p3 = points.get(args[2].trim());
+						if (p1 == null || p2 == null || p3 == null) {
+							log.warn("points not found: {}", Arrays.asList(args));
+							continue;
+						}
+						log.info("proving collinear of {} ...", Arrays.asList(args));
+						return Point.collinear(p1, p2, p3) ? "true" : "false";
+					}
+					log.warn("not implemented: {}", statement);
 					break;
 
 				default:

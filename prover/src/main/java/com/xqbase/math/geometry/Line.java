@@ -5,6 +5,7 @@ import com.xqbase.math.polys.Poly;
 
 public class Line {
 	private LongPoly u, v, w;
+	private Point p1 = null, p2 = null;
 
 	public Line(LongPoly u, LongPoly v, LongPoly w) {
 		this.u = u;
@@ -17,6 +18,8 @@ public class Line {
 		u = Poly.det(p1.getY(), p1.getZ(), p2.getY(), p2.getZ());
 		v = Poly.det(p1.getZ(), p1.getX(), p2.getZ(), p2.getX());
 		w = Poly.det(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+		this.p1 = p1;
+		this.p2 = p2;
 	}
 
 	/** a line passing through p and parallel to direction (x, y) */
@@ -36,6 +39,14 @@ public class Line {
 
 	public LongPoly getW() {
 		return w;
+	}
+
+	public Point getP1() {
+		return p1;
+	}
+
+	public Point getP2() {
+		return p2;
 	}
 
 	public boolean passesThrough(Point p) {

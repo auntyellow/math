@@ -18,6 +18,18 @@ public class Point {
 		z = Poly.det(l1.getU(), l1.getV(), l2.getU(), l2.getV());
 	}
 
+	/** a point lies on l determined by p1 and p2 */
+	public Point(Line l, LongPoly m) {
+		Point p1 = l.getP1();
+		Point p2 = l.getP2();
+		if (p1 == null || p2 == null) {
+			throw new IllegalArgumentException("line is not determined by 2 points");
+		}
+		x = m.newPoly().add(p1.getX()).addMul(m, p2.getX());
+		y = m.newPoly().add(p1.getY()).addMul(m, p2.getY());
+		z = m.newPoly().add(p1.getZ()).addMul(m, p2.getZ());
+	}
+
 	public LongPoly getX() {
 		return x;
 	}
