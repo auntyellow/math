@@ -1,19 +1,9 @@
 package com.xqbase.math.geometry;
 
-import java.util.List;
-
 import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Poly;
 
 public class Circle {
-	private static LongPoly __(List<String> vars) {
-		return new LongPoly(vars);
-	}
-
-	private LongPoly __() {
-		return __(a.getVars());
-	}
-
 	private LongPoly a, d, e, f;
 
 	public Circle(LongPoly a, LongPoly d, LongPoly e, LongPoly f) {
@@ -28,9 +18,9 @@ public class Circle {
 		LongPoly[] r2 = row(p2);
 		LongPoly[] r3 = row(p3);
 		a = Poly.det(r1[1], r1[2], r1[3], r2[1], r2[2], r2[3], r3[1], r3[2], r3[3]);
-		d = __().sub(Poly.det(r1[0], r1[2], r1[3], r2[0], r2[2], r2[3], r3[0], r3[2], r3[3]));
+		d = a.newPoly().sub(Poly.det(r1[0], r1[2], r1[3], r2[0], r2[2], r2[3], r3[0], r3[2], r3[3]));
 		e = Poly.det(r1[0], r1[1], r1[3], r2[0], r2[1], r2[3], r3[0], r3[1], r3[3]);
-		f = __().sub(Poly.det(r1[0], r1[1], r1[2], r2[0], r2[1], r2[2], r3[0], r3[1], r3[2]));
+		f = a.newPoly().sub(Poly.det(r1[0], r1[1], r1[2], r2[0], r2[1], r2[2], r3[0], r3[1], r3[2]));
 	}
 
 	public Point getCenter() {
@@ -44,7 +34,7 @@ public class Circle {
 
 	/** pick the other point P1 lies on this circle, such that PP1's direction is (x, y) */
 	public Point pickPoint(Point p, LongPoly x, LongPoly y) {
-		return p.reflect(new Point(new Line(p, x, y), new Line(getCenter(), y, __().sub(x))));
+		return p.reflect(new Point(new Line(p, x, y), new Line(getCenter(), y, a.newPoly().sub(x))));
 	}
 
 	@Override
@@ -56,12 +46,11 @@ public class Circle {
 		LongPoly x = p.getX();
 		LongPoly y = p.getY();
 		LongPoly z = p.getZ();
-		List<String> vars = x.getVars();
 		return new LongPoly[] {
-			__(vars).addMul(x, x).addMul(y, y),
-			__(vars).addMul(x, z),
-			__(vars).addMul(y, z),
-			__(vars).addMul(z, z),
+			x.newPoly().addMul(x, x).addMul(y, y),
+			x.newPoly().addMul(x, z),
+			x.newPoly().addMul(y, z),
+			x.newPoly().addMul(z, z),
 		};
 	}
 

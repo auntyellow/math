@@ -1,17 +1,12 @@
 package com.xqbase.math.polys;
 
 import java.math.BigInteger;
-import java.util.List;
 
 public class Rational2Poly extends Poly<Rational2, Rational2Poly> {
 	private static final long serialVersionUID = 1L;
 
-	public Rational2Poly(List<String> vars) {
+	public Rational2Poly(String[] vars) {
 		super(vars);
-	}
-
-	public Rational2Poly(List<String> vars, String expr) {
-		super(vars, expr);
 	}
 
 	public Rational2Poly(String expr, String... vars) {

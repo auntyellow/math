@@ -1,15 +1,9 @@
 package com.xqbase.math.geometry;
 
-import java.util.List;
-
 import com.xqbase.math.polys.LongPoly;
 import com.xqbase.math.polys.Poly;
 
 public class Line {
-	private static LongPoly __(List<String> vars) {
-		return new LongPoly(vars);
-	}
-
 	private LongPoly u, v, w;
 
 	public Line(LongPoly u, LongPoly v, LongPoly w) {
@@ -27,10 +21,9 @@ public class Line {
 
 	/** a line passing through p and parallel to direction (x, y) */
 	public Line(Point p, LongPoly x, LongPoly y) {
-		List<String> vars = p.getX().getVars();
-		u = __(vars).addMul(p.getZ(), y);
-		v = __(vars).subMul(p.getZ(), x);
-		w = __(vars).addMul(p.getY(), x).subMul(p.getX(), y);
+		u = x.newPoly().addMul(p.getZ(), y);
+		v = x.newPoly().subMul(p.getZ(), x);
+		w = x.newPoly().addMul(p.getY(), x).subMul(p.getX(), y);
 	}
 
 	public LongPoly getU() {
@@ -46,7 +39,7 @@ public class Line {
 	}
 
 	public boolean passesThrough(Point p) {
-		LongPoly g = __(p.getX().getVars());
+		LongPoly g = p.getX().newPoly();
 		g.addMul(u, p.getX());
 		g.addMul(v, p.getY());
 		g.addMul(w, p.getZ());

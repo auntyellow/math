@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import com.xqbase.math.inequality.SDS;
 import com.xqbase.math.polys.BigPoly;
 
 public class Ptolemy {
