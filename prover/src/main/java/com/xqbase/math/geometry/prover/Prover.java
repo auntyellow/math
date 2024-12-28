@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -70,20 +69,19 @@ public class Prover {
 	}
 
 	public static String prove(String input) throws ProveException {
-		DocumentBuilder builder;
-		try {
-			builder = dbf.newDocumentBuilder();
-		} catch (ParserConfigurationException e) {
-			throw new RuntimeException(e);
-		}
 		Document doc;
 		try {
-			doc = builder.parse(new ByteArrayInputStream(input.getBytes()));
+			doc = dbf.newDocumentBuilder().parse(new ByteArrayInputStream(input.getBytes()));
+		} catch (ParserConfigurationException e) {
+			throw new RuntimeException(e);
 		} catch (SAXException | IOException e) {
 			throw new ProveException(e.getMessage());
 		}
-		Element pom = (Element) doc.getFirstChild();
-		if (!pom.getTagName().equals("construction")) {
+		return prove((Element) doc.getFirstChild());
+	}
+
+	public static String prove(Element input) throws ProveException {
+		if (!input.getTagName().equals("construction")) {
 			throw new ProveException("Expect XML Root <construction>");
 		}
 
@@ -91,7 +89,7 @@ public class Prover {
 		Map<String, Line> lines = new HashMap<>();
 		int[] vars = {0};
 
-		NodeList nodes = pom.getChildNodes();
+		NodeList nodes = input.getChildNodes();
 		int len = nodes.getLength();
 		for (int i = 0; i < len; i ++) {
 			Node node = nodes.item(i);
