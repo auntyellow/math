@@ -45,6 +45,7 @@ public class Factored {
 
 	public void mulPow(LongPoly p, long e) {
 		getExp(p).add(MutableLong.valueOf(e));
+		reduce();
 	}
 
 	public Factored mul(Factored f) {
