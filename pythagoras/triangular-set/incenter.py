@@ -81,6 +81,7 @@ def main():
     G = groebner([h1, h2], x1, x2)
     print(G, len(G))
     print(G.reduce(g))
+    print('NDG:', factor(prod({Poly(p, x1, x2).LC() for p in G})), '!= 0')
     print()
 
     # method 4: theorem 6.1.5
